@@ -1,0 +1,42 @@
+.page { min-height: 100vh; background: var(--bg); }
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; height: 72px; background: #FFFFFF !important; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border-bottom: 1px solid var(--border); display: flex; align-items: center; }
+.logo { font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 22px; display: flex; align-items: center; gap: 8px; color: var(--text) !important; }
+.logoIcon { color: var(--primary); font-size: 26px; }
+
+/* Wizard Stepper */
+.stepper { display: flex; justify-content: space-between; position: relative; margin-bottom: 40px; padding: 0 20px; }
+.stepperLine { position: absolute; top: 15px; left: 40px; right: 40px; height: 3px; background: rgba(15, 118, 110, 0.1); z-index: 1; }
+.stepperLineActive { position: absolute; top: 15px; left: 40px; height: 3px; background: var(--primary); z-index: 2; transition: width 0.3s ease; }
+.stepDot { width: 32px; height: 32px; border-radius: 50%; background: white; border: 3px solid rgba(15, 118, 110, 0.15); display: flex; align-items: center; justify-content: center; z-index: 3; font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 13px; color: var(--text-muted); transition: all 0.3s; }
+.stepDotActive { border-color: var(--primary); background: var(--primary); color: white; box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.15); }
+.stepDotDone { border-color: var(--success); background: var(--success); color: white; }
+
+.layout { display: grid; grid-template-columns: 1fr 340px; gap: 32px; align-items: start; }
+.specGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.specCard { background: white; border: 2px solid var(--border); border-radius: 10px; padding: 18px 14px; text-align: left; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; box-shadow: var(--shadow); }
+.specCard strong { display: block; font-size: 15px; font-weight: 700; margin-bottom: 6px; color: var(--primary-dark); }
+.specCard span { display: block; font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+.specCard:hover { border-color: rgba(15,118,110,0.3); transform: translateY(-2px); }
+.specActive { border-color: var(--primary) !important; background: rgba(15,118,110,0.03); box-shadow: 0 8px 24px rgba(15, 118, 110, 0.08); }
+
+.sliderLabel { display: flex; justify-content: space-between; font-weight: 600; font-size: 14px; color: var(--text); margin-bottom: 8px; }
+.sliderValue { font-size: 18px; font-weight: 800; color: var(--primary); font-family: 'Outfit'; }
+
+.resultCard { background: #FFFFFF; border: 1px solid rgba(15,118,110,0.15); border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow-premium); }
+.resultHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
+.resultRange { font-family: 'Outfit', sans-serif; font-size: 40px; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; }
+.breakdown { margin: 24px 0; display: flex; flex-direction: column; gap: 0; }
+.breakdownRow { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
+.breakdownRow:last-child { border-bottom: none; }
+.disclaimer { background: rgba(249,115,22,0.05); border: 1px solid rgba(249,115,22,0.15); border-radius: 8px; padding: 12px 16px; font-size: 12px; color: var(--accent-hover); margin-top: 16px; display: flex; gap: 8px; align-items: center; }
+
+.success { background: rgba(34,197,94,0.04); border: 1px solid rgba(34,197,94,0.15); border-radius: var(--radius-lg); padding: 40px; text-align: center; box-shadow: var(--shadow); }
+.success h3 { font-size: 22px; color: var(--primary-dark); }
+.sidebar { position: sticky; top: 90px; display: flex; flex-direction: column; gap: 0; }
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .specGrid { grid-template-columns: 1fr; }
+}
+
