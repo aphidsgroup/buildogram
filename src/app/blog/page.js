@@ -13,7 +13,7 @@ export const revalidate = 60; // revalidate every minute
 export default async function Blog() {
   let posts = [];
   try {
-    posts = await sql`SELECT * FROM blog_posts WHERE status='published' ORDER BY created_at DESC`;
+    posts = await sql`SELECT * FROM blog_posts WHERE is_published=true ORDER BY created_at DESC`;
   } catch (err) {
     console.error('Failed to fetch blog posts:', err);
   }

@@ -18,6 +18,8 @@ export default function Navbar() {
           <Link href="/specifications" onClick={() => setMenuOpen(false)}>Specifications</Link>
           <Link href="/cost-estimator" onClick={() => setMenuOpen(false)}>Cost Estimator</Link>
           <Link href="/projects" onClick={() => setMenuOpen(false)}>Projects</Link>
+          <Link href="/why-vs-mason" onClick={() => setMenuOpen(false)}>Vs Local Mason</Link>
+          <Link href="/why-vs-aggregators" onClick={() => setMenuOpen(false)}>Vs Corporate Aggregators</Link>
           <Link href="/warranty-and-maintenance" onClick={() => setMenuOpen(false)}>Warranty & Loans</Link>
           <Link href="/construction-in-chennai" onClick={() => setMenuOpen(false)}>Chennai Guide</Link>
           <Link href="/blog" onClick={() => setMenuOpen(false)}>Blog</Link>

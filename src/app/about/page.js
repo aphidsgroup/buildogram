@@ -16,16 +16,22 @@ export default function About() {
 
   const team = [
     {
-      name: 'Dr. S. K. Vignesh, PhD',
-      role: 'Co-Founder & Head of Structural Safety',
-      bio: 'PhD in Structural Engineering from IIT Madras. 12+ years designing high-rise frames and earthquake-resistant residential concrete complexes. Oversees every plot soil test SBC analysis.',
+      name: 'Kavin, M.Tech',
+      role: 'Co-Founder & Structural Engineering Lead',
+      bio: 'Civil & structural engineer specialized in foundation design in Chennai soil profiles. Focuses on pile foundation dynamics for clayey soil and salinity-shielding for coastal ECR/OMR sites. Oversees all geotechnical checks and structural code compliance.',
       img: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=400&q=80'
     },
     {
-      name: 'Aravind Swaminathan, M.Tech',
-      role: 'Co-Founder & Head of Operations',
-      bio: 'M.Tech in Construction Management from NIT Trichy. Former senior project planner at L&T Infrastructure. Engineered Buildogram’s proprietary e-monitoring and automated BOQ pipeline.',
+      name: 'Lokesh',
+      role: 'Co-Founder & Materials & Logistics Director',
+      bio: 'Logistics and materials supply veteran in Tamil Nadu. Leads Buildogram’s open-book material sourcing and Broadway/Mannady pricing benchmarks. Discloses and audits related-party procurement routes to secure wholesale rates for clients.',
       img: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80'
+    },
+    {
+      name: 'Manoj, B.E.',
+      role: 'Co-Founder & Head of Construction Quality Control',
+      bio: 'Onsite construction coordinator. Developed our 18-checkpoint phase checklist system and manages our field engineers, overseeing onsite concrete slump tests and laboratory cube compressions.',
+      img: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80'
     }
   ];
 
@@ -46,12 +52,12 @@ export default function About() {
         {/* MISSION GRID */}
         <div className="grid-2 mb-8 animate-fade-in" style={{ alignItems: 'center', gap: '48px' }}>
           <div>
-            <h2 style={{ fontSize: '28px', color: 'var(--primary-dark)', marginBottom: '20px' }}>Built by IIT-Alumni Civil & Structural Engineers</h2>
+            <h2 style={{ fontSize: '28px', color: 'var(--primary-dark)', marginBottom: '20px' }}>Engineered & Managed by Civil Specialists</h2>
             <p className="text-muted mb-4" style={{ fontSize: '15px', lineHeight: '1.7' }}>
               Historically, building a home meant dealing with high-stress per-square-foot contracts, sub-standard materials, and missed milestones. Contractors bid low, then cut corners on steel tie spacing and concrete covers to maximize their profit margins.
             </p>
             <p className="text-muted mb-4" style={{ fontSize: '15px', lineHeight: '1.7' }}>
-              Buildogram was founded to bring absolute scientific accuracy to residential home construction. We don't quote generic sq.ft numbers. We detail every rebar and pipe in a capped Bill of Quantities (BOQ), ensuring every single rupee is accounted for.
+              Buildogram was founded by Kavin, Lokesh, and Manoj to bring absolute scientific accuracy to residential home construction in Chennai. We don't quote generic sq.ft numbers. We detail every rebar and pipe in a capped Bill of Quantities (BOQ), ensuring every single rupee is accounted for.
             </p>
             <p className="text-muted mb-6" style={{ fontSize: '15px', lineHeight: '1.7' }}>
               From mandatory Soil Bearing Capacity (SBC) lab tests to concrete cube compression reports, our structural engineering team safeguards your home’s durability against coastal elements and seismic shifts.
@@ -81,9 +87,9 @@ export default function About() {
         <section className="mb-8">
           <div className="text-center mb-8">
             <div className="tag mb-4">Our Founders</div>
-            <h2 style={{ fontSize: '32px', color: 'var(--primary-dark)' }}>IIT-Alumni Leadership</h2>
+            <h2 style={{ fontSize: '32px', color: 'var(--primary-dark)' }}>Engineer-Led Leadership</h2>
           </div>
-          <div className="grid-2">
+          <div className="grid-3" style={{ gap: '20px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
             {team.map(member => (
               <div key={member.name} className="card card-hover" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>

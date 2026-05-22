@@ -354,6 +354,7 @@ export default function Home() {
             </div>
             {[
               { title: 'Services', links: [['How It Works', '/how-it-works'], ['Material Specs', '/specifications'], ['Cost Estimator', '/cost-estimator'], ['Chennai Construction', '/construction-in-chennai'], ['Our Projects', '/projects']] },
+              { title: 'Compare', links: [['Vs Local Mason', '/why-vs-mason'], ['Vs Corporate Aggregators', '/why-vs-aggregators'], ['Warranty & Loans', '/warranty-and-maintenance']] },
               { title: 'Company', links: [['About Us', '/about'], ['Blog', '/blog'], ['Contact', '/contact'], ['Careers', '#']] },
               { title: 'Portals', links: [['Client Login', '/login'], ['Partner Login', '/login'], ['Ops Console', '/login']] },
             ].map(col => (
