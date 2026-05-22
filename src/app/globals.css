@@ -136,11 +136,57 @@ tr:hover td { background: rgba(0,0,0,0.01); }
   animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+@media (max-width: 1024px) and (min-width: 769px) {
+  .grid-4 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(2, 1fr); }
+}
+
 @media (max-width: 768px) {
   .grid-2,.grid-3,.grid-4 { grid-template-columns: 1fr; }
   .container { padding: 0 16px; }
   .section { padding: 60px 0; }
   .page-header { padding: 32px 0 24px; margin-bottom: 32px; }
   .page-header h1 { font-size: 28px; }
+}
+
+.specFeatureRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+}
+.specFeatureRow strong {
+  color: var(--text);
+  font-weight: 600;
+  max-width: 140px;
+}
+.specFeatureRow span {
+  text-align: right;
+}
+@media (max-width: 991px) {
+  .specFeatureRow {
+    flex-direction: column;
+    gap: 4px;
+  }
+  .specFeatureRow strong {
+    max-width: none !important;
+  }
+  .specFeatureRow span {
+    text-align: left !important;
+  }
+}
+
+.comparisonRow {
+  display: grid;
+  grid-template-columns: 1.2fr 3fr;
+  gap: 16px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+}
+@media (max-width: 768px) {
+  .comparisonRow {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
 }
 

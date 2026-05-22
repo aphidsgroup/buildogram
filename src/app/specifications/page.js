@@ -152,9 +152,9 @@ export default function Specifications() {
                 <h4 className="mb-4" style={{ fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--primary-dark)' }}>Inclusions Detail:</h4>
                 <ul style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                   {filterFeatures(p.features, activeTab).map(f => (
-                    <li key={f.label} style={{ fontSize: '13px', display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
-                      <strong style={{ color: 'var(--text)', fontWeight: '600', maxWidth: '140px' }}>{f.label}:</strong>
-                      <span className="text-muted text-right" style={{ textAlign: 'right' }}>{f.value}</span>
+                    <li key={f.label} className="specFeatureRow">
+                      <strong>{f.label}:</strong>
+                      <span className="text-muted">{f.value}</span>
                     </li>
                   ))}
                 </ul>

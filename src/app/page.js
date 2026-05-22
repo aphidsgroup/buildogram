@@ -159,7 +159,7 @@ export default function Home() {
             <p className="text-primary font-semibold text-sm mb-6">{comparisonData[activeComparison].tagline}</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               {comparisonData[activeComparison].points.map(pt => (
-                <div key={pt.title} style={{ display: 'grid', gridTemplateColumns: '1.2fr 3fr', gap: '16px', borderBottom: '1px solid var(--border)', paddingBottom: '16px' }}>
+                <div key={pt.title} className="comparisonRow">
                   <strong style={{ fontSize: '15px', color: 'var(--text)' }}>{pt.title}</strong>
                   <span className="text-muted" style={{ fontSize: '14px', lineHeight: '1.6' }}>{pt.desc}</span>
                 </div>

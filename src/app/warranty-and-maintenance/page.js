@@ -184,7 +184,7 @@ export default function WarrantyAndMaintenance() {
 
               <div style={{ borderTop: '1px solid var(--border)', paddingTop: '20px' }}>
                 <h4 className="text-muted text-xs mb-4">Our Direct Bank Panel Partners:</h4>
-                <div className="grid-2" style={{ gap: '12px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px' }}>
                   {banks.map(bank => (
                     <div key={bank.name} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px', background: 'var(--bg-card2)', borderRadius: '6px' }}>
                       <span style={{ fontSize: '20px' }}>{bank.logo}</span>
