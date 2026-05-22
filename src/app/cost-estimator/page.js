@@ -105,7 +105,7 @@ export default function CostEstimator() {
               3
             </div>
           </div>
-          <div className="flex-between text-muted text-xs" style={{ padding: '0 8px', marginTop: '-10px' }}>
+          <div className="flex-between text-muted text-xs" style={{ padding: '0 20px', marginTop: '-10px' }}>
             <span className={activeStep === 1 ? 'text-primary font-semibold' : ''}>1. Plot Details</span>
             <span className={activeStep === 2 ? 'text-primary font-semibold' : ''}>2. Specs & Brands</span>
             <span className={activeStep === 3 ? 'text-primary font-semibold' : ''}>3. Estimates Breakdown</span>
