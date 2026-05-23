@@ -5,53 +5,70 @@ import styles from './Navbar.module.css';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const close = () => setMenuOpen(false);
 
   return (
     <nav className={styles.nav}>
       <div className="container flex-between" style={{ height: '100%', width: '100%' }}>
+        {/* Logo */}
         <Link href="/" className={styles.logo}>
           <span className={styles.logoIcon}>⬡</span>
           <span>Buildogram</span>
         </Link>
+
+        {/* Nav Links */}
         <div className={`${styles.navLinks} ${menuOpen ? styles.open : ''}`}>
-          {/* Services Group */}
+
+          {/* Build */}
           <div className={styles.dropdown}>
-            <span className={styles.dropdownTrigger}>Build & Services <span className={styles.arrow}>▾</span></span>
+            <span className={styles.dropdownTrigger}>Build <span className={styles.arrow}>▾</span></span>
             <div className={styles.dropdownMenu}>
-              <Link href="/how-it-works" onClick={() => setMenuOpen(false)}>How It Works</Link>
-              <Link href="/specifications" onClick={() => setMenuOpen(false)}>Specifications</Link>
-              <Link href="/cost-estimator" onClick={() => setMenuOpen(false)}>Cost Estimator</Link>
-              <Link href="/warranty-and-maintenance" onClick={() => setMenuOpen(false)}>Warranty & Loans</Link>
+              <Link href="/build" onClick={close}>All Services</Link>
+              <Link href="/build/home-construction" onClick={close}>Home Construction</Link>
+              <Link href="/build/villa-construction" onClick={close}>Villa Construction</Link>
+              <Link href="/build/renovation" onClick={close}>Renovation</Link>
+              <Link href="/build/pmc" onClick={close}>PMC</Link>
+              <Link href="/cost-estimator" onClick={close}>Cost Estimator</Link>
             </div>
           </div>
 
-          {/* Why Us Group */}
+          {/* Materials */}
+          <Link href="/materials" onClick={close}>Materials</Link>
+
+          {/* Property */}
           <div className={styles.dropdown}>
-            <span className={styles.dropdownTrigger}>Why Buildogram <span className={styles.arrow}>▾</span></span>
+            <span className={styles.dropdownTrigger}>Property <span className={styles.arrow}>▾</span></span>
             <div className={styles.dropdownMenu}>
-              <Link href="/why-vs-mason" onClick={() => setMenuOpen(false)}>Vs Local Mason</Link>
-              <Link href="/why-vs-aggregators" onClick={() => setMenuOpen(false)}>Vs Corporate Aggregators</Link>
+              <Link href="/property-passport" onClick={close}>Property Passport™</Link>
+              <Link href="/maintenance" onClick={close}>Maintenance & AMC</Link>
+              <Link href="/warranty-and-maintenance" onClick={close}>Warranty</Link>
             </div>
           </div>
 
-          {/* Projects Link */}
-          <Link href="/projects" onClick={() => setMenuOpen(false)}>Projects</Link>
+          {/* Partners */}
+          <Link href="/partners" onClick={close}>Partners</Link>
 
-          {/* Resources Group */}
+          {/* Projects */}
+          <Link href="/projects" onClick={close}>Projects</Link>
+
+          {/* Resources */}
           <div className={styles.dropdown}>
-            <span className={styles.dropdownTrigger}>Resources <span className={styles.arrow}>▾</span></span>
+            <span className={styles.dropdownTrigger}>Learn <span className={styles.arrow}>▾</span></span>
             <div className={styles.dropdownMenu}>
-              <Link href="/construction-in-chennai" onClick={() => setMenuOpen(false)}>Chennai Guide</Link>
-              <Link href="/blog" onClick={() => setMenuOpen(false)}>Blog</Link>
-              <Link href="/about" onClick={() => setMenuOpen(false)}>About Us</Link>
+              <Link href="/how-it-works" onClick={close}>How It Works</Link>
+              <Link href="/specifications" onClick={close}>Specifications</Link>
+              <Link href="/construction-in-chennai" onClick={close}>Chennai Guide</Link>
+              <Link href="/blog" onClick={close}>Blog</Link>
+              <Link href="/about" onClick={close}>About Us</Link>
             </div>
           </div>
 
-          {/* Contact & Login */}
-          <Link href="/contact" onClick={() => setMenuOpen(false)}>Contact</Link>
-          <Link href="/login" className="btn btn-primary btn-sm" onClick={() => setMenuOpen(false)}>Client Login</Link>
+          {/* CTAs */}
+          <Link href="/contact" onClick={close}>Contact</Link>
+          <Link href="/login" className="btn btn-primary btn-sm" onClick={close}>Client Login</Link>
         </div>
-        <button className={styles.menuBtn} onClick={() => setMenuOpen(!menuOpen)}>
+
+        <button className={styles.menuBtn} onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
           {menuOpen ? '✕' : '☰'}
         </button>
       </div>
