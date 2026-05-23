@@ -9,16 +9,18 @@ export async function GET(req) {
   }
 
   try {
-    const properties = await sql`
-      SELECT *
-      FROM properties
-      WHERE owner_user_id = ${u.id}
-      ORDER BY created_at DESC
+    const leads = await sql`
+      SELECT l.*, p.title as property_title 
+      FROM leads l
+      JOIN properties p ON l.property_id = p.id
+      WHERE l.lead_type = 'maintenance'
+        AND p.owner_user_id = ${u.id}
+      ORDER BY l.created_at DESC
     `;
 
-    return NextResponse.json({ success: true, properties });
+    return NextResponse.json({ success: true, leads });
   } catch (e) {
-    console.error('[client passport GET]', e.message);
+    console.error('[client maintenance GET]', e.message);
     return NextResponse.json({ success: false, error: e.message }, { status: 500 });
   }
 }

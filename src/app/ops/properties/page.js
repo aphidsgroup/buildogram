@@ -63,6 +63,115 @@ function Pill({ value, map }) {
   );
 }
 
+/* ─── Document Manager ──────────────────────────────────────── */
+function DocumentManager({ propertyId, onDocUploaded }) {
+  const [docs, setDocs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [form, setForm] = useState({ section_key: 'has_legal_docs', file_name: '', visibility: 'ops_only', file: null });
+
+  const load = useCallback(() => {
+    fetch(`/api/properties/${propertyId}/documents`)
+      .then(r => r.json())
+      .then(d => { if (d.success) setDocs(d.documents); setLoading(false); });
+  }, [propertyId]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const handleUpload = async (e) => {
+    e.preventDefault();
+    if (!form.file) return alert('Select a file');
+    setUploading(true);
+    
+    // 1. Upload to Cloudinary
+    const fd = new FormData();
+    fd.append('file', form.file);
+    fd.append('folder', 'buildogram_passport');
+    const resFile = await fetch('/api/upload', { method: 'POST', body: fd });
+    const dFile = await resFile.json();
+    
+    if (!dFile.url) { alert('File upload failed'); setUploading(false); return; }
+
+    // 2. Save document record
+    const resDoc = await fetch(`/api/properties/${propertyId}/documents`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        section_key: form.section_key,
+        file_name: form.file_name || form.file.name,
+        file_url: dFile.url,
+        file_type: form.file.type,
+        file_size: form.file.size,
+        visibility: form.visibility
+      })
+    });
+    
+    const dDoc = await resDoc.json();
+    if (dDoc.success) {
+      setForm({ ...form, file_name: '', file: null });
+      if (onDocUploaded) onDocUploaded(form.section_key);
+      load();
+    } else alert(dDoc.error);
+    setUploading(false);
+  };
+
+  const del = async (docId) => {
+    if(!confirm('Delete document?')) return;
+    await fetch(`/api/properties/${propertyId}/documents/${docId}`, { method: 'DELETE' });
+    load();
+  };
+
+  return (
+    <div style={{ background: '#f8fafc', borderRadius: '12px', padding: '16px', border: '1px solid #e2e8f0' }}>
+      <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Document Vault</div>
+      
+      {/* Upload Form */}
+      <form onSubmit={handleUpload} style={{ display: 'grid', gap: '8px', marginBottom: '16px', paddingBottom: '16px', borderBottom: '1px solid #e2e8f0' }}>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <select className="input" style={{ flex: 1, margin: 0, padding: '6px' }} value={form.section_key} onChange={e => setForm({...form, section_key: e.target.value})}>
+            {RECORD_SECTIONS.map(s => <option key={s.key} value={s.key}>{s.label}</option>)}
+          </select>
+          <select className="input" style={{ flex: 1, margin: 0, padding: '6px' }} value={form.visibility} onChange={e => setForm({...form, visibility: e.target.value})}>
+            <option value="ops_only">🔒 Ops Only</option>
+            <option value="client_visible">👁️ Client Visible</option>
+          </select>
+        </div>
+        <input type="text" className="input" placeholder="File Name (Optional)" value={form.file_name} onChange={e => setForm({...form, file_name: e.target.value})} style={{ margin: 0, padding: '6px' }} />
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <input type="file" className="input" style={{ flex: 2, margin: 0, padding: '4px' }} onChange={e => setForm({...form, file: e.target.files[0]})} />
+          <button type="submit" className="btn btn-primary" style={{ flex: 1, justifyContent: 'center', padding: '6px' }} disabled={uploading}>
+            {uploading ? 'Uploading…' : 'Upload'}
+          </button>
+        </div>
+      </form>
+
+      {/* File List */}
+      {loading ? <div style={{ fontSize: '12px', color: '#64748b' }}>Loading docs…</div> : docs.length === 0 ? <div style={{ fontSize: '12px', color: '#64748b' }}>No documents uploaded.</div> : (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          {docs.map(doc => {
+            const sec = RECORD_SECTIONS.find(s => s.key === doc.section_key);
+            return (
+              <div key={doc.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white', padding: '8px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+                <div style={{ overflow: 'hidden' }}>
+                  <div style={{ fontSize: '12px', fontWeight: 600, whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>{doc.file_name}</div>
+                  <div style={{ fontSize: '10px', color: '#64748b', display: 'flex', gap: '6px' }}>
+                    <span>{sec?.icon} {sec?.label}</span>
+                    <span style={{ color: doc.visibility === 'client_visible' ? '#059669' : '#dc2626' }}>{doc.visibility === 'client_visible' ? '👁️ Client' : '🔒 Ops'}</span>
+                  </div>
+                </div>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <a href={doc.file_url} target="_blank" rel="noreferrer" className="btn btn-ghost btn-sm" style={{ padding: '4px' }}>👁️</a>
+                  <button onClick={() => del(doc.id)} className="btn btn-ghost btn-sm" style={{ padding: '4px', color: '#dc2626' }}>✕</button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ─── New Property Form ─────────────────────────────────────── */
 function NewPropertyModal({ onClose, onSaved }) {
   const [form, setForm] = useState({
@@ -232,6 +341,13 @@ export default function OpsProperties() {
   const [showNew, setShowNew]       = useState(false);
   const [saving, setSaving]         = useState(false);
   const [view, setView]             = useState('grid'); // 'grid' | 'table'
+  const [clients, setClients]       = useState([]);
+
+  useEffect(() => {
+    fetch('/api/properties/clients').then(r => r.json()).then(d => {
+      if(d.success) setClients(d.clients);
+    });
+  }, []);
 
   const load = useCallback(() => {
     setLoading(true);
@@ -585,6 +701,31 @@ export default function OpsProperties() {
                   )}
                 </div>
               </div>
+
+              {/* Client Assignment */}
+              <div style={{ borderTop: '1px solid var(--border)', paddingTop: '16px' }}>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>Client Portal Access</div>
+                <div>
+                  <label style={{ fontSize: '11px', fontWeight: 600, color: '#64748b', display: 'block', marginBottom: '4px' }}>Assign Client User</label>
+                  <select className="input" style={{ margin: 0 }} value={selected.owner_user_id || ''}
+                    onChange={e => {
+                      const val = e.target.value || null;
+                      update(selected.id, { owner_user_id: val });
+                      setSelected(p => ({ ...p, owner_user_id: val }));
+                    }}>
+                    <option value="">Unassigned (Not visible to any client)</option>
+                    {clients.map(c => <option key={c.id} value={c.id}>{c.name} ({c.phone || c.email})</option>)}
+                  </select>
+                  <p style={{ fontSize: '11px', color: '#94a3b8', marginTop: '4px' }}>Only the assigned user can see this property in their client portal.</p>
+                </div>
+              </div>
+
+              {/* Document Manager */}
+              <DocumentManager propertyId={selected.id} onDocUploaded={(section_key) => {
+                if (!selected[section_key]) {
+                  update(selected.id, { [section_key]: true });
+                }
+              }} />
 
               {/* Notes */}
               <div>

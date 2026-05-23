@@ -41,6 +41,7 @@ async function autoCreateProperty(lead) {
       plot_area_sqft, floors,
       spec_level,
       passport_status, passport_completeness,
+      listing_type, listing_status, listing_price, listing_rent_monthly,
       notes
     ) VALUES (
       ${title},
@@ -50,11 +51,15 @@ async function autoCreateProperty(lead) {
       ${lead.email || null},
       ${lead.city || 'Chennai'},
       ${lead.locality || null},
-      ${lead.plot_area_sqft || null},
+      ${lead.plot_area_sqft || meta.property_size_sqft || null},
       ${lead.floors || null},
       ${lead.spec_level || null},
       'collecting',
       0,
+      ${meta.listing_type || 'none'},
+      ${meta.listing_type ? 'listed' : 'unlisted'},
+      ${meta.listing_type === 'resale' ? meta.expected_price : null},
+      ${meta.listing_type === 'rent' || meta.listing_type === 'lease' ? meta.expected_price : null},
       ${`Auto-created from lead #${lead.id} (${lead.lead_type}). Original message: ${lead.message || '—'}`}
     )
     RETURNING id, title
@@ -102,7 +107,7 @@ export async function PUT(req, { params }) {
   /* ── Auto-create property on win ── */
   let autoCreatedProperty = null;
 
-  const PASSPORT_TYPES = ['property_passport', 'construction', 'boq_audit', 'plan_review'];
+  const PASSPORT_TYPES = ['property_passport', 'construction', 'boq_audit', 'plan_review', 'property_listing'];
 
   if (isBeingWon && PASSPORT_TYPES.includes(lead.lead_type) && !lead.property_id) {
     try {
@@ -117,6 +122,13 @@ export async function PUT(req, { params }) {
   const propertyId = autoCreatedProperty?.id || b.property_id || null;
   const convertedAt = isBeingWon ? new Date().toISOString() : null;
 
+  // Extract metadata if present
+  let newMetadata = b.metadata;
+  if (newMetadata && Object.keys(newMetadata).length > 0) {
+    // Merge new metadata with existing
+    newMetadata = { ...lead.metadata, ...newMetadata };
+  }
+
   // Update the lead
   await sql`
     UPDATE leads SET
@@ -127,6 +139,7 @@ export async function PUT(req, { params }) {
       lost_reason    = COALESCE(${b.lost_reason     ?? null}, lost_reason),
       property_id    = COALESCE(${propertyId        ?? null}::uuid, property_id),
       converted_at   = COALESCE(${convertedAt       ?? null}::timestamptz, converted_at),
+      metadata       = COALESCE(${newMetadata ? JSON.stringify(newMetadata) : null}::jsonb, metadata),
       updated_at     = NOW()
     WHERE id = ${id}
   `;

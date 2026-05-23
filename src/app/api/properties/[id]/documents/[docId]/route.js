@@ -2,23 +2,21 @@ import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
 
-export async function GET(req) {
+export async function DELETE(req, { params }) {
   const u = getUserFromRequest(req);
-  if (!u || u.role !== 'client') {
+  if (!u || !['ops_admin', 'ops_pm'].includes(u.role)) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
   }
+  
+  const { id: propertyId, docId } = await params;
 
   try {
-    const properties = await sql`
-      SELECT *
-      FROM properties
-      WHERE owner_user_id = ${u.id}
-      ORDER BY created_at DESC
+    await sql`
+      DELETE FROM passport_documents
+      WHERE id = ${docId} AND property_id = ${propertyId}
     `;
-
-    return NextResponse.json({ success: true, properties });
+    return NextResponse.json({ success: true });
   } catch (e) {
-    console.error('[client passport GET]', e.message);
     return NextResponse.json({ success: false, error: e.message }, { status: 500 });
   }
 }

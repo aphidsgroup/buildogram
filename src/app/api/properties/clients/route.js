@@ -4,21 +4,19 @@ import { getUserFromRequest } from '@/lib/auth';
 
 export async function GET(req) {
   const u = getUserFromRequest(req);
-  if (!u || u.role !== 'client') {
+  if (!u || !['ops_admin', 'ops_pm'].includes(u.role)) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
   }
 
   try {
-    const properties = await sql`
-      SELECT *
-      FROM properties
-      WHERE owner_user_id = ${u.id}
-      ORDER BY created_at DESC
+    const clients = await sql`
+      SELECT id, name, email, phone 
+      FROM users 
+      WHERE role = 'client'
+      ORDER BY name ASC
     `;
-
-    return NextResponse.json({ success: true, properties });
+    return NextResponse.json({ success: true, clients });
   } catch (e) {
-    console.error('[client passport GET]', e.message);
     return NextResponse.json({ success: false, error: e.message }, { status: 500 });
   }
 }
