@@ -70,7 +70,7 @@ const PARTNER_TYPES = ['🏗️ Builders', '👷 Contractors', '📐 Architects'
 
 const FOOTER_COLS = [
   { title: 'Build', links: [['Home Construction', '/build/home-construction'], ['Villa Construction', '/build/villa-construction'], ['Renovation', '/build/renovation'], ['BOQ Audit', '/boq-audit'], ['Plan Review', '/plan-review'], ['Cost Estimator', '/cost-estimator']] },
-  { title: 'Property', links: [['Property Passport™', '/property-passport'], ['Maintenance & AMC', '/maintenance'], ['Warranty', '/warranty-and-maintenance'], ['Materials', '/materials'], ['Partners', '/partners']] },
+  { title: 'Property', links: [['Verified Rentals', '/rentals'], ['Property Passport™', '/property-passport'], ['Maintenance & AMC', '/maintenance'], ['Warranty', '/warranty-and-maintenance'], ['Materials', '/materials'], ['Partners', '/partners']] },
   { title: 'Learn', links: [['How It Works', '/how-it-works'], ['Specifications', '/specifications'], ['Chennai Guide', '/construction-in-chennai'], ['Blog', '/blog'], ['About Us', '/about']] },
   { title: 'Portals', links: [['Client Login', '/login'], ['Partner Login', '/login'], ['Ops Console', '/login'], ['Contact Us', '/contact']] },
 ];
