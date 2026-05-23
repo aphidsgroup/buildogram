@@ -53,6 +53,12 @@ export default function OpsLeads() {
   const [search, setSearch]     = useState('');
   const [selected, setSelected] = useState(null);
   const [saving, setSaving]     = useState(false);
+  const [toast, setToast]       = useState(null); // { type, message, propertyId }
+
+  const showToast = (msg, type = 'success', propertyId = null) => {
+    setToast({ message: msg, type, propertyId });
+    setTimeout(() => setToast(null), 6000);
+  };
 
   const load = () => {
     setLoading(true);
@@ -65,14 +71,33 @@ export default function OpsLeads() {
 
   const update = async (id, data) => {
     setSaving(true);
-    await fetch(`/api/leads/${id}`, {
+    const res = await fetch(`/api/leads/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
+    const d = await res.json();
     setSaving(false);
     load();
     if (selected?.id === id) setSelected(prev => ({ ...prev, ...data }));
+    // Show toast if a property was auto-created
+    if (d.auto_created_property) {
+      showToast(
+        `🛂 Property Passport created: "${d.auto_created_property.title}"`,
+        'success',
+        d.auto_created_property.id,
+      );
+      // Patch selected with property info
+      if (selected?.id === id) {
+        setSelected(prev => ({
+          ...prev,
+          property_id: d.auto_created_property.id,
+          property_title: d.auto_created_property.title,
+          property_passport_status: 'collecting',
+          property_completeness: 0,
+        }));
+      }
+    }
   };
 
   /* ─── Filtering ────────────────────────────────────────── */
@@ -352,15 +377,53 @@ export default function OpsLeads() {
             {/* Status Update */}
             <div style={{ marginBottom: '20px' }}>
               <label style={{ fontSize: '12px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>Update Status</label>
-              <select
-                className="input"
-                style={{ margin: 0, maxWidth: '200px' }}
-                value={selected.status}
-                onChange={e => { update(selected.id, { status: e.target.value }); setSelected(p => ({ ...p, status: e.target.value })); }}
-              >
-                {STATUS_PIPELINE.map(s => <option key={s}>{s}</option>)}
-              </select>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                {STATUS_PIPELINE.map(s => {
+                  const cfg = STATUS_COLORS[s] || {};
+                  const isActive = selected.status === s;
+                  return (
+                    <button key={s}
+                      onClick={() => { update(selected.id, { status: s }); setSelected(p => ({ ...p, status: s })); }}
+                      style={{
+                        padding: '7px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 700,
+                        border: '1px solid', cursor: 'pointer', textTransform: 'capitalize', transition: 'all 0.15s',
+                        background: isActive ? cfg.color : cfg.bg,
+                        color: isActive ? '#fff' : cfg.color,
+                        borderColor: isActive ? cfg.color : `${cfg.color}44`,
+                      }}>
+                      {s}
+                    </button>
+                  );
+                })}
+              </div>
+              {['property_passport','construction','boq_audit','plan_review'].includes(selected.lead_type) && selected.status !== 'won' && (
+                <p style={{ fontSize: '11px', color: '#64748b', marginTop: '8px' }}>
+                  💡 Marking as <strong>won</strong> will auto-create a Property Passport record.
+                </p>
+              )}
             </div>
+
+            {/* Linked Property Passport */}
+            {selected.property_id && (
+              <div style={{ marginBottom: '20px', padding: '16px', background: '#ecfdf5', borderRadius: '12px', border: '1px solid #86efac' }}>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>🛂 Linked Property Passport</div>
+                <div style={{ fontWeight: 700, fontSize: '14px', color: '#292929', marginBottom: '6px' }}>{selected.property_title || 'Property Record'}</div>
+                <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+                  {selected.property_passport_status && (
+                    <span style={{ padding: '3px 10px', borderRadius: '999px', fontSize: '11px', fontWeight: 700, background: '#d1fae5', color: '#059669', border: '1px solid #6ee7b7' }}>
+                      {selected.property_passport_status}
+                    </span>
+                  )}
+                  {selected.property_completeness !== undefined && (
+                    <span style={{ fontSize: '12px', color: '#64748b' }}>{selected.property_completeness}% complete</span>
+                  )}
+                  <a href="/ops/properties" target="_blank" rel="noreferrer"
+                    style={{ marginLeft: 'auto', fontSize: '12px', fontWeight: 700, color: '#059669', textDecoration: 'none' }}>
+                    View Passport →
+                  </a>
+                </div>
+              </div>
+            )}
 
             {/* Actions */}
             <div style={{ display: 'flex', gap: '10px' }}>
@@ -381,6 +444,30 @@ export default function OpsLeads() {
               <div style={{ textAlign: 'center', marginTop: '12px', fontSize: '12px', color: '#64748b' }}>Saving…</div>
             )}
           </div>
+        </div>
+      )}
+
+      {/* ── Global Toast ── */}
+      {toast && (
+        <div style={{
+          position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999,
+          background: toast.type === 'success' ? '#292929' : '#dc2626',
+          color: 'white', borderRadius: '14px', padding: '14px 20px',
+          boxShadow: '0 8px 32px rgba(0,0,0,0.25)', maxWidth: '380px',
+          display: 'flex', gap: '12px', alignItems: 'flex-start',
+          animation: 'slideUp 0.3s ease',
+        }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 700, fontSize: '14px', marginBottom: '4px' }}>Property Passport Created ✅</div>
+            <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.5 }}>{toast.message}</div>
+            {toast.propertyId && (
+              <a href="/ops/properties" target="_blank" rel="noreferrer"
+                style={{ fontSize: '12px', color: '#FFDA01', fontWeight: 700, marginTop: '6px', display: 'inline-block' }}>
+                Open in Properties →
+              </a>
+            )}
+          </div>
+          <button onClick={() => setToast(null)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: '18px', lineHeight: 1, padding: 0 }}>×</button>
         </div>
       )}
     </div>
