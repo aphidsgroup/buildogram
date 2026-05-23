@@ -126,6 +126,31 @@ export default async function PublicPassportPage({ params }) {
           </div>
         </div>
 
+        {/* ── 360 Virtual Tour (for Rentals) ── */}
+        {property.listing_type === 'rental' && (
+          <div className="card" style={{ padding: '32px', marginBottom: '24px', border: '1px solid #e2e8f0', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+              <div>
+                <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '4px' }}>👓 360° Virtual Tour</h3>
+                <p style={{ color: '#64748b', fontSize: '14px', margin: 0 }}>Explore every room before scheduling a visit.</p>
+              </div>
+              <div style={{ background: '#FFDA01', color: '#292929', padding: '6px 14px', borderRadius: '8px', fontSize: '18px', fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif' }}>
+                ₹{Number(property.listing_rent_monthly).toLocaleString('en-IN')}/mo
+              </div>
+            </div>
+            <div style={{ height: '400px', background: '#1e293b', borderRadius: '12px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', inset: 0, opacity: 0.2, background: 'repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px)' }} />
+              <span style={{ fontSize: '48px', marginBottom: '16px', position: 'relative', zIndex: 1 }}>📸</span>
+              <p style={{ fontSize: '16px', fontWeight: 600, position: 'relative', zIndex: 1, margin: 0 }}>Interactive 360° Tour Viewer</p>
+              <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)', position: 'relative', zIndex: 1, marginTop: '8px' }}>(Matterport / Kuula integration goes here)</p>
+            </div>
+            <div style={{ marginTop: '24px', display: 'flex', gap: '12px' }}>
+              <Link href="/contact" className="btn btn-primary btn-lg" style={{ flex: 1, justifyContent: 'center' }}>Schedule Physical Visit</Link>
+              <button className="btn btn-lg" style={{ background: '#f8fafc', border: '1px solid #cbd5e1', color: '#0f172a', flex: 1, justifyContent: 'center' }}>Apply for Rent</button>
+            </div>
+          </div>
+        )}
+
         {/* Info Banner */}
         <div style={{ background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '12px', padding: '20px', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
           <div style={{ fontSize: '24px', flexShrink: 0 }}>🛡️</div>
