@@ -6,10 +6,11 @@ import styles from './layout.module.css';
 
 const OPS_NAV = [
   { href: '/ops/dashboard', icon: '📊', label: 'Dashboard' },
-  { href: '/ops/leads', icon: '🎯', label: 'Leads' },
-  { href: '/ops/projects', icon: '🏗️', label: 'Projects' },
-  { href: '/ops/users', icon: '👥', label: 'Users' },
-  { href: '/ops/blog', icon: '📝', label: 'Blog CMS' },
+  { href: '/ops/leads',     icon: '🎯', label: 'Leads' },
+  { href: '/ops/partners',  icon: '🤝', label: 'Partners' },
+  { href: '/ops/projects',  icon: '🏗️', label: 'Projects' },
+  { href: '/ops/users',     icon: '👥', label: 'Users' },
+  { href: '/ops/blog',      icon: '📝', label: 'Blog CMS' },
   { href: '/ops/cost-config', icon: '⚙️', label: 'Cost Config' },
 ];
 
