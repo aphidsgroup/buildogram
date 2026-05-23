@@ -3,19 +3,28 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function OpsDashboard() {
-  const [stats, setStats] = useState({ leads: 0, projects: 0, users: 0 });
-  const [leads, setLeads] = useState([]);
+  const [stats, setStats]       = useState({ leads: 0, projects: 0, partners: 0 });
+  const [leads, setLeads]       = useState([]);
   const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [partners, setPartners] = useState([]);
+  const [loading, setLoading]   = useState(true);
 
   useEffect(() => {
-    Promise.all([fetch('/api/leads').then(r => r.json()), fetch('/api/projects').then(r => r.json())])
-      .then(([ld, pj]) => {
-        setLeads(ld.leads?.slice(0, 5) || []);
-        setProjects(pj.projects?.slice(0, 5) || []);
-        setStats({ leads: ld.leads?.length || 0, projects: pj.projects?.length || 0 });
-        setLoading(false);
+    Promise.all([
+      fetch('/api/leads').then(r => r.json()),
+      fetch('/api/projects').then(r => r.json()),
+      fetch('/api/leads?lead_type=partner_application').then(r => r.json()),
+    ]).then(([ld, pj, pa]) => {
+      setLeads(ld.leads?.slice(0, 5) || []);
+      setProjects(pj.projects?.slice(0, 5) || []);
+      setPartners(pa.leads?.slice(0, 5) || []);
+      setStats({
+        leads: ld.leads?.length || 0,
+        projects: pj.projects?.length || 0,
+        partners: pa.leads?.length || 0,
       });
+      setLoading(false);
+    });
   }, []);
 
   const statusColor = { new: 'badge-blue', contacted: 'badge-yellow', qualified: 'badge-orange', proposal: 'badge-orange', won: 'badge-green', lost: 'badge-red', design: 'badge-blue', execution: 'badge-orange', complete: 'badge-green', on_hold: 'badge-gray' };
@@ -33,7 +42,7 @@ export default function OpsDashboard() {
         {[
           { label: 'Total Leads', value: stats.leads, icon: '🎯', color: 'rgba(59,130,246,0.15)' },
           { label: 'Active Projects', value: stats.projects, icon: '🏗️', color: 'rgba(15,118,110,0.15)' },
-          { label: 'This Month', value: leads.filter(l => new Date(l.created_at) > new Date(Date.now() - 30*86400000)).length, icon: '📅', color: 'rgba(34,197,94,0.15)' },
+          { label: 'Partner Applications', value: stats.partners, icon: '🤝', color: 'rgba(124,58,237,0.15)' },
           { label: 'Won Leads', value: leads.filter(l => l.status === 'won').length, icon: '🏆', color: 'rgba(245,158,11,0.15)' },
         ].map(s => (
           <div key={s.label} className="stat-card">
@@ -98,6 +107,29 @@ export default function OpsDashboard() {
           </div>
         </div>
       </div>
+
+      {/* ── Partner Applications ── */}
+      {partners.length > 0 && (
+        <div className="card mt-6">
+          <div className="flex-between mb-6">
+            <h3 style={{ fontSize: '16px' }}>Recent Partner Applications</h3>
+            <Link href="/ops/partners" className="text-primary text-sm">Manage all →</Link>
+          </div>
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+            {partners.map(p => {
+              const pType = p.metadata?.partner_type || 'Partner';
+              const stColor = { new: 'badge-blue', contacted: 'badge-yellow', screening: 'badge-orange', onboarding: 'badge-blue', active: 'badge-green', rejected: 'badge-red' };
+              return (
+                <div key={p.id} style={{ background: '#f8fafc', border: '1px solid var(--border)', borderRadius: '12px', padding: '14px 18px', minWidth: '180px', flex: '1 0 auto' }}>
+                  <div style={{ fontWeight: 700, fontSize: '14px', marginBottom: '4px' }}>{p.name}</div>
+                  <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '8px' }}>{pType}</div>
+                  <span className={`badge ${stColor[p.status] || 'badge-gray'}`} style={{ fontSize: '11px' }}>{p.status}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
