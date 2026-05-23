@@ -472,7 +472,7 @@ export default function OpsProperties() {
                 </div>
                 <button onClick={() => setSelected(null)} className="btn btn-ghost btn-sm">✕</button>
               </div>
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', alignItems: 'center' }}>
                 <span style={{ padding: '4px 10px', borderRadius: '999px', fontSize: '11px', fontWeight: 700, color: PASSPORT_COLORS[selected.passport_status]?.color, background: PASSPORT_COLORS[selected.passport_status]?.bg }}>
                   {PASSPORT_COLORS[selected.passport_status]?.label}
                 </span>
@@ -481,6 +481,15 @@ export default function OpsProperties() {
                     {selected.listing_type === 'rental' ? '🔑 For Rent' : '💰 For Sale'}
                   </span>
                 )}
+                <button 
+                  onClick={() => {
+                    navigator.clipboard.writeText(window.location.origin + '/passport/' + selected.id);
+                    alert('Public link copied to clipboard!');
+                  }}
+                  style={{ background: '#f8fafc', border: '1px solid #cbd5e1', color: '#0f172a', padding: '4px 12px', borderRadius: '999px', fontSize: '11px', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', marginLeft: 'auto' }}
+                >
+                  🔗 Copy Public Link
+                </button>
               </div>
             </div>
 
