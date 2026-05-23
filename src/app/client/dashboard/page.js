@@ -72,9 +72,9 @@ export default function ClientDashboard() {
       {/* QUICK LINKS */}
       <div className="grid-3">
         {[
+          { icon: '🛂', title: 'Property Passport', desc: 'View your permanent property record and documents', href: '/client/passport' },
           { icon: '📋', title: 'BOQ & Contract', desc: 'View your detailed Bill of Quantities and approved specifications', href: '/client/project' },
           { icon: '📸', title: 'Site Progress', desc: 'Daily photos and progress updates from your construction site', href: '/client/project' },
-          { icon: '💰', title: 'Payment Schedule', desc: 'Track milestone-linked payments and upcoming dues', href: '/client/payments' },
         ].map(c => (
           <Link key={c.title} href={c.href} className="card" style={{ display: 'block', transition: 'transform 0.2s' }}
             onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}
