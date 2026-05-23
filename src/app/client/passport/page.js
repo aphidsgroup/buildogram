@@ -109,13 +109,22 @@ export default function ClientPassport() {
             
             <div style={{ display: 'flex', gap: '24px', alignItems: 'center', borderBottom: '1px solid var(--border)', paddingBottom: '24px', marginBottom: '24px' }}>
               <CompletenessRing pct={selected.passport_completeness || 0} size={80} />
-              <div>
+              <div style={{ flex: 1 }}>
                 <h2 style={{ fontSize: '28px', marginBottom: '8px', lineHeight: 1.2 }}>{selected.title}</h2>
-                <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
                   <span className="badge badge-blue">{selected.passport_status}</span>
                   {selected.listing_type !== 'none' && (
                     <span className="badge badge-green capitalize">Listed for {selected.listing_type}</span>
                   )}
+                  <button 
+                    onClick={() => {
+                      navigator.clipboard.writeText(window.location.origin + '/passport/' + selected.id);
+                      alert('Public link copied to clipboard!');
+                    }}
+                    style={{ background: '#f8fafc', border: '1px solid #cbd5e1', color: '#0f172a', padding: '4px 12px', borderRadius: '999px', fontSize: '12px', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', marginLeft: 'auto' }}
+                  >
+                    🔗 Copy Public Link
+                  </button>
                 </div>
               </div>
             </div>
