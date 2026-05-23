@@ -9,20 +9,30 @@ export default function OpsDashboard() {
   const [partners, setPartners] = useState([]);
   const [loading, setLoading]   = useState(true);
 
+  const [funnel, setFunnel]     = useState({ total: 0, contacted: 0, qualified: 0, won: 0 });
+
   useEffect(() => {
     Promise.all([
       fetch('/api/leads').then(r => r.json()),
       fetch('/api/projects').then(r => r.json()),
       fetch('/api/leads?lead_type=partner_application').then(r => r.json()),
     ]).then(([ld, pj, pa]) => {
-      setLeads(ld.leads?.slice(0, 5) || []);
+      const allLeads = ld.leads || [];
+      setLeads(allLeads.slice(0, 5));
       setProjects(pj.projects?.slice(0, 5) || []);
       setPartners(pa.leads?.slice(0, 5) || []);
       setStats({
-        leads: ld.leads?.length || 0,
+        leads: allLeads.length,
         projects: pj.projects?.length || 0,
         partners: pa.leads?.length || 0,
       });
+
+      // Funnel calculations
+      const contacted = allLeads.filter(l => l.status !== 'new').length;
+      const qualified = allLeads.filter(l => ['qualified', 'proposal', 'won'].includes(l.status)).length;
+      const won       = allLeads.filter(l => l.status === 'won').length;
+      setFunnel({ total: allLeads.length, contacted, qualified, won });
+
       setLoading(false);
     });
   }, []);
@@ -53,6 +63,29 @@ export default function OpsDashboard() {
             <div className="stat-label">{s.label}</div>
           </div>
         ))}
+      </div>
+
+      {/* ── Lead Funnel Analytics ── */}
+      <div className="card mb-8">
+        <h3 style={{ fontSize: '16px', marginBottom: '16px' }}>Lead Funnel Analytics</h3>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
+          {[
+            { label: 'Total Leads', val: funnel.total, color: '#3b82f6', pct: 100 },
+            { label: 'Contacted', val: funnel.contacted, color: '#eab308', pct: funnel.total ? Math.round((funnel.contacted/funnel.total)*100) : 0 },
+            { label: 'Qualified', val: funnel.qualified, color: '#f97316', pct: funnel.total ? Math.round((funnel.qualified/funnel.total)*100) : 0 },
+            { label: 'Won (Converted)', val: funnel.won, color: '#10b981', pct: funnel.total ? Math.round((funnel.won/funnel.total)*100) : 0 },
+          ].map((stage, i) => (
+            <div key={stage.label} style={{ position: 'relative' }}>
+              <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>{stage.label}</div>
+              <div style={{ fontSize: '24px', fontWeight: 800, color: '#292929', marginBottom: '8px' }}>
+                {stage.val} <span style={{ fontSize: '13px', color: stage.color }}>({stage.pct}%)</span>
+              </div>
+              <div style={{ height: '6px', background: '#e2e8f0', borderRadius: '99px', overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${stage.pct}%`, background: stage.color, transition: 'width 1s ease-out' }} />
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="grid-2">
