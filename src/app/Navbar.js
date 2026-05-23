@@ -27,8 +27,10 @@ export default function Navbar() {
               <Link href="/build/home-construction" onClick={close}>Home Construction</Link>
               <Link href="/build/villa-construction" onClick={close}>Villa Construction</Link>
               <Link href="/build/renovation" onClick={close}>Renovation</Link>
-              <Link href="/build/pmc" onClick={close}>PMC</Link>
               <Link href="/cost-estimator" onClick={close}>Cost Estimator</Link>
+              <hr style={{ margin: '6px 0', border: 'none', borderTop: '1px solid var(--border)' }} />
+              <Link href="/boq-audit" onClick={close}>📊 BOQ Audit</Link>
+              <Link href="/plan-review" onClick={close}>📐 Plan Review</Link>
             </div>
           </div>
 
