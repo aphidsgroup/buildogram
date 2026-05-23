@@ -5,7 +5,7 @@ import { getUserFromRequest } from '@/lib/auth';
 const VALID_LEAD_TYPES = [
   'construction', 'boq_audit', 'plan_review', 'material_quote',
   'partner_application', 'rental_listing', 'resale_listing',
-  'property_passport', 'maintenance', 'general'
+  'property_passport', 'maintenance', 'general', 'property_listing'
 ];
 
 export async function POST(req) {

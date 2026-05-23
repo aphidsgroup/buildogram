@@ -32,6 +32,62 @@ function CompletenessRing({ pct, size = 64 }) {
   );
 }
 
+function ClientDocumentVault({ propertyId, property }) {
+  const [docs, setDocs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch(`/api/properties/${propertyId}/documents`)
+      .then(r => r.json())
+      .then(d => { if(d.success) setDocs(d.documents); setLoading(false); });
+  }, [propertyId]);
+
+  if (loading) return <div style={{ fontSize: '13px', color: '#64748b' }}>Loading documents…</div>;
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      {RECORD_SECTIONS.map(s => {
+        const sectionDocs = docs.filter(d => d.section_key === s.key);
+        const hasDocs = sectionDocs.length > 0;
+        const isMarked = property[s.key]; // Boolean flag
+
+        return (
+          <div key={s.key} style={{ padding: '12px', background: isMarked || hasDocs ? '#f8fafc' : 'white', border: isMarked || hasDocs ? '1px solid #e2e8f0' : '1px dashed #e2e8f0', borderRadius: '8px', opacity: isMarked || hasDocs ? 1 : 0.5 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: hasDocs ? '12px' : 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <span style={{ fontSize: '18px' }}>{s.icon}</span>
+                <span className="font-semibold">{s.label}</span>
+              </div>
+              {hasDocs ? (
+                <span style={{ color: 'var(--primary)', fontSize: '11px', fontWeight: 700, padding: '2px 8px', background: 'rgba(37,99,235,0.1)', borderRadius: '999px' }}>{sectionDocs.length} FILE{sectionDocs.length > 1 ? 'S' : ''}</span>
+              ) : isMarked ? (
+                <span style={{ color: '#059669', fontSize: '12px', fontWeight: 700 }}>VERIFIED</span>
+              ) : (
+                <span className="text-muted text-xs">PENDING</span>
+              )}
+            </div>
+            
+            {hasDocs && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', borderTop: '1px solid #e2e8f0', paddingTop: '8px' }}>
+                {sectionDocs.map(doc => (
+                  <div key={doc.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'white', padding: '8px 12px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 600, color: '#334155', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      📄 {doc.file_name}
+                    </div>
+                    <a href={doc.file_url} target="_blank" rel="noreferrer" className="btn btn-ghost btn-sm" style={{ padding: '4px 12px', fontSize: '12px', color: '#2563eb', background: '#eff6ff' }}>
+                      View
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 export default function ClientPassport() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -56,7 +112,7 @@ export default function ClientPassport() {
         <div className="card text-center" style={{ padding: '60px' }}>
           <div style={{ fontSize: '60px', marginBottom: '16px' }}>🛂</div>
           <h3 style={{ fontSize: '22px', marginBottom: '8px' }}>No Passports Found</h3>
-          <p className="text-muted mb-6">You don't have any Property Passports linked to your account yet.</p>
+          <p className="text-muted mb-6">Your Property Passport will appear here once Buildogram links your property record.</p>
         </div>
       ) : (
         <div className="grid-2" style={{ gap: '24px' }}>
@@ -150,21 +206,7 @@ export default function ClientPassport() {
               
               <div>
                 <h3 className="text-sm font-bold text-muted uppercase tracking-wider mb-4">Document Vault</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  {RECORD_SECTIONS.map(s => (
-                    <div key={s.key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: selected[s.key] ? '#f8fafc' : 'white', border: selected[s.key] ? '1px solid #e2e8f0' : '1px dashed #e2e8f0', borderRadius: '8px', opacity: selected[s.key] ? 1 : 0.5 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <span style={{ fontSize: '18px' }}>{s.icon}</span>
-                        <span className="font-semibold">{s.label}</span>
-                      </div>
-                      {selected[s.key] ? (
-                        <span style={{ color: 'var(--primary)', fontSize: '12px', fontWeight: 700 }}>AVAILABLE</span>
-                      ) : (
-                        <span className="text-muted text-xs">PENDING</span>
-                      )}
-                    </div>
-                  ))}
-                </div>
+                <ClientDocumentVault propertyId={selected.id} property={selected} />
               </div>
             </div>
 

@@ -54,6 +54,7 @@ export async function PUT(req, { params }) {
         owner_name          = COALESCE(${b.owner_name ?? null}, owner_name),
         owner_phone         = COALESCE(${b.owner_phone ?? null}, owner_phone),
         owner_email         = COALESCE(${b.owner_email ?? null}, owner_email),
+        owner_user_id       = COALESCE(${b.owner_user_id === null ? null : b.owner_user_id ?? null}, owner_user_id),
         address             = COALESCE(${b.address ?? null}, address),
         locality            = COALESCE(${b.locality ?? null}, locality),
         city                = COALESCE(${b.city ?? null}, city),
@@ -73,6 +74,7 @@ export async function PUT(req, { params }) {
         listing_rent_monthly= COALESCE(${b.listing_rent_monthly ?? null}, listing_rent_monthly),
         notes               = COALESCE(${b.notes ?? null}, notes),
         assigned_to         = COALESCE(${b.assigned_to ?? null}, assigned_to),
+        passport_sections_data = COALESCE(${b.passport_sections_data ? JSON.stringify(b.passport_sections_data) : null}::jsonb, passport_sections_data),
         updated_at          = NOW()
       WHERE id = ${params.id}
       RETURNING *

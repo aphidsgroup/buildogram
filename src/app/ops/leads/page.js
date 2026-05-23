@@ -14,6 +14,7 @@ const LEAD_TYPE_LABELS = {
   resale_listing:      { label: 'Resale Listing',     color: '#db2777', bg: '#fdf2f8' },
   property_passport:   { label: 'Property Passport',  color: '#9333ea', bg: '#faf5ff' },
   maintenance:         { label: 'Maintenance',        color: '#ea580c', bg: '#fff7ed' },
+  property_listing:    { label: 'Property Listing',   color: '#e11d48', bg: '#fff1f2' },
   general:             { label: 'General',            color: '#64748b', bg: '#f8fafc' },
 };
 
@@ -28,6 +29,14 @@ const STATUS_COLORS = {
 
 const fmt = n =>
   n ? '₹' + (n >= 10000000 ? (n / 10000000).toFixed(1) + 'Cr' : n >= 100000 ? (n / 100000).toFixed(1) + 'L' : Number(n).toLocaleString('en-IN')) : '—';
+
+/* ─── Helpers ───────────────────────────────────────────── */
+const generateTemplate = (l) => `Hi ${l.name?.split(' ')[0] || 'there'}, this is the Buildogram team regarding your ${l.lead_type?.replace('_', ' ')} inquiry. Status: ${l.status}. Let us know if you have any questions!`;
+const getWhatsAppLink = (phone, msg) => {
+  const p = phone.replace(/\D/g, '').replace(/^0/, '');
+  const finalPhone = p.length === 10 ? `91${p}` : p;
+  return `https://wa.me/${finalPhone}?text=${encodeURIComponent(msg)}`;
+};
 
 /* ─── Badge Component ─────────────────────────────────────── */
 function Badge({ type, value, map }) {
@@ -53,7 +62,17 @@ export default function OpsLeads() {
   const [search, setSearch]     = useState('');
   const [selected, setSelected] = useState(null);
   const [saving, setSaving]     = useState(false);
-  const [toast, setToast]       = useState(null); // { type, message, propertyId }
+  const [toast, setToast]       = useState(null);
+  const [waModal, setWaModal] = useState({ open: false, lead: null, message: '', phone: '' });
+
+  // Activity Timeline State
+  const [activities, setActivities] = useState([]);
+  const [actForm, setActForm] = useState({ type: 'note', title: '', description: '', follow_up: '' });
+  const [actLoading, setActLoading] = useState(false);
+
+  // Revenue Modal State
+  const [revModal, setRevModal] = useState({ open: false, data: {} });
+  const [revSaving, setRevSaving] = useState(false);
 
   const showToast = (msg, type = 'success', propertyId = null) => {
     setToast({ message: msg, type, propertyId });
@@ -80,14 +99,12 @@ export default function OpsLeads() {
     setSaving(false);
     load();
     if (selected?.id === id) setSelected(prev => ({ ...prev, ...data }));
-    // Show toast if a property was auto-created
     if (d.auto_created_property) {
       showToast(
         `🛂 Property Passport created: "${d.auto_created_property.title}"`,
         'success',
         d.auto_created_property.id,
       );
-      // Patch selected with property info
       if (selected?.id === id) {
         setSelected(prev => ({
           ...prev,
@@ -100,7 +117,89 @@ export default function OpsLeads() {
     }
   };
 
-  /* ─── Filtering ────────────────────────────────────────── */
+  // Fetch activities when selected lead changes
+  useEffect(() => {
+    if (selected) {
+      setActLoading(true);
+      fetch(`/api/leads/${selected.id}/activities`)
+        .then(r => r.json())
+        .then(d => {
+          if (d.success) setActivities(d.activities || []);
+          setActLoading(false);
+        })
+        .catch(() => setActLoading(false));
+    } else {
+      setActivities([]);
+    }
+  }, [selected?.id]);
+
+  // Handle adding a manual activity
+  const handleAddActivity = async (e) => {
+    e.preventDefault();
+    setActLoading(true);
+    try {
+      const res = await fetch(`/api/leads/${selected.id}/activities`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          activity_type: actForm.type,
+          title: actForm.type === 'call' ? 'Phone Call' : actForm.type === 'follow_up' ? 'Follow-up Set' : 'Manual Note',
+          description: actForm.description,
+          follow_up_at: actForm.follow_up || null
+        })
+      });
+      const d = await res.json();
+      if (d.success) {
+        setActivities(prev => [d.activity, ...prev]);
+        setActForm({ type: 'note', title: '', description: '', follow_up: '' });
+      }
+    } catch(err) { console.error(err); }
+    setActLoading(false);
+  };
+
+  // Helper to silently log auto-activities
+  const logActivity = async (leadId, payload) => {
+    try {
+      const res = await fetch(`/api/leads/${leadId}/activities`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+      });
+      const d = await res.json();
+      if (d.success && selected?.id === leadId) {
+        setActivities(prev => [d.activity, ...prev]);
+      }
+    } catch(err) { console.error(err); }
+  };
+
+  const handleCreateRevenue = async (e) => {
+    e.preventDefault();
+    setRevSaving(true);
+    try {
+      const payload = {
+        ...revModal.data,
+        amount_expected: Number(revModal.data.amount_expected) || 0,
+        commission_expected: Number(revModal.data.commission_expected) || 0,
+        amount_received: 0,
+        commission_received: 0,
+        status: 'expected'
+      };
+      
+      const res = await fetch('/api/ops/revenue', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const d = await res.json();
+      if (d.success) {
+        showToast('Revenue record created successfully!');
+        setRevModal({ open: false, data: {} });
+        logActivity(selected.id, { activity_type: 'system', title: 'Revenue Record Created', description: `Expected: ₹${payload.amount_expected}` });
+      } else {
+        alert('Failed to create revenue record: ' + d.error);
+      }
+    } catch(err) { console.error(err); }
+    setRevSaving(false);
+  };
+
   const filtered = leads.filter(l => {
     const matchStatus = statusFilter === 'all' || l.status === statusFilter;
     const matchType   = typeFilter   === 'all' || l.lead_type === typeFilter;
@@ -108,7 +207,6 @@ export default function OpsLeads() {
     return matchStatus && matchType && matchSearch;
   });
 
-  /* ─── Counts ──────────────────────────────────────────── */
   const typeCount = type => leads.filter(l => l.lead_type === type).length;
   const statusCount = s => leads.filter(l => l.status === s).length;
 
@@ -116,7 +214,6 @@ export default function OpsLeads() {
 
   return (
     <div>
-      {/* ── Header ── */}
       <div className="page-header flex-between" style={{ marginBottom: '24px' }}>
         <div>
           <h1 style={{ margin: 0 }}>Leads</h1>
@@ -133,327 +230,470 @@ export default function OpsLeads() {
         </div>
       </div>
 
-      {/* ── Lead Type Filter ── */}
       <div style={{ marginBottom: '16px' }}>
-        <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          Filter by Type
-        </div>
+        <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Filter by Type</div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <button
-            onClick={() => setTypeFilter('all')}
-            style={{
-              padding: '6px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 600,
-              border: '1px solid', cursor: 'pointer',
-              background: typeFilter === 'all' ? '#292929' : '#f8fafc',
-              color:      typeFilter === 'all' ? '#fff' : '#64748b',
-              borderColor: typeFilter === 'all' ? '#292929' : '#e2e8f0',
-            }}
-          >
-            All ({leads.length})
-          </button>
+          <button onClick={() => setTypeFilter('all')} style={{ padding: '6px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 600, border: '1px solid', cursor: 'pointer', background: typeFilter === 'all' ? '#292929' : '#f8fafc', color: typeFilter === 'all' ? '#fff' : '#64748b', borderColor: typeFilter === 'all' ? '#292929' : '#e2e8f0' }}>All ({leads.length})</button>
           {Object.entries(LEAD_TYPE_LABELS).map(([key, cfg]) => (
-            <button key={key}
-              onClick={() => setTypeFilter(key)}
-              style={{
-                padding: '6px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 600,
-                border: '1px solid', cursor: 'pointer',
-                background: typeFilter === key ? cfg.color : cfg.bg,
-                color:      typeFilter === key ? '#fff' : cfg.color,
-                borderColor: typeFilter === key ? cfg.color : `${cfg.color}44`,
-              }}
-            >
-              {cfg.label} ({typeCount(key)})
-            </button>
+            <button key={key} onClick={() => setTypeFilter(key)} style={{ padding: '6px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 600, border: '1px solid', cursor: 'pointer', background: typeFilter === key ? cfg.color : cfg.bg, color: typeFilter === key ? '#fff' : cfg.color, borderColor: typeFilter === key ? cfg.color : `${cfg.color}44` }}>{cfg.label} ({typeCount(key)})</button>
           ))}
         </div>
       </div>
 
-      {/* ── Status Filter ── */}
       <div style={{ marginBottom: '24px' }}>
-        <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          Filter by Status
-        </div>
+        <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--text-muted)', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Filter by Status</div>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-          <button
-            onClick={() => setStatusFilter('all')}
-            style={{
-              padding: '6px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 600,
-              border: '1px solid #e2e8f0', cursor: 'pointer',
-              background: statusFilter === 'all' ? '#292929' : '#f8fafc',
-              color:      statusFilter === 'all' ? '#fff' : '#64748b',
-            }}
-          >
-            All Statuses
-          </button>
+          <button onClick={() => setStatusFilter('all')} style={{ padding: '6px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 600, border: '1px solid #e2e8f0', cursor: 'pointer', background: statusFilter === 'all' ? '#292929' : '#f8fafc', color: statusFilter === 'all' ? '#fff' : '#64748b' }}>All Statuses</button>
           {STATUS_PIPELINE.map(s => {
             const cfg = STATUS_COLORS[s] || {};
             return (
-              <button key={s}
-                onClick={() => setStatusFilter(s)}
-                style={{
-                  padding: '6px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 600,
-                  border: '1px solid', cursor: 'pointer', textTransform: 'capitalize',
-                  background: statusFilter === s ? cfg.color : cfg.bg,
-                  color:      statusFilter === s ? '#fff' : cfg.color,
-                  borderColor: statusFilter === s ? cfg.color : `${cfg.color}44`,
-                }}
-              >
-                {s} ({statusCount(s)})
-              </button>
+              <button key={s} onClick={() => setStatusFilter(s)} style={{ padding: '6px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 600, border: '1px solid', cursor: 'pointer', textTransform: 'capitalize', background: statusFilter === s ? cfg.color : cfg.bg, color: statusFilter === s ? '#fff' : cfg.color, borderColor: statusFilter === s ? cfg.color : `${cfg.color}44` }}>{s} ({statusCount(s)})</button>
             );
           })}
         </div>
       </div>
 
-      {/* ── Table ── */}
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
         <div className="table-wrap">
           <table>
             <thead>
-              <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Type</th>
-                <th>City</th>
-                <th>Message / Details</th>
-                <th>Source</th>
-                <th>Status</th>
-                <th>Date</th>
-                <th></th>
-              </tr>
+              <tr><th>Name</th><th>Phone</th><th>Type</th><th>City</th><th>Message / Details</th><th>Source</th><th>Status</th><th>Date</th><th></th></tr>
             </thead>
             <tbody>
               {filtered.map(l => (
                 <tr key={l.id}>
                   <td style={{ fontWeight: 600 }}>{l.name}</td>
                   <td><a href={`tel:${l.phone}`} className="text-primary">{l.phone}</a></td>
-                  <td>
-                    <Badge value={l.lead_type || 'construction'} map={LEAD_TYPE_LABELS} />
-                  </td>
+                  <td><Badge value={l.lead_type || 'construction'} map={LEAD_TYPE_LABELS} /></td>
                   <td className="text-muted">{l.city}{l.locality ? `, ${l.locality}` : ''}</td>
-                  <td className="text-muted" style={{ maxWidth: '200px', fontSize: '12px' }}>
-                    {l.message
-                      ? <span title={l.message}>{l.message.length > 60 ? l.message.slice(0, 60) + '…' : l.message}</span>
-                      : l.plot_area_sqft
-                        ? `${l.plot_area_sqft} sqft · ${l.floors || ''}`
-                        : '—'
-                    }
-                  </td>
+                  <td className="text-muted" style={{ maxWidth: '200px', fontSize: '12px' }}>{l.message ? <span title={l.message}>{l.message.length > 60 ? l.message.slice(0, 60) + '…' : l.message}</span> : l.plot_area_sqft ? `${l.plot_area_sqft} sqft · ${l.floors || ''}` : '—'}</td>
                   <td><span style={{ fontSize: '11px', color: '#64748b' }}>{l.source_page || l.source || '—'}</span></td>
                   <td>
-                    <select
-                      className="input"
-                      style={{ padding: '4px 8px', fontSize: '12px', width: 'auto' }}
-                      value={l.status}
-                      onChange={e => update(l.id, { status: e.target.value })}
-                    >
-                      {STATUS_PIPELINE.map(s => <option key={s}>{s}</option>)}
-                    </select>
+                    <select className="input" style={{ padding: '4px 8px', fontSize: '12px', width: 'auto' }} value={l.status} onChange={e => {
+                      const newStatus = e.target.value;
+                      update(l.id, { status: newStatus });
+                      logActivity(l.id, {
+                        activity_type: 'status_change',
+                        title: 'Lead Status Changed',
+                        description: `Status updated to ${newStatus}`
+                      });
+                    }}>{STATUS_PIPELINE.map(s => <option key={s}>{s}</option>)}</select>
                   </td>
-                  <td className="text-muted" style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>
-                    {new Date(l.created_at).toLocaleDateString('en-IN')}
-                  </td>
-                  <td>
-                    <button onClick={() => setSelected(l)} className="btn btn-ghost btn-sm">View</button>
-                  </td>
+                  <td className="text-muted" style={{ fontSize: '12px', whiteSpace: 'nowrap' }}>{new Date(l.created_at).toLocaleDateString('en-IN')}</td>
+                  <td><button onClick={() => setSelected(l)} className="btn btn-ghost btn-sm">View</button></td>
                 </tr>
               ))}
-              {!filtered.length && (
-                <tr>
-                  <td colSpan={9}>
-                    <div className="empty-state">
-                      <div className="empty-icon">🎯</div>
-                      <p>No leads found</p>
-                    </div>
-                  </td>
-                </tr>
-              )}
+              {!filtered.length && <tr><td colSpan={9}><div className="empty-state"><div className="empty-icon">🎯</div><p>No leads found</p></div></td></tr>}
             </tbody>
           </table>
         </div>
       </div>
 
-      {/* ── Lead Detail Modal ── */}
       {selected && (
-        <div style={{
-          position: 'fixed', inset: 0,
-          background: 'rgba(0,0,0,0.6)',
-          backdropFilter: 'blur(4px)',
-          zIndex: 999,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px',
-        }}>
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)', zIndex: 999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px' }}>
           <div className="card" style={{ maxWidth: '580px', width: '100%', maxHeight: '85vh', overflowY: 'auto', position: 'relative' }}>
-
-            {/* Modal Header */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
               <div>
                 <h3 style={{ margin: 0 }}>{selected.name}</h3>
                 <div style={{ marginTop: '8px', display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                   <Badge value={selected.lead_type || 'construction'} map={LEAD_TYPE_LABELS} />
-                  <Badge value={selected.status || 'new'} map={
-                    Object.fromEntries(STATUS_PIPELINE.map(s => [s, { label: s, ...STATUS_COLORS[s] }]))
-                  } />
+                  <Badge value={selected.status || 'new'} map={Object.fromEntries(STATUS_PIPELINE.map(s => [s, { label: s, ...STATUS_COLORS[s] }]))} />
                 </div>
               </div>
               <button onClick={() => setSelected(null)} className="btn btn-ghost btn-sm">✕ Close</button>
             </div>
+            
+            {selected.phone && (
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap', padding: '12px', background: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
+                <span style={{ fontSize: '11px', fontWeight: 700, color: '#166534', width: '100%', textTransform: 'uppercase', marginBottom: '4px' }}>WhatsApp Quick Actions</span>
+                <button className="btn btn-sm" style={{ background: '#22c55e', color: 'white', borderColor: '#16a34a' }} onClick={() => setWaModal({ open: true, lead: selected, phone: selected.phone, message: generateTemplate(selected) })}>💬 Send Status Update</button>
+                <button className="btn btn-sm" style={{ background: 'white', color: '#15803d', borderColor: '#bbf7d0' }} onClick={() => setWaModal({ open: true, lead: selected, phone: selected.phone, message: `Hi ${selected.name.split(' ')[0]}, this is Buildogram. Could you please share the pending documents regarding your request so we can proceed further?` })}>📄 Request Docs</button>
+                <button className="btn btn-sm" style={{ background: 'white', color: '#15803d', borderColor: '#bbf7d0' }} onClick={() => setWaModal({ open: true, lead: selected, phone: selected.phone, message: `Hi ${selected.name.split(' ')[0]}, this is Buildogram. We have updated your proposal/quote. Please check your email or portal for details.` })}>📊 Proposal Shared</button>
+              </div>
+            )}
 
-            {/* Contact */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
-              {[
-                ['Phone', selected.phone],
-                ['Email', selected.email || '—'],
-                ['City', selected.city],
-                ['Locality', selected.locality || '—'],
-                ['Source Page', selected.source_page || selected.source || '—'],
-                ['Follow-up', selected.follow_up_date ? new Date(selected.follow_up_date).toLocaleDateString('en-IN') : '—'],
-              ].map(([k, v]) => (
+              {[ ['Phone', selected.phone], ['Email', selected.email || '—'], ['City', selected.city], ['Locality', selected.locality || '—'], ['Source Page', selected.source_page || selected.source || '—'], ['Follow-up', selected.follow_up_date ? new Date(selected.follow_up_date).toLocaleDateString('en-IN') : '—'] ].map(([k, v]) => (
                 <div key={k} style={{ padding: '10px 12px', background: 'var(--bg-muted, #f8fafc)', borderRadius: '8px' }}>
                   <div style={{ fontSize: '10px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '4px' }}>{k}</div>
                   <div style={{ fontWeight: 600, fontSize: '13px' }}>{v}</div>
                 </div>
               ))}
             </div>
+            {selected.message && <div style={{ marginBottom: '16px', padding: '12px 14px', background: '#f0f9ff', borderRadius: '8px', borderLeft: '3px solid #0891b2' }}><div style={{ fontSize: '10px', fontWeight: 700, color: '#0c4a6e', textTransform: 'uppercase', marginBottom: '6px' }}>Message</div><p style={{ margin: 0, fontSize: '14px', lineHeight: '1.6' }}>{selected.message}</p></div>}
+            
+            {selected.metadata?.verification_status === 'verified' && selected.metadata?.public_status === 'published' && (
+              <div style={{ marginTop: '12px', padding: '8px', background: '#f0fdf4', borderRadius: '6px', fontSize: '12px', textAlign: 'center', border: '1px solid #bbf7d0' }}>
+                🌟 <a href={`/partners/${selected.id}`} target="_blank" rel="noreferrer" style={{ color: '#059669', fontWeight: 700 }}>View Public Partner Profile ↗</a>
+              </div>
+            )}
 
-            {/* Construction-specific fields */}
-            {(selected.plot_area_sqft || selected.estimated_cost_min) && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
-                {[
-                  ['Plot Area', selected.plot_area_sqft ? `${selected.plot_area_sqft} sqft` : null],
-                  ['Floors', selected.floors],
-                  ['Spec Level', selected.spec_level],
-                  ['Estimated Cost', selected.estimated_cost_min ? `${fmt(selected.estimated_cost_min)} – ${fmt(selected.estimated_cost_max)}` : null],
-                ].filter(([, v]) => v).map(([k, v]) => (
-                  <div key={k} style={{ padding: '10px 12px', background: '#fffbeb', borderRadius: '8px' }}>
-                    <div style={{ fontSize: '10px', fontWeight: 700, color: '#92400e', textTransform: 'uppercase', marginBottom: '4px' }}>{k}</div>
-                    <div style={{ fontWeight: 600, fontSize: '13px' }}>{v}</div>
+            {/* Material Quote Metadata */}
+            {selected.lead_type === 'material_quote' && selected.metadata && (
+              <div style={{ marginBottom: '16px', padding: '16px', background: '#f0f9ff', borderRadius: '8px', border: '1px solid #bae6fd' }}>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: '#0369a1', textTransform: 'uppercase', marginBottom: '12px' }}>Material Requirements</div>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+                  {[
+                    ['Materials', selected.metadata.materials_required],
+                    ['Est. Volume', selected.metadata.estimated_volume],
+                    ['Location', selected.metadata.delivery_location],
+                    ['Timeline', selected.metadata.delivery_timeline],
+                  ].filter(([, v]) => v).map(([k, v]) => (
+                    <div key={k}>
+                      <span style={{ fontSize: '11px', color: '#0284c7', display: 'block' }}>{k}</span>
+                      <span style={{ fontSize: '13px', fontWeight: 600, color: '#0c4a6e' }}>{v}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Ops Controls for Material Quote */}
+                <div style={{ borderTop: '1px solid #bae6fd', paddingTop: '12px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 600, color: '#0369a1', display: 'block', marginBottom: '4px' }}>Estimated Order Value (₹)</label>
+                    <input type="number" className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white', borderColor: '#bae6fd' }}
+                      defaultValue={selected.metadata.estimated_order_value || ''}
+                      onBlur={e => {
+                        const val = e.target.value;
+                        if (val !== String(selected.metadata.estimated_order_value)) {
+                          update(selected.id, { metadata: { ...selected.metadata, estimated_order_value: Number(val) } });
+                        }
+                      }} />
                   </div>
-                ))}
-              </div>
-            )}
 
-            {/* Message */}
-            {selected.message && (
-              <div style={{ marginBottom: '16px', padding: '12px 14px', background: '#f0f9ff', borderRadius: '8px', borderLeft: '3px solid #0891b2' }}>
-                <div style={{ fontSize: '10px', fontWeight: 700, color: '#0c4a6e', textTransform: 'uppercase', marginBottom: '6px' }}>Message</div>
-                <p style={{ margin: 0, fontSize: '14px', lineHeight: '1.6' }}>{selected.message}</p>
-              </div>
-            )}
-
-            {/* Notes */}
-            {selected.notes && (
-              <div style={{ marginBottom: '16px', padding: '12px 14px', background: '#f8fafc', borderRadius: '8px' }}>
-                <div style={{ fontSize: '10px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '6px' }}>Notes</div>
-                <p style={{ margin: 0, fontSize: '14px' }}>{selected.notes}</p>
-              </div>
-            )}
-
-            {/* Lost Reason */}
-            {selected.status === 'lost' && (
-              <div style={{ marginBottom: '16px' }}>
-                <label style={{ fontSize: '12px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>Lost Reason</label>
-                <input
-                  className="input"
-                  style={{ margin: 0 }}
-                  defaultValue={selected.lost_reason || ''}
-                  placeholder="Why was this lead lost?"
-                  onBlur={e => { if (e.target.value !== selected.lost_reason) update(selected.id, { lost_reason: e.target.value }); }}
-                />
-              </div>
-            )}
-
-            {/* Follow-up Date */}
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ fontSize: '12px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>Follow-up Date</label>
-              <input
-                type="date"
-                className="input"
-                style={{ margin: 0, maxWidth: '200px' }}
-                defaultValue={selected.follow_up_date ? selected.follow_up_date.split('T')[0] : ''}
-                onBlur={e => { if (e.target.value) update(selected.id, { follow_up_date: e.target.value }); }}
-              />
-            </div>
-
-            {/* Status Update */}
-            <div style={{ marginBottom: '20px' }}>
-              <label style={{ fontSize: '12px', fontWeight: 600, display: 'block', marginBottom: '6px' }}>Update Status</label>
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                {STATUS_PIPELINE.map(s => {
-                  const cfg = STATUS_COLORS[s] || {};
-                  const isActive = selected.status === s;
-                  return (
-                    <button key={s}
-                      onClick={() => { update(selected.id, { status: s }); setSelected(p => ({ ...p, status: s })); }}
-                      style={{
-                        padding: '7px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 700,
-                        border: '1px solid', cursor: 'pointer', textTransform: 'capitalize', transition: 'all 0.15s',
-                        background: isActive ? cfg.color : cfg.bg,
-                        color: isActive ? '#fff' : cfg.color,
-                        borderColor: isActive ? cfg.color : `${cfg.color}44`,
-                      }}>
-                      {s}
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 600, color: '#0369a1', display: 'block', marginBottom: '4px' }}>Expected Commission (₹)</label>
+                    <input type="number" className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white', borderColor: '#bae6fd' }}
+                      defaultValue={selected.metadata.expected_commission || ''}
+                      onBlur={e => {
+                        const val = e.target.value;
+                        if (val !== String(selected.metadata.expected_commission)) {
+                          update(selected.id, { metadata: { ...selected.metadata, expected_commission: Number(val) } });
+                        }
+                      }} />
+                  </div>
+                  
+                  <div style={{ gridColumn: '1 / -1', marginTop: '8px' }}>
+                    <button className="btn btn-sm" style={{ background: '#0284c7', color: 'white', fontSize: '11px' }} onClick={() => {
+                      setRevModal({
+                        open: true,
+                        data: {
+                          source_type: 'material_quote',
+                          source_id: selected.id,
+                          revenue_category: 'material_commission',
+                          customer_name: selected.name,
+                          amount_expected: selected.metadata.estimated_order_value || 0,
+                          commission_expected: selected.metadata.expected_commission || 0,
+                          title: `Material commission - ${selected.name} / ${selected.metadata.materials_required?.split(',')[0] || 'Bulk'}`
+                        }
+                      });
+                    }}>
+                      💰 Create Revenue Record
                     </button>
-                  );
-                })}
-              </div>
-              {['property_passport','construction','boq_audit','plan_review'].includes(selected.lead_type) && selected.status !== 'won' && (
-                <p style={{ fontSize: '11px', color: '#64748b', marginTop: '8px' }}>
-                  💡 Marking as <strong>won</strong> will auto-create a Property Passport record.
-                </p>
-              )}
-            </div>
-
-            {/* Linked Property Passport */}
-            {selected.property_id && (
-              <div style={{ marginBottom: '20px', padding: '16px', background: '#ecfdf5', borderRadius: '12px', border: '1px solid #86efac' }}>
-                <div style={{ fontSize: '11px', fontWeight: 700, color: '#059669', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>🛂 Linked Property Passport</div>
-                <div style={{ fontWeight: 700, fontSize: '14px', color: '#292929', marginBottom: '6px' }}>{selected.property_title || 'Property Record'}</div>
-                <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-                  {selected.property_passport_status && (
-                    <span style={{ padding: '3px 10px', borderRadius: '999px', fontSize: '11px', fontWeight: 700, background: '#d1fae5', color: '#059669', border: '1px solid #6ee7b7' }}>
-                      {selected.property_passport_status}
-                    </span>
-                  )}
-                  {selected.property_completeness !== undefined && (
-                    <span style={{ fontSize: '12px', color: '#64748b' }}>{selected.property_completeness}% complete</span>
-                  )}
-                  <a href="/ops/properties" target="_blank" rel="noreferrer"
-                    style={{ marginLeft: 'auto', fontSize: '12px', fontWeight: 700, color: '#059669', textDecoration: 'none' }}>
-                    View Passport →
-                  </a>
+                  </div>
                 </div>
               </div>
             )}
 
-            {/* Actions */}
-            <div style={{ display: 'flex', gap: '10px' }}>
-              <a href={`tel:${selected.phone}`} className="btn btn-primary" style={{ flex: 1, justifyContent: 'center' }}>
-                📞 Call
-              </a>
-              <a
-                href={`https://wa.me/91${selected.phone}?text=Hi ${encodeURIComponent(selected.name)}, this is Buildogram team.`}
-                target="_blank" rel="noreferrer"
-                className="btn btn-ghost"
-                style={{ flex: 1, justifyContent: 'center' }}
-              >
-                💬 WhatsApp
-              </a>
+            {/* Maintenance Request Metadata */}
+            {selected.lead_type === 'maintenance' && selected.metadata && (
+              <div style={{ marginBottom: '16px', padding: '16px', background: '#fff7ed', borderRadius: '8px', border: '1px solid #fed7aa' }}>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: '#c2410c', textTransform: 'uppercase', marginBottom: '12px' }}>Maintenance Details</div>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+                  {[
+                    ['Location', selected.metadata.property_location],
+                    ['Category', selected.metadata.issue_category],
+                    ['Urgency', selected.metadata.urgency],
+                    ['Pref. Visit', selected.metadata.preferred_visit_time],
+                  ].filter(([, v]) => v).map(([k, v]) => (
+                    <div key={k}>
+                      <span style={{ fontSize: '11px', color: '#ea580c', display: 'block' }}>{k}</span>
+                      <span style={{ fontSize: '13px', fontWeight: 600, color: '#9a3412', textTransform: k === 'Category' || k === 'Urgency' ? 'capitalize' : 'none' }}>{v}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Ops Controls for Maintenance */}
+                <div style={{ borderTop: '1px solid #fed7aa', paddingTop: '12px' }}>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#c2410c', textTransform: 'uppercase', marginBottom: '10px' }}>Ops & Passport Linking</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                    
+                    <div>
+                      <label style={{ fontSize: '11px', fontWeight: 600, color: '#ea580c', display: 'block', marginBottom: '4px' }}>Maintenance Status</label>
+                      <select className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white', borderColor: '#fed7aa' }}
+                        value={selected.metadata.maintenance_status || 'requested'}
+                        onChange={e => {
+                          const val = e.target.value;
+                          update(selected.id, { metadata: { ...selected.metadata, maintenance_status: val } });
+                          setSelected(p => ({ ...p, metadata: { ...p.metadata, maintenance_status: val } }));
+                          logActivity(selected.id, { activity_type: 'status_change', title: 'Maintenance Status Changed', description: `Status updated to ${val}` });
+                        }}>
+                        <option value="requested">Requested</option>
+                        <option value="inspection_scheduled">Inspection Scheduled</option>
+                        <option value="quoted">Quoted</option>
+                        <option value="approved">Approved</option>
+                        <option value="work_started">Work Started</option>
+                        <option value="completed">Completed</option>
+                        <option value="closed">Closed / Paid</option>
+                        <option value="cancelled">Cancelled</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: '11px', fontWeight: 600, color: '#ea580c', display: 'block', marginBottom: '4px' }}>Assigned Vendor</label>
+                      <input type="text" className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white', borderColor: '#fed7aa' }}
+                        placeholder="Vendor name or ID..."
+                        defaultValue={selected.metadata.assigned_vendor || ''}
+                        onBlur={e => {
+                          const val = e.target.value;
+                          if (val !== selected.metadata.assigned_vendor) {
+                            update(selected.id, { metadata: { ...selected.metadata, assigned_vendor: val } });
+                          }
+                        }} />
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: '11px', fontWeight: 600, color: '#ea580c', display: 'block', marginBottom: '4px' }}>Estimated Cost (₹)</label>
+                      <input type="number" className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white', borderColor: '#fed7aa' }}
+                        defaultValue={selected.metadata.estimated_cost || ''}
+                        onBlur={e => {
+                          const val = e.target.value;
+                          if (val !== String(selected.metadata.estimated_cost)) {
+                            update(selected.id, { metadata: { ...selected.metadata, estimated_cost: Number(val) } });
+                          }
+                        }} />
+                    </div>
+
+                    <div>
+                      <label style={{ fontSize: '11px', fontWeight: 600, color: '#ea580c', display: 'block', marginBottom: '4px' }}>Final Cost (₹)</label>
+                      <input type="number" className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white', borderColor: '#fed7aa' }}
+                        defaultValue={selected.metadata.final_cost || ''}
+                        onBlur={e => {
+                          const val = e.target.value;
+                          if (val !== String(selected.metadata.final_cost)) {
+                            update(selected.id, { metadata: { ...selected.metadata, final_cost: Number(val) } });
+                          }
+                        }} />
+                    </div>
+
+                    <div style={{ gridColumn: '1 / -1', marginTop: '4px' }}>
+                      <label style={{ fontSize: '11px', fontWeight: 600, color: '#ea580c', display: 'block', marginBottom: '4px' }}>Link to Property Passport</label>
+                      <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-start' }}>
+                        <div style={{ flex: 1, position: 'relative' }}>
+                          <input type="text" className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white', borderColor: '#fed7aa', width: '100%' }}
+                            placeholder="Type owner name, phone, or title to search..."
+                            onChange={async e => {
+                              const val = e.target.value.trim();
+                              if (val.length < 3) {
+                                document.getElementById('prop-search-results').style.display = 'none';
+                                return;
+                              }
+                              const res = await fetch(`/api/properties?search=${encodeURIComponent(val)}`);
+                              const d = await res.json();
+                              const resContainer = document.getElementById('prop-search-results');
+                              if (d.success && d.properties.length > 0) {
+                                resContainer.innerHTML = '';
+                                d.properties.slice(0, 5).forEach(p => {
+                                  const div = document.createElement('div');
+                                  div.style.padding = '8px 12px';
+                                  div.style.borderBottom = '1px solid #f1f5f9';
+                                  div.style.cursor = 'pointer';
+                                  div.style.fontSize = '12px';
+                                  div.innerHTML = `<strong>${p.title}</strong><br/><span style="color:#64748b">${p.owner_name} · ${p.city}</span>`;
+                                  div.onclick = () => {
+                                    update(selected.id, { property_id: p.id });
+                                    setSelected(prev => ({ ...prev, property_id: p.id }));
+                                    resContainer.style.display = 'none';
+                                    e.target.value = '';
+                                  };
+                                  resContainer.appendChild(div);
+                                });
+                                resContainer.style.display = 'block';
+                              } else {
+                                resContainer.innerHTML = '<div style="padding: 8px 12px; color: #64748b; font-size: 12px;">No properties found.</div>';
+                                resContainer.style.display = 'block';
+                              }
+                            }} />
+                          <div id="prop-search-results" style={{ display: 'none', position: 'absolute', top: '100%', left: 0, right: 0, background: 'white', border: '1px solid #e2e8f0', borderRadius: '6px', marginTop: '4px', zIndex: 10, boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)' }}></div>
+                        </div>
+                      </div>
+                      
+                      {selected.property_id ? (
+                        <div style={{ marginTop: '8px', padding: '8px 12px', background: '#ecfdf5', border: '1px solid #a7f3d0', borderRadius: '6px', fontSize: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <span style={{ color: '#065f46', fontWeight: 600 }}>✅ Linked to Property Passport</span>
+                          <button onClick={() => {
+                              update(selected.id, { property_id: null });
+                              setSelected(prev => ({ ...prev, property_id: null }));
+                            }} className="btn btn-ghost btn-sm" style={{ padding: '2px 6px', color: '#dc2626' }}>Unlink</button>
+                        </div>
+                      ) : (
+                        <p style={{ fontSize: '10px', color: '#c2410c', marginTop: '4px' }}>
+                          Linking a Property ID allows this maintenance record to appear in the client's Property Passport.
+                        </p>
+                      )}
+                    </div>
+                    
+                    <div style={{ gridColumn: '1 / -1', marginTop: '12px' }}>
+                      <button className="btn btn-sm" style={{ background: '#c2410c', color: 'white', fontSize: '11px' }} onClick={() => {
+                        setRevModal({
+                          open: true,
+                          data: {
+                            source_type: 'maintenance',
+                            source_id: selected.id,
+                            revenue_category: 'maintenance',
+                            customer_name: selected.name,
+                            amount_expected: selected.metadata.final_cost || selected.metadata.estimated_cost || 0,
+                            commission_expected: 0,
+                            title: `Maintenance service - ${selected.metadata.issue_category || 'General'}`
+                          }
+                        });
+                      }}>
+                        💰 Create Revenue Record
+                      </button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── ACTIVITY TIMELINE SECTION ── */}
+            <div style={{ marginTop: '24px', borderTop: '2px solid #e2e8f0', paddingTop: '24px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ fontSize: '20px' }}>⏱️</span> Activity Timeline & Follow-ups
+              </h3>
+              
+              {/* Add Activity Form */}
+              <form onSubmit={handleAddActivity} style={{ background: '#f8fafc', padding: '16px', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '24px' }}>
+                <div style={{ display: 'flex', gap: '12px', marginBottom: '12px' }}>
+                  <div style={{ flex: 1 }}>
+                    <label style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Log Type</label>
+                    <select className="input" style={{ margin: 0, padding: '8px' }} value={actForm.type} onChange={e => setActForm(p => ({ ...p, type: e.target.value }))}>
+                      <option value="note">✏️ Internal Note</option>
+                      <option value="call">📞 Phone Call</option>
+                      <option value="follow_up">📅 Set Follow-up</option>
+                    </select>
+                  </div>
+                  {actForm.type === 'follow_up' && (
+                    <div style={{ flex: 1 }}>
+                      <label style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Follow-up Date</label>
+                      <input type="datetime-local" className="input" style={{ margin: 0, padding: '8px' }} required value={actForm.follow_up} onChange={e => setActForm(p => ({ ...p, follow_up: e.target.value }))} />
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <label style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', display: 'block', marginBottom: '4px', textTransform: 'uppercase' }}>Details</label>
+                  <textarea className="input" rows={2} style={{ margin: 0, padding: '8px' }} required placeholder={actForm.type === 'call' ? "Summary of the call..." : "Type your note here..."} value={actForm.description} onChange={e => setActForm(p => ({ ...p, description: e.target.value }))} />
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '12px' }}>
+                  <button type="submit" className="btn btn-primary btn-sm" disabled={actLoading}>{actLoading ? 'Saving...' : 'Save Activity'}</button>
+                </div>
+              </form>
+
+              {/* Activity List */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {activities.length === 0 ? (
+                  <div style={{ padding: '24px', textAlign: 'center', color: '#64748b', fontSize: '13px', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e1' }}>No activities logged yet.</div>
+                ) : (
+                  activities.map(a => {
+                    const icons = { whatsapp: '💬', call: '📞', note: '✏️', status_change: '🔄', follow_up: '📅', system: '🤖' };
+                    const icon = icons[a.activity_type] || '📝';
+                    return (
+                      <div key={a.id} style={{ display: 'flex', gap: '12px' }}>
+                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', flexShrink: 0 }}>
+                          {icon}
+                        </div>
+                        <div style={{ flex: 1, background: 'white', border: '1px solid #e2e8f0', padding: '12px', borderRadius: '8px' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '4px' }}>
+                            <div style={{ fontWeight: 700, fontSize: '13px', color: '#0f172a' }}>{a.title}</div>
+                            <div style={{ fontSize: '11px', color: '#94a3b8' }}>{new Date(a.created_at).toLocaleString('en-IN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</div>
+                          </div>
+                          {a.description && <div style={{ fontSize: '13px', color: '#475569', lineHeight: 1.5 }}>{a.description}</div>}
+                          {a.follow_up_at && (
+                            <div style={{ marginTop: '8px', padding: '6px 10px', background: '#fffbeb', color: '#b45309', borderRadius: '6px', fontSize: '12px', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                              <span>⏰</span> Next action: <b>{new Date(a.follow_up_at).toLocaleString('en-IN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</b>
+                            </div>
+                          )}
+                          <div style={{ fontSize: '10px', color: '#94a3b8', marginTop: '8px', textAlign: 'right' }}>By {a.created_by_name || 'System'}</div>
+                        </div>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
             </div>
 
-            {saving && (
-              <div style={{ textAlign: 'center', marginTop: '12px', fontSize: '12px', color: '#64748b' }}>Saving…</div>
-            )}
+            {saving && <div style={{ textAlign: 'center', marginTop: '12px', fontSize: '12px', color: '#64748b' }}>Saving…</div>}
           </div>
         </div>
       )}
 
-      {/* ── Global Toast ── */}
+      {waModal.open && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '500px', padding: '24px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#166534', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}><span style={{ fontSize: '24px' }}>💬</span> Preview WhatsApp Message</h3>
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '6px' }}>Sending to Phone</label>
+              <input type="text" className="input bg-slate-50" value={waModal.phone} onChange={e => setWaModal(p => ({ ...p, phone: e.target.value }))} />
+            </div>
+            <div style={{ marginBottom: '24px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '6px' }}>Message Content</label>
+              <textarea className="input" rows={6} value={waModal.message} onChange={e => setWaModal(p => ({ ...p, message: e.target.value }))} style={{ fontSize: '14px', lineHeight: 1.5 }} />
+            </div>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+              <button className="btn btn-ghost" onClick={() => setWaModal({ open: false, lead: null, message: '', phone: '' })}>Cancel</button>
+              <button className="btn" style={{ background: '#22c55e', color: 'white' }} onClick={async () => { 
+                const link = getWhatsAppLink(waModal.phone, waModal.message); 
+                if (link) {
+                  await logActivity(waModal.lead.id, { activity_type: 'whatsapp', title: 'WhatsApp message opened/prepared', description: waModal.message });
+                  window.open(link, '_blank'); 
+                  setWaModal({ open: false, lead: null, message: '', phone: '' }); 
+                }
+              }}>Open in WhatsApp ↗</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── CREATE REVENUE MODAL ── */}
+      {revModal.open && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 3000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
+          <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '500px', padding: '24px' }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#0f172a', marginBottom: '8px' }}>💰 Create Expected Revenue</h3>
+            <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '20px' }}>This will log an expected revenue record linked to this lead into the Finance ledger.</p>
+            
+            <form onSubmit={handleCreateRevenue}>
+              <div style={{ marginBottom: '16px' }}>
+                <label style={{ fontSize: '12px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '6px' }}>Title</label>
+                <input type="text" className="input" required value={revModal.data.title || ''} onChange={e => setRevModal(p => ({ ...p, data: { ...p.data, title: e.target.value } }))} />
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
+                <div>
+                  <label style={{ fontSize: '12px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '6px' }}>Amount Expected (₹)</label>
+                  <input type="number" className="input" required value={revModal.data.amount_expected || ''} onChange={e => setRevModal(p => ({ ...p, data: { ...p.data, amount_expected: e.target.value } }))} />
+                </div>
+                <div>
+                  <label style={{ fontSize: '12px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '6px' }}>Commission (₹)</label>
+                  <input type="number" className="input" value={revModal.data.commission_expected || ''} onChange={e => setRevModal(p => ({ ...p, data: { ...p.data, commission_expected: e.target.value } }))} />
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+                <button type="button" className="btn btn-ghost" onClick={() => setRevModal({ open: false, data: {} })}>Cancel</button>
+                <button type="submit" className="btn btn-primary" disabled={revSaving}>{revSaving ? 'Saving...' : 'Create Record'}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
       {toast && (
         <div style={{
           position: 'fixed', bottom: '24px', right: '24px', zIndex: 9999,
-          background: toast.type === 'success' ? '#292929' : '#dc2626',
-          color: 'white', borderRadius: '14px', padding: '14px 20px',
-          boxShadow: '0 8px 32px rgba(0,0,0,0.25)', maxWidth: '380px',
+          background: '#0f172a', color: 'white', padding: '16px 20px',
+          borderRadius: '12px', boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
           display: 'flex', gap: '12px', alignItems: 'flex-start',
           animation: 'slideUp 0.3s ease',
         }}>
@@ -467,7 +707,7 @@ export default function OpsLeads() {
               </a>
             )}
           </div>
-          <button onClick={() => setToast(null)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.6)', cursor: 'pointer', fontSize: '18px', lineHeight: 1, padding: 0 }}>×</button>
+          <button onClick={() => setToast(null)} style={{ background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer', fontSize: '16px' }}>✕</button>
         </div>
       )}
     </div>

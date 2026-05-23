@@ -3,166 +3,334 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function OpsDashboard() {
-  const [stats, setStats]       = useState({ leads: 0, projects: 0, partners: 0 });
-  const [leads, setLeads]       = useState([]);
-  const [projects, setProjects] = useState([]);
-  const [partners, setPartners] = useState([]);
-  const [loading, setLoading]   = useState(true);
-
-  const [funnel, setFunnel]     = useState({ total: 0, contacted: 0, qualified: 0, won: 0 });
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      fetch('/api/leads').then(r => r.json()),
-      fetch('/api/projects').then(r => r.json()),
-      fetch('/api/leads?lead_type=partner_application').then(r => r.json()),
-    ]).then(([ld, pj, pa]) => {
-      const allLeads = ld.leads || [];
-      setLeads(allLeads.slice(0, 5));
-      setProjects(pj.projects?.slice(0, 5) || []);
-      setPartners(pa.leads?.slice(0, 5) || []);
-      setStats({
-        leads: allLeads.length,
-        projects: pj.projects?.length || 0,
-        partners: pa.leads?.length || 0,
-      });
-
-      // Funnel calculations
-      const contacted = allLeads.filter(l => l.status !== 'new').length;
-      const qualified = allLeads.filter(l => ['qualified', 'proposal', 'won'].includes(l.status)).length;
-      const won       = allLeads.filter(l => l.status === 'won').length;
-      setFunnel({ total: allLeads.length, contacted, qualified, won });
-
-      setLoading(false);
-    });
+    fetch('/api/ops/dashboard')
+      .then(r => r.json())
+      .then(d => {
+        if (d.success) setData(d);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, []);
 
-  const statusColor = { new: 'badge-blue', contacted: 'badge-yellow', qualified: 'badge-orange', proposal: 'badge-orange', won: 'badge-green', lost: 'badge-red', design: 'badge-blue', execution: 'badge-orange', complete: 'badge-green', on_hold: 'badge-gray' };
+  const stColor = { new: 'badge-blue', contacted: 'badge-yellow', qualified: 'badge-orange', proposal: 'badge-orange', won: 'badge-green', lost: 'badge-red', requested: 'badge-blue', pending: 'badge-yellow', verified: 'badge-green', published: 'badge-green', draft: 'badge-gray' };
 
   if (loading) return <div className="flex-center" style={{ height: '60vh' }}><div className="spinner" /></div>;
+  if (!data) return <div className="text-center p-10 text-red-500">Failed to load dashboard. Ensure you have admin access.</div>;
+
+  const { kpis, breakdowns, alerts, recent, followUps } = data;
 
   return (
-    <div>
-      <div className="page-header flex-between">
-        <div><h1>Ops Dashboard</h1><p className="text-muted mt-2">Overview of all leads and projects</p></div>
-        <Link href="/ops/leads" className="btn btn-primary">+ New Lead</Link>
+    <div className="pb-20">
+      <div className="page-header flex-between mb-8">
+        <div>
+          <h1 style={{ fontSize: '32px', fontWeight: 800, color: '#0f172a' }}>Founder Dashboard</h1>
+          <p className="text-muted mt-2">Comprehensive overview of revenue, operations, and ecosystem health.</p>
+        </div>
       </div>
 
-      <div className="grid-4 mb-8">
-        {[
-          { label: 'Total Leads', value: stats.leads, icon: '🎯', color: 'rgba(59,130,246,0.15)' },
-          { label: 'Active Projects', value: stats.projects, icon: '🏗️', color: 'rgba(15,118,110,0.15)' },
-          { label: 'Partner Applications', value: stats.partners, icon: '🤝', color: 'rgba(124,58,237,0.15)' },
-          { label: 'Won Leads', value: leads.filter(l => l.status === 'won').length, icon: '🏆', color: 'rgba(245,158,11,0.15)' },
-        ].map(s => (
-          <div key={s.label} className="stat-card">
-            <div className="flex-between mb-4">
-              <div className="stat-icon" style={{ background: s.color }}>{s.icon}</div>
-            </div>
-            <div className="stat-value">{s.value}</div>
-            <div className="stat-label">{s.label}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* ── Lead Funnel Analytics ── */}
-      <div className="card mb-8">
-        <h3 style={{ fontSize: '16px', marginBottom: '16px' }}>Lead Funnel Analytics</h3>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '16px', marginBottom: '24px' }}>
-          {[
-            { label: 'Total Leads', val: funnel.total, color: '#3b82f6', pct: 100 },
-            { label: 'Contacted', val: funnel.contacted, color: '#eab308', pct: funnel.total ? Math.round((funnel.contacted/funnel.total)*100) : 0 },
-            { label: 'Qualified', val: funnel.qualified, color: '#f97316', pct: funnel.total ? Math.round((funnel.qualified/funnel.total)*100) : 0 },
-            { label: 'Won (Converted)', val: funnel.won, color: '#10b981', pct: funnel.total ? Math.round((funnel.won/funnel.total)*100) : 0 },
-          ].map((stage, i) => (
-            <div key={stage.label} style={{ position: 'relative' }}>
-              <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '4px' }}>{stage.label}</div>
-              <div style={{ fontSize: '24px', fontWeight: 800, color: '#292929', marginBottom: '8px' }}>
-                {stage.val} <span style={{ fontSize: '13px', color: stage.color }}>({stage.pct}%)</span>
-              </div>
-              <div style={{ height: '6px', background: '#e2e8f0', borderRadius: '99px', overflow: 'hidden' }}>
-                <div style={{ height: '100%', width: `${stage.pct}%`, background: stage.color, transition: 'width 1s ease-out' }} />
+      {/* ── ALERTS SECTION ── */}
+      {(alerts.pendingPartners > 0 || alerts.urgentMaintenance > 0 || alerts.draftListings > 0 || alerts.overdueFollowUps > 0 || alerts.todayFollowUps > 0) && (
+        <div style={{ display: 'flex', gap: '16px', marginBottom: '24px', flexWrap: 'wrap' }}>
+          {alerts.overdueFollowUps > 0 && (
+            <div style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '24px' }}>⏰</span>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 700, color: '#991b1b' }}>{alerts.overdueFollowUps} Overdue Follow-ups</div>
+                <div style={{ fontSize: '12px', color: '#dc2626', fontWeight: 600 }}>Action Required</div>
               </div>
             </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="grid-2">
-        <div className="card">
-          <div className="flex-between mb-6">
-            <h3 style={{ fontSize: '16px' }}>Recent Leads</h3>
-            <Link href="/ops/leads" className="text-primary text-sm">View all →</Link>
-          </div>
-          <div className="table-wrap">
-            <table>
-              <thead><tr><th>Name</th><th>Phone</th><th>City</th><th>Status</th></tr></thead>
-              <tbody>
-                {leads.map(l => (
-                  <tr key={l.id}>
-                    <td style={{ fontWeight: 600 }}>{l.name}</td>
-                    <td className="text-muted">{l.phone}</td>
-                    <td className="text-muted">{l.city}</td>
-                    <td><span className={`badge ${statusColor[l.status] || 'badge-gray'}`}>{l.status}</span></td>
-                  </tr>
-                ))}
-                {!leads.length && <tr><td colSpan={4} className="text-muted text-center" style={{ padding: '24px' }}>No leads yet</td></tr>}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <div className="card">
-          <div className="flex-between mb-6">
-            <h3 style={{ fontSize: '16px' }}>Active Projects</h3>
-            <Link href="/ops/projects" className="text-primary text-sm">View all →</Link>
-          </div>
-          <div className="table-wrap">
-            <table>
-              <thead><tr><th>Project</th><th>Client</th><th>Progress</th><th>Status</th></tr></thead>
-              <tbody>
-                {projects.map(p => (
-                  <tr key={p.id}>
-                    <td><Link href={`/ops/projects/${p.id}`} style={{ fontWeight: 600, color: 'var(--primary)' }}>{p.name}</Link></td>
-                    <td className="text-muted">{p.client_name}</td>
-                    <td>
-                      <div className="progress-bar" style={{ width: '80px' }}>
-                        <div className="progress-fill" style={{ width: `${p.completion_pct || 0}%` }} />
-                      </div>
-                      <span className="text-xs text-muted">{p.completion_pct || 0}%</span>
-                    </td>
-                    <td><span className={`badge ${statusColor[p.status] || 'badge-gray'}`}>{p.status}</span></td>
-                  </tr>
-                ))}
-                {!projects.length && <tr><td colSpan={4} className="text-muted text-center" style={{ padding: '24px' }}>No projects yet</td></tr>}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Partner Applications ── */}
-      {partners.length > 0 && (
-        <div className="card mt-6">
-          <div className="flex-between mb-6">
-            <h3 style={{ fontSize: '16px' }}>Recent Partner Applications</h3>
-            <Link href="/ops/partners" className="text-primary text-sm">Manage all →</Link>
-          </div>
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            {partners.map(p => {
-              const pType = p.metadata?.partner_type || 'Partner';
-              const stColor = { new: 'badge-blue', contacted: 'badge-yellow', screening: 'badge-orange', onboarding: 'badge-blue', active: 'badge-green', rejected: 'badge-red' };
-              return (
-                <div key={p.id} style={{ background: '#f8fafc', border: '1px solid var(--border)', borderRadius: '12px', padding: '14px 18px', minWidth: '180px', flex: '1 0 auto' }}>
-                  <div style={{ fontWeight: 700, fontSize: '14px', marginBottom: '4px' }}>{p.name}</div>
-                  <div style={{ fontSize: '12px', color: '#64748b', marginBottom: '8px' }}>{pType}</div>
-                  <span className={`badge ${stColor[p.status] || 'badge-gray'}`} style={{ fontSize: '11px' }}>{p.status}</span>
-                </div>
-              );
-            })}
-          </div>
+          )}
+          {alerts.todayFollowUps > 0 && (
+            <div style={{ background: '#fffbeb', border: '1px solid #fde68a', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '24px' }}>📅</span>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 700, color: '#92400e' }}>{alerts.todayFollowUps} Follow-ups Due Today</div>
+                <div style={{ fontSize: '12px', color: '#d97706', fontWeight: 600 }}>Attention Required</div>
+              </div>
+            </div>
+          )}
+          {alerts.urgentMaintenance > 0 && (
+            <div style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '24px' }}>🚨</span>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 700, color: '#991b1b' }}>{alerts.urgentMaintenance} Urgent Maintenance</div>
+                <Link href="/ops/leads" style={{ fontSize: '12px', color: '#dc2626', fontWeight: 600 }}>Review Requests →</Link>
+              </div>
+            </div>
+          )}
+          {alerts.pendingPartners > 0 && (
+            <div style={{ background: '#fffbeb', border: '1px solid #fde68a', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '24px' }}>🤝</span>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 700, color: '#92400e' }}>{alerts.pendingPartners} Pending Partners</div>
+                <Link href="/ops/leads" style={{ fontSize: '12px', color: '#d97706', fontWeight: 600 }}>Verify Applications →</Link>
+              </div>
+            </div>
+          )}
+          {alerts.draftListings > 0 && (
+            <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '24px' }}>📝</span>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 700, color: '#475569' }}>{alerts.draftListings} Draft Listings</div>
+                <Link href="/ops/leads" style={{ fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Publish Listings →</Link>
+              </div>
+            </div>
+          )}
         </div>
       )}
+
+      {/* ── CORE KPIs ── */}
+      <h2 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '16px', color: '#1e293b' }}>Core Metrics</h2>
+      <div className="grid-4 mb-8" style={{ gap: '16px' }}>
+        <div className="card" style={{ padding: '20px', border: '1px solid #e0e7ff', background: 'white' }}>
+            <div style={{ background: '#eff6ff', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>👥</div>
+            <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>{kpis.totalLeads}</div>
+            <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total CRM Leads</div>
+            <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '8px', fontWeight: 500 }}>+{kpis.newLeadsMonth} this month</div>
+        </div>
+        <div className="card" style={{ padding: '20px', border: '1px solid #fae8ff', background: 'white' }}>
+            <div style={{ background: '#fdf4ff', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>🏠</div>
+            <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>{kpis.publishedListings}</div>
+            <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Published Listings</div>
+            <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '8px', fontWeight: 500 }}>Public facing properties</div>
+        </div>
+        <div className="card" style={{ padding: '20px', border: '1px solid #d1fae5', background: 'white' }}>
+            <div style={{ background: '#ecfdf5', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>🛂</div>
+            <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>{kpis.activePassports}</div>
+            <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Active Passports</div>
+            <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '8px', fontWeight: 500 }}>{kpis.avgCompleteness}% avg completeness</div>
+        </div>
+
+        {/* Revenue KPIs */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px' }}>
+          <div className="card" style={{ padding: '8px', background: '#f8fafc', borderColor: '#e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <div style={{ fontSize: '10px', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Rev. Received</div>
+              <div style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a' }}>{fmt(kpis.revenueReceived)}</div>
+            </div>
+          </div>
+          <div className="card" style={{ padding: '8px', background: '#f8fafc', borderColor: '#e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <div style={{ fontSize: '10px', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Rev. Pending</div>
+              <div style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a' }}>{fmt(kpis.revenuePending)}</div>
+            </div>
+          </div>
+          <div className="card" style={{ padding: '8px', background: '#f0fdf4', borderColor: '#bbf7d0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <div style={{ fontSize: '10px', color: '#166534', fontWeight: 700, textTransform: 'uppercase' }}>Comm. Received</div>
+              <div style={{ fontSize: '16px', fontWeight: 800, color: '#15803d' }}>{fmt(kpis.commissionReceived)}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid-2" style={{ gap: '24px', marginBottom: '32px' }}>
+        {/* ── LEAD BREAKDOWN ── */}
+        <div className="card" style={{ background: 'white', padding: '24px' }}>
+          <h2 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '16px', color: '#1e293b', borderBottom: '1px solid #f1f5f9', paddingBottom: '12px' }}>Lead Distribution by Type</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {breakdowns.leadTypes.map(lt => (
+              <div key={lt.lead_type} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '14px', fontWeight: 600, color: '#475569', textTransform: 'capitalize' }}>{lt.lead_type.replace('_', ' ')}</span>
+                <span style={{ fontSize: '14px', fontWeight: 800, color: '#0f172a', background: '#f1f5f9', padding: '4px 12px', borderRadius: '999px' }}>{lt.count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── PIPELINE BREAKDOWN ── */}
+        <div className="card" style={{ background: 'white', padding: '24px' }}>
+          <h2 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '16px', color: '#1e293b', borderBottom: '1px solid #f1f5f9', paddingBottom: '12px' }}>Pipeline Status</h2>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {breakdowns.statuses.map(st => (
+              <div key={st.status} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <span style={{ fontSize: '14px', fontWeight: 600, color: '#475569', textTransform: 'capitalize' }}>{st.status.replace('_', ' ')}</span>
+                <span style={{ fontSize: '14px', fontWeight: 800, color: '#0f172a', background: '#f1f5f9', padding: '4px 12px', borderRadius: '999px' }}>{st.count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── FOLLOW-UPS & PENDING ACTIONS ── */}
+      <h2 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '16px', color: '#1e293b' }}>Follow-ups & Pending Actions</h2>
+      <div className="card" style={{ padding: '0', background: 'white', marginBottom: '32px', overflow: 'hidden' }}>
+        
+        {followUps && (followUps.overdue.length > 0 || followUps.today.length > 0 || followUps.upcoming.length > 0) ? (
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            
+            {/* Overdue */}
+            {followUps.overdue.length > 0 && (
+              <div style={{ padding: '16px 20px', background: '#fef2f2', borderBottom: '1px solid #fecaca' }}>
+                <h3 style={{ fontSize: '12px', fontWeight: 800, color: '#991b1b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Overdue Action Required</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {followUps.overdue.map(f => (
+                    <div key={f.activity_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'white', borderRadius: '8px', border: '1px solid #fca5a5' }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px' }}>
+                          <span style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>{f.lead_name}</span>
+                          <span className={`badge ${stColor[f.lead_status] || 'badge-gray'}`}>{f.lead_status}</span>
+                          <span style={{ fontSize: '10px', background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px', color: '#64748b', textTransform: 'uppercase' }}>{f.lead_type.replace('_', ' ')}</span>
+                        </div>
+                        <div style={{ fontSize: '13px', color: '#475569', fontWeight: 600 }}>{f.title}</div>
+                        {f.description && <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>{f.description}</div>}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', flexShrink: 0, minWidth: '150px' }}>
+                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#dc2626' }}>{new Date(f.follow_up_at).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                        {f.lead_phone && <span style={{ fontSize: '12px', color: '#64748b' }}>📞 {f.lead_phone}</span>}
+                        {/* Note: In a future version, this can link directly to the modal using ?leadId= */}
+                        <Link href="/ops/leads" className="btn btn-ghost btn-sm" style={{ padding: '2px 8px', fontSize: '11px', color: '#2563eb' }}>Go to Leads →</Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Today */}
+            {followUps.today.length > 0 && (
+              <div style={{ padding: '16px 20px', background: '#fffbeb', borderBottom: '1px solid #fde68a' }}>
+                <h3 style={{ fontSize: '12px', fontWeight: 800, color: '#92400e', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Due Today</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {followUps.today.map(f => (
+                    <div key={f.activity_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'white', borderRadius: '8px', border: '1px solid #fde68a' }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px' }}>
+                          <span style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>{f.lead_name}</span>
+                          <span className={`badge ${stColor[f.lead_status] || 'badge-gray'}`}>{f.lead_status}</span>
+                          <span style={{ fontSize: '10px', background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px', color: '#64748b', textTransform: 'uppercase' }}>{f.lead_type.replace('_', ' ')}</span>
+                        </div>
+                        <div style={{ fontSize: '13px', color: '#475569', fontWeight: 600 }}>{f.title}</div>
+                        {f.description && <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>{f.description}</div>}
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', flexShrink: 0, minWidth: '150px' }}>
+                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#d97706' }}>{new Date(f.follow_up_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</span>
+                        {f.lead_phone && <span style={{ fontSize: '12px', color: '#64748b' }}>📞 {f.lead_phone}</span>}
+                        <Link href="/ops/leads" className="btn btn-ghost btn-sm" style={{ padding: '2px 8px', fontSize: '11px', color: '#2563eb' }}>Go to Leads →</Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Upcoming Next 7 Days */}
+            {followUps.upcoming.length > 0 && (
+              <div style={{ padding: '16px 20px', background: '#f8fafc' }}>
+                <h3 style={{ fontSize: '12px', fontWeight: 800, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Upcoming This Week</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {followUps.upcoming.map(f => (
+                    <div key={f.activity_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'white', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px' }}>
+                          <span style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>{f.lead_name}</span>
+                          <span className={`badge ${stColor[f.lead_status] || 'badge-gray'}`}>{f.lead_status}</span>
+                          <span style={{ fontSize: '10px', background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px', color: '#64748b', textTransform: 'uppercase' }}>{f.lead_type.replace('_', ' ')}</span>
+                        </div>
+                        <div style={{ fontSize: '13px', color: '#475569', fontWeight: 600 }}>{f.title}</div>
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', flexShrink: 0, minWidth: '150px' }}>
+                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#475569' }}>{new Date(f.follow_up_at).toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
+                        <Link href="/ops/leads" className="btn btn-ghost btn-sm" style={{ padding: '2px 8px', fontSize: '11px', color: '#2563eb' }}>Go to Leads →</Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <div style={{ fontSize: '32px', marginBottom: '8px', opacity: 0.5 }}>🌴</div>
+            <p className="text-muted text-sm">No follow-ups due right now.</p>
+          </div>
+        )}
+      </div>
+
+      {/* ── RECENT ACTIVITY TABS ── */}
+      <h2 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '16px', color: '#1e293b' }}>Recent Ecosystem Activity</h2>
+      
+      <div className="grid-2" style={{ gap: '24px' }}>
+        
+        {/* Partners */}
+        <div className="card" style={{ background: 'white', padding: '0' }}>
+          <div style={{ padding: '20px', borderBottom: '1px solid #f1f5f9', background: '#f8fafc', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#334155', margin: 0 }}>Recent Partner Applications</h3>
+          </div>
+          <div style={{ padding: '0 20px' }}>
+            {recent.partners.length === 0 ? <p className="text-muted text-sm py-4">No recent partners.</p> : recent.partners.map(p => (
+              <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #f1f5f9' }}>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>{p.name}</div>
+                  <div style={{ fontSize: '12px', color: '#64748b', textTransform: 'capitalize' }}>{p.category || 'General'}</div>
+                </div>
+                <span className={`badge ${stColor[p.v_status] || 'badge-gray'}`}>{p.v_status || 'pending'}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Materials */}
+        <div className="card" style={{ background: 'white', padding: '0' }}>
+          <div style={{ padding: '20px', borderBottom: '1px solid #f1f5f9', background: '#fff7ed', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#9a3412', margin: 0 }}>Recent Material Quotes</h3>
+          </div>
+          <div style={{ padding: '0 20px' }}>
+            {recent.materials.length === 0 ? <p className="text-muted text-sm py-4">No recent quotes.</p> : recent.materials.map(m => (
+              <div key={m.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #f1f5f9' }}>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>{m.name}</div>
+                  <div style={{ fontSize: '12px', color: '#64748b', textTransform: 'capitalize' }}>{m.category || 'Materials'}</div>
+                </div>
+                <span className={`badge ${stColor[m.status] || 'badge-gray'}`}>{m.status}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Listings */}
+        <div className="card" style={{ background: 'white', padding: '0' }}>
+          <div style={{ padding: '20px', borderBottom: '1px solid #f1f5f9', background: '#fdf4ff', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#86198f', margin: 0 }}>Recent Property Listings</h3>
+          </div>
+          <div style={{ padding: '0 20px' }}>
+            {recent.listings.length === 0 ? <p className="text-muted text-sm py-4">No recent listings.</p> : recent.listings.map(l => (
+              <div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #f1f5f9' }}>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>{l.name}</div>
+                  <div style={{ fontSize: '12px', color: '#64748b', textTransform: 'capitalize' }}>{l.type || 'Listing'}</div>
+                </div>
+                <span className={`badge ${stColor[l.p_status] || 'badge-gray'}`}>{l.p_status || 'draft'}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Maintenance */}
+        <div className="card" style={{ background: 'white', padding: '0' }}>
+          <div style={{ padding: '20px', borderBottom: '1px solid #f1f5f9', background: '#f0fdfa', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#115e59', margin: 0 }}>Recent Maintenance Requests</h3>
+          </div>
+          <div style={{ padding: '0 20px' }}>
+            {recent.maintenance.length === 0 ? <p className="text-muted text-sm py-4">No recent maintenance.</p> : recent.maintenance.map(m => (
+              <div key={m.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #f1f5f9' }}>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>{m.name}</div>
+                  <div style={{ fontSize: '12px', color: '#64748b', textTransform: 'capitalize' }}>{m.category?.replace('_', ' ')}</div>
+                </div>
+                <span className={`badge ${stColor[m.m_status] || 'badge-gray'}`}>{m.m_status?.replace('_', ' ') || 'requested'}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
     </div>
   );
 }

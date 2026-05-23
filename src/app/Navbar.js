@@ -41,7 +41,7 @@ export default function Navbar() {
           <div className={styles.dropdown}>
             <span className={styles.dropdownTrigger}>Property <span className={styles.arrow}>▾</span></span>
             <div className={styles.dropdownMenu}>
-              <Link href="/rentals" onClick={close}>Verified Rentals</Link>
+              <Link href="/properties" onClick={close}>Verified Rentals</Link>
               <Link href="/property-passport" onClick={close}>Property Passport™</Link>
               <Link href="/maintenance" onClick={close}>Maintenance & AMC</Link>
               <Link href="/warranty-and-maintenance" onClick={close}>Warranty</Link>
