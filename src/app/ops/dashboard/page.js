@@ -3,6 +3,22 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { roleCan } from '@/lib/permissions';
 
+const fmt = (value) => {
+  if (value === null || value === undefined || value === "") return "₹0";
+
+  const numberValue = Number(value);
+
+  if (Number.isNaN(numberValue)) {
+    return String(value);
+  }
+
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(numberValue);
+};
+
 export default function OpsDashboard() {
   const [data, setData] = useState(null);
   const [user, setUser] = useState(null);
