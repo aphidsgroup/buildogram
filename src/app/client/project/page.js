@@ -20,6 +20,21 @@ function ProjectContent() {
     await fetch('/api/issues', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...issueForm, project_id: id }) });
     setIssueForm({ title: '', description: '', priority: 'medium' });
     alert('Issue raised! Our team will respond within 24 hours.');
+    fetch(`/api/projects/${id}`).then(r => r.json()).then(d => setData(d));
+  };
+
+  const approveDocument = async (docId) => {
+    if (!confirm('Are you sure you want to approve this document? This acts as your digital sign-off.')) return;
+    const res = await fetch(`/api/documents/${docId}/consent`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: 'approved' })
+    });
+    if (res.ok) {
+      fetch(`/api/projects/${id}`).then(r => r.json()).then(d => setData(d));
+    } else {
+      alert('Failed to approve document.');
+    }
   };
 
   const fmt = n => n ? '₹' + (n >= 10000000 ? (n/10000000).toFixed(1)+'Cr' : n >= 100000 ? (n/100000).toFixed(1)+'L' : n.toLocaleString('en-IN')) : '—';
@@ -178,12 +193,23 @@ function ProjectContent() {
             <div className="empty-state"><div className="empty-icon">📁</div><p>Documents will be uploaded by your team as the project progresses.</p></div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {data.documents.map(d => (
-                <div key={d.id} className="flex-between" style={{ padding: '12px', background: 'rgba(0,0,0,0.02)', borderRadius: '8px' }}>
-                  <div className="flex gap-3"><span style={{ fontSize: '20px' }}>📄</span><div><div style={{ fontWeight: '600', fontSize: '14px' }}>{d.name}</div><div className="text-muted text-xs">{d.type}</div></div></div>
-                  <a href={d.file_url} target="_blank" className="btn btn-ghost btn-sm">Download</a>
-                </div>
-              ))}
+              {data.documents.map(d => {
+                if (!d.is_shared_with_client) return null;
+                return (
+                  <div key={d.id} className="flex-between" style={{ padding: '16px', background: d.requires_consent && d.consent_status === 'pending' ? 'rgba(234,179,8,0.1)' : 'rgba(0,0,0,0.02)', border: d.requires_consent && d.consent_status === 'pending' ? '1px solid rgba(234,179,8,0.3)' : '1px solid var(--border)', borderRadius: '8px' }}>
+                    <div className="flex gap-3"><span style={{ fontSize: '24px' }}>📄</span><div><div style={{ fontWeight: '600', fontSize: '15px' }}>{d.name}</div><div className="text-muted text-xs mt-1">{d.type?.replace('_', ' ')}</div></div></div>
+                    <div className="flex gap-3" style={{ alignItems: 'center' }}>
+                      {d.requires_consent && (
+                        <div style={{ marginRight: '16px' }}>
+                          {d.consent_status === 'pending' && <button onClick={() => approveDocument(d.id)} className="btn btn-sm" style={{ background: '#eab308', color: 'white' }}>Approve (Sign-off)</button>}
+                          {d.consent_status === 'approved' && <span style={{ color: 'var(--success)', fontWeight: '600', fontSize: '13px' }}>✅ Approved on {new Date(d.consented_at).toLocaleDateString()}</span>}
+                        </div>
+                      )}
+                      <a href={d.file_url} target="_blank" className="btn btn-ghost btn-sm">View / Download</a>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>

@@ -5,8 +5,11 @@ import path from 'path';
 
 export async function GET() {
   try {
-    const query = fs.readFileSync(path.join(process.cwd(), 'migrations', '010_create_change_orders.sql'), 'utf8');
-    await sql.query(query);
+    const query = fs.readFileSync(path.join(process.cwd(), 'migrations', '011_document_consent.sql'), 'utf8');
+    const statements = query.split(';').filter(s => s.trim().length > 0);
+    for (const stmt of statements) {
+      await sql.query(stmt + ';');
+    }
     return NextResponse.json({ success: true, message: 'Migration applied successfully.' });
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

@@ -11,6 +11,7 @@ export default function OpsProjectDetail({ params }) {
   const [boqForm, setBoqForm] = useState({ category: '', activity: '', unit: 'sqft', quantity: '', rate: '' });
   const [logForm, setLogForm] = useState({ notes: '', workers_count: '', weather: '', photo_urls: '' });
   const [coForm, setCoForm] = useState({ title: '', description: '', amount: '' });
+  const [docForm, setDocForm] = useState({ name: '', type: 'floor_plan', file: null, is_shared: true, requires_consent: false });
 
   const load = () => fetch(`/api/projects/${id}`).then(r => r.json()).then(d => { setData(d); setLoading(false); });
   useEffect(() => { load(); }, [id]);
@@ -80,13 +81,41 @@ export default function OpsProjectDetail({ params }) {
     load();
   };
 
+  const uploadDoc = async (e) => {
+    e.preventDefault();
+    if (!docForm.file) return alert('Please select a file');
+    
+    // 1. Upload to Cloudinary
+    const formData = new FormData();
+    formData.append('file', docForm.file);
+    const upRes = await fetch('/api/upload', { method: 'POST', body: formData }).then(r => r.json());
+    if (upRes.error) return alert(upRes.error);
+
+    // 2. Save Document DB record
+    await fetch('/api/documents', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        project_id: id,
+        name: docForm.name,
+        type: docForm.type,
+        file_url: upRes.url,
+        public_id: upRes.public_id,
+        is_shared_with_client: docForm.is_shared,
+        requires_consent: docForm.requires_consent
+      })
+    });
+    setDocForm({ name: '', type: 'floor_plan', file: null, is_shared: true, requires_consent: false });
+    load();
+  };
+
   const statusColor = { design: 'badge-blue', boq_approval: 'badge-yellow', execution: 'badge-orange', handover: 'badge-green', complete: 'badge-green', on_hold: 'badge-gray' };
   const milestoneColor = { pending: 'badge-gray', in_progress: 'badge-orange', qc_pending: 'badge-yellow', complete: 'badge-green' };
   const fmt = n => n ? '₹' + (n >= 10000000 ? (n/10000000).toFixed(1)+'Cr' : n >= 100000 ? (n/100000).toFixed(1)+'L' : n.toLocaleString('en-IN')) : '—';
-  const TABS = ['overview', 'milestones', 'boq', 'change_orders', 'progress', 'issues'];
+  const TABS = ['overview', 'milestones', 'boq', 'change_orders', 'progress', 'issues', 'documents'];
 
   if (loading || !data) return <div className="flex-center" style={{ height: '60vh' }}><div className="spinner" /></div>;
-  const { project: p, milestones = [], logs = [], issues = [], changeOrders = [] } = data;
+  const { project: p, milestones = [], logs = [], issues = [], changeOrders = [], documents = [] } = data;
 
   const approvedChangesTotal = changeOrders.filter(c => c.status === 'approved').reduce((sum, c) => sum + Number(c.amount), 0);
   const revisedContractValue = Number(p.total_contract_value || 0) + approvedChangesTotal;
@@ -321,6 +350,53 @@ export default function OpsProjectDetail({ params }) {
             </div>
           ))}
           {!issues.length && <div className="empty-state"><div className="empty-icon">✅</div><p>No issues raised</p></div>}
+        </div>
+      )}
+      {tab === 'documents' && (
+        <div>
+          <div className="card mb-6">
+            <h3 style={{ fontSize: '15px', marginBottom: '16px' }}>Upload Document</h3>
+            <form onSubmit={uploadDoc} style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <input className="input" placeholder="Doc Name *" required style={{ flex: '2', minWidth: '150px' }} value={docForm.name} onChange={e => setDocForm(f => ({ ...f, name: e.target.value }))} />
+              <select className="input" style={{ flex: '1', minWidth: '120px' }} value={docForm.type} onChange={e => setDocForm(f => ({ ...f, type: e.target.value }))}>
+                {['floor_plan','elevation','structural','electrical','plumbing','contract','boq','approval','other'].map(t => <option key={t} value={t}>{t.replace('_', ' ')}</option>)}
+              </select>
+              <input type="file" required onChange={e => setDocForm(f => ({ ...f, file: e.target.files[0] }))} style={{ flex: '2', minWidth: '200px' }} />
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}>
+                <input type="checkbox" checked={docForm.is_shared} onChange={e => setDocForm(f => ({ ...f, is_shared: e.target.checked }))} /> Client Visible
+              </label>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}>
+                <input type="checkbox" checked={docForm.requires_consent} onChange={e => setDocForm(f => ({ ...f, requires_consent: e.target.checked }))} /> Requires Consent
+              </label>
+              <button type="submit" className="btn btn-primary">Upload</button>
+            </form>
+          </div>
+          
+          <div className="card" style={{ padding: 0 }}>
+            <div className="table-wrap">
+              <table>
+                <thead><tr><th>Document</th><th>Type</th><th>Visibility</th><th>Consent Status</th><th>Action</th></tr></thead>
+                <tbody>
+                  {documents.map(d => (
+                    <tr key={d.id}>
+                      <td style={{ fontWeight: '500' }}>{d.name}</td>
+                      <td><span className="badge badge-gray">{d.type?.replace('_', ' ')}</span></td>
+                      <td>{d.is_shared_with_client ? <span style={{ color: 'var(--success)' }}>Visible</span> : <span className="text-muted">Ops Only</span>}</td>
+                      <td>
+                        {d.requires_consent ? (
+                          <span className={`badge ${d.consent_status === 'approved' ? 'badge-green' : d.consent_status === 'rejected' ? 'badge-red' : 'badge-yellow'}`}>
+                            {d.consent_status} {d.consented_at && `on ${new Date(d.consented_at).toLocaleDateString('en-IN')}`}
+                          </span>
+                        ) : <span className="text-muted">—</span>}
+                      </td>
+                      <td><a href={d.file_url} target="_blank" className="btn btn-sm" style={{ background: 'var(--border)' }}>View</a></td>
+                    </tr>
+                  ))}
+                  {!documents.length && <tr><td colSpan={5}><div className="empty-state"><p>No documents uploaded yet.</p></div></td></tr>}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       )}
     </div>
