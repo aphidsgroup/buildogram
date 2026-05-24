@@ -2,6 +2,17 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import sql from '@/lib/db';
 
+const DEMO_PARTNERS = [
+  { id: 'demo-1', metadata: { business_name: 'Premium Builders Co.', category: 'Builder', slug: 'demo-builder', location: 'Chennai', services_offered: ['Residential Construction', 'Turnkey Solutions'], shortDescription: 'Premium turnkey builders.' } },
+  { id: 'demo-2', metadata: { business_name: 'Visionary Architects', category: 'Architect', slug: 'demo-architect', location: 'Chennai', services_offered: ['Architectural Design', 'Floor Planning'], shortDescription: 'Award-winning architecture.' } },
+  { id: 'demo-3', metadata: { business_name: 'Elegant Interiors', category: 'Interior Designer', slug: 'demo-interior-designer', location: 'Chennai', services_offered: ['Interior Design', 'Modular Kitchens'], shortDescription: 'Luxury interior designs.' } },
+  { id: 'demo-4', metadata: { business_name: 'Prime Materials', category: 'Material Supplier', slug: 'demo-material-supplier', location: 'Chennai', services_offered: ['Cement', 'Steel', 'Bricks'], shortDescription: 'Wholesale materials.' } },
+  { id: 'demo-5', metadata: { business_name: 'Smart Home Solutions', category: 'Home Automation', slug: 'demo-home-automation', location: 'Chennai', services_offered: ['Lighting Automation', 'Security Systems'], shortDescription: 'Next-gen smart homes.' } },
+  { id: 'demo-6', metadata: { business_name: 'SunPower Solar', category: 'Solar', slug: 'demo-solar', location: 'Chennai', services_offered: ['Solar Panels', 'Inverters'], shortDescription: 'Clean energy solutions.' } },
+  { id: 'demo-7', metadata: { business_name: 'LiftTech Elevators', category: 'Elevators', slug: 'demo-elevator', location: 'Chennai', services_offered: ['Home Elevators', 'Commercial Lifts'], shortDescription: 'Safe and modern elevators.' } },
+  { id: 'demo-8', metadata: { business_name: 'AquaSeal Experts', category: 'Waterproofing', slug: 'demo-waterproofing', location: 'Chennai', services_offered: ['Terrace Waterproofing', 'Basement Waterproofing'], shortDescription: '100% leak-proof solutions.' } }
+];
+
 export const dynamic = 'force-dynamic';
 
 async function getPartner(slug) {
@@ -46,10 +57,13 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function PartnerProfilePage({ params }) {
-  const partner = await getPartner(params.slug);
+  let partner = await getPartner(params.slug);
   
   if (!partner) {
-    notFound();
+    partner = DEMO_PARTNERS.find(p => p.metadata.slug === params.slug);
+    if (!partner) {
+      notFound();
+    }
   }
 
   const meta = partner.metadata || {};
