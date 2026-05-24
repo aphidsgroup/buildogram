@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
+import { roleCan } from '@/lib/permissions';
 
 export async function GET(req) {
   const u = getUserFromRequest(req);
-  if (!u || !['ops_admin', 'ops_pm'].includes(u.role)) {
+  if (!u || !roleCan(u.role, 'view_revenue')) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
   }
 
@@ -51,7 +52,7 @@ export async function GET(req) {
 
 export async function POST(req) {
   const u = getUserFromRequest(req);
-  if (!u || !['ops_admin', 'ops_pm'].includes(u.role)) {
+  if (!u || !roleCan(u.role, 'view_revenue')) { // Assuming they can add revenue if they can view it in v1
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
   }
 

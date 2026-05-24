@@ -1,26 +1,32 @@
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
+import { roleCan } from '@/lib/permissions';
 
 export async function GET(req) {
   const u = getUserFromRequest(req);
-  if (!u || !['ops_admin', 'ops_pm'].includes(u.role)) {
+  if (!u || !['ops_admin', 'ops_pm', 'ops_engineer'].includes(u.role)) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
   }
 
   try {
-    // 1. KPI Queries
     const [[leadsCount]] = await sql`SELECT COUNT(*)::int as count FROM leads`;
     const [[newLeadsMonth]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE created_at >= date_trunc('month', current_date)`;
     
-    // Revenue metrics from JSONB
-    const [[matOrderVal]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'estimated_order_value', '') AS numeric)) as total FROM leads WHERE lead_type='material_quote'`;
-    const [[matComm]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'expected_commission', '') AS numeric)) as total FROM leads WHERE lead_type='material_quote'`;
+    // Revenue metrics from JSONB (Only if role allows)
+    const canViewRevenue = roleCan(u.role, 'view_revenue');
+    let matOrderVal = { total: 0 }, matComm = { total: 0 };
+    let referralExpected = { total: 0 }, referralPaid = { total: 0 };
+    
+    if (canViewRevenue) {
+      [[matOrderVal]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'estimated_order_value', '') AS numeric)) as total FROM leads WHERE lead_type='material_quote'`;
+      [[matComm]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'expected_commission', '') AS numeric)) as total FROM leads WHERE lead_type='material_quote'`;
+      [[referralExpected]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'referral_commission_expected', '') AS numeric)) as total FROM leads`;
+      [[referralPaid]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'referral_commission_paid', '') AS numeric)) as total FROM leads`;
+    }
     // Referral Metrics
     const [[referredLeads]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE metadata->>'referral_partner_lead_id' IS NOT NULL`;
     const [[convertedReferrals]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE metadata->>'referral_status'='converted'`;
-    const [[referralExpected]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'referral_commission_expected', '') AS numeric)) as total FROM leads`;
-    const [[referralPaid]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'referral_commission_paid', '') AS numeric)) as total FROM leads`;
     
     const [[publishedListings]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_listing' AND metadata->>'public_status'='published'`;
     const [[activePassports]] = await sql`SELECT COUNT(*)::int as count FROM properties WHERE passport_status='active'`;
@@ -77,14 +83,18 @@ export async function GET(req) {
     const [[pendingPartners]] = await sql`SELECT COUNT(*)::int as count FROM users WHERE role='partner' AND verification_status='pending'`;
 
     // 2. Revenue Totals
-    const [rev] = await sql`
-      SELECT 
-        SUM(amount_received) as actual_received,
-        SUM(amount_pending) as total_pending,
-        SUM(commission_received) as commission_received
-      FROM revenue_records
-      WHERE status != 'cancelled'
-    `;
+    let rev = { actual_received: 0, total_pending: 0, commission_received: 0 };
+    if (canViewRevenue) {
+      const [revData] = await sql`
+        SELECT 
+          SUM(amount_received) as actual_received,
+          SUM(amount_pending) as total_pending,
+          SUM(commission_received) as commission_received
+        FROM revenue_records
+        WHERE status != 'cancelled'
+      `;
+      if (revData) rev = revData;
+    }
 
     // 3. Alerts
     const [[urgentMaintenance]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='maintenance' AND metadata->>'urgency' IN ('emergency', 'high') AND metadata->>'maintenance_status' NOT IN ('completed', 'closed', 'cancelled')`;
