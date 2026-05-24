@@ -102,9 +102,16 @@ export default function ClientRequestDetailPage() {
 
       {req.lead_type === 'boq_audit' && (
         <div className="card mt-6" style={{ background: 'white', padding: '32px', border: '2px solid #8b5cf6' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: 800, marginBottom: '16px', color: '#4c1d95', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ fontSize: '24px' }}>🛡️</span> Official BOQ Audit Report
-          </h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 800, margin: 0, color: '#4c1d95', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🛡️</span> Official BOQ Audit Report
+            </h2>
+            {m.reviewed_boq_report && (
+              <a href={`/boq-report/${req.id}/print`} target="_blank" rel="noreferrer" className="btn btn-sm" style={{ background: '#4f46e5', color: 'white', textDecoration: 'none' }}>
+                🖨️ Download PDF
+              </a>
+            )}
+          </div>
 
           {m.reviewed_boq_report ? (
             <div style={{ fontSize: '14px', color: '#334155', display: 'flex', flexDirection: 'column', gap: '20px', lineHeight: 1.6 }}>

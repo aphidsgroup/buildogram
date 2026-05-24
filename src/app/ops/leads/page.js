@@ -958,15 +958,18 @@ export default function OpsLeads() {
                       </div>
 
                       {selected.metadata.reviewed_boq_report.status === 'ready_to_share' && (
-                        <div style={{ marginTop: '16px', borderTop: '1px solid #e2e8f0', paddingTop: '16px' }}>
-                          <button className="btn btn-sm" style={{ background: '#2563eb', color: 'white', width: '100%' }} onClick={() => {
+                        <div style={{ marginTop: '16px', borderTop: '1px solid #e2e8f0', paddingTop: '16px', display: 'flex', gap: '8px' }}>
+                          <button className="btn btn-sm" style={{ background: '#2563eb', color: 'white', flex: 1 }} onClick={() => {
                             const r = selected.metadata.reviewed_boq_report;
                             const text = `*Buildogram BOQ Audit Report*\n\n*Summary:*\n${r.executive_summary}\n\n*Missing/Unclear Items:*\n${r.missing_or_unclear_items}\n\n*Risks:*\n${r.escalation_risks}\n\n*Recommendation:*\n${r.buildogram_recommendation}\n\n_Disclaimer: ${r.disclaimer}_`;
                             navigator.clipboard.writeText(text);
                             showToast('Report copied to clipboard!');
                           }}>
-                            📋 Copy Report Text for WhatsApp/Email
+                            📋 Copy Report Text
                           </button>
+                          <a href={`/boq-report/${selected.id}/print`} target="_blank" rel="noreferrer" className="btn btn-sm" style={{ background: '#4f46e5', color: 'white', flex: 1, textAlign: 'center', textDecoration: 'none' }}>
+                            🖨️ Print / Save PDF
+                          </a>
                         </div>
                       )}
                     </div>
