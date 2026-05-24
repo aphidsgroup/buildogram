@@ -16,8 +16,8 @@ export async function GET(req) {
     `;
 
     if (type !== 'all') {
-      // Look for the specific string in the services_offered JSON array text
-      query = sql`${query} AND metadata->>'services_offered' ILIKE ${'%' + type + '%'}`;
+      // Look for the specific string in the services_offered JSON array text OR the new category string
+      query = sql`${query} AND (metadata->>'services_offered' ILIKE ${'%' + type + '%'} OR metadata->>'category' ILIKE ${'%' + type + '%'})`;
     }
 
     query = sql`${query} ORDER BY created_at DESC LIMIT 50`;
