@@ -1,50 +1,63 @@
 import Link from 'next/link';
 
 export const metadata = {
-  title: '360° Verified Properties | Buildogram',
-  description: 'Rent or buy premium, verified homes with immersive 360° virtual tours.',
+  title: 'Property Portals | Buy/Sell and Rent/Lease Properties | Buildogram',
+  description: 'Buildogram connects users to dedicated property portals: RealPropRealty for buy/sell properties and ToLetBoardChennai for rent/lease property opportunities.',
 };
 
 export default function PropertiesHubPage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section style={{ background: '#292929', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ background: '#292929', color: 'white', padding: '60px 0 80px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% -20%, rgba(255,218,1,0.15) 0%, transparent 70%)' }} />
         <div className="container" style={{ position: 'relative', textAlign: 'center', maxWidth: '800px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.1)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
-            <span style={{ color: '#FFDA01', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Zero Brokerage · 100% Verified</span>
+            <span style={{ color: '#FFDA01', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Property Portals</span>
           </div>
           <h1 style={{ fontSize: 'clamp(36px, 5vw, 56px)', lineHeight: 1.1, marginBottom: '24px' }}>
-            First Visit From <span style={{ color: '#FFDA01' }}>Home.</span>
+            Property Portals Connected to <span style={{ color: '#FFDA01' }}>Buildogram</span>
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '20px', lineHeight: 1.6, marginBottom: '40px' }}>
-            Explore premium rental and resale properties through immersive 360° virtual tours. No hidden surprises.
+            Buildogram connects construction, property records, materials, partners, and property opportunities. For property discovery, use our dedicated portals for buy/sell and rent/lease needs.
           </p>
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/properties/rent" className="btn btn-primary btn-lg" style={{ minWidth: '180px', justifyContent: 'center' }}>
-              Explore Rentals
-            </Link>
-            <Link href="/properties/buy" className="btn btn-lg" style={{ minWidth: '180px', justifyContent: 'center', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', color: 'white' }}>
-              Explore Resales
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* ── Owner CTA ── */}
+      {/* ── Portals ── */}
       <section className="section" style={{ background: '#F8FAFC' }}>
-        <div className="container" style={{ maxWidth: '900px' }}>
-          <div className="card" style={{ padding: '48px', textAlign: 'center', background: 'white', border: '1px solid #e2e8f0', boxShadow: '0 12px 40px rgba(0,0,0,0.04)' }}>
-            <div style={{ fontSize: '48px', marginBottom: '16px' }}>📸</div>
-            <h2 style={{ fontSize: '32px', marginBottom: '16px' }}>List Your Property</h2>
-            <p style={{ color: '#64748b', fontSize: '18px', marginBottom: '32px', maxWidth: '600px', margin: '0 auto 32px' }}>
-              Have a property to rent or sell? Stand out with a 360° tour and our Property Passport. Get verified leads, faster.
-            </p>
-            <Link href="/properties/list-your-property" className="btn btn-primary btn-lg">
-              List Your Property Now
-            </Link>
+        <div className="container" style={{ maxWidth: '1000px' }}>
+          <div className="grid-2" style={{ gap: '24px' }}>
+            
+            {/* Card 1 */}
+            <div className="card" style={{ padding: '40px', background: 'white', border: '1px solid #E2E8F0', boxShadow: '0 12px 40px rgba(0,0,0,0.04)' }}>
+              <div style={{ fontSize: '48px', marginBottom: '20px' }}>🏢</div>
+              <h3 style={{ fontSize: '24px', color: '#292929', marginBottom: '16px' }}>Buy/Sell Properties</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '16px', lineHeight: 1.6, marginBottom: '32px' }}>
+                RealPropRealty helps users explore property buying and selling opportunities with a dedicated property-first experience.
+              </p>
+              <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                Visit RealPropRealty <span>↗</span>
+              </a>
+            </div>
+
+            {/* Card 2 */}
+            <div className="card" style={{ padding: '40px', background: 'white', border: '1px solid #E2E8F0', boxShadow: '0 12px 40px rgba(0,0,0,0.04)' }}>
+              <div style={{ fontSize: '48px', marginBottom: '20px' }}>🔑</div>
+              <h3 style={{ fontSize: '24px', color: '#292929', marginBottom: '16px' }}>Rent/Lease Properties</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '16px', lineHeight: 1.6, marginBottom: '32px' }}>
+                ToLetBoardChennai helps users explore rental and lease property opportunities with a focused rental-first experience.
+              </p>
+              <a href="https://toletboardchennai.in" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                Visit ToLetBoardChennai <span>↗</span>
+              </a>
+            </div>
+
           </div>
+
+          <p style={{ textAlign: 'center', color: '#64748b', fontSize: '15px', marginTop: '48px', maxWidth: '700px', margin: '48px auto 0' }}>
+            Buildogram remains the marketplace layer for construction support, partner discovery, material quotes, Property Passport records, BOQ clarity, and maintenance services.
+          </p>
         </div>
       </section>
     </>
