@@ -37,11 +37,11 @@ export default function PropertyPassportPage() {
     <>
       {/* ── Hero ── */}
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 0%, rgba(204,255,0,0.08) 0%, transparent 60%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 0%, rgba(252, 110, 32, 0.08) 0%, transparent 60%)' }} />
         <div className="container" style={{ position: 'relative', textAlign: 'center' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(204,255,0,0.12)', border: '1px solid rgba(204,255,0,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
             <span style={{ fontSize: '16px' }}>🛂</span>
-            <span style={{ color: '#CCFF00', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>India's First Property Transparency Record</span>
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>India's First Property Transparency Record</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(36px, 5vw, 64px)', lineHeight: 1.1, marginBottom: '24px' }}>
             Property Passport™
@@ -60,7 +60,7 @@ export default function PropertyPassportPage() {
       </section>
 
       {/* ── Stats Bar ── */}
-      <section style={{ background: '#CCFF00', padding: '28px 0' }}>
+      <section style={{ background: 'var(--gradient-orange)', padding: '28px 0' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '48px', flexWrap: 'wrap' }}>
           {[['9+', 'Passport Sections'], ['100%', 'Digital Access'], ['Forever', 'Record Validity'], ['Secure', 'Controlled Sharing']].map(([n, l]) => (
             <div key={l} style={{ textAlign: 'center' }}>
@@ -108,7 +108,7 @@ export default function PropertyPassportPage() {
                 <ul style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                   {b.points.map(p => (
                     <li key={p} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '15px', color: 'var(--text)' }}>
-                      <span style={{ color: '#292929', background: '#CCFF00', borderRadius: '50%', width: '20px', height: '20px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', flexShrink: 0, marginTop: '2px', fontWeight: 800 }}>✓</span>
+                      <span style={{ color: '#292929', background: 'var(--gradient-orange)', borderRadius: '50%', width: '20px', height: '20px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '11px', flexShrink: 0, marginTop: '2px', fontWeight: 800 }}>✓</span>
                       {p}
                     </li>
                   ))}
@@ -129,7 +129,7 @@ export default function PropertyPassportPage() {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {passportSteps.map((s, i) => (
               <div key={s.step} style={{ display: 'flex', gap: '32px', alignItems: 'flex-start', padding: '32px 0', borderBottom: i < passportSteps.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'var(--secondary)', color: '#CCFF00', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800, fontSize: '22px', flexShrink: 0 }}>{s.step}</div>
+                <div style={{ width: '72px', height: '72px', borderRadius: '50%', background: 'var(--secondary)', background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800, fontSize: '22px', flexShrink: 0 }}>{s.step}</div>
                 <div style={{ paddingTop: '8px' }}>
                   <h3 style={{ fontSize: '20px', marginBottom: '8px' }}>{s.title}</h3>
                   <p style={{ color: 'var(--text-muted)', fontSize: '16px' }}>{s.desc}</p>

@@ -54,7 +54,7 @@ export default function MaterialPage({ params }) {
           <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '20px', fontSize: '13px' }}>
             <Link href="/materials" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none' }}>Materials</Link>
             <span style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-            <span style={{ color: '#CCFF00' }}>{mat.name}</span>
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>{mat.name}</span>
           </nav>
           <div style={{ fontSize: '40px', marginBottom: '16px' }}>{mat.icon}</div>
           <h1 style={{ color: 'white', fontSize: 'clamp(26px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>
@@ -122,7 +122,7 @@ export default function MaterialPage({ params }) {
 
         {/* RATE NOTE */}
         {mat.rateNote && (
-          <div style={{ background: 'rgba(204,255,0,0.06)', border: '1px solid rgba(204,255,0,0.2)', borderRadius: '12px', padding: '20px 24px', marginBottom: '40px' }}>
+          <div style={{ background: 'rgba(252, 110, 32, 0.06)', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '12px', padding: '20px 24px', marginBottom: '40px' }}>
             <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '8px' }}>💰 Pricing Note</div>
             <p style={{ fontSize: '14px', color: 'var(--text)', lineHeight: 1.7 }}>{mat.rateNote}</p>
             <Link href="/materials/request-quote" className="btn btn-primary btn-sm" style={{ marginTop: '12px', display: 'inline-flex' }}>Request Material Quote</Link>

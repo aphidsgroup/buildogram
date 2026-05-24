@@ -215,7 +215,7 @@ export default function ClientPassport() {
                 <h4 style={{ fontSize: '18px', marginBottom: '4px' }}>Want to list this property?</h4>
                 <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px' }}>Turn on rental or resale listing with your verified passport.</p>
               </div>
-              <Link href="/contact" className="btn" style={{ background: '#CCFF00', color: '#292929' }}>Contact Us</Link>
+              <Link href="/contact" className="btn" style={{ background: 'var(--gradient-orange)', color: '#292929' }}>Contact Us</Link>
             </div>
           </div>
         </div>

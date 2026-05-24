@@ -16,15 +16,15 @@ export default function Home() {
         <div className={`container ${styles.heroContent} ${styles.mobileCenter}`}>
           <div>
             {/* Pill badge */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'rgba(204,255,0,0.1)', border: '1px solid rgba(204,255,0,0.25)', borderRadius: '999px', padding: '8px 20px', marginBottom: '32px' }}>
-              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#CCFF00', display: 'inline-block', boxShadow: '0 0 8px #CCFF00' }} />
-              <span style={{ color: '#CCFF00', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Buildogram</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.25)', borderRadius: '999px', padding: '8px 20px', marginBottom: '32px' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--gradient-orange)', display: 'inline-block', boxShadow: '0 0 8px #FC6E20' }} />
+              <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Buildogram</span>
             </div>
 
             {/* Headline */}
             <h1 style={{ color: 'white', fontSize: 'clamp(38px, 5vw, 64px)', lineHeight: 1.05, marginBottom: '20px', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800 }}>
               The Construction &<br />
-              <span style={{ color: '#CCFF00' }}>Property Marketplace</span>
+              <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>Property Marketplace</span>
             </h1>
 
             {/* Tagline */}
@@ -171,7 +171,7 @@ export default function Home() {
       <section className="section" style={{ background: 'var(--secondary)', color: 'white' }}>
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <span className="tag" style={{ background: 'rgba(204,255,0,0.12)', color: '#CCFF00', border: '1px solid rgba(204,255,0,0.2)' }}>Marketplace Support</span>
+            <span className="tag" style={{ background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', border: '1px solid rgba(252, 110, 32, 0.28)' }}>Marketplace Support</span>
             <h2 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 44px)', marginTop: '16px', marginBottom: '24px' }}>
               Clarity & Records<br />Across the Ecosystem
             </h2>
@@ -184,7 +184,7 @@ export default function Home() {
               <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: 1.6 }}>
                 Every property needs a record. Buildogram Property Passport helps organize BOQ records, documents, materials, maintenance, quality proof, and listing readiness.
               </p>
-              <Link href="/property-passport" style={{ display: 'inline-block', marginTop: '20px', color: '#CCFF00', fontWeight: 600, textDecoration: 'none' }}>Learn more →</Link>
+              <Link href="/property-passport" style={{ display: 'inline-block', marginTop: '20px', background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontWeight: 600, textDecoration: 'none' }}>Learn more →</Link>
             </div>
 
             <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '32px' }}>
@@ -193,7 +193,7 @@ export default function Home() {
               <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: 1.6 }}>
                 Decision support before construction. Understand what is included, what is unclear, and what questions to ask before you finalize a contractor.
               </p>
-              <Link href="/boq-audit" style={{ display: 'inline-block', marginTop: '20px', color: '#CCFF00', fontWeight: 600, textDecoration: 'none' }}>Learn more →</Link>
+              <Link href="/boq-audit" style={{ display: 'inline-block', marginTop: '20px', background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontWeight: 600, textDecoration: 'none' }}>Learn more →</Link>
             </div>
 
             <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '32px' }}>
@@ -202,14 +202,14 @@ export default function Home() {
               <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '15px', lineHeight: 1.6 }}>
                 After-construction and after-listing support. Connect with reliable maintenance vendors for repairs, AMC, and long-term upkeep.
               </p>
-              <Link href="/maintenance" style={{ display: 'inline-block', marginTop: '20px', color: '#CCFF00', fontWeight: 600, textDecoration: 'none' }}>Learn more →</Link>
+              <Link href="/maintenance" style={{ display: 'inline-block', marginTop: '20px', background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontWeight: 600, textDecoration: 'none' }}>Learn more →</Link>
             </div>
           </div>
         </div>
       </section>
 
       {/* ══════════════════ FINAL CTA ══════════════════ */}
-      <section className="section" style={{ background: '#CCFF00', color: '#1A1A1A', textAlign: 'center' }}>
+      <section className="section" style={{ background: 'var(--gradient-orange)', color: '#1A1A1A', textAlign: 'center' }}>
         <div className="container">
           <h2 style={{ fontSize: 'clamp(32px, 5vw, 48px)', marginBottom: '20px', fontWeight: 800 }}>Join the Construction & Property Marketplace</h2>
           <p style={{ fontSize: '18px', maxWidth: '600px', margin: '0 auto 40px', fontWeight: 500, color: 'rgba(0,0,0,0.7)' }}>

@@ -26,14 +26,14 @@ export default function MaintenancePage() {
     <>
       {/* ── Hero ── */}
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 30% 60%, rgba(204,255,0,0.06) 0%, transparent 55%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 30% 60%, rgba(252, 110, 32, 0.06) 0%, transparent 55%)' }} />
         <div className="container" style={{ position: 'relative', textAlign: 'center' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(204,255,0,0.12)', border: '1px solid rgba(204,255,0,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
-            <span style={{ color: '#CCFF00', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Home Maintenance</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Home Maintenance</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(34px, 5vw, 60px)', lineHeight: 1.1, marginBottom: '24px' }}>
             Maintain your property<br />
-            <span style={{ color: '#CCFF00' }}>with proof of every fix.</span>
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>with proof of every fix.</span>
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', maxWidth: '600px', margin: '0 auto 40px', lineHeight: 1.7 }}>
             Waterproofing, plumbing, electrical, painting and AMC services — with before/after photos, material records and Property Passport updates.
@@ -76,19 +76,19 @@ export default function MaintenancePage() {
             {amcPlans.map(p => (
               <div key={p.plan} style={{
                 borderRadius: '20px', padding: '36px 28px',
-                border: p.highlight ? '2px solid #CCFF00' : '1px solid var(--border)',
+                border: p.highlight ? '2px solid #FC6E20' : '1px solid var(--border)',
                 background: p.highlight ? '#292929' : 'white',
                 position: 'relative',
               }}>
                 {p.highlight && (
-                  <div style={{ position: 'absolute', top: '-14px', left: '50%', transform: 'translateX(-50%)', background: '#CCFF00', color: '#292929', borderRadius: '999px', padding: '4px 16px', fontSize: '12px', fontWeight: 700, whiteSpace: 'nowrap' }}>Most Popular</div>
+                  <div style={{ position: 'absolute', top: '-14px', left: '50%', transform: 'translateX(-50%)', background: 'var(--gradient-orange)', color: '#292929', borderRadius: '999px', padding: '4px 16px', fontSize: '12px', fontWeight: 700, whiteSpace: 'nowrap' }}>Most Popular</div>
                 )}
                 <h3 style={{ fontSize: '20px', marginBottom: '8px', color: p.highlight ? 'white' : '#292929' }}>{p.plan}</h3>
-                <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '28px', fontWeight: 800, color: p.highlight ? '#CCFF00' : '#292929', marginBottom: '20px' }}>{p.price}</div>
+                <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '28px', fontWeight: 800, color: p.highlight ? '#FC6E20' : '#292929', marginBottom: '20px' }}>{p.price}</div>
                 <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '28px' }}>
                   {p.features.map(f => (
                     <li key={f} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '14px', color: p.highlight ? 'rgba(255,255,255,0.8)' : 'var(--text)' }}>
-                      <span style={{ background: p.highlight ? '#CCFF00' : '#292929', color: p.highlight ? '#292929' : '#CCFF00', borderRadius: '50%', width: '18px', height: '18px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 800, flexShrink: 0 }}>✓</span>
+                      <span style={{ background: p.highlight ? '#FC6E20' : '#292929', color: p.highlight ? '#292929' : '#FC6E20', borderRadius: '50%', width: '18px', height: '18px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px', fontWeight: 800, flexShrink: 0 }}>✓</span>
                       {f}
                     </li>
                   ))}

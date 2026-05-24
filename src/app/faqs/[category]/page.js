@@ -50,7 +50,7 @@ export default function FaqCategoryPage({ params }) {
           <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '20px', fontSize: '13px' }}>
             <Link href="/faqs" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none' }}>FAQs</Link>
             <span style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-            <span style={{ color: '#CCFF00' }}>{cat.title}</span>
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>{cat.title}</span>
           </nav>
           <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 46px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>{cat.title}</h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', maxWidth: '560px', lineHeight: 1.7 }}>{cat.intro}</p>

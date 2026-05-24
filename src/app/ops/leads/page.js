@@ -1484,7 +1484,7 @@ export default function OpsLeads() {
             <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.5 }}>{toast.message}</div>
             {toast.propertyId && (
               <a href="/ops/properties" target="_blank" rel="noreferrer"
-                style={{ fontSize: '12px', color: '#CCFF00', fontWeight: 700, marginTop: '6px', display: 'inline-block' }}>
+                style={{ fontSize: '12px', background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontWeight: 700, marginTop: '6px', display: 'inline-block' }}>
                 Open in Properties →
               </a>
             )}

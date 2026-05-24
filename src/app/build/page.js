@@ -31,15 +31,15 @@ export default function BuildPage() {
     <>
       {/* ── Hero ── */}
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 30% 50%, rgba(204,255,0,0.07) 0%, transparent 55%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 30% 50%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
         <div className="container" style={{ position: 'relative' }}>
           <div style={{ maxWidth: '680px' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(204,255,0,0.12)', border: '1px solid rgba(204,255,0,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
-              <span style={{ color: '#CCFF00', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Construction with Proof</span>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
+              <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Construction with Proof</span>
             </div>
             <h1 style={{ color: 'white', fontSize: 'clamp(36px, 5vw, 60px)', lineHeight: 1.1, marginBottom: '24px' }}>
               Build with proof,<br />
-              <span style={{ color: '#CCFF00' }}>not promises.</span>
+              <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>not promises.</span>
             </h1>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', lineHeight: 1.7, marginBottom: '40px' }}>
               From home construction to villa projects — Buildogram gives you cost clarity, material verification, quality proof and a permanent Property Passport.
@@ -53,7 +53,7 @@ export default function BuildPage() {
       </section>
 
       {/* ── Stats ── */}
-      <section style={{ background: '#CCFF00', padding: '28px 0' }}>
+      <section style={{ background: 'var(--gradient-orange)', padding: '28px 0' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '48px', flexWrap: 'wrap' }}>
           {stats.map(([n, l]) => (
             <div key={l} style={{ textAlign: 'center' }}>
@@ -79,7 +79,7 @@ export default function BuildPage() {
               <Link key={s.title} href={s.href} style={{ display: 'block', textDecoration: 'none' }}>
                 <div className="card card-hover" style={{ height: '100%', position: 'relative' }}>
                   {s.tag && (
-                    <div style={{ position: 'absolute', top: '20px', right: '20px', background: '#CCFF00', color: '#292929', borderRadius: '999px', padding: '3px 12px', fontSize: '11px', fontWeight: 700 }}>{s.tag}</div>
+                    <div style={{ position: 'absolute', top: '20px', right: '20px', background: 'var(--gradient-orange)', color: '#292929', borderRadius: '999px', padding: '3px 12px', fontSize: '11px', fontWeight: 700 }}>{s.tag}</div>
                   )}
                   <div style={{ fontSize: '40px', marginBottom: '16px' }}>{s.icon}</div>
                   <h3 style={{ fontSize: '20px', marginBottom: '10px', color: '#292929' }}>{s.title}</h3>

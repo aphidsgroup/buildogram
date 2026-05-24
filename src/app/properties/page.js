@@ -10,13 +10,13 @@ export default function PropertiesHubPage() {
     <>
       {/* ── Hero ── */}
       <section style={{ background: '#292929', color: 'white', padding: '60px 0 80px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% -20%, rgba(204,255,0,0.15) 0%, transparent 70%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% -20%, rgba(252, 110, 32, 0.15) 0%, transparent 70%)' }} />
         <div className="container" style={{ position: 'relative', textAlign: 'center', maxWidth: '800px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(204,255,0,0.1)', border: '1px solid rgba(204,255,0,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
-            <span style={{ color: '#CCFF00', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Property Portals</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Property Portals</span>
           </div>
           <h1 style={{ fontSize: 'clamp(36px, 5vw, 56px)', lineHeight: 1.1, marginBottom: '24px' }}>
-            Property Portals Connected to <span style={{ color: '#CCFF00' }}>Buildogram</span>
+            Property Portals Connected to <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>Buildogram</span>
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '20px', lineHeight: 1.6, marginBottom: '40px' }}>
             Buildogram connects construction, property records, materials, partners, and property opportunities. For property discovery, use our dedicated portals for buy/sell and rent/lease needs.
