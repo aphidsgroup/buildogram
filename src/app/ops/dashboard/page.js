@@ -162,6 +162,29 @@ export default function OpsDashboard() {
         )}
       </div>
 
+      {user && roleCan(user.role, 'manage_invoices') && (
+        <>
+          <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Invoicing Health</h3>
+          <div className="grid-3 mb-8" style={{ gap: '16px' }}>
+            <div className="card" style={{ padding: '20px', border: '1px solid #e2e8f0', background: 'white' }}>
+                <div style={{ background: '#f1f5f9', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>🧾</div>
+                <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>{fmt(data?.invoices?.total_invoiced)}</div>
+                <div style={{ fontSize: '12px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Invoiced</div>
+            </div>
+            <div className="card" style={{ padding: '20px', border: '1px solid #bbf7d0', background: '#f0fdf4' }}>
+                <div style={{ background: '#dcfce7', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>✅</div>
+                <div style={{ fontSize: '24px', fontWeight: 800, color: '#166534', marginBottom: '4px' }}>{fmt(data?.invoices?.total_paid)}</div>
+                <div style={{ fontSize: '12px', fontWeight: 700, color: '#15803d', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Invoices Paid</div>
+            </div>
+            <div className="card" style={{ padding: '20px', border: '1px solid #fecaca', background: '#fef2f2' }}>
+                <div style={{ background: '#fee2e2', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>⏳</div>
+                <div style={{ fontSize: '24px', fontWeight: 800, color: '#991b1b', marginBottom: '4px' }}>{fmt(data?.invoices?.total_due)}</div>
+                <div style={{ fontSize: '12px', fontWeight: 700, color: '#b91c1c', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Invoices Due</div>
+            </div>
+          </div>
+        </>
+      )}
+
       <div className="grid-2" style={{ gap: '24px', marginBottom: '32px' }}>
         {/* ── LEAD BREAKDOWN ── */}
         <div className="card" style={{ background: 'white', padding: '24px' }}>

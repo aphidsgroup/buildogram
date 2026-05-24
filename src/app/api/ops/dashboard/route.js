@@ -84,6 +84,7 @@ export async function GET(req) {
 
     // 2. Revenue Totals
     let rev = { actual_received: 0, total_pending: 0, commission_received: 0 };
+    let inv = { total_invoiced: 0, total_paid: 0, total_due: 0 };
     if (canViewRevenue) {
       const [revData] = await sql`
         SELECT 
@@ -94,6 +95,20 @@ export async function GET(req) {
         WHERE status != 'cancelled'
       `;
       if (revData) rev = revData;
+      
+      try {
+        const [invData] = await sql`
+          SELECT 
+            SUM(total_amount) as total_invoiced,
+            SUM(amount_paid) as total_paid,
+            SUM(amount_due) as total_due
+          FROM invoice_records
+          WHERE status != 'cancelled'
+        `;
+        if (invData) inv = invData;
+      } catch (e) {
+        console.error('Invoices table not ready or error:', e);
+      }
     }
 
     // 3. Alerts
@@ -172,6 +187,8 @@ export async function GET(req) {
         leadTypes: leadTypeBreakdown,
         statuses: statusBreakdown,
       },
+      revenue: rev,
+      invoices: inv,
       alerts: {
         pendingPartners: pendingPartners.count,
         urgentMaintenance: urgentMaintenance.count,
