@@ -22,7 +22,7 @@ export default function PropertiesRentPage() {
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <a href="/properties/list-your-property" className="btn btn-primary btn-lg">List Your Property</a>
-            <a href="/contact" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Talk to an Advisor</a>
+            <a href="/contact" className="btn btn-lg btn-outline-light">Talk to an Advisor</a>
           </div>
         </div>
       </section>

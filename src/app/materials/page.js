@@ -45,7 +45,7 @@ export default function MaterialsPage() {
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="#quote" className="btn btn-primary btn-lg">Request Material Quote</Link>
-            <Link href="/cost-estimator" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Estimate Materials</Link>
+            <Link href="/cost-estimator" className="btn btn-lg btn-outline-light">Estimate Materials</Link>
           </div>
         </div>
       </section>

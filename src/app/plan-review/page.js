@@ -98,7 +98,7 @@ export default function PlanReviewPage() {
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <a href="#review-form" className="btn btn-primary btn-lg">Submit Plan for Review</a>
-            <Link href="/contact" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Talk to an Engineer</Link>
+            <Link href="/contact" className="btn btn-lg btn-outline-light">Talk to an Engineer</Link>
           </div>
         </div>
       </section>

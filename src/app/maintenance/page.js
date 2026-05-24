@@ -40,7 +40,7 @@ export default function MaintenancePage() {
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="#request" className="btn btn-primary btn-lg">Request Maintenance Service</Link>
-            <Link href="#amc" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>View AMC Plans</Link>
+            <Link href="#amc" className="btn btn-lg btn-outline-light">View AMC Plans</Link>
           </div>
         </div>
       </section>

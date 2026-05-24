@@ -61,6 +61,11 @@ ul { list-style: none; }
 .btn-success { background: var(--success); color: white; border-color: var(--success); }
 .btn-danger { background: var(--error); color: white; border-color: var(--error); }
 
+.btn-outline-light { border: 2px solid rgba(255,255,255,0.3) !important; color: white !important; background: transparent; }
+.btn-outline-light:hover { border-color: white !important; color: var(--primary-dark) !important; background: white; transform: translateY(-1px); }
+.btn-ghost-light { background: transparent; color: rgba(255,255,255,0.7) !important; border-color: transparent !important; }
+.btn-ghost-light:hover { background: rgba(255,255,255,0.1); color: white !important; }
+
 .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 28px; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--shadow); }
 .card-hover:hover { transform: translateY(-6px); box-shadow: var(--shadow-premium); border-color: rgba(187, 160, 122, 0.15); }
 

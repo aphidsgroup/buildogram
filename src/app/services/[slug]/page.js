@@ -67,7 +67,7 @@ export default function ServicePage({ params }) {
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href={svc.cta.href} className="btn btn-primary btn-lg">{svc.cta.text}</Link>
             {svc.ctaSecondary && (
-              <Link href={svc.ctaSecondary.href} className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>{svc.ctaSecondary.text}</Link>
+              <Link href={svc.ctaSecondary.href} className="btn btn-lg btn-outline-light">{svc.ctaSecondary.text}</Link>
             )}
           </div>
         </div>
@@ -174,7 +174,7 @@ export default function ServicePage({ params }) {
           <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '28px', fontSize: '16px' }}>Talk to our structural engineers and get a free initial consultation.</p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href={svc.cta.href} className="btn btn-primary btn-lg">{svc.cta.text}</Link>
-            {svc.ctaSecondary && <Link href={svc.ctaSecondary.href} className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>{svc.ctaSecondary.text}</Link>}
+            {svc.ctaSecondary && <Link href={svc.ctaSecondary.href} className="btn btn-lg btn-outline-light">{svc.ctaSecondary.text}</Link>}
           </div>
         </div>
 

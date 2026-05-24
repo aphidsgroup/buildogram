@@ -40,12 +40,12 @@ export default function Home() {
             {/* CTA row */}
             <div className={styles.btnRow}>
               <Link href="/about" className="btn btn-primary btn-lg">Explore Buildogram</Link>
-              <Link href="/partners" className="btn btn-lg btn-outline" style={{ border: '2px solid rgba(255,255,255,0.3) !important', color: 'white !important' }}>Join the Marketplace</Link>
+              <Link href="/partners" className="btn btn-lg btn-outline-light">Join the Marketplace</Link>
             </div>
             
             <div className={styles.btnRow} style={{ marginTop: '16px' }}>
-               <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" className="btn" style={{ color: 'rgba(255,255,255,0.7)' }}>Buy/Sell Properties →</a>
-               <Link href="/materials" className="btn" style={{ color: 'rgba(255,255,255,0.7)' }}>Request Material Quote →</Link>
+               <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" className="btn btn-ghost-light">Buy/Sell Properties →</a>
+               <Link href="/materials" className="btn btn-ghost-light">Request Material Quote →</Link>
             </div>
           </div>
         </div>

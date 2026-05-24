@@ -110,7 +110,7 @@ export default function Projects() {
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <a href="/contact" className="btn btn-primary btn-lg">Request Site Audit Visit</a>
-            <a href="/cost-estimator" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Estimate Build Cost</a>
+            <a href="/cost-estimator" className="btn btn-lg btn-outline-light">Estimate Build Cost</a>
           </div>
         </div>
       </section>

@@ -64,7 +64,7 @@ export default function LocalityPage({ params }) {
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/contact" className="btn btn-primary btn-lg">Start {loc.name} Construction</Link>
-            <Link href="/cost-estimator" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Estimate Cost</Link>
+            <Link href="/cost-estimator" className="btn btn-lg btn-outline-light">Estimate Cost</Link>
           </div>
         </div>
       </section>
@@ -149,7 +149,7 @@ export default function LocalityPage({ params }) {
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="/contact" className="btn btn-primary btn-lg">Free Consultation</Link>
-            <Link href="/cost-estimator" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Estimate Cost</Link>
+            <Link href="/cost-estimator" className="btn btn-lg btn-outline-light">Estimate Cost</Link>
           </div>
         </div>
 

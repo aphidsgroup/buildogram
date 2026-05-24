@@ -45,7 +45,7 @@ export default function PartnersPage() {
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="#join" className="btn btn-primary btn-lg">Join Partner Network</Link>
-            <Link href="/contact" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Talk to Us First</Link>
+            <Link href="/contact" className="btn btn-lg btn-outline-light">Talk to Us First</Link>
           </div>
         </div>
       </section>

@@ -88,7 +88,7 @@ export default function WarrantyAndMaintenance() {
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>We protect your investment from foundation kickoff to lifetime asset care — hassle-free bank loan support, stamp-bound 10-year structural warranties, and premium AMC care plans.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <a href="/contact" className="btn btn-primary btn-lg">Book Free Consultation</a>
-            <a href="/cost-estimator" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Estimate Build Cost</a>
+            <a href="/cost-estimator" className="btn btn-lg btn-outline-light">Estimate Build Cost</a>
           </div>
         </div>
       </section>

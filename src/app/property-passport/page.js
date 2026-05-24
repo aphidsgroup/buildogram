@@ -54,7 +54,7 @@ export default function PropertyPassportPage() {
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="#create" className="btn btn-primary btn-lg">Create My Property Passport</Link>
-            <Link href="#what-it-stores" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>See What It Stores</Link>
+            <Link href="#what-it-stores" className="btn btn-lg btn-outline-light">See What It Stores</Link>
           </div>
         </div>
       </section>

@@ -98,7 +98,7 @@ export default function HowItWorks() {
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>We replace traditional contractor guesswork with PhD-reviewed structural designs, milestone-linked payments, and 500+ certified quality checks across 3 construction phases.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <a href="/contact" className="btn btn-primary btn-lg">Start Your Project</a>
-            <a href="/specifications" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>View Specifications</a>
+            <a href="/specifications" className="btn btn-lg btn-outline-light">View Specifications</a>
           </div>
         </div>
       </section>
