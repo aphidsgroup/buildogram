@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import styles from '../ops/layout.module.css';
+import BottomNav from '@/components/BottomNav';
 
 const CLIENT_NAV = [
   { href: '/client/dashboard', icon: '🏠', label: 'My Dashboard' },
@@ -51,7 +52,7 @@ export default function ClientLayout({ children }) {
         </div>
       </aside>
       {sidebarOpen && <div className={styles.overlay} onClick={() => setSidebarOpen(false)} />}
-      <div className={styles.main}>
+      <div className={`${styles.main} has-bottom-nav`}>
         <header className={styles.topbar}>
           <button className={styles.menuBtn} onClick={() => setSidebarOpen(true)}>☰</button>
           <div style={{ flex: 1 }} />
@@ -59,6 +60,7 @@ export default function ClientLayout({ children }) {
         </header>
         <div className={styles.content}>{children}</div>
       </div>
+      <BottomNav />
     </div>
   );
 }
