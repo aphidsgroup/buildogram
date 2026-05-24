@@ -26,13 +26,17 @@ export default function DirectoryClient() {
     { id: 'builder', label: 'Builders' },
     { id: 'architect', label: 'Architects' },
     { id: 'interior', label: 'Interior Designers' },
-    { id: 'material', label: 'Material Suppliers' }
+    { id: 'material', label: 'Material Suppliers' },
+    { id: 'automation', label: 'Home Automation' },
+    { id: 'solar', label: 'Solar' },
+    { id: 'elevator', label: 'Elevators' },
+    { id: 'waterproofing', label: 'Waterproofing' }
   ];
 
   return (
     <div>
       {/* Filters */}
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '32px', overflowX: 'auto', paddingBottom: '8px' }}>
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '32px', flexWrap: 'wrap', overflowX: 'auto', paddingBottom: '8px' }}>
         {filters.map(f => (
           <button 
             key={f.id}
@@ -57,8 +61,9 @@ export default function DirectoryClient() {
         <div className="grid-3" style={{ gap: '24px' }}>
           {partners.map(p => {
             const meta = p.metadata || {};
+            const slug = meta.slug || p.id; // fallback to id if no slug
             return (
-              <Link href={`/partners/${p.id}`} key={p.id} className="card card-hover" style={{ display: 'flex', flexDirection: 'column' }}>
+              <Link href={`/partners/${slug}`} key={p.id} className="card card-hover" style={{ display: 'flex', flexDirection: 'column' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
                   <div style={{ width: '48px', height: '48px', borderRadius: '8px', background: 'var(--secondary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', fontWeight: 700 }}>
                     {meta.business_name ? meta.business_name[0] : 'B'}

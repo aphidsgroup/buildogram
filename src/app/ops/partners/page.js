@@ -358,8 +358,11 @@ export default function OpsPartners() {
               )}
 
               {/* Actions */}
-              <div style={{ display: 'flex', gap: '10px', paddingTop: '4px' }}>
-                <a href={`tel:${selected.phone}`} className="btn btn-primary" style={{ flex: 1, justifyContent: 'center' }}>
+              <div style={{ display: 'flex', gap: '10px', paddingTop: '4px', flexWrap: 'wrap' }}>
+                <a href={`/ops/partners/${selected.id}`} className="btn btn-primary" style={{ flex: '1 1 100%', justifyContent: 'center', marginBottom: '8px' }}>
+                  Edit Full Profile
+                </a>
+                <a href={`tel:${selected.phone}`} className="btn btn-outline" style={{ flex: 1, justifyContent: 'center' }}>
                   📞 Call
                 </a>
                 <a
