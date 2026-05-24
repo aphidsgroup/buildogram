@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import Navbar from '../Navbar';
 
 export default function Contact() {
   const [form, setForm] = useState({ name: '', phone: '', email: '', requirement: 'New Construction', location: '', notes: '' });
@@ -28,8 +27,7 @@ export default function Contact() {
 
   return (
     <>
-      <Navbar />
-      <div className="page" style={{ paddingTop: '100px', minHeight: '100vh' }}>
+            <div className="page" style={{ paddingTop: '40px', minHeight: '100vh' }}>
       <div className="container">
         <div className="page-header text-center" style={{ border: 'none', marginBottom: '60px' }}>
           <div className="tag mb-4">Get In Touch</div>

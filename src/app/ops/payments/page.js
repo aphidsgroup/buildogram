@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect } from 'react';
-import Navbar from '@/app/Navbar';
 
 export default function OpsPayments() {
   const [orders, setOrders] = useState([]);
@@ -17,8 +16,7 @@ export default function OpsPayments() {
   
   return (
     <div className="bg-gray">
-      <Navbar role="ops_admin" />
-      <div className="container">
+            <div className="container">
         <div className="flex-between mb-6">
           <div>
             <h1 style={{ fontSize: '24px', fontWeight: 'bold' }}>Payment Gateway Orders</h1>

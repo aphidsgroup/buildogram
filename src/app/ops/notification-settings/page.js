@@ -1,6 +1,5 @@
 'use client';
 import { useState, useEffect } from 'react';
-import Navbar from '@/app/Navbar';
 
 export default function NotificationSettings() {
   const [settings, setSettings] = useState({
@@ -38,8 +37,7 @@ export default function NotificationSettings() {
 
   return (
     <div className="bg-gray">
-      <Navbar role="ops_admin" />
-      <div className="container" style={{ maxWidth: '700px' }}>
+            <div className="container" style={{ maxWidth: '700px' }}>
         <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px' }}>Notification Automation Settings</h1>
         <p className="text-muted mb-6">Control global rate limits, quiet hours, and automation triggers.</p>
 

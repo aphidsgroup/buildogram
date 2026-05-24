@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import Navbar from '../Navbar';
 
 export default function WarrantyAndMaintenance() {
   const [activeAmc, setActiveAmc] = useState('premium');
@@ -79,8 +78,7 @@ export default function WarrantyAndMaintenance() {
 
   return (
     <>
-      <Navbar />
-      <div className="page" style={{ paddingTop: '100px', minHeight: '100vh' }}>
+            <div className="page" style={{ paddingTop: '40px', minHeight: '100vh' }}>
 
       <div className="container">
         {/* HEADER */}

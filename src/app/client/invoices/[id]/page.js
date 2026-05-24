@@ -90,8 +90,7 @@ export default function ClientInvoiceDetail({ params }) {
 
   return (
     <div className="bg-gray" style={{ minHeight: '100vh' }}>
-      <Navbar role="client" />
-      <div className="container" style={{ maxWidth: '800px', padding: '40px 20px' }}>
+            <div className="container" style={{ maxWidth: '800px', padding: '40px 20px' }}>
         
         <Link href="/client/invoices" className="btn btn-sm btn-outline mb-6">← Back to Invoices</Link>
         

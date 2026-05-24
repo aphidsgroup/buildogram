@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import Navbar from '../Navbar';
 
 export default function HowItWorks() {
   const [activeStage, setActiveStage] = useState('pre');
@@ -89,8 +88,7 @@ export default function HowItWorks() {
 
   return (
     <>
-      <Navbar />
-      <div className="page" style={{ paddingTop: '100px', minHeight: '100vh' }}>
+            <div className="page" style={{ paddingTop: '40px', minHeight: '100vh' }}>
       <div className="container">
         {/* HEADER */}
         <div className="page-header text-center animate-fade-in" style={{ border: 'none', marginBottom: '50px' }}>

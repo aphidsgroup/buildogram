@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import Navbar from '../Navbar';
 
 export default function ChennaiConstruction() {
   const [activeTab, setActiveTab] = useState('soils');
@@ -45,8 +44,7 @@ export default function ChennaiConstruction() {
 
   return (
     <>
-      <Navbar />
-      <div className="page" style={{ paddingTop: '100px', minHeight: '100vh' }}>
+            <div className="page" style={{ paddingTop: '40px', minHeight: '100vh' }}>
       <div className="container">
         {/* HEADER */}
         <div className="page-header text-center animate-fade-in" style={{ border: 'none', marginBottom: '40px' }}>

@@ -8,7 +8,7 @@ export const metadata = {
 export default function PropertiesRentPage() {
   return (
     <>
-      <section style={{ background: '#292929', color: 'white', padding: '60px 0' }}>
+      <section style={{ background: '#292929', color: 'white', padding: '40px 0' }}>
         <div className="container" style={{ textAlign: 'center' }}>
           <h1 style={{ fontSize: '36px', marginBottom: '16px' }}>Verified Rentals</h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', maxWidth: '600px', margin: '0 auto' }}>
