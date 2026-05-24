@@ -7,21 +7,36 @@ export default function OpsDashboard() {
   const [data, setData] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/ops/dashboard').then(r => r.json()),
-      fetch('/api/auth/me').then(r => r.json())
+      fetch('/api/ops/dashboard', { credentials: 'include' }).then(async r => {
+        if (!r.ok) {
+          const errData = await r.json().catch(() => ({}));
+          throw new Error(r.status + ':' + (errData.error || 'Unknown Error'));
+        }
+        return r.json();
+      }),
+      fetch('/api/auth/me', { credentials: 'include' }).then(r => r.json())
     ]).then(([d, u]) => {
       if (d.success) setData(d);
       if (u.user) setUser(u.user);
       setLoading(false);
-    }).catch(() => setLoading(false));
+    }).catch((err) => {
+      const msg = err.message || '';
+      if (msg.startsWith('401')) setErrorMsg('Session expired or not logged in.');
+      else if (msg.startsWith('403')) setErrorMsg('You do not have admin permission.');
+      else if (msg.startsWith('500')) setErrorMsg('Server error while loading dashboard.');
+      else setErrorMsg('Cannot connect to backend API: ' + msg);
+      setLoading(false);
+    });
   }, []);
 
   const stColor = { new: 'badge-blue', contacted: 'badge-yellow', qualified: 'badge-orange', proposal: 'badge-orange', won: 'badge-green', lost: 'badge-red', requested: 'badge-blue', pending: 'badge-yellow', verified: 'badge-green', published: 'badge-green', draft: 'badge-gray' };
 
   if (loading) return <div className="flex-center" style={{ height: '60vh' }}><div className="spinner" /></div>;
+  if (errorMsg) return <div className="text-center p-10 text-red-500 font-bold">{errorMsg}</div>;
   if (!data) return <div className="text-center p-10 text-red-500">Failed to load dashboard. Ensure you have admin access.</div>;
 
   const { kpis, breakdowns, alerts, recent, followUps } = data;
