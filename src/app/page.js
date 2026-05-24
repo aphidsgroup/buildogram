@@ -532,13 +532,56 @@ export default function Home() {
           <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
             <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '13px' }}>© 2025 Buildogram. All rights reserved. Chennai, Tamil Nadu, India.</span>
             <div style={{ display: 'flex', gap: '20px' }}>
-              {[['Privacy Policy', '#'], ['Terms', '#'], ['Refund Policy', '#']].map(([l, h]) => (
+              {[['Privacy Policy', '/privacy-policy'], ['Terms', '/terms'], ['Refund Policy', '#']].map(([l, h]) => (
                 <Link key={l} href={h} style={{ color: 'rgba(255,255,255,0.35)', fontSize: '13px' }}>{l}</Link>
               ))}
             </div>
           </div>
         </div>
       </footer>
+      {/* JSON-LD Schemas */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@graph": [
+              {
+                "@type": "LocalBusiness",
+                "name": "Buildogram",
+                "image": "https://buildogram.in/logo.png",
+                "url": "https://buildogram.in",
+                "telephone": "+919876543210",
+                "email": "hello@buildogram.in",
+                "address": {
+                  "@type": "PostalAddress",
+                  "streetAddress": "12, Construction Tech Park, OMR IT Expressway",
+                  "addressLocality": "Chennai",
+                  "addressRegion": "TN",
+                  "postalCode": "600119",
+                  "addressCountry": "IN"
+                },
+                "geo": {
+                  "@type": "GeoCoordinates",
+                  "latitude": 12.8981,
+                  "longitude": 80.2268
+                }
+              },
+              {
+                "@type": "FAQPage",
+                "mainEntity": FAQS.map(faq => ({
+                  "@type": "Question",
+                  "name": faq.q,
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": faq.a
+                  }
+                }))
+              }
+            ]
+          })
+        }}
+      />
     </div>
   );
 }
