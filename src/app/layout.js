@@ -1,4 +1,5 @@
 import './globals.css';
+import SiteLayoutClient from './SiteLayoutClient';
 
 export const metadata = {
   title: 'Buildogram | India’s Property Transparency Platform',
@@ -42,7 +43,9 @@ export default function RootLayout({ children }) {
         <link rel="apple-touch-icon" href="/globe.svg" />
       </head>
       <body>
-        {children}
+        <SiteLayoutClient>
+          {children}
+        </SiteLayoutClient>
         <script
           dangerouslySetInnerHTML={{
             __html: `
