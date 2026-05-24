@@ -9,7 +9,7 @@ export default function SiteLayoutClient({ children }) {
   // Do not show public header/footer on internal dashboards or login page
   const isDashboard = pathname?.startsWith('/client') || 
                       pathname?.startsWith('/ops') || 
-                      pathname?.startsWith('/partner') || 
+                      pathname?.startsWith('/partner/') || pathname === '/partner' ||
                       pathname?.startsWith('/login');
 
   return (
