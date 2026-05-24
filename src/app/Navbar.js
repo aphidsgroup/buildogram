@@ -41,15 +41,22 @@ export default function Navbar() {
           <div className={styles.dropdown}>
             <span className={styles.dropdownTrigger}>Property <span className={styles.arrow}>▾</span></span>
             <div className={styles.dropdownMenu}>
-              <Link href="/properties" onClick={close}>Verified Rentals</Link>
+              <Link href="/properties/buy" onClick={close}>Buy Properties</Link>
+              <Link href="/properties/rent" onClick={close}>Rent Properties</Link>
+              <Link href="/properties/list-your-property" onClick={close}>List Your Property</Link>
               <Link href="/property-passport" onClick={close}>Property Passport™</Link>
               <Link href="/maintenance" onClick={close}>Maintenance & AMC</Link>
-              <Link href="/warranty-and-maintenance" onClick={close}>Warranty</Link>
             </div>
           </div>
 
           {/* Partners */}
-          <Link href="/partners" onClick={close}>Partners</Link>
+          <div className={styles.dropdown}>
+            <span className={styles.dropdownTrigger}>Partners <span className={styles.arrow}>▾</span></span>
+            <div className={styles.dropdownMenu}>
+              <Link href="/partners/directory" onClick={close}>Partner Directory</Link>
+              <Link href="/partners" onClick={close}>Join Network</Link>
+            </div>
+          </div>
 
           {/* Projects */}
           <Link href="/projects" onClick={close}>Projects</Link>
