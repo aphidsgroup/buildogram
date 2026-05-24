@@ -50,6 +50,14 @@ export default function ClientRequestDetailPage() {
       ['Delivery Location', m.delivery_location],
       ['Status', m.materials_status]
     ];
+  } else if (req.lead_type === 'boq_audit') {
+    details = [
+      ['Project Type', m.project_type],
+      ['Floors', m.floors],
+      ['Built-up Area', m.built_up_area ? `${m.built_up_area} sqft` : ''],
+      ['Quoted Amount', m.quoted_amount ? `₹${Number(m.quoted_amount).toLocaleString('en-IN')}` : ''],
+      ['Your Concern', m.customer_concern]
+    ];
   } else {
     details = [
       ['Status', req.status]
@@ -81,8 +89,71 @@ export default function ClientRequestDetailPage() {
               </a>
             </div>
           )}
+
+          {m.boq_file_url && req.lead_type === 'boq_audit' && (
+            <div style={{ paddingTop: '8px' }}>
+              <a href={m.boq_file_url} target="_blank" rel="noreferrer" className="btn btn-outline btn-sm">
+                📄 View Uploaded BOQ Document
+              </a>
+            </div>
+          )}
         </div>
       </div>
+
+      {req.lead_type === 'boq_audit' && (
+        <div className="card mt-6" style={{ background: 'white', padding: '32px', border: '2px solid #8b5cf6' }}>
+          <h2 style={{ fontSize: '20px', fontWeight: 800, marginBottom: '16px', color: '#4c1d95', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '24px' }}>🛡️</span> Official BOQ Audit Report
+          </h2>
+
+          {m.reviewed_boq_report ? (
+            <div style={{ fontSize: '14px', color: '#334155', display: 'flex', flexDirection: 'column', gap: '20px', lineHeight: 1.6 }}>
+              <div>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: '#7c3aed', textTransform: 'uppercase', marginBottom: '4px' }}>Executive Summary</div>
+                <div style={{ fontWeight: 500, color: '#0f172a' }}>{m.reviewed_boq_report.executive_summary}</div>
+              </div>
+              
+              {m.reviewed_boq_report.missing_or_unclear_items && (
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#7c3aed', textTransform: 'uppercase', marginBottom: '4px' }}>Missing or Unclear Items</div>
+                  <pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'inherit', color: '#1e293b' }}>{m.reviewed_boq_report.missing_or_unclear_items}</pre>
+                </div>
+              )}
+              
+              {m.reviewed_boq_report.escalation_risks && (
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#7c3aed', textTransform: 'uppercase', marginBottom: '4px' }}>Escalation & Cost Risks</div>
+                  <pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'inherit', color: '#1e293b' }}>{m.reviewed_boq_report.escalation_risks}</pre>
+                </div>
+              )}
+              
+              {m.reviewed_boq_report.questions_to_ask_contractor && (
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#7c3aed', textTransform: 'uppercase', marginBottom: '4px' }}>Questions for your Contractor</div>
+                  <pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'inherit', color: '#1e293b' }}>{m.reviewed_boq_report.questions_to_ask_contractor}</pre>
+                </div>
+              )}
+              
+              <div style={{ background: '#f5f3ff', padding: '16px', borderRadius: '8px', borderLeft: '4px solid #7c3aed' }}>
+                <div style={{ fontSize: '11px', fontWeight: 800, color: '#5b21b6', textTransform: 'uppercase', marginBottom: '4px' }}>Buildogram Recommendation</div>
+                <div style={{ fontWeight: 600, color: '#4c1d95' }}>{m.reviewed_boq_report.buildogram_recommendation}</div>
+              </div>
+              
+              <div style={{ background: '#fffbeb', padding: '12px', fontSize: '11px', fontStyle: 'italic', borderRadius: '6px', color: '#b45309', border: '1px solid #fde68a' }}>
+                <strong>Disclaimer:</strong> {m.reviewed_boq_report.disclaimer}
+              </div>
+            </div>
+          ) : (
+            <div style={{ padding: '32px', textAlign: 'center', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e1' }}>
+              <div style={{ fontSize: '32px', marginBottom: '12px' }}>⏳</div>
+              <h3 style={{ fontSize: '16px', color: '#0f172a', marginBottom: '8px' }}>Report In Progress</h3>
+              <p style={{ color: '#64748b', fontSize: '14px', margin: 0 }}>
+                Your BOQ review report is currently being prepared by the Buildogram engineering team. We will notify you once it is ready.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
