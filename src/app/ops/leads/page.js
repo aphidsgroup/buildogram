@@ -75,6 +75,13 @@ export default function OpsLeads() {
   const [revModal, setRevModal] = useState({ open: false, data: {} });
   const [revSaving, setRevSaving] = useState(false);
 
+  // BOQ Report State
+  const [reportMode, setReportMode] = useState(false);
+  const [reportForm, setReportForm] = useState({
+    executive_summary: '', missing_or_unclear_items: '', escalation_risks: '',
+    questions_to_ask_contractor: '', buildogram_recommendation: '', disclaimer: ''
+  });
+
   const showToast = (msg, type = 'success', propertyId = null) => {
     setToast({ message: msg, type, propertyId });
     setTimeout(() => setToast(null), 6000);
@@ -228,6 +235,51 @@ export default function OpsLeads() {
     setSelected(p => ({ ...p, metadata: { ...p.metadata, boq_review_status: 'reviewed' } }));
     logActivity(selected.id, { activity_type: 'status_change', title: 'BOQ draft reviewed by Ops', description: 'The BOQ Audit draft was reviewed.' });
     showToast('Marked as reviewed!');
+  };
+
+  const handleCreateReportFromDraft = () => {
+    const draft = selected?.metadata?.latest_draft;
+    if (!draft) return;
+    setReportForm({
+      executive_summary: draft.summary || '',
+      missing_or_unclear_items: (draft.missing_items || []).join('\n'),
+      escalation_risks: (draft.escalation_risks || []).join('\n'),
+      questions_to_ask_contractor: (draft.questions_for_contractor || []).join('\n'),
+      buildogram_recommendation: draft.recommended_next_step || '',
+      disclaimer: draft.disclaimer || 'This BOQ review draft is advisory and based on provided information. It is not final engineering, legal, contractual, or construction certification. Human review by Buildogram team/professionals is required before sharing with customer.'
+    });
+    setReportMode(true);
+  };
+
+  const handleSaveReport = (status) => {
+    if (status === 'ready_to_share') {
+      if (!reportForm.disclaimer || reportForm.disclaimer.length < 50) {
+        alert('A detailed legal disclaimer is required before sharing.');
+        return;
+      }
+      if (!reportForm.executive_summary || !reportForm.buildogram_recommendation) {
+        alert('Executive Summary and Recommendation are required.');
+        return;
+      }
+    }
+    
+    const newReport = {
+      ...reportForm,
+      status,
+      reviewed_by: 'Ops',
+      reviewed_at: new Date().toISOString()
+    };
+    
+    update(selected.id, { metadata: { ...selected.metadata, reviewed_boq_report: newReport } });
+    setSelected(p => ({ ...p, metadata: { ...p.metadata, reviewed_boq_report: newReport } }));
+    
+    if (status === 'ready_to_share') {
+      logActivity(selected.id, { activity_type: 'system', title: 'Reviewed BOQ report marked ready to share', description: 'Internal report is completed.' });
+    } else {
+      logActivity(selected.id, { activity_type: 'system', title: 'Reviewed BOQ report drafted', description: 'Saved internal report.' });
+    }
+    setReportMode(false);
+    showToast(`Report saved as ${status.replace('_', ' ')}!`);
   };
 
   const filtered = leads.filter(l => {
@@ -797,14 +849,105 @@ export default function OpsLeads() {
                             <strong>Disclaimer:</strong> {selected.metadata.latest_draft.disclaimer}
                           </div>
 
-                          {selected.metadata.boq_review_status !== 'reviewed' && (
-                            <button className="btn btn-sm" style={{ background: '#16a34a', color: 'white', width: '100%' }} onClick={markBOQReviewed}>
-                              ✅ Mark as Human Reviewed
+                          {selected.metadata.boq_review_status !== 'reviewed' && !selected.metadata.reviewed_boq_report && (
+                            <button className="btn btn-sm" style={{ background: '#16a34a', color: 'white', width: '100%', marginBottom: '8px' }} onClick={markBOQReviewed}>
+                              ✅ Mark AI Draft as Reviewed (No Output)
+                            </button>
+                          )}
+
+                          {(!selected.metadata.reviewed_boq_report || selected.metadata.reviewed_boq_report.status === 'draft') && (
+                            <button className="btn btn-sm" style={{ background: '#7c3aed', color: 'white', width: '100%' }} onClick={handleCreateReportFromDraft}>
+                              ✍️ {selected.metadata.reviewed_boq_report ? 'Edit Reviewed Report' : 'Create Reviewed Report From Draft'}
                             </button>
                           )}
                         </>
                       ) : (
                         <div style={{ fontSize: '12px', color: '#64748b', textAlign: 'center' }}>Draft data missing. Please check AI logs.</div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Reviewed Report Editor / Preview */}
+                  {reportMode ? (
+                    <div style={{ marginTop: '16px', background: 'white', padding: '16px', borderRadius: '8px', border: '2px solid #7c3aed' }}>
+                      <div style={{ fontSize: '13px', fontWeight: 800, color: '#4c1d95', marginBottom: '12px' }}>Edit Reviewed BOQ Report (Internal)</div>
+                      
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <div>
+                          <label style={{ fontSize: '11px', fontWeight: 700, color: '#6d28d9', display: 'block', marginBottom: '4px' }}>Executive Summary *</label>
+                          <textarea className="input" rows={2} value={reportForm.executive_summary} onChange={e => setReportForm({ ...reportForm, executive_summary: e.target.value })} style={{ fontSize: '12px' }} />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '11px', fontWeight: 700, color: '#6d28d9', display: 'block', marginBottom: '4px' }}>Missing or Unclear Items</label>
+                          <textarea className="input" rows={3} value={reportForm.missing_or_unclear_items} onChange={e => setReportForm({ ...reportForm, missing_or_unclear_items: e.target.value })} style={{ fontSize: '12px' }} />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '11px', fontWeight: 700, color: '#6d28d9', display: 'block', marginBottom: '4px' }}>Escalation & Cost Risks</label>
+                          <textarea className="input" rows={3} value={reportForm.escalation_risks} onChange={e => setReportForm({ ...reportForm, escalation_risks: e.target.value })} style={{ fontSize: '12px' }} />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '11px', fontWeight: 700, color: '#6d28d9', display: 'block', marginBottom: '4px' }}>Questions for Contractor</label>
+                          <textarea className="input" rows={3} value={reportForm.questions_to_ask_contractor} onChange={e => setReportForm({ ...reportForm, questions_to_ask_contractor: e.target.value })} style={{ fontSize: '12px' }} />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '11px', fontWeight: 700, color: '#6d28d9', display: 'block', marginBottom: '4px' }}>Buildogram Recommendation *</label>
+                          <textarea className="input" rows={2} value={reportForm.buildogram_recommendation} onChange={e => setReportForm({ ...reportForm, buildogram_recommendation: e.target.value })} style={{ fontSize: '12px' }} />
+                        </div>
+                        <div>
+                          <label style={{ fontSize: '11px', fontWeight: 700, color: '#c2410c', display: 'block', marginBottom: '4px' }}>Disclaimer (Mandatory) *</label>
+                          <textarea className="input" rows={3} value={reportForm.disclaimer} onChange={e => setReportForm({ ...reportForm, disclaimer: e.target.value })} style={{ fontSize: '11px', background: '#fff7ed', borderColor: '#fdba74' }} />
+                        </div>
+
+                        <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                          <button className="btn btn-ghost" onClick={() => setReportMode(false)}>Cancel</button>
+                          <button className="btn btn-primary" style={{ flex: 1, background: '#4c1d95' }} onClick={() => handleSaveReport('draft')}>💾 Save Draft</button>
+                          <button className="btn btn-primary" style={{ flex: 1, background: '#16a34a' }} onClick={() => handleSaveReport('ready_to_share')}>✅ Mark Ready to Share</button>
+                        </div>
+                      </div>
+                    </div>
+                  ) : selected.metadata.reviewed_boq_report && (
+                    <div style={{ marginTop: '16px', background: 'white', padding: '16px', borderRadius: '8px', border: selected.metadata.reviewed_boq_report.status === 'ready_to_share' ? '2px solid #22c55e' : '1px solid #ddd6fe' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                        <div style={{ fontSize: '13px', fontWeight: 800, color: '#4c1d95' }}>📄 Reviewed BOQ Report</div>
+                        <div style={{ display: 'flex', gap: '8px' }}>
+                          <span style={{ fontSize: '10px', background: selected.metadata.reviewed_boq_report.status === 'ready_to_share' ? '#dcfce7' : '#fef08a', color: selected.metadata.reviewed_boq_report.status === 'ready_to_share' ? '#166534' : '#854d0e', padding: '2px 8px', borderRadius: '99px', fontWeight: 700, textTransform: 'uppercase' }}>
+                            {selected.metadata.reviewed_boq_report.status.replace(/_/g, ' ')}
+                          </span>
+                          <button className="btn btn-ghost btn-sm" style={{ padding: '0 4px', color: '#7c3aed' }} onClick={() => {
+                            setReportForm(selected.metadata.reviewed_boq_report);
+                            setReportMode(true);
+                          }}>✏️ Edit</button>
+                        </div>
+                      </div>
+
+                      <div style={{ fontSize: '12px', color: '#334155', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                        <div><strong>Executive Summary:</strong><br/>{selected.metadata.reviewed_boq_report.executive_summary}</div>
+                        {selected.metadata.reviewed_boq_report.missing_or_unclear_items && (
+                          <div><strong>Missing Items:</strong><pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'inherit' }}>{selected.metadata.reviewed_boq_report.missing_or_unclear_items}</pre></div>
+                        )}
+                        {selected.metadata.reviewed_boq_report.escalation_risks && (
+                          <div><strong>Escalation Risks:</strong><pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'inherit' }}>{selected.metadata.reviewed_boq_report.escalation_risks}</pre></div>
+                        )}
+                        {selected.metadata.reviewed_boq_report.questions_to_ask_contractor && (
+                          <div><strong>Questions for Contractor:</strong><pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'inherit' }}>{selected.metadata.reviewed_boq_report.questions_to_ask_contractor}</pre></div>
+                        )}
+                        <div><strong>Buildogram Recommendation:</strong><br/>{selected.metadata.reviewed_boq_report.buildogram_recommendation}</div>
+                        <div style={{ background: '#f8fafc', padding: '8px', fontSize: '10px', fontStyle: 'italic', borderRadius: '4px', color: '#64748b' }}>
+                          {selected.metadata.reviewed_boq_report.disclaimer}
+                        </div>
+                      </div>
+
+                      {selected.metadata.reviewed_boq_report.status === 'ready_to_share' && (
+                        <div style={{ marginTop: '16px', borderTop: '1px solid #e2e8f0', paddingTop: '16px' }}>
+                          <button className="btn btn-sm" style={{ background: '#2563eb', color: 'white', width: '100%' }} onClick={() => {
+                            const r = selected.metadata.reviewed_boq_report;
+                            const text = `*Buildogram BOQ Audit Report*\n\n*Summary:*\n${r.executive_summary}\n\n*Missing/Unclear Items:*\n${r.missing_or_unclear_items}\n\n*Risks:*\n${r.escalation_risks}\n\n*Recommendation:*\n${r.buildogram_recommendation}\n\n_Disclaimer: ${r.disclaimer}_`;
+                            navigator.clipboard.writeText(text);
+                            showToast('Report copied to clipboard!');
+                          }}>
+                            📋 Copy Report Text for WhatsApp/Email
+                          </button>
+                        </div>
                       )}
                     </div>
                   )}
