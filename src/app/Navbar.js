@@ -60,9 +60,13 @@ export default function Navbar() {
           <div className={styles.dropdown}>
             <span className={styles.dropdownTrigger}>Resources <span className={styles.arrow}>▾</span></span>
             <div className={styles.dropdownMenu}>
-              <Link href="/guides/what-is-boq-in-construction" onClick={close}>Guides</Link>
-              <Link href="/faqs/construction" onClick={close}>FAQs</Link>
-              <Link href="/glossary/boq" onClick={close}>Glossary</Link>
+              <Link href="/resources" onClick={close}>Resources Hub</Link>
+              <Link href="/resources/construction-guide" onClick={close}>Construction Guide</Link>
+              <Link href="/resources/material-guide" onClick={close}>Material Guide</Link>
+              <Link href="/resources/property-buying-guide" onClick={close}>Property Buying Guide</Link>
+              <Link href="/resources/home-design-guide" onClick={close}>Home Design Guide</Link>
+              <hr style={{ margin: '6px 0', border: 'none', borderTop: '1px solid var(--border)' }} />
+              <Link href="/faqs" onClick={close}>FAQs</Link>
               <Link href="/cost-estimator" onClick={close}>Cost Estimator</Link>
             </div>
           </div>
