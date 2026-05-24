@@ -37,16 +37,22 @@ export default function WhyVsMason() {
 
   return (
     <>
-            <div className="page" style={{ paddingTop: '40px', minHeight: '100vh' }}>
-        <div className="container">
-          {/* HEADER */}
-          <div className="page-header text-center animate-fade-in" style={{ border: 'none', marginBottom: '50px' }}>
-            <div className="tag mb-4">Risk Education</div>
-            <h1 style={{ fontSize: '44px', color: 'var(--primary-dark)' }}>Why Buildogram vs Local Masons</h1>
-            <p className="text-muted mt-4" style={{ maxWidth: '650px', margin: '0 auto', fontSize: '17px' }}>
-              Building a home without independent structural engineering oversight is a major gamble. Compare the structural and financial risks of direct-labor builds with Buildogram's mediated protection.
-            </p>
+      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(255,218,1,0.07) 0%, transparent 55%)' }} />
+        <div className="container" style={{ position: 'relative' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.12)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
+            <span style={{ color: '#FFDA01', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Risk Education</span>
           </div>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>Buildogram vs. Local Masons — Why Engineering Oversight Saves Your Home</h1>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>Building without independent structural oversight is a financial and structural gamble. Compare the risks of direct-labour builds against Buildogram's mediated, engineer-verified protection model.</p>
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+            <a href="/contact" className="btn btn-primary btn-lg">Get Free Plan Audit</a>
+            <a href="/how-it-works" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>How We Mediate</a>
+          </div>
+        </div>
+      </section>
+
+      <div className="container" style={{ padding: '56px 24px' }}>
 
           {/* DENSE RISK HIGHLIGHT CARDS */}
           <div className="grid-3 mb-8 animate-fade-in">
@@ -108,7 +114,6 @@ export default function WhyVsMason() {
               </Link>
             </div>
           </div>
-        </div>
       </div>
     </>
   );
