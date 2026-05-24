@@ -12,7 +12,8 @@ export async function GET(req, { params }) {
   const logs = await sql`SELECT pl.*,u.name as logged_by_name FROM progress_logs pl LEFT JOIN users u ON u.id=pl.logged_by WHERE pl.project_id=${id} ORDER BY pl.log_date DESC LIMIT 20`;
   const issues = await sql`SELECT i.*,u.name as raised_by_name FROM issues i LEFT JOIN users u ON u.id=i.raised_by WHERE i.project_id=${id} ORDER BY i.created_at DESC`;
   const documents = await sql`SELECT * FROM documents WHERE project_id=${id} ORDER BY created_at DESC`;
-  return NextResponse.json({ project: p, milestones, logs, issues, documents });
+  const changeOrders = await sql`SELECT c.*, u.name as created_by_name FROM change_orders c LEFT JOIN users u ON u.id=c.created_by WHERE c.project_id=${id} ORDER BY c.created_at DESC`;
+  return NextResponse.json({ project: p, milestones, logs, issues, documents, changeOrders });
 }
 
 export async function PUT(req, { params }) {

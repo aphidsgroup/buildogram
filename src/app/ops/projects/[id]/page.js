@@ -10,6 +10,7 @@ export default function OpsProjectDetail({ params }) {
   const [milestoneForm, setMilestoneForm] = useState({ name: '', description: '', planned_date: '', payment_amount: '' });
   const [boqForm, setBoqForm] = useState({ category: '', activity: '', unit: 'sqft', quantity: '', rate: '' });
   const [logForm, setLogForm] = useState({ notes: '', workers_count: '', weather: '', photo_urls: '' });
+  const [coForm, setCoForm] = useState({ title: '', description: '', amount: '' });
 
   const load = () => fetch(`/api/projects/${id}`).then(r => r.json()).then(d => { setData(d); setLoading(false); });
   useEffect(() => { load(); }, [id]);
@@ -67,13 +68,28 @@ export default function OpsProjectDetail({ params }) {
     else alert('Failed to generate invoice');
   };
 
+  const addChangeOrder = async (e) => {
+    e.preventDefault();
+    await fetch('/api/change-orders', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...coForm, project_id: id }) });
+    setCoForm({ title: '', description: '', amount: '' });
+    load();
+  };
+
+  const updateChangeOrder = async (coId, status) => {
+    await fetch(`/api/change-orders/${coId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
+    load();
+  };
+
   const statusColor = { design: 'badge-blue', boq_approval: 'badge-yellow', execution: 'badge-orange', handover: 'badge-green', complete: 'badge-green', on_hold: 'badge-gray' };
   const milestoneColor = { pending: 'badge-gray', in_progress: 'badge-orange', qc_pending: 'badge-yellow', complete: 'badge-green' };
   const fmt = n => n ? '₹' + (n >= 10000000 ? (n/10000000).toFixed(1)+'Cr' : n >= 100000 ? (n/100000).toFixed(1)+'L' : n.toLocaleString('en-IN')) : '—';
-  const TABS = ['overview', 'milestones', 'boq', 'progress', 'issues'];
+  const TABS = ['overview', 'milestones', 'boq', 'change_orders', 'progress', 'issues'];
 
   if (loading || !data) return <div className="flex-center" style={{ height: '60vh' }}><div className="spinner" /></div>;
-  const { project: p, milestones = [], logs = [], issues = [] } = data;
+  const { project: p, milestones = [], logs = [], issues = [], changeOrders = [] } = data;
+
+  const approvedChangesTotal = changeOrders.filter(c => c.status === 'approved').reduce((sum, c) => sum + Number(c.amount), 0);
+  const revisedContractValue = Number(p.total_contract_value || 0) + approvedChangesTotal;
 
   return (
     <div>
@@ -94,7 +110,7 @@ export default function OpsProjectDetail({ params }) {
 
       {/* STATS */}
       <div className="grid-4 mb-6">
-        {[['Contract Value', fmt(p.total_contract_value)], ['Completion', `${p.completion_pct || 0}%`], ['Milestones', milestones.length], ['Issues', issues.filter(i => i.status === 'open').length + ' open']].map(([l, v]) => (
+        {[['Revised Contract Value', fmt(revisedContractValue)], ['Completion', `${p.completion_pct || 0}%`], ['Milestones', milestones.length], ['Issues', issues.filter(i => i.status === 'open').length + ' open']].map(([l, v]) => (
           <div key={l} className="stat-card"><div className="stat-value" style={{ fontSize: '24px' }}>{v}</div><div className="stat-label">{l}</div></div>
         ))}
       </div>
@@ -205,6 +221,48 @@ export default function OpsProjectDetail({ params }) {
                 </tbody>
               </table>
             </div>
+          </div>
+        </div>
+      )}
+
+      {tab === 'change_orders' && (
+        <div>
+          <div className="card mb-6">
+            <h3 style={{ fontSize: '15px', marginBottom: '16px' }}>Raise Change Order</h3>
+            <form onSubmit={addChangeOrder} style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+              <input className="input" placeholder="Title (e.g. Premium Tiles Upgrade) *" required style={{ flex: '2', minWidth: '180px' }} value={coForm.title} onChange={e => setCoForm(f => ({ ...f, title: e.target.value }))} />
+              <input className="input" placeholder="Description" style={{ flex: '2', minWidth: '180px' }} value={coForm.description} onChange={e => setCoForm(f => ({ ...f, description: e.target.value }))} />
+              <input className="input" type="number" placeholder="Amount ₹ (Use - for deduction)" required style={{ flex: '1', minWidth: '120px' }} value={coForm.amount} onChange={e => setCoForm(f => ({ ...f, amount: e.target.value }))} />
+              <button type="submit" className="btn btn-primary">Submit</button>
+            </form>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {changeOrders.map(c => (
+              <div key={c.id} className="card" style={{ padding: '16px 20px', borderLeft: c.status === 'approved' ? '4px solid var(--success)' : c.status === 'rejected' ? '4px solid var(--error)' : '4px solid var(--border)' }}>
+                <div className="flex-between">
+                  <div>
+                    <div style={{ fontWeight: '600', marginBottom: '4px' }}>{c.title}</div>
+                    <div className="text-muted text-sm">{c.description}</div>
+                  </div>
+                  <div className="flex gap-4" style={{ alignItems: 'center' }}>
+                    <span style={{ fontWeight: '700', fontSize: '16px', color: c.amount < 0 ? 'var(--error)' : 'var(--success)' }}>
+                      {c.amount > 0 ? '+' : ''}{fmt(c.amount)}
+                    </span>
+                    <div className="flex gap-2" style={{ alignItems: 'center' }}>
+                      <span className={`badge ${c.status === 'approved' ? 'badge-green' : c.status === 'rejected' ? 'badge-red' : 'badge-yellow'}`}>{c.status}</span>
+                      {c.status === 'pending' && (
+                        <select className="input" style={{ width: 'auto', fontSize: '12px', padding: '4px 8px' }} value={c.status} onChange={e => updateChangeOrder(c.id, e.target.value)}>
+                          <option value="pending">Pending</option>
+                          <option value="approved">Approve</option>
+                          <option value="rejected">Reject</option>
+                        </select>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+            {!changeOrders.length && <div className="empty-state"><div className="empty-icon">📝</div><p>No change orders raised yet.</p></div>}
           </div>
         </div>
       )}
