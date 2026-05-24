@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
 const FOOTER_COLS = [
-  { title: 'Build', links: [['Home Construction', '/build/home-construction'], ['Villa Construction', '/build/villa-construction'], ['Renovation', '/build/renovation'], ['BOQ Audit', '/boq-audit'], ['Plan Review', '/plan-review'], ['Cost Estimator', '/cost-estimator']] },
-  { title: 'Property', links: [['Verified Rentals', '/rentals'], ['Property Passport™', '/property-passport'], ['Maintenance & AMC', '/maintenance'], ['Warranty', '/warranty-and-maintenance'], ['Materials', '/materials'], ['Partners', '/partners']] },
-  { title: 'Learn', links: [['How It Works', '/how-it-works'], ['Specifications', '/specifications'], ['Chennai Guide', '/construction-in-chennai'], ['Blog', '/blog'], ['About Us', '/about']] },
+  { title: 'Marketplace', links: [['Construction Services', '/build'], ['Material Quotes', '/materials'], ['360° Property Listings', '/properties/buy'], ['Property Passport', '/property-passport'], ['Maintenance', '/maintenance']] },
+  { title: 'For Professionals', links: [['Join as Partner', '/partners'], ['Builders', '/partners'], ['Contractors', '/partners'], ['Architects', '/partners'], ['Suppliers', '/partners']] },
+  { title: 'Resources', links: [['Guides', '/guides/what-is-boq-in-construction'], ['FAQs', '/faqs/construction'], ['Glossary', '/glossary/boq'], ['Cost Estimator', '/cost-estimator'], ['BOQ Audit', '/boq-audit']] },
   { title: 'Portals', links: [['Client Login', '/login'], ['Partner Login', '/login'], ['Ops Console', '/login'], ['Contact Us', '/contact']] },
 ];
 
@@ -19,10 +19,10 @@ export default function Footer() {
               <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800, fontSize: '20px', color: 'white' }}>Buildogram</span>
             </Link>
             <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '14px', lineHeight: 1.7, maxWidth: '240px', marginBottom: '20px' }}>
-              India's Property Transparency Platform. Build with proof, not promises.
+              Buildogram is a construction and property marketplace that connects property owners, construction professionals, material suppliers, property listings, and digital property records.
             </p>
             <div style={{ fontFamily: 'DM Serif Text, serif', fontStyle: 'italic', color: '#BBA07A', fontSize: '15px' }}>
-              Buy. Build. Track. Rent. Sell. Maintain.
+              Showcase. Connect. Build.
             </div>
           </div>
           {/* Link columns */}

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import MaterialLeadForm from './MaterialLeadForm';
 
 export const metadata = {
-  title: 'Construction Materials in Chennai | Buy at Best Rates | Buildogram',
+  title: 'Construction Material Quote Marketplace | Buildogram',
   description: 'Buy cement, steel, sand, blocks, tiles and all construction materials at market-best rates with delivery verification and material proof records.',
 };
 

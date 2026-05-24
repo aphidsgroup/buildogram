@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 const sections = [
-  { icon: '📄', title: 'Legal Documents', desc: 'EC, patta, approval plans, govt clearances — all in one place.' },
+  { icon: '📄', title: 'Property Passport for Property Records | Buildogram', desc: 'EC, patta, approval plans, govt clearances — all in one place.' },
   { icon: '📐', title: 'Drawings & Plans', desc: 'Floor plans, elevation, structural, electrical, plumbing drawings.' },
   { icon: '📊', title: 'BOQ & Cost Records', desc: 'Approved BOQ, payment milestones, actual vs estimated costs.' },
   { icon: '🧱', title: 'Material Proof', desc: 'Brand, grade, quantity, test certificate, delivery records.' },

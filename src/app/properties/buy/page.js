@@ -1,7 +1,7 @@
 import PropertyMarketplaceClient from '../PropertyMarketplaceClient';
 
 export const metadata = {
-  title: '360° Verified Resales | Buildogram',
+  title: '360° Property Listings in Chennai | Buildogram Marketplace',
   description: 'Buy premium, verified properties in Chennai with 360° virtual tours.',
 };
 

@@ -2,7 +2,7 @@ import Link from 'next/link';
 import PartnerJoinForm from './PartnerJoinForm';
 
 export const metadata = {
-  title: 'Partner with Buildogram | Builders, Contractors, Architects, Suppliers',
+  title: 'Join Buildogram Partner Marketplace | Builders, Contractors, Suppliers',
   description: 'Join Buildogram\'s partner ecosystem. Get leads, verified profile, reels, project showcase, material benefits and IT/promotion services. Grow your construction business.',
 };
 
