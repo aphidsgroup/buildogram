@@ -87,7 +87,7 @@ export default function Home() {
       <Navbar />
 
       {/* ══════════════════════ HERO ══════════════════════ */}
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '110px 0 90px', position: 'relative', overflow: 'hidden', minHeight: '90vh', display: 'flex', alignItems: 'center' }}>
+      <section style={{ background: 'var(--secondary)', color: 'white', paddingTop: '140px', paddingBottom: '60px', position: 'relative', overflow: 'hidden', minHeight: '90vh', display: 'flex', alignItems: 'center' }}>
         {/* Ambient glow */}
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 65% 40%, rgba(255,218,1,0.09) 0%, transparent 55%)' }} />
         <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(255,218,1,0.4), transparent)' }} />
@@ -101,25 +101,25 @@ export default function Home() {
             </div>
 
             {/* Headline */}
-            <h1 style={{ color: 'white', fontSize: 'clamp(38px, 5.5vw, 72px)', lineHeight: 1.05, marginBottom: '28px', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800 }}>
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl leading-tight" style={{ color: 'white', marginBottom: '28px', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800 }}>
               Build with proof,<br />
               <span style={{ color: '#FFDA01' }}>not promises.</span>
             </h1>
 
             {/* Sub */}
-            <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: 'clamp(16px, 2vw, 20px)', lineHeight: 1.75, marginBottom: '20px', maxWidth: '640px' }}>
+            <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: 'inherit', lineHeight: 1.75, marginBottom: '20px', maxWidth: '640px' }}>
               Plan, build, track quality, buy materials, store records, rent, sell and maintain your property — with proof at every stage.
             </p>
-            <p style={{ fontFamily: 'DM Serif Text, serif', fontStyle: 'italic', color: '#BBA07A', fontSize: 'clamp(17px, 2.2vw, 22px)', marginBottom: '44px' }}>
+            <p style={{ fontFamily: 'DM Serif Text, serif', fontStyle: 'italic', color: '#BBA07A', fontSize: 'inherit', marginBottom: '44px' }}>
               Buy. Build. Track. Rent. Sell. Maintain.
             </p>
 
             {/* CTA row */}
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '60px' }}>
-              <Link href="/contact" className="btn btn-primary btn-lg">Get Construction Consultation</Link>
-              <Link href="/boq-audit" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Upload BOQ for Review</Link>
-              <Link href="/properties/list-your-property" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>List Your Property</Link>
-              <Link href="/materials" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Request Material Quote</Link>
+            <div className="flex flex-col sm:flex-row gap-3 w-full" style={{ marginBottom: '60px' }}>
+              <Link href="/contact" className="btn btn-primary btn-lg w-full sm:w-auto flex-center">Get Construction Consultation</Link>
+              <Link href="/boq-audit" className="btn btn-lg w-full sm:w-auto flex-center" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Upload BOQ for Review</Link>
+              <Link href="/properties/list-your-property" className="btn btn-lg w-full sm:w-auto flex-center" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>List Your Property</Link>
+              <Link href="/materials" className="btn btn-lg w-full sm:w-auto flex-center" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Request Material Quote</Link>
             </div>
 
             {/* Mini stats */}
@@ -137,7 +137,7 @@ export default function Home() {
 
       {/* ══════════════════ ECOSYSTEM STRIP ══════════════════ */}
       <section style={{ background: '#FFDA01', padding: '0' }}>
-        <div className="container" style={{ display: 'flex', gap: '0', overflowX: 'auto' }}>
+        <div className="container" className="overflow-x-auto w-full" style={{ display: 'flex', gap: '0' }}>
           {ECOSYSTEM.map((e, i) => (
             <Link key={e.title} href={e.href} style={{ flex: '1 0 auto', minWidth: '140px', textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 16px', gap: '6px', borderRight: i < ECOSYSTEM.length - 1 ? '1px solid rgba(0,0,0,0.08)' : 'none', transition: 'background 0.2s', cursor: 'pointer' }}
               onMouseEnter={e2 => e2.currentTarget.style.background = 'rgba(0,0,0,0.06)'}
@@ -156,7 +156,7 @@ export default function Home() {
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>
             <span className="tag">The Buildogram Ecosystem</span>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 48px)', marginTop: '16px', marginBottom: '20px', color: '#292929' }}>
+            <h2 className="text-3xl sm:text-4xl leading-tight" style={{ marginTop: '16px', marginBottom: '20px', color: '#292929' }}>
               Not just a contractor.<br />A property operating system.
             </h2>
             <p style={{ color: 'var(--text-muted)', maxWidth: '640px', margin: '0 auto', fontSize: '18px', lineHeight: 1.7 }}>
@@ -189,18 +189,18 @@ export default function Home() {
       {/* ══════════════════ BUILD WITH PROOF ══════════════════ */}
       <section className="section" style={{ background: 'var(--secondary)', color: 'white' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
             <div>
               <span className="tag" style={{ background: 'rgba(255,218,1,0.12)', color: '#FFDA01', border: '1px solid rgba(255,218,1,0.2)' }}>Build with Proof</span>
-              <h2 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 44px)', marginTop: '16px', marginBottom: '24px' }}>
+              <h2 className="text-3xl sm:text-4xl leading-tight" style={{ color: 'white', marginTop: '16px', marginBottom: '24px' }}>
                 Every rupee accounted for.<br />Every stage documented.
               </h2>
               <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', lineHeight: 1.75, marginBottom: '36px' }}>
                 Construction with Buildogram means a transparent BOQ, 2500+ quality checks, verified material records and a Property Passport at handover. No surprises.
               </p>
-              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                <Link href="/build" className="btn btn-primary btn-lg">Explore Construction</Link>
-                <Link href="/cost-estimator" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.25)', color: 'white', background: 'transparent' }}>Calculate Cost</Link>
+              <div className="flex flex-col sm:flex-row gap-3 w-full">
+                <Link href="/build" className="btn btn-primary btn-lg w-full sm:w-auto flex-center">Explore Construction</Link>
+                <Link href="/cost-estimator" className="btn btn-lg w-full sm:w-auto flex-center" style={{ border: '2px solid rgba(255,255,255,0.25)', color: 'white', background: 'transparent' }}>Calculate Cost</Link>
               </div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
@@ -219,7 +219,7 @@ export default function Home() {
       {/* ══════════════════ PROPERTY PASSPORT ══════════════════ */}
       <section className="section" style={{ background: '#F9F9F9' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
             {/* Left: Passport visual */}
             <div style={{ background: 'var(--secondary)', borderRadius: '24px', padding: '40px', position: 'relative', overflow: 'hidden' }}>
               <div style={{ position: 'absolute', top: 0, right: 0, width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(255,218,1,0.12), transparent)', borderRadius: '50%' }} />
@@ -232,12 +232,12 @@ export default function Home() {
                   <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px' }}>{item}</span>
                 </div>
               ))}
-              <Link href="/property-passport" className="btn btn-primary" style={{ marginTop: '28px', width: '100%', justifyContent: 'center', display: 'flex' }}>Create My Passport →</Link>
+              <Link href="/property-passport" className="btn btn-primary w-full sm:w-auto flex-center" style={{ marginTop: '28px', width: '100%', justifyContent: 'center', display: 'flex' }}>Create My Passport →</Link>
             </div>
             {/* Right: Copy */}
             <div>
               <span className="tag">Property Passport™</span>
-              <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', marginTop: '16px', marginBottom: '20px', color: '#292929' }}>
+              <h2 className="text-3xl sm:text-4xl leading-tight" style={{ marginTop: '16px', marginBottom: '20px', color: '#292929' }}>
                 Every property deserves a permanent record.
               </h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '17px', lineHeight: 1.75, marginBottom: '28px' }}>
@@ -254,7 +254,7 @@ export default function Home() {
                   <span style={{ fontSize: '16px', color: 'var(--text)', lineHeight: 1.5 }}>{b.text}</span>
                 </div>
               ))}
-              <Link href="/property-passport" className="btn btn-primary btn-lg" style={{ marginTop: '12px' }}>Create Property Passport →</Link>
+              <Link href="/property-passport" className="btn btn-primary btn-lg w-full sm:w-auto flex-center" style={{ marginTop: '12px' }}>Create Property Passport →</Link>
             </div>
           </div>
         </div>
@@ -263,16 +263,16 @@ export default function Home() {
       {/* ══════════════════ MATERIALS STRIP ══════════════════ */}
       <section style={{ background: 'white', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <div className="container" style={{ padding: '64px 24px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '64px', alignItems: 'center' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
             <div>
               <span className="tag">Material Marketplace</span>
-              <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 40px)', marginTop: '16px', marginBottom: '16px', color: '#292929' }}>
+              <h2 className="text-3xl sm:text-4xl leading-tight" style={{ marginTop: '16px', marginBottom: '16px', color: '#292929' }}>
                 Buy verified materials at market-best rates.
               </h2>
               <p style={{ color: 'var(--text-muted)', fontSize: '16px', lineHeight: 1.7, marginBottom: '28px' }}>
                 Cement, steel, sand, tiles, electrical and plumbing materials — with brand verification, delivery proof and material records added to your Property Passport.
               </p>
-              <Link href="/materials" className="btn btn-primary">Request Material Quote →</Link>
+              <Link href="/materials" className="btn btn-primary w-full sm:w-auto flex-center">Request Material Quote →</Link>
             </div>
             <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               {[
@@ -301,7 +301,7 @@ export default function Home() {
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: '56px' }}>
             <span className="tag">Partner Ecosystem</span>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', marginTop: '16px', marginBottom: '16px', color: '#292929' }}>
+            <h2 className="text-3xl sm:text-4xl leading-tight" style={{ marginTop: '16px', marginBottom: '16px', color: '#292929' }}>
               Grow your construction business with Buildogram.
             </h2>
             <p style={{ color: 'var(--text-muted)', maxWidth: '560px', margin: '0 auto', fontSize: '17px', lineHeight: 1.7 }}>
@@ -331,7 +331,7 @@ export default function Home() {
             ))}
           </div>
           <div style={{ textAlign: 'center' }}>
-            <Link href="/partners" className="btn btn-primary btn-lg">Join Partner Network →</Link>
+            <Link href="/partners" className="btn btn-primary btn-lg w-full sm:w-auto flex-center">Join Partner Network →</Link>
           </div>
         </div>
       </section>
@@ -341,12 +341,12 @@ export default function Home() {
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
             <span className="tag">Choose Wisely</span>
-            <h2 style={{ fontSize: 'clamp(26px, 4vw, 42px)', marginTop: '16px', color: '#292929' }}>Opaque Contractors vs. Buildogram</h2>
+            <h2 className="text-3xl sm:text-4xl leading-tight" style={{ marginTop: '16px', color: '#292929' }}>Opaque Contractors vs. Buildogram</h2>
             <p style={{ color: 'var(--text-muted)', marginTop: '12px', maxWidth: '580px', margin: '12px auto 0', fontSize: '16px' }}>
               Building a home is your lifetime investment. Do not trust generic square-foot quotes that hide material grades and structural design standards.
             </p>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginBottom: '28px' }}>
+          <div className="flex flex-col sm:flex-row gap-3 w-full justify-center" style={{ marginBottom: '28px' }}>
             {[['contractor', 'Traditional Contractors', '#dc2626'], ['buildogram', 'Buildogram', '#292929']].map(([key, label, bg]) => (
               <button key={key} onClick={() => setActiveComparison(key)}
                 style={{ padding: '12px 28px', borderRadius: '999px', fontWeight: 700, fontSize: '14px', cursor: 'pointer', border: '2px solid', transition: 'all 0.2s',
@@ -376,18 +376,18 @@ export default function Home() {
       {/* ══════════════════ MAINTENANCE ══════════════════ */}
       <section style={{ background: 'var(--secondary)', padding: '80px 0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '64px', alignItems: 'center' }}>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
             <div>
               <span className="tag" style={{ background: 'rgba(255,218,1,0.12)', color: '#FFDA01', border: '1px solid rgba(255,218,1,0.2)' }}>After Handover</span>
-              <h2 style={{ color: 'white', fontSize: 'clamp(26px, 3.5vw, 42px)', marginTop: '16px', marginBottom: '20px' }}>
+              <h2 className="text-3xl sm:text-4xl leading-tight" style={{ color: 'white', marginTop: '16px', marginBottom: '20px' }}>
                 Buildogram doesn't stop at handover.
               </h2>
               <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', lineHeight: 1.75, marginBottom: '32px' }}>
                 Waterproofing, plumbing, electrical repairs and AMC contracts — with before/after photos and maintenance history added to your Property Passport.
               </p>
-              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-                <Link href="/maintenance" className="btn btn-primary btn-lg">Request Maintenance</Link>
-                <Link href="/maintenance#amc" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.25)', color: 'white', background: 'transparent' }}>View AMC Plans</Link>
+              <div className="flex flex-col sm:flex-row gap-3 w-full">
+                <Link href="/maintenance" className="btn btn-primary btn-lg w-full sm:w-auto flex-center">Request Maintenance</Link>
+                <Link href="/maintenance#amc" className="btn btn-lg w-full sm:w-auto flex-center" style={{ border: '2px solid rgba(255,255,255,0.25)', color: 'white', background: 'transparent' }}>View AMC Plans</Link>
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -415,10 +415,10 @@ export default function Home() {
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
             <span className="tag">Material Packages</span>
-            <h2 style={{ fontSize: 'clamp(26px, 4vw, 42px)', marginTop: '16px', color: '#292929' }}>Vetted Brand Packages</h2>
+            <h2 className="text-3xl sm:text-4xl leading-tight" style={{ marginTop: '16px', color: '#292929' }}>Vetted Brand Packages</h2>
             <p style={{ color: 'var(--text-muted)', marginTop: '12px', fontSize: '16px' }}>Select a specification level to preview brand inclusions. Every brand is verified.</p>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '28px' }}>
+          <div className="flex flex-col sm:flex-row gap-3 w-full justify-center" style={{ marginBottom: '28px' }}>
             {['classic', 'premium', 'royal'].map(s => (
               <button key={s} onClick={() => setActiveSpecTab(s)} style={{ padding: '10px 24px', borderRadius: '999px', fontSize: '14px', fontWeight: 700, cursor: 'pointer', border: '2px solid', transition: 'all 0.2s', textTransform: 'capitalize',
                 background: activeSpecTab === s ? '#292929' : 'white',
@@ -442,7 +442,7 @@ export default function Home() {
               <div><strong>🛡️ Structural Guarantee:</strong> <span className="badge badge-green">{SPEC_PREVIEW[activeSpecTab].warranty}</span></div>
             </div>
             <div style={{ textAlign: 'center', marginTop: '24px' }}>
-              <Link href="/specifications" className="btn btn-outline">View Complete Brand Matrix →</Link>
+              <Link href="/specifications" className="btn btn-outline w-full sm:w-auto flex-center">View Complete Brand Matrix →</Link>
             </div>
           </div>
         </div>
@@ -453,7 +453,7 @@ export default function Home() {
         <div className="container" style={{ maxWidth: '820px' }}>
           <div style={{ textAlign: 'center', marginBottom: '48px' }}>
             <span className="tag">Got Questions?</span>
-            <h2 style={{ fontSize: 'clamp(26px, 4vw, 42px)', marginTop: '16px', color: '#292929' }}>Frequently Asked Questions</h2>
+            <h2 className="text-3xl sm:text-4xl leading-tight" style={{ marginTop: '16px', color: '#292929' }}>Frequently Asked Questions</h2>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             {FAQS.map((faq, idx) => (
@@ -479,17 +479,17 @@ export default function Home() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.12)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
             <span style={{ color: '#FFDA01', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Start Your Property Journey</span>
           </div>
-          <h2 style={{ color: 'white', fontSize: 'clamp(30px, 5vw, 52px)', lineHeight: 1.1, marginBottom: '20px' }}>
+          <h2 className="text-3xl sm:text-4xl lg:text-6xl leading-tight" style={{ color: 'white', marginBottom: '20px' }}>
             Buildogram turns property into a<br />
             <span style={{ color: '#FFDA01' }}>proof-based journey.</span>
           </h2>
           <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '18px', marginBottom: '44px', lineHeight: 1.7 }}>
             Whether you're building, buying materials, listing a property, joining as a partner or requesting maintenance — Buildogram connects it all.
           </p>
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/cost-estimator" className="btn btn-primary btn-lg">Calculate Construction Cost</Link>
-            <Link href="/property-passport" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Create Property Passport</Link>
-            <Link href="/contact" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.7)', background: 'transparent' }}>Talk to Us</Link>
+          <div className="flex flex-col sm:flex-row gap-3 w-full justify-center">
+            <Link href="/cost-estimator" className="btn btn-primary btn-lg w-full sm:w-auto flex-center">Calculate Construction Cost</Link>
+            <Link href="/property-passport" className="btn btn-lg w-full sm:w-auto flex-center" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Create Property Passport</Link>
+            <Link href="/contact" className="btn btn-lg w-full sm:w-auto flex-center" style={{ border: '2px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.7)', background: 'transparent' }}>Talk to Us</Link>
           </div>
         </div>
       </section>
@@ -497,7 +497,7 @@ export default function Home() {
       {/* ══════════════════ FOOTER ══════════════════ */}
       <footer style={{ background: '#111111', color: 'white', padding: '64px 0 32px' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr 1fr 1fr', gap: '40px', marginBottom: '48px' }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10" style={{ marginBottom: '48px' }}>
             {/* Brand col */}
             <div>
               <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '16px', textDecoration: 'none' }}>
