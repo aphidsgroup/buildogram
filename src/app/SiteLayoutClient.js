@@ -15,7 +15,9 @@ export default function SiteLayoutClient({ children }) {
   return (
     <>
       {!isDashboard && <Navbar />}
-      {children}
+      <main style={{ paddingTop: !isDashboard ? '72px' : '0' }}>
+        {children}
+      </main>
       {!isDashboard && <Footer />}
     </>
   );
