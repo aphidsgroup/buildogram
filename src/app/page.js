@@ -123,7 +123,7 @@ export default function Home() {
             </div>
 
             {/* Mini stats */}
-            <div style={{ display: 'flex', gap: '40px', flexWrap: 'wrap' }}>
+            <div className="flex flex-wrap gap-6 sm:gap-10">
               {[['2500+', 'Quality Checks'], ['BOQ', 'Transparent Pricing'], ['Lifetime', 'Property Passport'], ['Chennai', 'Primary Market']].map(([v, l]) => (
                 <div key={l}>
                   <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '26px', fontWeight: 800, color: '#FFDA01' }}>{v}</div>
@@ -137,7 +137,7 @@ export default function Home() {
 
       {/* ══════════════════ ECOSYSTEM STRIP ══════════════════ */}
       <section style={{ background: '#FFDA01', padding: '0' }}>
-        <div className="container" className="overflow-x-auto w-full" style={{ display: 'flex', gap: '0' }}>
+        <div className="container overflow-x-auto w-full" style={{ display: 'flex', gap: '0' }}>
           {ECOSYSTEM.map((e, i) => (
             <Link key={e.title} href={e.href} style={{ flex: '1 0 auto', minWidth: '140px', textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 16px', gap: '6px', borderRight: i < ECOSYSTEM.length - 1 ? '1px solid rgba(0,0,0,0.08)' : 'none', transition: 'background 0.2s', cursor: 'pointer' }}
               onMouseEnter={e2 => e2.currentTarget.style.background = 'rgba(0,0,0,0.06)'}
@@ -203,7 +203,7 @@ export default function Home() {
                 <Link href="/cost-estimator" className="btn btn-lg w-full sm:w-auto flex-center" style={{ border: '2px solid rgba(255,255,255,0.25)', color: 'white', background: 'transparent' }}>Calculate Cost</Link>
               </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {PROOF_PILLARS.map(p => (
                 <div key={p.title} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '20px' }}>
                   <div style={{ fontSize: '28px', marginBottom: '10px' }}>{p.icon}</div>
@@ -232,7 +232,7 @@ export default function Home() {
                   <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '14px' }}>{item}</span>
                 </div>
               ))}
-              <Link href="/property-passport" className="btn btn-primary w-full sm:w-auto flex-center" style={{ marginTop: '28px', width: '100%', justifyContent: 'center', display: 'flex' }}>Create My Passport →</Link>
+              <Link href="/property-passport" className="btn btn-primary w-full sm:w-auto flex-center" style={{ marginTop: '28px' }}>Create My Passport →</Link>
             </div>
             {/* Right: Copy */}
             <div>
@@ -262,7 +262,7 @@ export default function Home() {
 
       {/* ══════════════════ MATERIALS STRIP ══════════════════ */}
       <section style={{ background: 'white', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
-        <div className="container" style={{ padding: '64px 24px' }}>
+        <div className="container py-10 sm:py-16 px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
             <div>
               <span className="tag">Material Marketplace</span>
@@ -358,7 +358,7 @@ export default function Home() {
               </button>
             ))}
           </div>
-          <div className="card animate-fade-in" style={{ borderLeft: `6px solid ${COMPARISON[activeComparison].color}`, padding: '40px', maxWidth: '860px', margin: '0 auto' }}>
+          <div className="card animate-fade-in" className="p-6 sm:p-10" style={{ borderLeft: `6px solid ${COMPARISON[activeComparison].color}`, maxWidth: '860px', margin: '0 auto' }}>
             <h3 style={{ fontSize: '22px', marginBottom: '6px', color: '#292929' }}>{COMPARISON[activeComparison].title}</h3>
             <p style={{ color: 'var(--text-muted)', fontWeight: 600, fontSize: '14px', marginBottom: '28px' }}>{COMPARISON[activeComparison].tagline}</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -429,7 +429,7 @@ export default function Home() {
               </button>
             ))}
           </div>
-          <div className="card animate-fade-in" style={{ padding: '36px', maxWidth: '700px', margin: '0 auto' }}>
+          <div className="card animate-fade-in" className="p-6 sm:p-9" style={{ maxWidth: '700px', margin: '0 auto' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
               <h3 style={{ fontSize: '20px', color: '#292929' }}>{SPEC_PREVIEW[activeSpecTab].tag}</h3>
               <span style={{ fontSize: '32px', fontWeight: 800, color: '#292929', fontFamily: 'Space Grotesk, sans-serif' }}>
@@ -495,7 +495,7 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ FOOTER ══════════════════ */}
-      <footer style={{ background: '#111111', color: 'white', padding: '64px 0 32px' }}>
+      <footer className="py-10 sm:py-16 pb-8" style={{ background: '#111111', color: 'white' }}>
         <div className="container">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10" style={{ marginBottom: '48px' }}>
             {/* Brand col */}
