@@ -58,6 +58,16 @@ export default function ClientRequestDetailPage() {
       ['Quoted Amount', m.quoted_amount ? `₹${Number(m.quoted_amount).toLocaleString('en-IN')}` : ''],
       ['Your Concern', m.customer_concern]
     ];
+  } else if (req.lead_type === 'plan_review') {
+    details = [
+      ['Project Type', m.project_type],
+      ['Intended Use', m.intended_use],
+      ['Location', m.project_location],
+      ['Plot Size', m.plot_size],
+      ['Built-up Area', m.built_up_area],
+      ['Floors', m.floors],
+      ['Main Concern', m.main_concern]
+    ];
   } else {
     details = [
       ['Status', req.status]
@@ -156,6 +166,75 @@ export default function ClientRequestDetailPage() {
               <h3 style={{ fontSize: '16px', color: '#0f172a', marginBottom: '8px' }}>Report In Progress</h3>
               <p style={{ color: '#64748b', fontSize: '14px', margin: 0 }}>
                 Your BOQ review report is currently being prepared by the Buildogram engineering team. We will notify you once it is ready.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {req.lead_type === 'plan_review' && (
+        <div className="card mt-6" style={{ background: 'white', padding: '32px', border: '2px solid #0891b2' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 800, margin: 0, color: '#164e63', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>📐</span> Advisory Plan Review Report
+            </h2>
+            {m.reviewed_plan_report && (
+              <a href={`/plan-review-report/${req.id}/print`} target="_blank" rel="noreferrer" className="btn btn-sm" style={{ background: '#0891b2', color: 'white', textDecoration: 'none' }}>
+                🖨️ Download PDF
+              </a>
+            )}
+          </div>
+
+          {m.reviewed_plan_report ? (
+            <div style={{ fontSize: '14px', color: '#334155', display: 'flex', flexDirection: 'column', gap: '20px', lineHeight: 1.6 }}>
+              <div>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: '#0e7490', textTransform: 'uppercase', marginBottom: '4px' }}>Executive Summary</div>
+                <div style={{ fontWeight: 500, color: '#0f172a' }}>{m.reviewed_plan_report.executive_summary}</div>
+              </div>
+              
+              {m.reviewed_plan_report.strengths && (
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#0e7490', textTransform: 'uppercase', marginBottom: '4px' }}>Strengths</div>
+                  <pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'inherit', color: '#1e293b' }}>{m.reviewed_plan_report.strengths}</pre>
+                </div>
+              )}
+              
+              {m.reviewed_plan_report.practical_concerns && (
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#0e7490', textTransform: 'uppercase', marginBottom: '4px' }}>Practical Concerns</div>
+                  <pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'inherit', color: '#1e293b' }}>{m.reviewed_plan_report.practical_concerns}</pre>
+                </div>
+              )}
+              
+              {m.reviewed_plan_report.cost_impact_areas && (
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#0e7490', textTransform: 'uppercase', marginBottom: '4px' }}>Cost Impact Areas</div>
+                  <pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'inherit', color: '#1e293b' }}>{m.reviewed_plan_report.cost_impact_areas}</pre>
+                </div>
+              )}
+              
+              {m.reviewed_plan_report.questions_for_architect && (
+                <div>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#0e7490', textTransform: 'uppercase', marginBottom: '4px' }}>Questions for your Architect</div>
+                  <pre style={{ margin: 0, whiteSpace: 'pre-wrap', fontFamily: 'inherit', color: '#1e293b' }}>{m.reviewed_plan_report.questions_for_architect}</pre>
+                </div>
+              )}
+              
+              <div style={{ background: '#ecfeff', padding: '16px', borderRadius: '8px', borderLeft: '4px solid #0891b2' }}>
+                <div style={{ fontSize: '11px', fontWeight: 800, color: '#155e75', textTransform: 'uppercase', marginBottom: '4px' }}>Buildogram Recommendation</div>
+                <div style={{ fontWeight: 600, color: '#164e63' }}>{m.reviewed_plan_report.buildogram_recommendation}</div>
+              </div>
+              
+              <div style={{ background: '#fffbeb', padding: '12px', fontSize: '11px', fontStyle: 'italic', borderRadius: '6px', color: '#b45309', border: '1px solid #fde68a' }}>
+                <strong>Disclaimer:</strong> {m.reviewed_plan_report.disclaimer}
+              </div>
+            </div>
+          ) : (
+            <div style={{ padding: '32px', textAlign: 'center', background: '#f8fafc', borderRadius: '8px', border: '1px dashed #cbd5e1' }}>
+              <div style={{ fontSize: '32px', marginBottom: '12px' }}>⏳</div>
+              <h3 style={{ fontSize: '16px', color: '#0f172a', marginBottom: '8px' }}>Review In Progress</h3>
+              <p style={{ color: '#64748b', fontSize: '14px', margin: 0 }}>
+                Your plan is currently being reviewed by the Buildogram architectural advisory team. We will notify you once it is ready.
               </p>
             </div>
           )}

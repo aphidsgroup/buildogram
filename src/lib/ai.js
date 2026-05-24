@@ -107,6 +107,30 @@ export async function generateBOQDraft(input) {
   }
 }
 
+export async function generateCompletion(systemPrompt, userPrompt) {
+  const provider = process.env.AI_PROVIDER;
+  const apiKey = process.env.AI_API_KEY;
+  const model = process.env.AI_MODEL || 'gpt-4o';
+  
+  if (!provider || provider === 'none' || !apiKey) {
+    throw new Error('No AI provider configured');
+  }
+  
+  const combinedPrompt = `${systemPrompt}\n\n${userPrompt}`;
+  const rawOutput = await callLLM(provider, apiKey, model, combinedPrompt);
+  
+  // Clean up markdown code blocks if LLM adds them
+  let clean = rawOutput.trim();
+  if (clean.startsWith('```json')) {
+    clean = clean.substring(7);
+    if (clean.endsWith('```')) clean = clean.substring(0, clean.length - 3);
+  } else if (clean.startsWith('```')) {
+    clean = clean.substring(3);
+    if (clean.endsWith('```')) clean = clean.substring(0, clean.length - 3);
+  }
+  return clean;
+}
+
 // -------------------------------------------------------------
 // Helpers
 // -------------------------------------------------------------
