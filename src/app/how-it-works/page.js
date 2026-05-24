@@ -88,16 +88,22 @@ export default function HowItWorks() {
 
   return (
     <>
-            <div className="page" style={{ paddingTop: '40px', minHeight: '100vh' }}>
-      <div className="container">
-        {/* HEADER */}
-        <div className="page-header text-center animate-fade-in" style={{ border: 'none', marginBottom: '50px' }}>
-          <div className="tag mb-4">How It Works</div>
-          <h1 style={{ fontSize: '44px', color: 'var(--primary-dark)' }}>Radical Engineering Transparency</h1>
-          <p className="text-muted mt-4" style={{ maxWidth: '650px', margin: '0 auto', fontSize: '17px' }}>
-            We replace traditional contractor guess-work with PhD-reviewed civil structural designs, milestone-linked escrow payment security, and continuous certified quality checks.
-          </p>
+      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(255,218,1,0.07) 0%, transparent 55%)' }} />
+        <div className="container" style={{ position: 'relative' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.12)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
+            <span style={{ color: '#FFDA01', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>How It Works</span>
+          </div>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>Radical Engineering Transparency — 9 Verified Stages</h1>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>We replace traditional contractor guesswork with PhD-reviewed structural designs, milestone-linked payments, and 500+ certified quality checks across 3 construction phases.</p>
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+            <a href="/contact" className="btn btn-primary btn-lg">Start Your Project</a>
+            <a href="/specifications" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>View Specifications</a>
+          </div>
         </div>
+      </section>
+
+      <div className="container" style={{ padding: '56px 24px' }}>
 
         {/* INTERACTIVE STAGES SWITCHER */}
         <div className="flex-center mb-8 animate-fade-in" style={{ gap: '12px' }}>
@@ -212,7 +218,6 @@ export default function HowItWorks() {
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 }

@@ -53,92 +53,133 @@ export default function PlanReviewPage() {
 
   if (status === 'success') {
     return (
-      <main className="min-h-screen bg-slate-50 flex flex-col">
-                <div className="flex-1 flex items-center justify-center p-4">
-          <div className="card text-center max-w-md p-8">
-            <div className="text-6xl mb-4">✅</div>
-            <h1 className="text-2xl font-bold mb-2 text-slate-800">Request Submitted</h1>
-            <p className="text-slate-600 mb-6">Our experts will review your details and get back to you with the advisory plan review report soon.</p>
-            <Link href="/" className="btn btn-primary">Return Home</Link>
+      <>
+        <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(255,218,1,0.07) 0%, transparent 55%)' }} />
+          <div className="container" style={{ position: 'relative' }}>
+            <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15 }}>Plan Review Advisory</h1>
           </div>
+        </section>
+        <div className="container" style={{ padding: '80px 24px', textAlign: 'center', maxWidth: '560px' }}>
+          <div style={{ fontSize: '64px', marginBottom: '20px' }}>✅</div>
+          <h2 style={{ fontSize: '28px', color: 'var(--secondary)', marginBottom: '12px' }}>Request Submitted</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '16px', lineHeight: 1.7, marginBottom: '32px' }}>
+            Our structural engineers will review your details and get back to you with an advisory plan review report soon.
+          </p>
+          <Link href="/" className="btn btn-primary btn-lg">Return Home</Link>
         </div>
-        <footer style={{ padding: '24px', textAlign: 'center', color: '#64748b', fontSize: '14px', borderTop: '1px solid #e2e8f0' }}>
-          © 2025 Buildogram. All rights reserved.
-        </footer>
-      </main>
+      </>
     );
   }
 
+  const highlights = [
+    { icon: '📐', title: 'Space Efficiency', desc: 'Identify wasted space and improve room flow' },
+    { icon: '💨', title: 'Ventilation & Light', desc: 'Natural light, cross-ventilation assessment' },
+    { icon: '💰', title: 'Cost Impact Analysis', desc: 'Which design choices cost more and why' },
+    { icon: '🏠', title: 'Rental Suitability', desc: 'Layout evaluation for rental income potential' },
+    { icon: '🏗️', title: 'Structural Feasibility', desc: 'Is the design structurally buildable as drawn' },
+    { icon: '📋', title: 'Setback & FSI Check', desc: 'Verify compliance with local building rules' },
+  ];
+
   return (
-    <main className="min-h-screen bg-slate-50 flex flex-col">
-            
-      <section className="bg-indigo-900 text-white py-16 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <span className="badge bg-indigo-800 text-indigo-100 mb-4 inline-block">AI-Assisted Expert Review</span>
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Floor Plan Review Assistant</h1>
-          <p className="text-lg text-indigo-200 max-w-2xl mx-auto mb-8">
-            Get an expert advisory review of your architectural or floor plans. We analyze space usage, ventilation, cost impacts, and practicality before you build.
+    <>
+      {/* HERO */}
+      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(255,218,1,0.07) 0%, transparent 55%)' }} />
+        <div className="container" style={{ position: 'relative' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.12)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
+            <span style={{ color: '#FFDA01', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Plan Review Advisory</span>
+          </div>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>
+            Floor Plan Review — Engineer's Eye Before You Build
+          </h1>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>
+            Get an expert advisory review of your architectural or floor plan. We analyse space usage, ventilation, cost impact, structural feasibility, and compliance — before construction starts.
           </p>
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+            <a href="#review-form" className="btn btn-primary btn-lg">Submit Plan for Review</a>
+            <Link href="/contact" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Talk to an Engineer</Link>
+          </div>
         </div>
       </section>
 
-      <section className="py-12 px-4 flex-1">
-        <div className="max-w-2xl mx-auto">
-          <div className="card p-6 md:p-8">
-            
-            <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg">
-              <h4 className="font-bold text-amber-800 text-sm mb-1">Disclaimer</h4>
-              <p className="text-xs text-amber-700">
-                This plan review is strictly advisory and based on the information provided. It is not structural approval, architectural certification, legal approval, or government approval. Final decisions must be reviewed by qualified architects, structural engineers, and relevant approval authorities.
-              </p>
-            </div>
+      <div className="container" style={{ padding: '56px 24px' }}>
 
-            <form onSubmit={handleSubmit} className="space-y-6">
-              
-              <div className="grid-2 gap-4">
+        {/* WHAT WE REVIEW */}
+        <div style={{ marginBottom: '56px' }}>
+          <h2 style={{ fontSize: '26px', color: 'var(--secondary)', marginBottom: '28px', textAlign: 'center' }}>What Our Plan Review Covers</h2>
+          <div className="grid-3" style={{ gap: '16px' }}>
+            {highlights.map((h) => (
+              <div key={h.title} className="card" style={{ display: 'flex', gap: '14px', alignItems: 'flex-start' }}>
+                <span style={{ fontSize: '28px', flexShrink: 0 }}>{h.icon}</span>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Full Name *</label>
+                  <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '4px' }}>{h.title}</h3>
+                  <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6 }}>{h.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* DISCLAIMER */}
+        <div style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.2)', borderRadius: '12px', padding: '16px 20px', marginBottom: '48px' }}>
+          <div style={{ fontSize: '12px', fontWeight: 700, color: 'var(--warning)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '6px' }}>⚠ Disclaimer</div>
+          <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.7 }}>
+            This plan review is strictly advisory and based on information provided. It is NOT structural approval, architectural certification, legal approval, or government approval. Final decisions must be reviewed by qualified architects, structural engineers, and relevant approval authorities.
+          </p>
+        </div>
+
+        {/* FORM */}
+        <div id="review-form" style={{ maxWidth: '720px', margin: '0 auto' }}>
+          <h2 style={{ fontSize: '24px', color: 'var(--secondary)', marginBottom: '8px' }}>Submit Your Plan for Review</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '15px', marginBottom: '32px' }}>Our engineers will respond within 2–3 working days with an advisory report.</p>
+
+          <div className="card">
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+              <div className="grid-2" style={{ gap: '16px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '6px' }}>Full Name *</label>
                   <input required type="text" className="input" value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Phone Number *</label>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '6px' }}>Phone Number *</label>
                   <input required type="tel" className="input" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} />
                 </div>
               </div>
 
-              <div className="grid-2 gap-4">
+              <div className="grid-2" style={{ gap: '16px' }}>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Email Address</label>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '6px' }}>Email Address</label>
                   <input type="email" className="input" value={form.email} onChange={e => setForm({...form, email: e.target.value})} />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Project Location</label>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '6px' }}>Project Location</label>
                   <input type="text" className="input" placeholder="City or Area" value={form.project_location} onChange={e => setForm({...form, project_location: e.target.value})} />
                 </div>
               </div>
 
-              <hr className="border-slate-100" />
+              <hr style={{ border: 'none', borderTop: '1px solid var(--border)' }} />
+              <h3 style={{ fontSize: '16px', fontWeight: 700, color: 'var(--secondary)' }}>Project Details</h3>
 
-              <h3 className="font-bold text-slate-800">Project Details</h3>
-              
-              <div className="grid-3 gap-4">
+              <div className="grid-3" style={{ gap: '16px' }}>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Plot Size</label>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '6px' }}>Plot Size</label>
                   <input type="text" className="input" placeholder="e.g. 30x40" value={form.plot_size} onChange={e => setForm({...form, plot_size: e.target.value})} />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Built-up Area</label>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '6px' }}>Built-up Area</label>
                   <input type="text" className="input" placeholder="e.g. 2400 sqft" value={form.built_up_area} onChange={e => setForm({...form, built_up_area: e.target.value})} />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Floors</label>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '6px' }}>Floors</label>
                   <input type="number" className="input" placeholder="e.g. 2" value={form.floors} onChange={e => setForm({...form, floors: e.target.value})} />
                 </div>
               </div>
 
-              <div className="grid-2 gap-4">
+              <div className="grid-2" style={{ gap: '16px' }}>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Project Type</label>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '6px' }}>Project Type</label>
                   <select className="input" value={form.project_type} onChange={e => setForm({...form, project_type: e.target.value})}>
                     <option value="residential">Residential</option>
                     <option value="villa">Villa</option>
@@ -148,7 +189,7 @@ export default function PlanReviewPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-bold text-slate-700 mb-1">Intended Use</label>
+                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '6px' }}>Intended Use</label>
                   <select className="input" value={form.intended_use} onChange={e => setForm({...form, intended_use: e.target.value})}>
                     <option value="self_use">Self Use</option>
                     <option value="rental">Rental / Leasing</option>
@@ -160,7 +201,7 @@ export default function PlanReviewPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Main Concern / Focus Area</label>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '6px' }}>Main Review Focus</label>
                 <select className="input" value={form.main_concern} onChange={e => setForm({...form, main_concern: e.target.value})}>
                   <option value="space_usage">Space Optimization & Layout</option>
                   <option value="cost_impact">Cost Impact of Design</option>
@@ -174,29 +215,30 @@ export default function PlanReviewPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Plan Document Link (Optional)</label>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '6px' }}>Plan Document Link (Optional)</label>
                 <input type="url" className="input" placeholder="Google Drive, Dropbox, or Image URL" value={form.plan_file_url} onChange={e => setForm({...form, plan_file_url: e.target.value})} />
-                <p className="text-xs text-slate-500 mt-1">If you have the plan, provide a link so our AI can analyze it.</p>
+                <p style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>Share your plan so our engineers can analyse it directly.</p>
               </div>
 
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-1">Specific Questions</label>
-                <textarea className="input" rows="3" placeholder="What specific feedback are you looking for?" value={form.message} onChange={e => setForm({...form, message: e.target.value})}></textarea>
+                <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '6px' }}>Specific Questions</label>
+                <textarea className="input" rows="3" placeholder="What specific feedback are you looking for?" value={form.message} onChange={e => setForm({...form, message: e.target.value})} />
               </div>
 
-              {status === 'error' && <div className="text-red-500 text-sm font-bold">Failed to submit request. Please try again.</div>}
+              {status === 'error' && (
+                <div style={{ padding: '12px', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.2)', borderRadius: '8px', color: '#ef4444', fontSize: '13px', fontWeight: 600 }}>
+                  Failed to submit request. Please try again.
+                </div>
+              )}
 
-              <button type="submit" className="btn btn-primary w-full py-3 text-lg" disabled={status === 'submitting'}>
+              <button type="submit" className="btn btn-primary btn-lg" disabled={status === 'submitting'} style={{ width: '100%' }}>
                 {status === 'submitting' ? 'Submitting...' : 'Request Plan Review'}
               </button>
             </form>
           </div>
         </div>
-      </section>
-      
-      <footer style={{ padding: '24px', textAlign: 'center', color: '#64748b', fontSize: '14px', borderTop: '1px solid #e2e8f0' }}>
-        © 2025 Buildogram. All rights reserved.
-      </footer>
-    </main>
+
+      </div>
+    </>
   );
 }

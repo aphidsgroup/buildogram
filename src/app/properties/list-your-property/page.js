@@ -73,31 +73,43 @@ function ListYourPropertyPageInner() {
 
   if (status === 'success') {
     return (
-      <main style={{ minHeight: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F8FAFC' }}>
-        <div className="card text-center" style={{ maxWidth: '500px', padding: '48px' }}>
-          <div style={{ fontSize: '64px', marginBottom: '24px' }}>🎉</div>
-          <h1 style={{ fontSize: '28px', marginBottom: '16px' }}>Listing Submitted!</h1>
-          <p style={{ color: '#64748b', fontSize: '16px', lineHeight: 1.6, marginBottom: '32px' }}>
+      <>
+        <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(255,218,1,0.07) 0%, transparent 55%)' }} />
+          <div className="container" style={{ position: 'relative' }}>
+            <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15 }}>List Your Property</h1>
+          </div>
+        </section>
+        <div className="container" style={{ padding: '80px 24px', textAlign: 'center', maxWidth: '560px' }}>
+          <div style={{ fontSize: '64px', marginBottom: '20px' }}>🎉</div>
+          <h2 style={{ fontSize: '28px', color: 'var(--secondary)', marginBottom: '12px' }}>Listing Submitted!</h2>
+          <p style={{ color: 'var(--text-muted)', fontSize: '16px', lineHeight: 1.7, marginBottom: '32px' }}>
             Thank you. Our team will review your property details and contact you shortly to activate your verified listing.
           </p>
           <Link href="/" className="btn btn-primary btn-lg" style={{ width: '100%', justifyContent: 'center' }}>Return Home</Link>
         </div>
-      </main>
+      </>
     );
   }
 
   return (
-    <main style={{ background: '#F8FAFC', padding: '40px 0' }}>
-      <div className="container" style={{ maxWidth: '700px' }}>
-        
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <h1 style={{ fontSize: 'clamp(28px, 4vw, 40px)', lineHeight: 1.2, marginBottom: '16px', color: '#0f172a' }}>
-            List Your Property
+    <>
+      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(255,218,1,0.07) 0%, transparent 55%)' }} />
+        <div className="container" style={{ position: 'relative' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.12)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
+            <span style={{ color: '#FFDA01', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>List Your Property</span>
+          </div>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>
+            List Your Property on Buildogram — Zero Brokerage, Verified Buyers
           </h1>
-          <p style={{ color: '#64748b', fontSize: '16px', maxWidth: '500px', margin: '0 auto' }}>
-            Get verified tenants or buyers with zero brokerage. Upload your 360° tour to fast-track your listing.
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7 }}>
+            Reach verified tenants and buyers. Add a 360° virtual tour to get 3x more enquiries.
           </p>
         </div>
+      </section>
+
+      <div className="container" style={{ padding: '56px 24px', maxWidth: '760px' }}>
 
         <form onSubmit={submit} className="card" style={{ padding: '40px', display: 'flex', flexDirection: 'column', gap: '24px' }}>
           
@@ -215,7 +227,7 @@ function ListYourPropertyPageInner() {
           </div>
         </form>
       </div>
-    </main>
+    </>
   );
 }
 
