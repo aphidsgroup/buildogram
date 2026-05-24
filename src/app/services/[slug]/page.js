@@ -13,6 +13,7 @@ export async function generateMetadata({ params }) {
     title: svc.metaTitle,
     description: svc.metaDescription,
     openGraph: { title: svc.metaTitle, description: svc.metaDescription, url: `https://buildogram.in/services/${svc.slug}` },
+      alternates: { canonical: `https://buildogram.in/services/${svc.slug}` },
   };
 }
 
@@ -26,13 +27,26 @@ const faqSchema = (faqs, pageUrl) => ({
   })),
 });
 
+
+const breadcrumbSchema = (itemData) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://buildogram.in' },
+    { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://buildogram.in/services' },
+    { '@type': 'ListItem', position: 3, name: itemData.svc.title, item: `https://buildogram.in/services/${itemData.svc.slug}` },
+  ],
+});
+
 export default function ServicePage({ params }) {
   const svc = services.find((s) => s.slug === params.slug);
   if (!svc) notFound();
 
   return (
     <>
-      <script
+      
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(svc)) }} />
+<script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(svc.faqs)) }}
       />

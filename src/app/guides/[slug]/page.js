@@ -13,6 +13,7 @@ export async function generateMetadata({ params }) {
     title: guide.metaTitle,
     description: guide.metaDescription,
     openGraph: { title: guide.metaTitle, description: guide.metaDescription },
+      alternates: { canonical: `https://buildogram.in/guides/${guide.slug}` },
   };
 }
 
@@ -35,6 +36,17 @@ const faqSchema = (faqs) => ({
   })),
 });
 
+
+const breadcrumbSchema = (itemData) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://buildogram.in' },
+    { '@type': 'ListItem', position: 2, name: 'Guides', item: 'https://buildogram.in/guides' },
+    { '@type': 'ListItem', position: 3, name: itemData.guide.title, item: `https://buildogram.in/guides/${itemData.guide.slug}` },
+  ],
+});
+
 export default function GuidePage({ params }) {
   const guide = guideMap[params.slug];
   if (!guide) notFound();
@@ -43,7 +55,9 @@ export default function GuidePage({ params }) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema(guide)) }} />
+      
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(guide)) }} />
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema(guide)) }} />
       {guide.faqs && guide.faqs.length > 0 && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(guide.faqs)) }} />
       )}
@@ -130,7 +144,7 @@ export default function GuidePage({ params }) {
         </article>
 
         {/* SIDEBAR */}
-        <aside style={{ width: '280px', flexShrink: 0, display: 'none', paddingTop: '56px', paddingLeft: '40px' }}>
+        <aside className="hide-on-mobile" style={{ width: '280px', flexShrink: 0, display: 'block', paddingTop: '56px', paddingLeft: '40px' }}>
           <div className="card" style={{ position: 'sticky', top: '100px' }}>
             <h3 style={{ fontSize: '14px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '16px', textTransform: 'uppercase', letterSpacing: '0.06em' }}>Related Guides</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>

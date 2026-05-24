@@ -36,6 +36,16 @@ export const viewport = {
   userScalable: false,
 };
 
+
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Buildogram',
+  url: 'https://buildogram.in',
+  logo: 'https://buildogram.in/globe.svg',
+  description: 'Build your dream home in Chennai with PhD-grade structural engineering and 100% transparent BOQ pricing.',
+};
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -59,6 +69,7 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
       </body>
     </html>
   );
