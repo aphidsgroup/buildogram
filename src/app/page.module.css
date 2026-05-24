@@ -51,8 +51,11 @@
   .navLinks { display: none; flex-direction: column; position: fixed; top: 72px; left: 0; right: 0; background: var(--bg-card); padding: 24px; border-bottom: 1px solid var(--border); gap: 20px; }
   .navLinks.open { display: flex; }
   .menuBtn { display: block; }
-  .steps { grid-template-columns: repeat(2, 1fr); gap: 24px; }
-  .trustGrid { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: 1fr; gap: 24px; }
+  .trustGrid { grid-template-columns: 1fr; }
   .footerGrid { grid-template-columns: 1fr; }
   .footerBottom { flex-direction: column; gap: 8px; text-align: center; }
+  .heroActions { flex-direction: column; }
+  .heroActions a { width: 100%; text-align: center; justify-content: center; }
+  .heroStats { flex-direction: column; gap: 20px; }
 }

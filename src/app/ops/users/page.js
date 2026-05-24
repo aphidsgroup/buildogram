@@ -32,8 +32,8 @@ export default function OpsUsers() {
       </div>
       {msg && <div style={{background:'rgba(34,197,94,0.1)',border:'1px solid rgba(34,197,94,0.3)',borderRadius:'8px',padding:'12px 16px',marginBottom:'16px',color:'var(--success)',fontSize:'14px'}}>{msg}</div>}
       <div className="card" style={{padding:0,overflow:'hidden'}}>
-        <div className="table-wrap">
-          <table>
+        <div className="w-full overflow-x-auto">
+          <table className="table" style={{ width: '100%', minWidth: '800px' }}>
             <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Status</th><th>Joined</th></tr></thead>
             <tbody>
               {users.map(u => (

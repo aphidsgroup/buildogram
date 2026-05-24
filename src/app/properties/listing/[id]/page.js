@@ -98,7 +98,7 @@ export default async function PropertyListingDetailPage({ params }) {
                 📍 {listing.locality ? `${listing.locality}, ` : ''}{listing.city}
               </p>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '32px' }}>
+              <div className="grid-2" style={{ gap: '16px', marginBottom: '32px' }}>
                 <div style={{ background: 'white', border: '1px solid #e2e8f0', padding: '16px', borderRadius: '8px' }}>
                   <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>{isRent ? 'Expected Rent' : 'Expected Price'}</div>
                   <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', fontFamily: 'Space Grotesk, sans-serif' }}>{fmt(m.expected_price)}</div>
