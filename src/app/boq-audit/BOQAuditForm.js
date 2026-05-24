@@ -1,4 +1,3 @@
-
 'use client';
 import { useState } from 'react';
 
@@ -6,8 +5,10 @@ export default function BOQAuditForm() {
   const [form, setForm] = useState({
     name: '', phone: '', email: '', city: 'Chennai', locality: '',
     contractor_quote: '', plot_area_sqft: '', floors: '',
+    project_type: 'residential', customer_concern: '',
     has_drawings: '', message: '',
   });
+  const [file, setFile] = useState(null);
   const [status, setStatus] = useState('idle');
 
   const set = k => e => setForm(p => ({ ...p, [k]: e.target.value }));
@@ -16,6 +17,16 @@ export default function BOQAuditForm() {
     e.preventDefault();
     setStatus('loading');
     try {
+      let boq_file_url = null;
+      if (file) {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('folder', 'boq_uploads');
+        const uploadRes = await fetch('/api/upload', { method: 'POST', body: formData });
+        const uploadData = await uploadRes.json();
+        if (uploadData.url) boq_file_url = uploadData.url;
+      }
+
       const res = await fetch('/api/leads', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -29,10 +40,14 @@ export default function BOQAuditForm() {
           source_page: '/boq-audit',
           source: 'website',
           metadata: {
-            contractor_quote_amount: form.contractor_quote,
+            project_type: form.project_type,
+            quoted_amount: form.contractor_quote,
+            customer_concern: form.customer_concern,
             has_drawings: form.has_drawings,
-            plot_area_sqft: form.plot_area_sqft,
+            built_up_area: form.plot_area_sqft, // fallback
             floors: form.floors,
+            boq_file_url: boq_file_url,
+            boq_review_status: 'requested'
           },
         }),
       });
@@ -46,7 +61,7 @@ export default function BOQAuditForm() {
       <div style={{ fontSize: '56px', marginBottom: '16px' }}>✅</div>
       <h3 style={{ color: 'white', fontSize: '22px', marginBottom: '12px' }}>BOQ Audit Request Received!</h3>
       <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '16px', lineHeight: 1.6 }}>
-        Our team will contact you within 24 hours. We'll review your contractor quote and highlight every discrepancy.
+        Our engineering team will review your quote and highlight any discrepancies. We'll contact you within 24 hours.
       </p>
     </div>
   );
@@ -69,20 +84,17 @@ export default function BOQAuditForm() {
         <div>{lbl('Locality')}<input className="input" placeholder="Porur, Anna Nagar…" value={form.locality} onChange={set('locality')} /></div>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
+        <div>{lbl('Project Type')}<select className="input" value={form.project_type} onChange={set('project_type')}><option value="residential">Residential</option><option value="commercial">Commercial</option><option value="renovation">Renovation</option></select></div>
         <div>{lbl('Contractor Quote (₹)')}<input type="number" className="input" placeholder="e.g. 4500000" value={form.contractor_quote} onChange={set('contractor_quote')} /></div>
-        <div>{lbl('Plot Area (sqft)')}<input type="number" className="input" placeholder="1200" value={form.plot_area_sqft} onChange={set('plot_area_sqft')} /></div>
-        <div>{lbl('Floors')}<select className="input" value={form.floors} onChange={set('floors')}><option value="">Select</option><option>G</option><option>G+1</option><option>G+2</option><option>G+3</option><option>G+4</option></select></div>
+        <div>{lbl('Built-up Area (sqft)')}<input type="number" className="input" placeholder="1200" value={form.plot_area_sqft} onChange={set('plot_area_sqft')} /></div>
       </div>
-      <div>{lbl('Do you have drawings / contractor BOQ?')}
-        <select className="input" value={form.has_drawings} onChange={set('has_drawings')}>
-          <option value="">Select</option>
-          <option value="yes_both">Yes — I have drawings and BOQ</option>
-          <option value="yes_drawings">Yes — I have drawings only</option>
-          <option value="yes_boq">Yes — I have contractor BOQ only</option>
-          <option value="no">No — just a verbal quote</option>
-        </select>
+      
+      <div>{lbl('Upload Quote / BOQ (Optional)')}
+        <input type="file" className="input" accept="image/*,.pdf" onChange={e => setFile(e.target.files[0])} style={{ background: 'rgba(255,255,255,0.05)' }} />
       </div>
-      <div>{lbl('Tell us about your situation')}<textarea className="input" rows={3} placeholder="Share contractor name, any concerns or questions…" value={form.message} onChange={set('message')} /></div>
+
+      <div>{lbl('Specific Concerns (Optional)')}<textarea className="input" rows={2} placeholder="E.g. Is the steel brand mentioned good enough?" value={form.customer_concern} onChange={set('customer_concern')} /></div>
+      
       <button type="submit" className="btn btn-primary btn-lg" disabled={status === 'loading'} style={{ width: '100%', justifyContent: 'center', fontSize: '16px' }}>
         {status === 'loading' ? 'Submitting…' : '📊 Request BOQ Audit'}
       </button>
