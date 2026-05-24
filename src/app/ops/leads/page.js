@@ -201,6 +201,35 @@ export default function OpsLeads() {
     setRevSaving(false);
   };
 
+  const handleGenerateBOQDraft = async () => {
+    if (!selected) return;
+    const res = await fetch('/api/ai/boq-draft', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lead_id: selected.id, boq_text: 'See attached file/metadata' })
+    });
+    const d = await res.json();
+    if (d.success) {
+      showToast('AI Draft Generated successfully!');
+      load();
+      if (selected.id) {
+        setSelected(p => ({
+          ...p,
+          metadata: { ...p.metadata, ai_draft_request_id: d.ai_request_id, boq_review_status: 'draft_generated', latest_draft: d.draft }
+        }));
+      }
+      logActivity(selected.id, { activity_type: 'system', title: 'BOQ AI draft generated', description: 'Human review required before sharing.' });
+    } else {
+      alert('Failed to generate draft: ' + d.error);
+    }
+  };
+
+  const markBOQReviewed = () => {
+    update(selected.id, { metadata: { ...selected.metadata, boq_review_status: 'reviewed' } });
+    setSelected(p => ({ ...p, metadata: { ...p.metadata, boq_review_status: 'reviewed' } }));
+    logActivity(selected.id, { activity_type: 'status_change', title: 'BOQ draft reviewed by Ops', description: 'The BOQ Audit draft was reviewed.' });
+    showToast('Marked as reviewed!');
+  };
+
   const filtered = leads.filter(l => {
     const matchStatus = statusFilter === 'all' || l.status === statusFilter;
     const matchType   = typeFilter   === 'all' || l.lead_type === typeFilter;
@@ -633,6 +662,152 @@ export default function OpsLeads() {
                     </div>
 
                   </div>
+                </div>
+              </div>
+            )}
+
+            {/* AI Cost Estimator Metadata */}
+            {selected.lead_type === 'construction' && selected.metadata && selected.metadata.ai_request_id && (
+              <div style={{ marginBottom: '16px', padding: '16px', background: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#166534', textTransform: 'uppercase' }}>AI Estimator Details</div>
+                  <div style={{ fontSize: '10px', background: 'white', border: '1px solid #86efac', color: '#15803d', padding: '2px 6px', borderRadius: '4px' }}>
+                    Req ID: {selected.metadata.ai_request_id.split('-')[0]}...
+                  </div>
+                </div>
+
+                <div className="grid-2" style={{ gap: '12px', marginBottom: '16px' }}>
+                  <div>
+                    <span style={{ fontSize: '11px', color: '#15803d', display: 'block' }}>Spec Level</span>
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: '#14532d', textTransform: 'capitalize' }}>{selected.metadata.specification_level || 'Standard'}</span>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '11px', color: '#15803d', display: 'block' }}>Total Area Computed</span>
+                    <span style={{ fontSize: '13px', fontWeight: 600, color: '#14532d' }}>{selected.metadata.built_up_area} sq.ft</span>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '11px', color: '#15803d', display: 'block' }}>Estimated Range (Low)</span>
+                    <span style={{ fontSize: '16px', fontWeight: 800, color: '#166534' }}>
+                      ₹{(selected.metadata.estimated_min || 0).toLocaleString('en-IN')}
+                    </span>
+                  </div>
+                  <div>
+                    <span style={{ fontSize: '11px', color: '#15803d', display: 'block' }}>Estimated Range (High)</span>
+                    <span style={{ fontSize: '16px', fontWeight: 800, color: '#166534' }}>
+                      ₹{(selected.metadata.estimated_max || 0).toLocaleString('en-IN')}
+                    </span>
+                  </div>
+                </div>
+
+                {selected.metadata.estimator_inputs && (
+                  <div style={{ marginBottom: '12px' }}>
+                    <span style={{ fontSize: '11px', color: '#15803d', display: 'block', marginBottom: '4px' }}>Raw Inputs JSON (Ops View Only)</span>
+                    <pre style={{ margin: 0, padding: '8px', background: 'rgba(255,255,255,0.7)', border: '1px solid #bbf7d0', borderRadius: '4px', fontSize: '10px', color: '#14532d', maxHeight: '100px', overflowY: 'auto' }}>
+                      {JSON.stringify(selected.metadata.estimator_inputs, null, 2)}
+                    </pre>
+                  </div>
+                )}
+
+                <div style={{ padding: '8px', background: '#dcfce7', borderRadius: '4px', fontSize: '10px', color: '#166534', fontStyle: 'italic', marginBottom: '16px' }}>
+                  <strong>Disclaimer shown to user:</strong> "This is an approximate educational estimate... A detailed BOQ is required."
+                </div>
+
+                <div style={{ gridColumn: '1 / -1', borderTop: '1px solid #bbf7d0', paddingTop: '16px' }}>
+                  <button className="btn btn-sm" style={{ background: '#166534', color: 'white', width: '100%' }} onClick={() => {
+                    logActivity(selected.id, { activity_type: 'follow_up', title: 'Invited for BOQ Consultation', description: 'User asked to book engineering consultation.' });
+                  }}>
+                    📅 Book BOQ Consultation
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* BOQ Audit Draft Metadata */}
+            {selected.lead_type === 'boq_audit' && selected.metadata && (
+              <div style={{ marginBottom: '16px', padding: '16px', background: '#f5f3ff', borderRadius: '8px', border: '1px solid #ddd6fe' }}>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: '#6d28d9', textTransform: 'uppercase', marginBottom: '12px' }}>BOQ Audit Submission</div>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+                  {[
+                    ['Project Type', selected.metadata.project_type],
+                    ['Quoted Amount', selected.metadata.quoted_amount ? `₹${Number(selected.metadata.quoted_amount).toLocaleString('en-IN')}` : 'Not provided'],
+                    ['Built-up Area', selected.metadata.built_up_area ? `${selected.metadata.built_up_area} sqft` : ''],
+                    ['Floors', selected.metadata.floors],
+                    ['Has Drawings', selected.metadata.has_drawings]
+                  ].filter(([, v]) => v).map(([k, v]) => (
+                    <div key={k}>
+                      <span style={{ fontSize: '11px', color: '#7c3aed', display: 'block' }}>{k}</span>
+                      <span style={{ fontSize: '13px', fontWeight: 600, color: '#4c1d95', textTransform: 'capitalize' }}>{v}</span>
+                    </div>
+                  ))}
+
+                  {selected.metadata.boq_file_url && (
+                    <div style={{ gridColumn: '1 / -1', marginTop: '8px' }}>
+                      <span style={{ fontSize: '11px', color: '#7c3aed', display: 'block', marginBottom: '4px' }}>Uploaded File</span>
+                      <a href={selected.metadata.boq_file_url} target="_blank" rel="noreferrer" className="btn btn-sm" style={{ background: 'white', color: '#6d28d9', border: '1px solid #ddd6fe' }}>
+                        📄 View BOQ Document ↗
+                      </a>
+                    </div>
+                  )}
+
+                  {selected.metadata.customer_concern && (
+                    <div style={{ gridColumn: '1 / -1', marginTop: '8px' }}>
+                      <span style={{ fontSize: '11px', color: '#7c3aed', display: 'block', marginBottom: '4px' }}>Customer Concern</span>
+                      <p style={{ margin: 0, fontSize: '13px', color: '#4c1d95', background: 'white', padding: '8px', borderRadius: '4px', border: '1px solid #ede9fe' }}>
+                        "{selected.metadata.customer_concern}"
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                <div style={{ borderTop: '1px solid #ddd6fe', paddingTop: '16px', marginTop: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 800, color: '#4c1d95' }}>🤖 AI Review Draft</div>
+                    {selected.metadata.boq_review_status && (
+                      <span style={{ fontSize: '10px', background: selected.metadata.boq_review_status === 'reviewed' ? '#dcfce7' : '#fef08a', color: selected.metadata.boq_review_status === 'reviewed' ? '#166534' : '#854d0e', padding: '2px 8px', borderRadius: '99px', fontWeight: 700, textTransform: 'uppercase' }}>
+                        {selected.metadata.boq_review_status.replace('_', ' ')}
+                      </span>
+                    )}
+                  </div>
+
+                  {!selected.metadata.ai_draft_request_id ? (
+                    <button className="btn btn-primary" style={{ background: '#7c3aed', width: '100%' }} onClick={handleGenerateBOQDraft}>
+                      ✨ Generate Internal BOQ Review Draft
+                    </button>
+                  ) : (
+                    <div style={{ background: 'white', padding: '16px', borderRadius: '8px', border: '1px solid #ddd6fe' }}>
+                      {selected.metadata.latest_draft ? (
+                        <>
+                          <div style={{ fontSize: '13px', fontWeight: 600, color: '#4c1d95', marginBottom: '8px' }}>Missing Items Identified:</div>
+                          <ul style={{ paddingLeft: '20px', margin: '0 0 16px 0', fontSize: '12px', color: '#475569' }}>
+                            {selected.metadata.latest_draft.missing_items?.map((item, i) => <li key={i}>{item}</li>)}
+                          </ul>
+
+                          <div style={{ fontSize: '13px', fontWeight: 600, color: '#4c1d95', marginBottom: '8px' }}>Escalation Risks:</div>
+                          <ul style={{ paddingLeft: '20px', margin: '0 0 16px 0', fontSize: '12px', color: '#475569' }}>
+                            {selected.metadata.latest_draft.escalation_risks?.map((risk, i) => <li key={i}>{risk}</li>)}
+                          </ul>
+
+                          <div style={{ fontSize: '13px', fontWeight: 600, color: '#4c1d95', marginBottom: '8px' }}>Questions for Contractor:</div>
+                          <ul style={{ paddingLeft: '20px', margin: '0 0 16px 0', fontSize: '12px', color: '#475569' }}>
+                            {selected.metadata.latest_draft.questions_for_contractor?.map((q, i) => <li key={i}>{q}</li>)}
+                          </ul>
+
+                          <div style={{ fontSize: '10px', color: '#64748b', fontStyle: 'italic', padding: '8px', background: '#f8fafc', borderRadius: '4px', marginBottom: '16px' }}>
+                            <strong>Disclaimer:</strong> {selected.metadata.latest_draft.disclaimer}
+                          </div>
+
+                          {selected.metadata.boq_review_status !== 'reviewed' && (
+                            <button className="btn btn-sm" style={{ background: '#16a34a', color: 'white', width: '100%' }} onClick={markBOQReviewed}>
+                              ✅ Mark as Human Reviewed
+                            </button>
+                          )}
+                        </>
+                      ) : (
+                        <div style={{ fontSize: '12px', color: '#64748b', textAlign: 'center' }}>Draft data missing. Please check AI logs.</div>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             )}
