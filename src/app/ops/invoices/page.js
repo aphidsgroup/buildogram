@@ -70,7 +70,7 @@ export default function OpsInvoicesPage() {
         id: null, customer_name: '', customer_phone: '', customer_email: '', billing_address: '',
         invoice_category: 'boq_audit', subtotal: 0, tax_amount: 0, discount_amount: 0,
         amount_paid: 0, status: 'draft', issue_date: new Date().toISOString().split('T')[0],
-        due_date: '', payment_mode: '', notes: ''
+        due_date: '', payment_mode: '', notes: '', client_user_id: ''
       });
     }
     setShowModal(true);
@@ -177,6 +177,7 @@ export default function OpsInvoicesPage() {
                   <td>
                     <div className="font-medium">{inv.customer_name}</div>
                     {inv.customer_phone && <div className="text-xs text-slate-500">{inv.customer_phone}</div>}
+                    {inv.metadata?.client_user_id && <div className="text-xs font-bold text-indigo-600 mt-1">🔗 Client Linked</div>}
                   </td>
                   <td><span className="badge badge-gray">{inv.invoice_category.replace('_', ' ')}</span></td>
                   <td className="font-bold">₹{Number(inv.total_amount).toLocaleString('en-IN')}</td>
@@ -288,9 +289,13 @@ export default function OpsInvoicesPage() {
                   <label className="block text-xs font-bold text-slate-600 mb-1">Due Date</label>
                   <input type="date" className="input" value={form.due_date} onChange={e => setForm({...form, due_date: e.target.value})} />
                 </div>
-                <div style={{ gridColumn: 'span 3' }}>
+                <div style={{ gridColumn: 'span 2' }}>
                   <label className="block text-xs font-bold text-slate-600 mb-1">Internal / Customer Notes</label>
                   <input type="text" className="input" value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-600 mb-1">Linked Client UUID (Optional)</label>
+                  <input type="text" className="input" placeholder="User ID for Client Portal access" value={form.client_user_id} onChange={e => setForm({...form, client_user_id: e.target.value})} />
                 </div>
               </div>
 

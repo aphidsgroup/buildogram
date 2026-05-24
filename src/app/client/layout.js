@@ -10,7 +10,7 @@ const CLIENT_NAV = [
   { href: '/client/project', icon: '🏗️', label: 'My Project' },
   { href: '/client/passport', icon: '🛂', label: 'Property Passport' },
   { href: '/client/documents', icon: '📁', label: 'Documents' },
-  { href: '/client/payments', icon: '💰', label: 'Payments' },
+  { href: '/client/invoices', icon: '🧾', label: 'My Invoices' },
   { href: '/client/profile', icon: '👤', label: 'My Profile' },
   { href: '/client/notifications', icon: '🔔', label: 'Notifications' },
   { href: '/client/issues', icon: '⚠️', label: 'Raise Issue' },
