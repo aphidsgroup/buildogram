@@ -51,6 +51,16 @@ export async function POST(req) {
       )
     `;
 
+    // Insert Accounting Ledger (Debit Bank, Credit A/R)
+    await sql`
+      INSERT INTO accounting_ledger (reference_type, reference_id, account_name, debit, created_by, description)
+      VALUES ('payment', ${order.id}, 'Bank Account (Razorpay)', ${order.amount}, ${order.client_user_id}, 'Payment for ' || ${invoice.invoice_number})
+    `;
+    await sql`
+      INSERT INTO accounting_ledger (reference_type, reference_id, account_name, credit, created_by, description)
+      VALUES ('payment', ${order.id}, 'Accounts Receivable', ${order.amount}, ${order.client_user_id}, 'Payment for ' || ${invoice.invoice_number})
+    `;
+
     // Trigger WhatsApp Automation Queue
     await triggerNotificationEvent({
       eventName: 'payment_success',

@@ -5,7 +5,7 @@ import path from 'path';
 
 export async function GET() {
   try {
-    const query = fs.readFileSync(path.join(process.cwd(), 'migrations', '013_notification_settings.sql'), 'utf8');
+    const query = fs.readFileSync(path.join(process.cwd(), 'migrations', '014_accounting_and_gst.sql'), 'utf8');
     const statements = query.split(';').filter(s => s.trim().length > 0);
     for (const stmt of statements) {
       await sql.query(stmt + ';');
