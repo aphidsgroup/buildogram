@@ -68,9 +68,7 @@ export default function Navbar() {
           </div>
           
           <Link href="/contact" onClick={close}>Contact</Link>
-          <div style={{ marginLeft: '12px' }}>
-            <Link href="/contact" className="btn btn-primary btn-sm" style={{ padding: '8px 20px' }}>Get Started</Link>
-          </div>
+
         </div>
 
         {/* Mobile Toggle */}
