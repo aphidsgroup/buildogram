@@ -348,8 +348,8 @@ export default function OpsLeads() {
       </div>
 
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-        <div className="table-wrap">
-          <table>
+        <div className="w-full overflow-x-auto">
+          <table className="table" style={{ width: '100%', minWidth: '800px' }}>
             <thead>
               <tr><th>Name</th><th>Phone</th><th>Type</th><th>City</th><th>Message / Details</th><th>Source</th><th>Status</th><th>Date</th><th></th></tr>
             </thead>
@@ -406,7 +406,7 @@ export default function OpsLeads() {
               </div>
             )}
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+            <div className="grid-2" style={{ gap: '12px', marginBottom: '16px' }}>
               {[ ['Phone', selected.phone], ['Email', selected.email || '—'], ['City', selected.city], ['Locality', selected.locality || '—'], ['Source Page', selected.source_page || selected.source || '—'], ['Follow-up', selected.follow_up_date ? new Date(selected.follow_up_date).toLocaleDateString('en-IN') : '—'] ].map(([k, v]) => (
                 <div key={k} style={{ padding: '10px 12px', background: 'var(--bg-muted, #f8fafc)', borderRadius: '8px' }}>
                   <div style={{ fontSize: '10px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '4px' }}>{k}</div>
@@ -593,7 +593,7 @@ export default function OpsLeads() {
               <div style={{ marginBottom: '16px', padding: '16px', background: '#f0f9ff', borderRadius: '8px', border: '1px solid #bae6fd' }}>
                 <div style={{ fontSize: '11px', fontWeight: 700, color: '#0369a1', textTransform: 'uppercase', marginBottom: '12px' }}>Material Requirements</div>
                 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+                <div className="grid-2" style={{ gap: '12px', marginBottom: '16px' }}>
                   {[
                     ['Materials', selected.metadata.materials_required],
                     ['Est. Volume', selected.metadata.estimated_volume],
@@ -608,7 +608,7 @@ export default function OpsLeads() {
                 </div>
 
                 {/* Ops Controls for Material Quote */}
-                <div style={{ borderTop: '1px solid #bae6fd', paddingTop: '12px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div className="grid-2" style={{ borderTop: '1px solid #bae6fd', paddingTop: '12px', gap: '10px' }}>
                   <div>
                     <label style={{ fontSize: '11px', fontWeight: 600, color: '#0369a1', display: 'block', marginBottom: '4px' }}>Estimated Order Value (₹)</label>
                     <input type="number" className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white', borderColor: '#bae6fd' }}
@@ -660,7 +660,7 @@ export default function OpsLeads() {
               <div style={{ marginBottom: '16px', padding: '16px', background: '#fff7ed', borderRadius: '8px', border: '1px solid #fed7aa' }}>
                 <div style={{ fontSize: '11px', fontWeight: 700, color: '#c2410c', textTransform: 'uppercase', marginBottom: '12px' }}>Maintenance Details</div>
                 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+                <div className="grid-2" style={{ gap: '12px', marginBottom: '16px' }}>
                   {[
                     ['Location', selected.metadata.property_location],
                     ['Category', selected.metadata.issue_category],
@@ -677,7 +677,7 @@ export default function OpsLeads() {
                 {/* Ops Controls for Maintenance */}
                 <div style={{ borderTop: '1px solid #fed7aa', paddingTop: '12px' }}>
                   <div style={{ fontSize: '11px', fontWeight: 700, color: '#c2410c', textTransform: 'uppercase', marginBottom: '10px' }}>Ops & Passport Linking</div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                  <div className="grid-2" style={{ gap: '10px' }}>
                     
                     <div>
                       <label style={{ fontSize: '11px', fontWeight: 600, color: '#ea580c', display: 'block', marginBottom: '4px' }}>Maintenance Status</label>

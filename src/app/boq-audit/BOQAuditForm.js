@@ -74,16 +74,16 @@ export default function BOQAuditForm() {
 
   return (
     <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+      <div className="grid-2">
         <div>{lbl('Full Name *')}<input required className="input" placeholder="Your name" value={form.name} onChange={set('name')} /></div>
         <div>{lbl('Phone *')}<input required className="input" placeholder="10-digit mobile" value={form.phone} onChange={set('phone')} /></div>
       </div>
       <div>{lbl('Email')}<input type="email" className="input" placeholder="your@email.com" value={form.email} onChange={set('email')} /></div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+      <div className="grid-2">
         <div>{lbl('City')}<input className="input" placeholder="Chennai" value={form.city} onChange={set('city')} /></div>
         <div>{lbl('Locality')}<input className="input" placeholder="Porur, Anna Nagar…" value={form.locality} onChange={set('locality')} /></div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '16px' }}>
+      <div className="grid-3">
         <div>{lbl('Project Type')}<select className="input" value={form.project_type} onChange={set('project_type')}><option value="residential">Residential</option><option value="commercial">Commercial</option><option value="renovation">Renovation</option></select></div>
         <div>{lbl('Contractor Quote (₹)')}<input type="number" className="input" placeholder="e.g. 4500000" value={form.contractor_quote} onChange={set('contractor_quote')} /></div>
         <div>{lbl('Built-up Area (sqft)')}<input type="number" className="input" placeholder="1200" value={form.plot_area_sqft} onChange={set('plot_area_sqft')} /></div>

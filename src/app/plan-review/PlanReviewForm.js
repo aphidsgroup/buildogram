@@ -57,16 +57,16 @@ export default function PlanReviewForm() {
 
   return (
     <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+      <div className="grid-2">
         <div>{lbl('Full Name *')}<input required className="input" placeholder="Your name" value={form.name} onChange={set('name')} /></div>
         <div>{lbl('Phone *')}<input required className="input" placeholder="10-digit mobile" value={form.phone} onChange={set('phone')} /></div>
       </div>
       <div>{lbl('Email')}<input type="email" className="input" placeholder="your@email.com" value={form.email} onChange={set('email')} /></div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+      <div className="grid-2">
         <div>{lbl('City')}<input className="input" placeholder="Chennai" value={form.city} onChange={set('city')} /></div>
         <div>{lbl('Locality')}<input className="input" placeholder="Porur, Anna Nagar…" value={form.locality} onChange={set('locality')} /></div>
       </div>
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+      <div className="grid-2">
         <div>{lbl('Plot Area (sqft)')}<input type="number" className="input" placeholder="1200" value={form.plot_area_sqft} onChange={set('plot_area_sqft')} /></div>
         <div>{lbl('Floors')}<select className="input" value={form.floors} onChange={set('floors')}><option value="">Select</option><option>G</option><option>G+1</option><option>G+2</option><option>G+3</option><option>G+4</option></select></div>
       </div>

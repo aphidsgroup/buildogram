@@ -234,7 +234,7 @@ function NewPropertyModal({ onClose, onSaved }) {
           <div>{lbl('Property Title *')}<input required className="input" style={{ margin: 0 }} placeholder="e.g. 2400 sqft G+1 Home, Porur" value={form.title} onChange={set('title')} /></div>
 
           {/* Type + Status */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          <div className="grid-2" style={{ gap: '12px' }}>
             <div>{lbl('Property Type')}
               <select className="input" style={{ margin: 0 }} value={form.property_type} onChange={set('property_type')}>
                 {PROPERTY_TYPES.map(t => <option key={t} style={{ textTransform: 'capitalize' }}>{t}</option>)}
@@ -250,7 +250,7 @@ function NewPropertyModal({ onClose, onSaved }) {
           {/* Owner */}
           <div style={{ borderTop: '1px solid var(--border)', paddingTop: '16px' }}>
             <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Owner Details</div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div className="grid-2" style={{ gap: '12px' }}>
               <div>{lbl('Owner Name *')}<input required className="input" style={{ margin: 0 }} placeholder="Full name" value={form.owner_name} onChange={set('owner_name')} /></div>
               <div>{lbl('Phone *')}<input required className="input" style={{ margin: 0 }} placeholder="10-digit" value={form.owner_phone} onChange={set('owner_phone')} /></div>
             </div>
@@ -260,7 +260,7 @@ function NewPropertyModal({ onClose, onSaved }) {
           {/* Location */}
           <div style={{ borderTop: '1px solid var(--border)', paddingTop: '16px' }}>
             <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Location</div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div className="grid-2" style={{ gap: '12px' }}>
               <div>{lbl('City')}<input className="input" style={{ margin: 0 }} value={form.city} onChange={set('city')} /></div>
               <div>{lbl('Locality')}<input className="input" style={{ margin: 0 }} placeholder="Porur, Anna Nagar…" value={form.locality} onChange={set('locality')} /></div>
             </div>
@@ -270,12 +270,12 @@ function NewPropertyModal({ onClose, onSaved }) {
           {/* Specs */}
           <div style={{ borderTop: '1px solid var(--border)', paddingTop: '16px' }}>
             <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Property Specs</div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px' }}>
+            <div className="grid-3" style={{ gap: '12px' }}>
               <div>{lbl('Plot (sqft)')}<input type="number" className="input" style={{ margin: 0 }} placeholder="1200" value={form.plot_area_sqft} onChange={set('plot_area_sqft')} /></div>
               <div>{lbl('Built-up (sqft)')}<input type="number" className="input" style={{ margin: 0 }} placeholder="2400" value={form.built_up_area_sqft} onChange={set('built_up_area_sqft')} /></div>
               <div>{lbl('Floors')}<select className="input" style={{ margin: 0 }} value={form.floors} onChange={set('floors')}><option value="">Select</option>{['G','G+1','G+2','G+3','G+4'].map(f => <option key={f}>{f}</option>)}</select></div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '12px', marginTop: '12px' }}>
+            <div className="grid-3" style={{ gap: '12px', marginTop: '12px' }}>
               <div>{lbl('Bedrooms')}<input type="number" className="input" style={{ margin: 0 }} placeholder="3" value={form.bedrooms} onChange={set('bedrooms')} /></div>
               <div>{lbl('Bathrooms')}<input type="number" className="input" style={{ margin: 0 }} placeholder="2" value={form.bathrooms} onChange={set('bathrooms')} /></div>
               <div>{lbl('Built Year')}<input type="number" className="input" style={{ margin: 0 }} placeholder="2023" value={form.construction_year} onChange={set('construction_year')} /></div>
@@ -302,7 +302,7 @@ function NewPropertyModal({ onClose, onSaved }) {
           {/* Listing */}
           <div style={{ borderTop: '1px solid var(--border)', paddingTop: '16px' }}>
             <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Listing (Optional)</div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div className="grid-2" style={{ gap: '12px' }}>
               <div>{lbl('Listing Type')}
                 <select className="input" style={{ margin: 0 }} value={form.listing_type} onChange={set('listing_type')}>
                   {LISTING_TYPES.map(t => <option key={t} style={{ textTransform: 'capitalize' }}>{t}</option>)}
@@ -521,8 +521,8 @@ export default function OpsProperties() {
       ) : (
         /* ── Table View ── */
         <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-          <div className="table-wrap">
-            <table>
+          <div className="w-full overflow-x-auto">
+            <table className="table" style={{ width: '100%', minWidth: '1000px' }}>
               <thead>
                 <tr>
                   <th>Property</th><th>Owner</th><th>Location</th><th>Type</th>
@@ -614,7 +614,7 @@ export default function OpsProperties() {
               {/* Property details */}
               <div>
                 <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>Property Details</div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                <div className="grid-2" style={{ gap: '8px' }}>
                   {[
                     ['Type', selected.property_type],
                     ['Location', `${selected.locality ? selected.locality + ', ' : ''}${selected.city}`],
@@ -677,7 +677,7 @@ export default function OpsProperties() {
               {/* Listing update */}
               <div style={{ borderTop: '1px solid var(--border)', paddingTop: '16px' }}>
                 <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '10px' }}>Listing Status</div>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div className="grid-2" style={{ gap: '10px' }}>
                   <div>
                     <label style={{ fontSize: '11px', fontWeight: 600, color: '#64748b', display: 'block', marginBottom: '4px' }}>Listing Type</label>
                     <select className="input" style={{ margin: 0 }} value={selected.listing_type || 'none'}

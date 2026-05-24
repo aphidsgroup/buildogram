@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="apple-touch-icon" href="/globe.svg" />
       </head>
-      <body>
+      <body className="w-full overflow-x-hidden">
         {children}
         <script
           dangerouslySetInnerHTML={{

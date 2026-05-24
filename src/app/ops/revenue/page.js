@@ -145,7 +145,7 @@ export default function OpsRevenuePage() {
             </div>
             <form onSubmit={handleCreate} style={{ padding: '20px' }}>
               
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+              <div className="grid-2" style={{ gap: '16px', marginBottom: '16px' }}>
                 <div>
                   <label className="label">Category</label>
                   <select className="input" required value={form.revenue_category} onChange={e => setForm({...form, revenue_category: e.target.value})}>
@@ -181,7 +181,7 @@ export default function OpsRevenuePage() {
                 <input type="text" className="input" required value={form.customer_name} onChange={e => setForm({...form, customer_name: e.target.value})} />
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+              <div className="grid-2" style={{ gap: '16px', marginBottom: '16px' }}>
                 <div>
                   <label className="label">Amount Expected (₹)</label>
                   <input type="number" className="input" required min="0" value={form.amount_expected} onChange={e => setForm({...form, amount_expected: e.target.value})} />
@@ -192,7 +192,7 @@ export default function OpsRevenuePage() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '24px' }}>
+              <div className="grid-2" style={{ gap: '16px', marginBottom: '24px' }}>
                 <div>
                   <label className="label">Commission Expected (₹) <span style={{fontWeight:400, color:'#94a3b8'}}>(optional)</span></label>
                   <input type="number" className="input" min="0" value={form.commission_expected} onChange={e => setForm({...form, commission_expected: e.target.value})} />
