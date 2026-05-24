@@ -9,6 +9,7 @@ const PARTNER_NAV = [
   { href: '/partner/projects', icon: '🏗️', label: 'My Projects' },
   { href: '/partner/logs', icon: '📸', label: 'Daily Logs' },
   { href: '/partner/qc', icon: '✅', label: 'QC Checklists' },
+  { href: '/partner/settings', icon: '⚙️', label: 'Settings' },
 ];
 
 export default function PartnerLayout({ children }) {

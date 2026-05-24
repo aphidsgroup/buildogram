@@ -86,15 +86,19 @@ export async function GET(req) {
     let rev = { actual_received: 0, total_pending: 0, commission_received: 0 };
     let inv = { total_invoiced: 0, total_paid: 0, total_due: 0 };
     if (canViewRevenue) {
-      const [revData] = await sql`
-        SELECT 
-          SUM(amount_received) as actual_received,
-          SUM(amount_pending) as total_pending,
-          SUM(commission_received) as commission_received
-        FROM revenue_records
-        WHERE status != 'cancelled'
-      `;
-      if (revData) rev = revData;
+      try {
+        const [revData] = await sql`
+          SELECT 
+            SUM(amount_received) as actual_received,
+            SUM(amount_pending) as total_pending,
+            SUM(commission_received) as commission_received
+          FROM revenue_records
+          WHERE status != 'cancelled'
+        `;
+        if (revData) rev = revData;
+      } catch (e) {
+        console.error('Revenue table not ready or error:', e.message);
+      }
       
       try {
         const [invData] = await sql`

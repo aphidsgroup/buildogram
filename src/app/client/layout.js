@@ -15,6 +15,7 @@ const CLIENT_NAV = [
   { href: '/client/profile', icon: '👤', label: 'My Profile' },
   { href: '/client/notifications', icon: '🔔', label: 'Notifications' },
   { href: '/client/issues', icon: '⚠️', label: 'Raise Issue' },
+  { href: '/client/settings', icon: '⚙️', label: 'Settings' },
 ];
 
 export default function ClientLayout({ children }) {

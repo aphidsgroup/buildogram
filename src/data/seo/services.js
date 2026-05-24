@@ -391,7 +391,7 @@ export const services = [
     relatedServices: ['house-construction', 'duplex-house-construction', 'property-passport'],
     relatedGuides: ['rental-friendly-house-plan-guide', 'how-to-prepare-a-property-for-rent'],
     cta: { text: 'Plan Your Rental Property', href: '/contact' },
-    ctaSecondary: { text: 'View Rental Listings', href: '/properties/rent' },
+    ctaSecondary: { text: 'View Rental Listings', href: 'https://toletboardchennai.in' },
   },
 
   {
@@ -427,7 +427,7 @@ export const services = [
     relatedServices: ['house-construction', 'property-passport'],
     relatedGuides: ['how-property-records-help-resale', 'resale-property-listing-checklist'],
     cta: { text: 'Build for Resale Value', href: '/contact' },
-    ctaSecondary: { text: 'List Your Property', href: '/properties/list-your-property' },
+    ctaSecondary: { text: 'List Your Property', href: '/properties' },
   },
 
   {

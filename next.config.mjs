@@ -24,6 +24,25 @@ const nextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      {
+        source: '/properties/buy',
+        destination: 'https://www.realproprealty.com',
+        permanent: true,
+      },
+      {
+        source: '/properties/rent',
+        destination: 'https://toletboardchennai.in',
+        permanent: true,
+      },
+      {
+        source: '/properties/list-your-property',
+        destination: '/properties',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

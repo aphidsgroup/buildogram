@@ -1,10 +1,9 @@
 import Link from 'next/link';
 
 const FOOTER_COLS = [
-  { title: 'Marketplace', links: [['Construction Services', '/build'], ['Material Quotes', '/materials'], ['360° Property Listings', '/properties/buy'], ['Property Passport', '/property-passport'], ['Maintenance', '/maintenance']] },
+  { title: 'Marketplace', links: [['Construction Services', '/build'], ['Material Quotes', '/materials'], ['Buy/Sell Properties', 'https://www.realproprealty.com'], ['Rent/Lease Properties', 'https://toletboardchennai.in'], ['Property Passport', '/property-passport'], ['Maintenance', '/maintenance']] },
   { title: 'For Professionals', links: [['Join as Partner', '/partners'], ['Builders', '/partners'], ['Contractors', '/partners'], ['Architects', '/partners'], ['Suppliers', '/partners']] },
-  { title: 'Resources', links: [['Guides', '/guides/what-is-boq-in-construction'], ['FAQs', '/faqs/construction'], ['Glossary', '/glossary/boq'], ['Cost Estimator', '/cost-estimator'], ['BOQ Audit', '/boq-audit']] },
-  { title: 'Portals', links: [['Client Login', '/login'], ['Partner Login', '/login'], ['Ops Console', '/login'], ['Contact Us', '/contact']] },
+  { title: 'Resources', links: [['Guides', '/guides/what-is-boq-in-construction'], ['FAQs', '/faqs/construction'], ['Glossary', '/glossary/boq'], ['Cost Estimator', '/cost-estimator'], ['BOQ Audit', '/boq-audit'], ['Contact Us', '/contact']] },
 ];
 
 export default function Footer() {
@@ -32,7 +31,10 @@ export default function Footer() {
               <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px', listStyle: 'none', padding: 0, margin: 0 }}>
                 {col.links.map(([label, href]) => (
                   <li key={label}>
-                    <Link href={href} style={{ color: 'rgba(255,255,255,0.65)', fontSize: '14px', textDecoration: 'none', transition: 'color 0.2s' }}
+                    <Link href={href} 
+                      target={href.startsWith('http') ? '_blank' : undefined}
+                      rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                      style={{ color: 'rgba(255,255,255,0.65)', fontSize: '14px', textDecoration: 'none', transition: 'color 0.2s' }}
                       onMouseEnter={e => e.currentTarget.style.color = '#FFDA01'}
                       onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.65)'}
                     >{label}</Link>
@@ -44,7 +46,7 @@ export default function Footer() {
         </div>
         {/* Bottom bar */}
         <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-          <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '13px' }}>© 2025 Buildogram. All rights reserved. Chennai, Tamil Nadu, India.</span>
+          <span style={{ color: 'rgba(255,255,255,0.35)', fontSize: '13px' }}>© 2026 Buildogram. All rights reserved. Chennai, Tamil Nadu, India.</span>
           <div style={{ display: 'flex', gap: '20px' }}>
             {[['Privacy Policy', '/privacy-policy'], ['Terms', '/terms'], ['Refund Policy', '#']].map(([l, h]) => (
               <Link key={l} href={h} style={{ color: 'rgba(255,255,255,0.35)', fontSize: '13px' }}>{l}</Link>

@@ -44,7 +44,7 @@ export default function Home() {
             </div>
             
             <div className={styles.btnRow} style={{ marginTop: '16px' }}>
-               <Link href="/properties/list-your-property" className="btn" style={{ color: 'rgba(255,255,255,0.7)' }}>List Your Property →</Link>
+               <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" className="btn" style={{ color: 'rgba(255,255,255,0.7)' }}>Buy/Sell Properties →</a>
                <Link href="/materials" className="btn" style={{ color: 'rgba(255,255,255,0.7)' }}>Request Material Quote →</Link>
             </div>
           </div>
@@ -82,10 +82,13 @@ export default function Home() {
               { icon: '📊', title: 'Review BOQ & Plans', href: '/boq-audit' },
               { icon: '🧱', title: 'Source Materials', href: '/materials' },
               { icon: '🛂', title: 'Create Property Passport', href: '/property-passport' },
-              { icon: '🏡', title: 'List Property (360° Tour)', href: '/properties/list-your-property' },
+              { icon: '🏡', title: 'Buy/Sell Properties', href: 'https://www.realproprealty.com' },
               { icon: '🔧', title: 'Maintain Property', href: '/maintenance' },
             ].map(s => (
-              <Link key={s.title} href={s.href} style={{ textDecoration: 'none' }}>
+              <Link key={s.title} href={s.href} 
+                target={s.href.startsWith('http') ? '_blank' : undefined} 
+                rel={s.href.startsWith('http') ? 'noopener noreferrer' : undefined} 
+                style={{ textDecoration: 'none' }}>
                 <div className="card card-hover" style={{ height: '100%', padding: '24px' }}>
                   <div style={{ fontSize: '32px', marginBottom: '16px' }}>{s.icon}</div>
                   <h3 style={{ fontSize: '18px', color: '#292929', marginBottom: '8px' }}>{s.title}</h3>
@@ -126,39 +129,38 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════ FOR SUPPLIERS & LISTINGS (SPLIT) ══════════════════ */}
+      {/* ══════════════════ PROPERTY PORTALS ══════════════════ */}
       <section className="section" style={{ background: 'white' }}>
         <div className="container">
-          <div className="grid-2" style={{ gap: '48px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+            <span style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--primary)' }}>For Property Seekers</span>
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 36px)', marginTop: '12px', color: '#292929' }}>Property Portals Powered by Buildogram</h2>
+            <p style={{ color: 'var(--text-muted)', fontSize: '17px', marginTop: '12px', maxWidth: '600px', margin: '12px auto 0' }}>
+              Explore dedicated property platforms connected to the Buildogram ecosystem — RealPropRealty for buy/sell properties and ToLetBoardChennai for rent/lease properties.
+            </p>
+          </div>
+          <div className="grid-2" style={{ gap: '24px' }}>
             
-            {/* Suppliers */}
-            <div>
-              <span style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--primary)' }}>For Material Suppliers</span>
-              <h2 style={{ fontSize: '28px', marginTop: '12px', marginBottom: '24px', color: '#292929' }}>Reach the Right Buyers</h2>
-              <p style={{ color: 'var(--text-muted)', fontSize: '16px', marginBottom: '32px' }}>
-                Receive material quote requests from property owners, builders, contractors, and Buildogram project workflows.
+            <div className="card" style={{ padding: '40px', background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
+              <div style={{ fontSize: '40px', marginBottom: '20px' }}>🏢</div>
+              <h3 style={{ fontSize: '24px', color: '#292929', marginBottom: '16px' }}>Buy/Sell Properties</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '16px', lineHeight: 1.6, marginBottom: '32px' }}>
+                Explore properties for buying and selling through RealPropRealty with a dedicated property-first experience.
               </p>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <li style={{ display: 'flex', gap: '12px', alignItems: 'center' }}><span style={{ color: '#10B981' }}>✓</span> Get quote requests</li>
-                <li style={{ display: 'flex', gap: '12px', alignItems: 'center' }}><span style={{ color: '#10B981' }}>✓</span> Reach builders & owners</li>
-                <li style={{ display: 'flex', gap: '12px', alignItems: 'center' }}><span style={{ color: '#10B981' }}>✓</span> Build supplier visibility</li>
-                <li style={{ display: 'flex', gap: '12px', alignItems: 'center' }}><span style={{ color: '#10B981' }}>✓</span> Track material opportunities</li>
-              </ul>
+              <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                Visit RealPropRealty <span>↗</span>
+              </a>
             </div>
 
-            {/* Listings */}
-            <div>
-              <span style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--primary)' }}>For Property Listings</span>
-              <h2 style={{ fontSize: '28px', marginTop: '12px', marginBottom: '24px', color: '#292929' }}>360° Property Visibility</h2>
-              <p style={{ color: 'var(--text-muted)', fontSize: '16px', marginBottom: '32px' }}>
-                List properties with structured details and 360° tours so tenants and buyers can shortlist with better clarity.
+            <div className="card" style={{ padding: '40px', background: '#F8FAFC', border: '1px solid #E2E8F0' }}>
+              <div style={{ fontSize: '40px', marginBottom: '20px' }}>🔑</div>
+              <h3 style={{ fontSize: '24px', color: '#292929', marginBottom: '16px' }}>Rent/Lease Properties</h3>
+              <p style={{ color: 'var(--text-muted)', fontSize: '16px', lineHeight: 1.6, marginBottom: '32px' }}>
+                Find rental and lease property opportunities through ToLetBoardChennai with a focused rental-first experience.
               </p>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <li style={{ display: 'flex', gap: '12px', alignItems: 'center' }}><span style={{ color: '#10B981' }}>✓</span> Rent/lease listings</li>
-                <li style={{ display: 'flex', gap: '12px', alignItems: 'center' }}><span style={{ color: '#10B981' }}>✓</span> Buy/sell listings</li>
-                <li style={{ display: 'flex', gap: '12px', alignItems: 'center' }}><span style={{ color: '#10B981' }}>✓</span> 360° immersive tours</li>
-                <li style={{ display: 'flex', gap: '12px', alignItems: 'center' }}><span style={{ color: '#10B981' }}>✓</span> First visit from home</li>
-              </ul>
+              <a href="https://toletboardchennai.in" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                Visit ToLetBoardChennai <span>↗</span>
+              </a>
             </div>
 
           </div>
@@ -214,7 +216,7 @@ export default function Home() {
             Find construction support, verified partners, material suppliers, 360° property listings, and digital property records — all in one platform.
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/properties/list-your-property" className="btn btn-primary btn-lg" style={{ background: '#1A1A1A', color: 'white' }}>List Your Property</Link>
+            <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg" style={{ background: '#1A1A1A', color: 'white' }}>Buy/Sell Properties</a>
             <Link href="/partners" className="btn btn-lg" style={{ background: 'white', color: '#1A1A1A', border: 'none' }}>Join as Partner</Link>
             <Link href="/materials" className="btn btn-lg" style={{ background: 'white', color: '#1A1A1A', border: 'none' }}>Request Material Quote</Link>
             <Link href="/contact" className="btn btn-lg" style={{ background: 'transparent', color: '#1A1A1A', border: '2px solid rgba(0,0,0,0.2)' }}>Start Construction Consultation</Link>

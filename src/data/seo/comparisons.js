@@ -84,7 +84,7 @@ export const comparisons = [
       { q: 'Does Buildogram create 360° tours for all listings?', a: 'Yes. Buildogram\'s listing service includes 360° photography as part of the property listing package.' },
       { q: 'Can I use my existing photos and add a 360° tour later?', a: 'Yes. We can add a 360° tour to an existing listing. The shoot is arranged at a convenient time.' },
     ],
-    cta: { text: 'List Your Property with 360° Tour', href: '/properties/list-your-property' },
+    cta: { text: 'List Your Property with 360° Tour', href: '/properties' },
     disclaimer: 'Results from property listings depend on many factors including pricing, location, and market conditions.',
   },
   {

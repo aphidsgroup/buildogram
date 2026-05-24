@@ -212,9 +212,9 @@ export const guides = [
       { q: 'What documents does a tenant typically need to provide in Chennai?', a: 'Standard tenant documents include government-issued photo ID (Aadhaar/PAN/Passport), proof of employment or income, and reference from previous landlord if applicable. Always verify documents.' },
       { q: 'Should I furnish the property before renting?', a: 'Semi-furnished (fans, fixtures, kitchen fittings) typically commands better rent than bare shell, without the high investment of fully furnished. Fully furnished properties target premium tenants and expats.' },
     ],
-    relatedServices: ['/properties/rent', '/properties/list-your-property', '/property-passport'],
+    relatedServices: ['https://toletboardchennai.in', '/properties', '/property-passport'],
     relatedGuides: ['rental-property-listing-checklist', 'how-360-property-tours-help-property-owners'],
-    cta: { text: 'List Your Property on Buildogram', href: '/properties/list-your-property' },
+    cta: { text: 'List Your Property on Buildogram', href: '/properties' },
   },
 
   {
@@ -233,7 +233,7 @@ export const guides = [
     faqs: [
       { q: 'Does a Property Passport help in resale?', a: 'Yes. Buyers who can see documented construction history, test reports, and warranty records have higher confidence in the property, which translates to fewer price negotiations and faster closure.' },
     ],
-    relatedServices: ['/property-passport', '/properties/list-your-property', '/services/renovation-construction'],
+    relatedServices: ['/property-passport', '/properties', '/services/renovation-construction'],
     relatedGuides: ['resale-property-listing-checklist', 'how-property-records-help-resale'],
     cta: { text: 'Create Your Property Passport', href: '/property-passport' },
   },
@@ -253,7 +253,7 @@ export const guides = [
     faqs: [
       { q: 'What if my property was built without any documentation?', a: 'It is still possible to create a partial Property Passport with available records and current property condition. A quality inspection report on the current state of the property can help fill the gap.' },
     ],
-    relatedServices: ['/property-passport', '/properties/list-your-property'],
+    relatedServices: ['/property-passport', '/properties'],
     relatedGuides: ['how-to-improve-resale-value-before-listing', 'resale-property-listing-checklist'],
     cta: { text: 'Create Your Property Passport', href: '/property-passport' },
   },
@@ -425,9 +425,9 @@ export const guides = [
     faqs: [
       { q: 'Does a 360° tour actually help find tenants faster?', a: 'Yes. Tenants who view a property via 360° tour before physical visit are better qualified — they have already confirmed interest in the layout and feel. This reduces unnecessary visits and increases conversion.' },
     ],
-    relatedServices: ['/properties/list-your-property', '/properties/rent'],
+    relatedServices: ['/properties', 'https://toletboardchennai.in'],
     relatedGuides: ['how-to-prepare-a-property-for-rent', 'how-360-property-tours-help-property-owners'],
-    cta: { text: 'List Your Property Now', href: '/properties/list-your-property' },
+    cta: { text: 'List Your Property Now', href: '/properties' },
   },
 
   {
@@ -446,9 +446,9 @@ export const guides = [
       { q: 'How is a 360° tour created?', a: 'Buildogram uses 360° camera equipment during the property listing shoot. The resulting tour is embedded into your listing and accessible to verified inquirers.' },
       { q: 'Is my personal contact information visible in the 360° tour?', a: 'No. Property tours on Buildogram are accessed through the platform only. Owner contact details are not embedded in the tour or visible to public browsers.' },
     ],
-    relatedServices: ['/properties/list-your-property', '/properties/rent'],
+    relatedServices: ['/properties', 'https://toletboardchennai.in'],
     relatedGuides: ['rental-property-listing-checklist', 'how-to-prepare-a-property-for-rent'],
-    cta: { text: 'List with a 360° Tour', href: '/properties/list-your-property' },
+    cta: { text: 'List with a 360° Tour', href: '/properties' },
   },
 
   {
@@ -467,9 +467,9 @@ export const guides = [
     faqs: [
       { q: 'How do I price my resale property in Chennai?', a: 'Pricing should be based on recent comparable sales in your locality, your property\'s condition, documentation status, and current market sentiment. An overpriced property sits unsold. A well-documented, correctly-priced property with a 360° tour sells faster.' },
     ],
-    relatedServices: ['/properties/list-your-property', '/property-passport'],
+    relatedServices: ['/properties', '/property-passport'],
     relatedGuides: ['how-to-improve-resale-value-before-listing', 'how-property-records-help-resale'],
-    cta: { text: 'List for Resale on Buildogram', href: '/properties/list-your-property' },
+    cta: { text: 'List for Resale on Buildogram', href: '/properties' },
   },
 
   {

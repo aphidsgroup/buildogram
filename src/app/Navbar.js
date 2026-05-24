@@ -40,9 +40,8 @@ export default function Navbar() {
           <div className={styles.dropdown}>
             <span className={styles.dropdownTrigger}>Properties <span className={styles.arrow}>▾</span></span>
             <div className={styles.dropdownMenu}>
-              <Link href="/properties/buy" onClick={close}>Buy Properties</Link>
-              <Link href="/properties/rent" onClick={close}>Rent Properties</Link>
-              <Link href="/properties/list-your-property" onClick={close}>List Your Property</Link>
+              <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" onClick={close}>Buy/Sell Properties</a>
+              <a href="https://toletboardchennai.in" target="_blank" rel="noopener noreferrer" onClick={close}>Rent/Lease Properties</a>
               <Link href="/property-passport" onClick={close}>Property Passport™</Link>
               <Link href="/maintenance" onClick={close}>Maintenance & AMC</Link>
             </div>

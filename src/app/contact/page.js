@@ -87,15 +87,15 @@ export default function Contact() {
               <h3 style={{ fontSize: '20px', marginBottom: '16px', color: 'var(--primary-dark)' }}>Office Address</h3>
               <p className="text-muted" style={{ lineHeight: '1.7' }}>
                 <strong>Buildogram Headquarters</strong><br />
-                12, Construction Tech Park,<br />
-                OMR IT Expressway,<br />
-                Chennai, Tamil Nadu 600119
+                No.35, 7th floor, Awfis Space, Centre point 3,<br />
+                Poonamallee High Road, Manapakkam, Porur,<br />
+                Chennai - 89
               </p>
             </div>
             <div className="card">
               <h3 style={{ fontSize: '20px', marginBottom: '16px', color: 'var(--primary-dark)' }}>Contact Info</h3>
               <p className="text-muted mb-4" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                📞 <a href="tel:+919876543210">+91 98765 43210</a>
+                📞 <a href="tel:+919360232456">+91 93602 32456</a>
               </p>
               <p className="text-muted" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 ✉️ <a href="mailto:hello@buildogram.in">hello@buildogram.in</a>
