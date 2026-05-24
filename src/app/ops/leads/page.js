@@ -247,7 +247,7 @@ export default function OpsLeads() {
     if (!draft) return;
     setReportForm({
       executive_summary: draft.summary || '',
-      missing_or_unclear_items: (draft.missing_items || []).join('\n'),
+      missing_or_unclear_items: (draft.missing_or_unclear_items || draft.missing_items || []).join('\n'),
       escalation_risks: (draft.escalation_risks || []).join('\n'),
       questions_to_ask_contractor: (draft.questions_for_contractor || []).join('\n'),
       buildogram_recommendation: draft.recommended_next_step || '',
@@ -943,19 +943,26 @@ export default function OpsLeads() {
                     <div style={{ background: 'white', padding: '16px', borderRadius: '8px', border: '1px solid #ddd6fe' }}>
                       {selected.metadata.latest_draft ? (
                         <>
+                          {selected.metadata.latest_draft.provider_used && (
+                            <div className="mb-4">
+                              <span style={{ fontSize: '10px', background: selected.metadata.latest_draft.fallback_used ? '#f1f5f9' : '#e0e7ff', color: selected.metadata.latest_draft.fallback_used ? '#475569' : '#3730a3', padding: '2px 8px', borderRadius: '99px', fontWeight: 700 }}>
+                                {selected.metadata.latest_draft.fallback_used ? '⚙️ Deterministic Fallback' : '🤖 Generated via ' + selected.metadata.latest_draft.provider_used}
+                              </span>
+                            </div>
+                          )}
                           <div style={{ fontSize: '13px', fontWeight: 600, color: '#4c1d95', marginBottom: '8px' }}>Missing Items Identified:</div>
                           <ul style={{ paddingLeft: '20px', margin: '0 0 16px 0', fontSize: '12px', color: '#475569' }}>
-                            {selected.metadata.latest_draft.missing_items?.map((item, i) => <li key={i}>{item}</li>)}
+                            {(selected.metadata.latest_draft.missing_or_unclear_items || selected.metadata.latest_draft.missing_items)?.map((item, i) => <li key={i}>{item}</li>)}
                           </ul>
 
                           <div style={{ fontSize: '13px', fontWeight: 600, color: '#4c1d95', marginBottom: '8px' }}>Escalation Risks:</div>
                           <ul style={{ paddingLeft: '20px', margin: '0 0 16px 0', fontSize: '12px', color: '#475569' }}>
-                            {selected.metadata.latest_draft.escalation_risks?.map((risk, i) => <li key={i}>{risk}</li>)}
+                            {(selected.metadata.latest_draft.cost_escalation_risks || selected.metadata.latest_draft.escalation_risks)?.map((risk, i) => <li key={i}>{risk}</li>)}
                           </ul>
 
                           <div style={{ fontSize: '13px', fontWeight: 600, color: '#4c1d95', marginBottom: '8px' }}>Questions for Contractor:</div>
                           <ul style={{ paddingLeft: '20px', margin: '0 0 16px 0', fontSize: '12px', color: '#475569' }}>
-                            {selected.metadata.latest_draft.questions_for_contractor?.map((q, i) => <li key={i}>{q}</li>)}
+                            {(selected.metadata.latest_draft.questions_to_ask_contractor || selected.metadata.latest_draft.questions_for_contractor)?.map((q, i) => <li key={i}>{q}</li>)}
                           </ul>
 
                           <div style={{ fontSize: '10px', color: '#64748b', fontStyle: 'italic', padding: '8px', background: '#f8fafc', borderRadius: '4px', marginBottom: '16px' }}>

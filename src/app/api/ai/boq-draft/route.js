@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
+import { generateBOQDraft } from '@/lib/ai';
 
 export async function POST(req) {
   try {
@@ -18,32 +19,50 @@ export async function POST(req) {
     const [lead] = await sql`SELECT * FROM leads WHERE id = ${lead_id}`;
     if (!lead) return NextResponse.json({ success: false, error: 'Lead not found' }, { status: 404 });
 
-    // 1. Fallback Deterministic Checklist Logic
-    const missingItems = [];
-    const escalationRisks = [];
-    const questionsForContractor = [];
+    // 1. Attempt LLM AI Generation
+    const aiRes = await generateBOQDraft({ boq_text, lead_metadata: lead.metadata });
+    let outputJson;
 
-    // Basic heuristic rules based on standard Chennai construction
-    missingItems.push('Soil testing & structural design fees explicitly mentioned');
-    missingItems.push('Temporary EB line deposit & water arrangements during construction');
-    missingItems.push('Sump, Septic Tank, and OHT exact capacities in liters');
-    
-    escalationRisks.push('Steel and Cement prices are volatile. Does the quote include a price escalation clause?');
-    escalationRisks.push('Rock excavation or deep foundation costs if soil is loose (extra depth charges).');
+    if (aiRes.success) {
+      outputJson = aiRes.data;
+      outputJson.provider_used = aiRes.provider_used;
+      outputJson.model_used = aiRes.model_used;
+      outputJson.fallback_used = false;
+    } else {
+      // 2. Fallback Deterministic Checklist Logic
+      const missingItems = [];
+      const escalationRisks = [];
+      const questionsForContractor = [];
 
-    questionsForContractor.push('Are compound wall, main gate, and elevation works included in this base rate?');
-    questionsForContractor.push('Is the foundation designed for G+1 or future expansion to G+2?');
+      // Basic heuristic rules based on standard Chennai construction
+      missingItems.push('Soil testing & structural design fees explicitly mentioned');
+      missingItems.push('Temporary EB line deposit & water arrangements during construction');
+      missingItems.push('Sump, Septic Tank, and OHT exact capacities in liters');
+      
+      escalationRisks.push('Steel and Cement prices are volatile. Does the quote include a price escalation clause?');
+      escalationRisks.push('Rock excavation or deep foundation costs if soil is loose (extra depth charges).');
 
-    const outputJson = {
-      summary: "Preliminary internal review of contractor quote/BOQ details.",
-      clearly_included: "Details based on provided metadata",
-      missing_items: missingItems,
-      escalation_risks: escalationRisks,
-      material_concerns: ['Ensure specific grades (e.g., Fe550 steel, OPC 53 cement) are explicitly written, not just brand names.'],
-      questions_for_contractor: questionsForContractor,
-      recommended_next_step: "Call client to discuss these missing items and offer a formal structural BOQ from Buildogram.",
-      disclaimer: "This BOQ review draft is advisory and based on provided information. It is not final engineering, legal, contractual, or construction certification. Human review by Buildogram team/professionals is required before sharing with customer."
-    };
+      questionsForContractor.push('Are compound wall, main gate, and elevation works included in this base rate?');
+      questionsForContractor.push('Is the foundation designed for G+1 or future expansion to G+2?');
+
+      outputJson = {
+        summary: "Preliminary internal review of contractor quote/BOQ details.",
+        items_clearly_included: ["Details based on provided metadata"],
+        missing_or_unclear_items: missingItems,
+        specification_gaps: ['Ensure specific grades (e.g., Fe550 steel, OPC 53 cement) are explicitly written, not just brand names.'],
+        cost_escalation_risks: escalationRisks,
+        payment_milestone_concerns: [],
+        material_quality_concerns: [],
+        questions_to_ask_contractor: questionsForContractor,
+        buildogram_recommendation: "Call client to discuss these missing items.",
+        next_step: "Offer a formal structural BOQ from Buildogram.",
+        disclaimer: "This BOQ review draft is advisory and based on provided information. It is not final engineering, legal, contractual, or construction certification. Human review by Buildogram team/professionals is required before sharing with customer.",
+        confidence_level: 'Low',
+        provider_used: 'deterministic_fallback',
+        fallback_used: true,
+        error_message: aiRes.error || 'No API Key'
+      };
+    }
 
     // 2. Save to ai_requests
     const [aiReq] = await sql`
