@@ -10,8 +10,9 @@ export default function PartnerDashboard() {
   const [logForm, setLogForm] = useState({ project_id: '', notes: '', workers_count: '', weather: '' });
   const [logMsg, setLogMsg] = useState('');
   
-  // Referrals State
+  // Referrals & Leads State
   const [referrals, setReferrals] = useState([]);
+  const [assignedLeads, setAssignedLeads] = useState([]);
 
   // Profile Edit State
   const [editForm, setEditForm] = useState({});
@@ -39,6 +40,10 @@ export default function PartnerDashboard() {
         setReferrals(refData.referrals || []);
       }
       
+      fetch('/api/partner/assigned-leads')
+        .then(r => r.json())
+        .then(ld => { if (ld.success) setAssignedLeads(ld.leads || []); });
+        
       setLoading(false); 
     });
   }, []);
@@ -71,7 +76,27 @@ export default function PartnerDashboard() {
       setSaveMsg('❌ Network error.');
     }
     setSaving(false);
+    setSaving(false);
     setTimeout(() => setSaveMsg(''), 3000);
+  };
+
+  const updateAssignment = async (leadId, newStatus, note = '') => {
+    try {
+      const res = await fetch(`/api/partner/assigned-leads/${leadId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ assignment_status: newStatus, partner_response_note: note })
+      });
+      const d = await res.json();
+      if (d.success) {
+        setAssignedLeads(prev => prev.map(l => l.id === leadId ? { ...l, assignment_status: newStatus, partner_response_note: note } : l));
+        alert(`Lead marked as ${newStatus}`);
+      } else {
+        alert(d.error || 'Failed to update assignment');
+      }
+    } catch (err) {
+      alert('Network error');
+    }
   };
 
   const statusColor = { execution: 'badge-orange', design: 'badge-blue', complete: 'badge-green', on_hold: 'badge-gray' };
@@ -101,6 +126,63 @@ export default function PartnerDashboard() {
 
       <div className="container mx-auto max-w-5xl px-4 mt-8">
         
+        {/* ── ASSIGNED LEADS FROM BUILDOGRAM ── */}
+        {assignedLeads.length > 0 && (
+          <div className="card mb-8 p-0" style={{ background: 'white', borderRadius: '16px', overflow: 'hidden', border: '2px solid #3b82f6' }}>
+            <div style={{ padding: '24px', borderBottom: '1px solid #bfdbfe', background: '#eff6ff', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#1e3a8a', margin: 0 }}>🎯 Assigned Opportunities</h2>
+            </div>
+            <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              {assignedLeads.map(lead => (
+                <div key={lead.id} style={{ border: '1px solid #e2e8f0', borderRadius: '12px', padding: '16px', background: '#f8fafc' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                    <div>
+                      <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a', margin: '0 0 4px 0' }}>{lead.masked_name}</h3>
+                      <div style={{ fontSize: '13px', color: '#64748b', fontWeight: 500 }}>
+                        {lead.city} {lead.locality ? `, ${lead.locality}` : ''} • <span style={{ textTransform: 'capitalize' }}>{lead.lead_type.replace('_', ' ')}</span>
+                      </div>
+                    </div>
+                    <div>
+                      <span className={`badge ${lead.assignment_status === 'accepted' || lead.assignment_status === 'contacted' ? 'badge-green' : lead.assignment_status === 'rejected' ? 'badge-red' : 'badge-yellow'}`} style={{ textTransform: 'capitalize' }}>
+                        {lead.assignment_status.replace('_', ' ')}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div style={{ background: 'white', padding: '12px', borderRadius: '8px', border: '1px solid #f1f5f9', marginBottom: '16px' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 700, color: '#94a3b8', textTransform: 'uppercase', marginBottom: '4px' }}>Customer Requirement</div>
+                    <div style={{ fontSize: '14px', color: '#334155', lineHeight: 1.5 }}>"{lead.requirement_summary}"</div>
+                  </div>
+
+                  {lead.ops_notes && (
+                    <div style={{ background: '#fefce8', padding: '12px', borderRadius: '8px', borderLeft: '4px solid #eab308', marginBottom: '16px' }}>
+                      <div style={{ fontSize: '11px', fontWeight: 700, color: '#ca8a04', textTransform: 'uppercase', marginBottom: '4px' }}>Note from Buildogram Ops</div>
+                      <div style={{ fontSize: '13px', color: '#854d0e', lineHeight: 1.5 }}>{lead.ops_notes}</div>
+                    </div>
+                  )}
+
+                  <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
+                    {(lead.assignment_status === 'assigned' || lead.assignment_status === 'not_assigned') && (
+                      <>
+                        <button className="btn btn-sm btn-primary" onClick={() => updateAssignment(lead.id, 'accepted', 'Accepted opportunity')}>✅ Accept Lead</button>
+                        <button className="btn btn-sm btn-outline" onClick={() => updateAssignment(lead.id, 'rejected', 'Cannot take this project right now.')} style={{ color: '#ef4444', borderColor: '#fca5a5' }}>❌ Reject</button>
+                      </>
+                    )}
+                    {lead.assignment_status === 'accepted' && (
+                      <button className="btn btn-sm" style={{ background: '#f59e0b', color: 'white' }} onClick={() => updateAssignment(lead.id, 'contacted', 'Attempted to contact customer.')}>📞 Mark Contacted</button>
+                    )}
+                    {(lead.assignment_status === 'accepted' || lead.assignment_status === 'contacted') && (
+                      <div style={{ fontSize: '11px', color: '#64748b', fontStyle: 'italic', marginLeft: 'auto' }}>
+                        Buildogram Ops will share customer contact details shortly.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* ── PUBLIC PROFILE SECTION ── */}
         <div className="card mb-8 p-0" style={{ background: 'white', borderRadius: '16px', overflow: 'hidden' }}>
           <div style={{ padding: '24px', borderBottom: '1px solid #f1f5f9', background: '#f8fafc', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
