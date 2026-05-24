@@ -199,6 +199,9 @@ export default function BOQAuditPage() {
           <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '13px', marginTop: '16px' }}>
             Or call us directly: <a href="tel:+919000000000" style={{ color: 'rgba(255,255,255,0.6)' }}>+91 90000 00000</a>
           </p>
+          <div style={{ marginTop: '24px', padding: '16px', borderTop: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '12px', lineHeight: 1.5 }}>
+            <strong>Disclaimer:</strong> This BOQ review is advisory and based on provided documents. It is not engineering, legal, contractual, or construction certification.
+          </div>
         </div>
       </section>
     </>

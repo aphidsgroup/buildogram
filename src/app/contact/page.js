@@ -76,7 +76,7 @@ export default function Contact() {
                 <label>Message (Optional)</label>
                 <textarea className="input" value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} placeholder="Tell us more about your project..." />
               </div>
-              <button type="submit" className="btn btn-primary btn-lg mt-2" style={{ width: '100%', justifyContent: 'center' }}>Submit Enquiry</button>
+              <button type="submit" className="btn btn-primary btn-lg mt-2" style={{ width: '100%', justifyContent: 'center' }}>Book Free Engineering Consultation</button>
               {status && <div style={{ marginTop: '12px', textAlign: 'center', fontSize: '14px', fontWeight: '500', color: status.includes('Success') ? 'var(--success)' : 'var(--error)' }}>{status}</div>}
             </form>
           </div>

@@ -306,7 +306,7 @@ export default function CostEstimator() {
                 )}
 
                 <div style={{ padding: '16px', background: '#f1f5f9', borderRadius: '8px', fontSize: '11px', color: '#64748b', lineHeight: 1.5 }}>
-                  <strong>Disclaimer:</strong> {result.disclaimer}
+                  <strong>Disclaimer:</strong> This is an approximate educational estimate based on the information provided. It is not a final quotation.
                 </div>
               </div>
 
@@ -321,6 +321,9 @@ export default function CostEstimator() {
               </div>
             </div>
           )}
+        </div>
+        <div style={{ marginTop: '32px', textAlign: 'center', color: '#64748b', fontSize: '12px' }}>
+          <strong>Legal Disclaimer:</strong> This cost estimator provides an approximate educational estimate, not a final quotation. Pricing is subject to site inspection, final architectural plans, and current material rates.
         </div>
       </div>
     </div>
