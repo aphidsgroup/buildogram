@@ -97,19 +97,9 @@ export default function ClientProfilePage() {
             </div>
           </div>
 
-          <div className="grid-2 gap-6 mb-8">
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">City / Location</label>
-              <input type="text" className="input" value={formData.city} onChange={e => setFormData(p => ({ ...p, city: e.target.value }))} />
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">Preferred Communication</label>
-              <select className="input" value={formData.preferred_channel} onChange={e => setFormData(p => ({ ...p, preferred_channel: e.target.value }))}>
-                <option value="whatsapp">WhatsApp</option>
-                <option value="phone">Phone Call</option>
-                <option value="email">Email</option>
-              </select>
-            </div>
+          <div className="mb-8">
+            <label className="block text-sm font-bold text-slate-700 mb-2">City / Location</label>
+            <input type="text" className="input" value={formData.city} onChange={e => setFormData(p => ({ ...p, city: e.target.value }))} />
           </div>
 
           <div className="flex justify-end pt-6" style={{ borderTop: '1px solid #e2e8f0' }}>
