@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { roleCan } from '@/lib/permissions';
 
 /* ─── Constants ─────────────────────────────────────────── */
 const STATUS_PIPELINE = ['new', 'contacted', 'qualified', 'proposal', 'won', 'lost'];
@@ -64,6 +65,7 @@ export default function OpsLeads() {
   const [selected, setSelected] = useState(null);
   const [saving, setSaving]     = useState(false);
   const [toast, setToast]       = useState(null);
+  const [user, setUser]         = useState(null);
   const [waModal, setWaModal] = useState({ open: false, lead: null, message: '', phone: '' });
 
   // Activity Timeline State
@@ -92,6 +94,9 @@ export default function OpsLeads() {
     fetch('/api/leads')
       .then(r => r.json())
       .then(d => { setLeads(d.leads || []); setLoading(false); });
+    fetch('/api/auth/me')
+      .then(r => r.json())
+      .then(d => { if (d.user) setUser(d.user); });
   };
 
   useEffect(() => { load(); }, []);
@@ -411,7 +416,7 @@ export default function OpsLeads() {
             )}
 
             {/* Partner Assignment Block */}
-            {selected.lead_type !== 'partner_application' && (
+            {selected.lead_type !== 'partner_application' && user && roleCan(user.role, 'manage_partners') && (
               <div style={{ marginBottom: '16px', padding: '16px', background: '#fffbeb', borderRadius: '8px', border: '1px solid #fde68a' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
                   <div style={{ fontSize: '11px', fontWeight: 800, color: '#b45309', textTransform: 'uppercase' }}>🎯 Assign Lead to Partner</div>

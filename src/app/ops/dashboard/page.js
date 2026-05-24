@@ -1,19 +1,22 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { roleCan } from '@/lib/permissions';
 
 export default function OpsDashboard() {
   const [data, setData] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch('/api/ops/dashboard')
-      .then(r => r.json())
-      .then(d => {
-        if (d.success) setData(d);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+    Promise.all([
+      fetch('/api/ops/dashboard').then(r => r.json()),
+      fetch('/api/auth/me').then(r => r.json())
+    ]).then(([d, u]) => {
+      if (d.success) setData(d);
+      if (u.user) setUser(u.user);
+      setLoading(false);
+    }).catch(() => setLoading(false));
   }, []);
 
   const stColor = { new: 'badge-blue', contacted: 'badge-yellow', qualified: 'badge-orange', proposal: 'badge-orange', won: 'badge-green', lost: 'badge-red', requested: 'badge-blue', pending: 'badge-yellow', verified: 'badge-green', published: 'badge-green', draft: 'badge-gray' };
@@ -110,28 +113,6 @@ export default function OpsDashboard() {
             <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Active Passports</div>
             <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '8px', fontWeight: 500 }}>{kpis.avgCompleteness}% avg completeness</div>
         </div>
-
-        {/* Revenue KPIs */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '8px' }}>
-          <div className="card" style={{ padding: '8px', background: '#f8fafc', borderColor: '#e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ fontSize: '10px', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Rev. Received</div>
-              <div style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a' }}>{fmt(kpis.revenueReceived)}</div>
-            </div>
-          </div>
-          <div className="card" style={{ padding: '8px', background: '#f8fafc', borderColor: '#e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ fontSize: '10px', color: '#64748b', fontWeight: 700, textTransform: 'uppercase' }}>Rev. Pending</div>
-              <div style={{ fontSize: '16px', fontWeight: 800, color: '#0f172a' }}>{fmt(kpis.revenuePending)}</div>
-            </div>
-          </div>
-          <div className="card" style={{ padding: '8px', background: '#f0fdf4', borderColor: '#bbf7d0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div>
-              <div style={{ fontSize: '10px', color: '#166534', fontWeight: 700, textTransform: 'uppercase' }}>Comm. Received</div>
-              <div style={{ fontSize: '16px', fontWeight: 800, color: '#15803d' }}>{fmt(kpis.commissionReceived)}</div>
-            </div>
-          </div>
-        </div>
       </div>
 
       <div className="grid-4 mb-8" style={{ gap: '16px' }}>
@@ -141,16 +122,20 @@ export default function OpsDashboard() {
             <div style={{ fontSize: '12px', fontWeight: 700, color: '#a16207', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Partner Referrals</div>
             <div style={{ fontSize: '12px', color: '#ca8a04', marginTop: '8px', fontWeight: 500 }}>{kpis.convertedReferrals} Converted</div>
         </div>
-        <div className="card" style={{ padding: '20px', border: '1px solid #fed7aa', background: '#fff7ed' }}>
-            <div style={{ background: '#fed7aa', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>💰</div>
-            <div style={{ fontSize: '24px', fontWeight: 800, color: '#9a3412', marginBottom: '4px' }}>{fmt(kpis.referralExpected)}</div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: '#c2410c', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Exp. Referral Comm.</div>
-        </div>
-        <div className="card" style={{ padding: '20px', border: '1px solid #bbf7d0', background: '#f0fdf4' }}>
-            <div style={{ background: '#bbf7d0', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>💸</div>
-            <div style={{ fontSize: '24px', fontWeight: 800, color: '#166534', marginBottom: '4px' }}>{fmt(kpis.referralPaid)}</div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: '#15803d', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Paid Referral Comm.</div>
-        </div>
+        {user && roleCan(user.role, 'view_revenue') && (
+          <>
+            <div className="card" style={{ padding: '20px', border: '1px solid #fed7aa', background: '#fff7ed' }}>
+                <div style={{ background: '#fed7aa', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>💰</div>
+                <div style={{ fontSize: '24px', fontWeight: 800, color: '#9a3412', marginBottom: '4px' }}>{fmt(kpis.referralExpected)}</div>
+                <div style={{ fontSize: '12px', fontWeight: 700, color: '#c2410c', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Exp. Referral Comm.</div>
+            </div>
+            <div className="card" style={{ padding: '20px', border: '1px solid #bbf7d0', background: '#f0fdf4' }}>
+                <div style={{ background: '#bbf7d0', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>💸</div>
+                <div style={{ fontSize: '24px', fontWeight: 800, color: '#166534', marginBottom: '4px' }}>{fmt(kpis.referralPaid)}</div>
+                <div style={{ fontSize: '12px', fontWeight: 700, color: '#15803d', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Paid Referral Comm.</div>
+            </div>
+          </>
+        )}
       </div>
 
       <div className="grid-2" style={{ gap: '24px', marginBottom: '32px' }}>

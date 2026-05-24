@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
+import { roleCan } from '@/lib/permissions';
 
 /* ─── Helpers ─────────────────────────────────────────────── */
 
@@ -125,6 +126,12 @@ export async function PUT(req, { params }) {
   // Extract metadata if present
   let newMetadata = b.metadata;
   if (newMetadata && Object.keys(newMetadata).length > 0) {
+    // Prevent unauthorized partner assignment
+    if (newMetadata.assigned_partner_user_id !== undefined || newMetadata.assigned_partner_lead_id !== undefined) {
+      if (!roleCan(u.role, 'manage_partners')) {
+        return NextResponse.json({ success: false, error: 'Permission denied for partner assignment' }, { status: 403 });
+      }
+    }
     // Merge new metadata with existing
     newMetadata = { ...lead.metadata, ...newMetadata };
   }
