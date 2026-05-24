@@ -28,7 +28,7 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: '#4f46e5',
+  themeColor: '#FFDA01',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="apple-touch-icon" href="/globe.svg" />
       </head>
-      <body className="w-full overflow-x-hidden">
+      <body>
         {children}
         <script
           dangerouslySetInnerHTML={{

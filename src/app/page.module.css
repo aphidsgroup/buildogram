@@ -10,52 +10,45 @@
 .menuBtn { display: none; background: none; color: var(--text); font-size: 22px; }
 
 /* HERO */
-.hero { padding: 160px 0 100px; position: relative; overflow: hidden; }
-.heroBg { position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(187,160,122,0.12) 0%, transparent 70%); pointer-events: none; }
-.heroContent { max-width: 760px; }
-.heroTitle { font-size: clamp(40px, 5vw, 64px); margin-bottom: 20px; }
-.heroGradient { background: linear-gradient(135deg, var(--primary-dark), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.heroSub { font-size: 18px; color: var(--text-muted); line-height: 1.7; max-width: 580px; margin-bottom: 36px; }
-.heroActions { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 48px; }
-.heroStats { display: flex; gap: 40px; flex-wrap: wrap; padding-top: 36px; border-top: 1px solid var(--border); }
-.heroStatVal { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 800; color: var(--accent); display: block; }
-.heroStatLabel { font-size: 13px; color: var(--text-muted); }
+.hero { background: var(--secondary); color: white; padding: 110px 0 90px; position: relative; overflow: hidden; min-height: 90vh; display: flex; align-items: center; }
+.heroContent { max-width: 760px; position: relative; width: 100%; z-index: 2; }
+.heroAmbient { position: absolute; inset: 0; background: radial-gradient(ellipse at 65% 40%, rgba(255,218,1,0.09) 0%, transparent 55%); z-index: 1;}
+.heroLine { position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,218,1,0.4), transparent); z-index: 1;}
 
-/* STEPS */
-.steps { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0; }
-.step { position: relative; text-align: center; padding: 0 16px; }
-.stepNum { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: var(--primary-dark); font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 14px; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; border: 2px solid var(--border-solid); }
-.stepLine { position: absolute; top: 24px; left: calc(50% + 24px); right: calc(-50% + 24px); height: 2px; background: linear-gradient(90deg, var(--accent), transparent); }
+/* LAYOUT UTILS FOR PAGE.JS */
+.splitSection { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+.splitSectionAlt { display: grid; grid-template-columns: 1fr 1.5fr; gap: 64px; align-items: center; }
+.ecosystemStrip { display: flex; gap: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.ecosystemStrip::-webkit-scrollbar { display: none; }
+.btnRow { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 60px; }
+.statsRow { display: flex; gap: 40px; flex-wrap: wrap; }
+.featuresRow { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 48px; }
+.miniCardGrid { display: flex; gap: 12px; flex-wrap: wrap; }
+.miniCard { background: #F9F9F9; border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; min-width: 130px; flex: 1 0 auto; }
+.comparisonGrid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.finalCta { background: var(--secondary); padding: 100px 0; text-align: center; }
 
-/* TRUST */
-.trustGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-.trustCard { background: linear-gradient(135deg, var(--bg-card), var(--bg-card2)); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px 24px; text-align: center; }
-.trustVal { font-family: 'Space Grotesk', sans-serif; font-size: 40px; font-weight: 900; background: linear-gradient(135deg, var(--secondary), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.trustLabel { font-size: 14px; color: var(--text-muted); margin-top: 8px; }
-
-/* CTA BANNER */
-.ctaBanner { background: linear-gradient(135deg, rgba(187,160,122,0.05), rgba(249,115,22,0.05)); border-top: 1px solid rgba(187,160,122,0.2); border-bottom: 1px solid rgba(187,160,122,0.2); padding: 80px 0; }
-
-/* FOOTER */
-.footer { background: var(--bg-card); border-top: 1px solid var(--border); padding: 60px 0 32px; }
-.footerGrid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
-.footerBottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid var(--border); }
-
+/* RESPONSIVE */
 @media (max-width: 1024px) {
-  .steps { grid-template-columns: repeat(3, 1fr); }
-  .stepLine { display: none; }
-  .trustGrid { grid-template-columns: repeat(2, 1fr); }
-  .footerGrid { grid-template-columns: 1fr 1fr; }
+  .splitSection, .splitSectionAlt { gap: 40px; }
 }
+
 @media (max-width: 768px) {
   .navLinks { display: none; flex-direction: column; position: fixed; top: 72px; left: 0; right: 0; background: var(--bg-card); padding: 24px; border-bottom: 1px solid var(--border); gap: 20px; }
   .navLinks.open { display: flex; }
   .menuBtn { display: block; }
-  .steps { grid-template-columns: 1fr; gap: 24px; }
-  .trustGrid { grid-template-columns: 1fr; }
-  .footerGrid { grid-template-columns: 1fr; }
-  .footerBottom { flex-direction: column; gap: 8px; text-align: center; }
-  .heroActions { flex-direction: column; }
-  .heroActions a { width: 100%; text-align: center; justify-content: center; }
-  .heroStats { flex-direction: column; gap: 20px; }
+  
+  .hero { padding: 80px 0 60px; min-height: auto; }
+  
+  .splitSection, .splitSectionAlt { grid-template-columns: 1fr; gap: 40px; }
+  .comparisonGrid { grid-template-columns: 1fr; }
+  .btnRow { flex-direction: column; gap: 12px; margin-bottom: 40px; }
+  .btnRow a { width: 100%; justify-content: center; }
+  .statsRow { flex-direction: column; gap: 24px; }
+  .finalCta { padding: 60px 0; }
+  
+  /* Reset center alignments for mobile stacking */
+  .mobileCenter { text-align: center; }
+  .mobileCenter .btnRow { justify-content: center; }
+  .mobileCenter p { margin-left: auto; margin-right: auto; }
 }
