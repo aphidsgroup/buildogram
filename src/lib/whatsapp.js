@@ -37,37 +37,26 @@ export function getWhatsAppLink(phone, message) {
 }
 
 /**
- * Generates the appropriate default template based on the CRM lead type.
+ * Safely renders a WhatsApp template string using lead context.
+ * Only safe variables are mapped to prevent exposing internal data.
  */
-export function generateTemplate(lead) {
-  if (!lead || !lead.name) return '';
+export function renderTemplate(templateBody, lead) {
+  if (!templateBody || !lead) return templateBody || '';
 
-  const name = lead.name.split(' ')[0]; // First name
-  const type = lead.lead_type || 'general';
   const m = lead.metadata || {};
+  const context = {
+    name: lead.name ? lead.name.split(' ')[0] : 'there',
+    full_name: lead.name || '',
+    lead_type: (lead.lead_type || '').replace('_', ' '),
+    location: lead.locality || lead.city || 'your area',
+    business_name: m.business_name || 'your business',
+    issue_category: m.issue_category ? m.issue_category.replace('_', ' ') : 'maintenance',
+    material_items: m.materials_required || 'materials',
+    status: lead.status || '',
+    portal_link: `https://app.buildogram.com/client/dashboard` // Safe generic fallback
+  };
 
-  switch (type) {
-    case 'property_listing':
-    case 'rental_listing':
-    case 'resale_listing':
-      const loc = lead.locality || lead.city || 'your area';
-      return `Hi ${name}, this is Buildogram. We received your property listing request for ${loc}. Our team will review the details and contact you for the next step.`;
-      
-    case 'material_quote':
-      const mat = m.material_category || 'materials';
-      return `Hi ${name}, this is Buildogram. We received your material quote request for ${mat}. Our team will check availability and rates and update you shortly.`;
-      
-    case 'partner_application':
-      const biz = m.business_name || 'your business';
-      return `Hi ${name}, this is Buildogram. We received your partner application for ${biz}. Our team will review your profile and guide you on the next step.`;
-      
-    case 'maintenance':
-      const issue = m.issue_category ? m.issue_category.replace('_', ' ') : 'maintenance';
-      return `Hi ${name}, this is Buildogram. We received your maintenance request for ${issue}. Our team will review and update you on the next step.`;
-      
-    case 'construction':
-    case 'general':
-    default:
-      return `Hi ${name}, this is Buildogram. Thank you for contacting us. Our team will review your requirement and get back to you shortly.`;
-  }
+  return templateBody.replace(/\{\{([a-zA-Z0-9_]+)\}\}/g, (match, key) => {
+    return context[key] !== undefined ? context[key] : '';
+  });
 }

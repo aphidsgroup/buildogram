@@ -14,6 +14,7 @@ const OPS_NAV = [
   { href: '/ops/projects',    icon: '🏗️', label: 'Projects' },
   { href: '/ops/users',       icon: '👥', label: 'Users' },
   { href: '/ops/blog',        icon: '📝', label: 'Blog CMS' },
+  { href: '/ops/whatsapp-templates', icon: '💬', label: 'WA Templates', requiredPerm: 'manage_whatsapp_templates' },
   { href: '/ops/cost-config', icon: '⚙️', label: 'Cost Config' },
   { href: '/ops/revenue',     icon: '💰', label: 'Revenue', requiredPerm: 'view_revenue' },
 ];

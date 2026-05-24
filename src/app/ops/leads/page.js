@@ -1,6 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { roleCan } from '@/lib/permissions';
+import { getWhatsAppLink, renderTemplate } from '@/lib/whatsapp';
 
 /* ─── Constants ─────────────────────────────────────────── */
 const STATUS_PIPELINE = ['new', 'contacted', 'qualified', 'proposal', 'won', 'lost'];
@@ -32,13 +34,7 @@ const STATUS_COLORS = {
 const fmt = n =>
   n ? '₹' + (n >= 10000000 ? (n / 10000000).toFixed(1) + 'Cr' : n >= 100000 ? (n / 100000).toFixed(1) + 'L' : Number(n).toLocaleString('en-IN')) : '—';
 
-/* ─── Helpers ───────────────────────────────────────────── */
-const generateTemplate = (l) => `Hi ${l.name?.split(' ')[0] || 'there'}, this is the Buildogram team regarding your ${l.lead_type?.replace('_', ' ')} inquiry. Status: ${l.status}. Let us know if you have any questions!`;
-const getWhatsAppLink = (phone, msg) => {
-  const p = phone.replace(/\D/g, '').replace(/^0/, '');
-  const finalPhone = p.length === 10 ? `91${p}` : p;
-  return `https://wa.me/${finalPhone}?text=${encodeURIComponent(msg)}`;
-};
+
 
 /* ─── Badge Component ─────────────────────────────────────── */
 function Badge({ type, value, map }) {
@@ -66,7 +62,8 @@ export default function OpsLeads() {
   const [saving, setSaving]     = useState(false);
   const [toast, setToast]       = useState(null);
   const [user, setUser]         = useState(null);
-  const [waModal, setWaModal] = useState({ open: false, lead: null, message: '', phone: '' });
+  const [waModal, setWaModal] = useState({ open: false, lead: null, message: '', phone: '', selectedTemplateId: '' });
+  const [waTemplates, setWaTemplates] = useState([]);
 
   // Activity Timeline State
   const [activities, setActivities] = useState([]);
@@ -97,6 +94,9 @@ export default function OpsLeads() {
     fetch('/api/auth/me')
       .then(r => r.json())
       .then(d => { if (d.user) setUser(d.user); });
+    fetch('/api/ops/whatsapp/templates')
+      .then(r => r.json())
+      .then(d => { if (d.success) setWaTemplates(d.templates); });
   };
 
   useEffect(() => { load(); }, []);
@@ -393,7 +393,7 @@ export default function OpsLeads() {
             {selected.phone && (
               <div style={{ display: 'flex', gap: '8px', marginBottom: '24px', flexWrap: 'wrap', padding: '12px', background: '#f0fdf4', borderRadius: '8px', border: '1px solid #bbf7d0' }}>
                 <span style={{ fontSize: '11px', fontWeight: 700, color: '#166534', width: '100%', textTransform: 'uppercase', marginBottom: '4px' }}>WhatsApp Quick Actions</span>
-                <button className="btn btn-sm" style={{ background: '#22c55e', color: 'white', borderColor: '#16a34a' }} onClick={() => setWaModal({ open: true, lead: selected, phone: selected.phone, message: generateTemplate(selected) })}>💬 Send Status Update</button>
+                <button className="btn btn-sm" style={{ background: '#22c55e', color: 'white', borderColor: '#16a34a' }} onClick={() => setWaModal({ open: true, lead: selected, phone: selected.phone, message: '', selectedTemplateId: '' })}>💬 Send Status Update</button>
                 <button className="btn btn-sm" style={{ background: 'white', color: '#15803d', borderColor: '#bbf7d0' }} onClick={() => setWaModal({ open: true, lead: selected, phone: selected.phone, message: `Hi ${selected.name.split(' ')[0]}, this is Buildogram. Could you please share the pending documents regarding your request so we can proceed further?` })}>📄 Request Docs</button>
                 <button className="btn btn-sm" style={{ background: 'white', color: '#15803d', borderColor: '#bbf7d0' }} onClick={() => setWaModal({ open: true, lead: selected, phone: selected.phone, message: `Hi ${selected.name.split(' ')[0]}, this is Buildogram. We have updated your proposal/quote. Please check your email or portal for details.` })}>📊 Proposal Shared</button>
               </div>
@@ -1237,6 +1237,22 @@ export default function OpsLeads() {
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
           <div style={{ background: 'white', borderRadius: '16px', width: '100%', maxWidth: '500px', padding: '24px' }}>
             <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#166534', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}><span style={{ fontSize: '24px' }}>💬</span> Preview WhatsApp Message</h3>
+            
+            <div style={{ marginBottom: '16px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '6px' }}>Template</label>
+              <select className="input bg-slate-50" value={waModal.selectedTemplateId} onChange={e => {
+                const tmpl = waTemplates.find(t => t.id === e.target.value);
+                setWaModal(p => ({ 
+                  ...p, 
+                  selectedTemplateId: e.target.value,
+                  message: tmpl ? renderTemplate(tmpl.message_body, waModal.lead) : ''
+                }));
+              }}>
+                <option value="">-- Select Template --</option>
+                {waTemplates.map(t => <option key={t.id} value={t.id}>{t.category}: {t.template_name}</option>)}
+              </select>
+            </div>
+
             <div style={{ marginBottom: '16px' }}>
               <label style={{ fontSize: '12px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '6px' }}>Sending to Phone</label>
               <input type="text" className="input bg-slate-50" value={waModal.phone} onChange={e => setWaModal(p => ({ ...p, phone: e.target.value }))} />
