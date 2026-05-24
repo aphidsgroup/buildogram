@@ -81,6 +81,14 @@ export default function OpsLeads() {
     questions_to_ask_contractor: '', buildogram_recommendation: '', disclaimer: ''
   });
 
+  // Plan Review State
+  const [planReportMode, setPlanReportMode] = useState(false);
+  const [planReportForm, setPlanReportForm] = useState({
+    executive_summary: '', strengths: '', practical_concerns: '', space_usage_observations: '',
+    cost_impact_areas: '', ventilation_lighting_observations: '', parking_access_observations: '',
+    rental_resale_suitability: '', questions_for_architect: '', buildogram_recommendation: '', next_step: '', disclaimer: ''
+  });
+
   const showToast = (msg, type = 'success', propertyId = null) => {
     setToast({ message: msg, type, propertyId });
     setTimeout(() => setToast(null), 6000);
@@ -271,12 +279,11 @@ export default function OpsLeads() {
     const newReport = {
       ...reportForm,
       status,
-      reviewed_by: 'Ops',
+      reviewed_by: user.name || 'Ops',
       reviewed_at: new Date().toISOString()
     };
     
     update(selected.id, { metadata: { ...selected.metadata, reviewed_boq_report: newReport } });
-    setSelected(p => ({ ...p, metadata: { ...p.metadata, reviewed_boq_report: newReport } }));
     
     if (status === 'ready_to_share') {
       logActivity(selected.id, { activity_type: 'system', title: 'Reviewed BOQ report marked ready to share', description: 'Internal report is completed.' });
@@ -1088,6 +1095,105 @@ export default function OpsLeads() {
                           <a href={`/boq-report/${selected.id}/print`} target="_blank" rel="noreferrer" className="btn btn-sm" style={{ background: '#4f46e5', color: 'white', flex: 1, textAlign: 'center', textDecoration: 'none' }}>
                             🖨️ Print / Save PDF
                           </a>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* ─── Plan Review AI UI ─── */}
+                  {selected.lead_type === 'plan_review' && (
+                    <div style={{ marginTop: '24px', borderTop: '2px dashed #e2e8f0', paddingTop: '24px' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                        <div style={{ fontSize: '14px', fontWeight: 800, color: '#0f172a' }}>🤖 AI Plan Review Assistant</div>
+                        {!selected.metadata?.ai_plan_draft && (
+                          <button className="btn btn-sm" style={{ background: '#0891b2', color: 'white' }} onClick={handleGeneratePlanDraft}>
+                            ✨ Generate Internal Plan Draft
+                          </button>
+                        )}
+                      </div>
+
+                      {selected.metadata?.ai_plan_draft && !planReportMode && (
+                        <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '8px', border: '1px solid #e2e8f0', marginBottom: '16px' }}>
+                          <div style={{ fontSize: '13px', fontWeight: 800, color: '#0891b2', marginBottom: '12px' }}>AI Draft Generated (Internal Only)</div>
+                          <div style={{ fontSize: '12px', color: '#475569', marginBottom: '16px' }}>
+                            {selected.metadata.ai_plan_draft.summary}
+                          </div>
+                          {(!selected.metadata.reviewed_plan_report || selected.metadata.reviewed_plan_report.status === 'draft') && (
+                            <button className="btn btn-sm" style={{ background: '#0891b2', color: 'white', width: '100%' }} onClick={handleTransferPlanDraft}>
+                              ✍️ {selected.metadata.reviewed_plan_report ? 'Edit Reviewed Plan Report' : 'Create Reviewed Report From AI Draft'}
+                            </button>
+                          )}
+                        </div>
+                      )}
+
+                      {planReportMode && (
+                        <div style={{ marginTop: '16px', background: 'white', padding: '16px', borderRadius: '8px', border: '2px solid #0891b2' }}>
+                          <div style={{ fontSize: '13px', fontWeight: 800, color: '#164e63', marginBottom: '12px' }}>Edit Reviewed Plan Report (Internal)</div>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <div>
+                              <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>Executive Summary *</label>
+                              <textarea className="input" rows={4} value={planReportForm.executive_summary} onChange={e => setPlanReportForm({ ...planReportForm, executive_summary: e.target.value })} style={{ fontSize: '12px' }} />
+                            </div>
+                            <div>
+                              <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>Strengths</label>
+                              <textarea className="input" rows={3} value={planReportForm.strengths} onChange={e => setPlanReportForm({ ...planReportForm, strengths: e.target.value })} style={{ fontSize: '12px' }} />
+                            </div>
+                            <div>
+                              <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>Practical Concerns</label>
+                              <textarea className="input" rows={3} value={planReportForm.practical_concerns} onChange={e => setPlanReportForm({ ...planReportForm, practical_concerns: e.target.value })} style={{ fontSize: '12px' }} />
+                            </div>
+                            <div>
+                              <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>Cost Impact Areas</label>
+                              <textarea className="input" rows={3} value={planReportForm.cost_impact_areas} onChange={e => setPlanReportForm({ ...planReportForm, cost_impact_areas: e.target.value })} style={{ fontSize: '12px' }} />
+                            </div>
+                            <div>
+                              <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>Questions for Architect</label>
+                              <textarea className="input" rows={3} value={planReportForm.questions_for_architect} onChange={e => setPlanReportForm({ ...planReportForm, questions_for_architect: e.target.value })} style={{ fontSize: '12px' }} />
+                            </div>
+                            <div>
+                              <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>Buildogram Recommendation *</label>
+                              <textarea className="input" rows={3} value={planReportForm.buildogram_recommendation} onChange={e => setPlanReportForm({ ...planReportForm, buildogram_recommendation: e.target.value })} style={{ fontSize: '12px' }} />
+                            </div>
+                            <div>
+                              <label style={{ fontSize: '11px', fontWeight: 700, color: '#c2410c', display: 'block', marginBottom: '4px' }}>Disclaimer (Mandatory) *</label>
+                              <textarea className="input" rows={3} value={planReportForm.disclaimer} onChange={e => setPlanReportForm({ ...planReportForm, disclaimer: e.target.value })} style={{ fontSize: '11px', background: '#fff7ed', borderColor: '#fdba74' }} />
+                            </div>
+                            <div style={{ display: 'flex', gap: '8px', marginTop: '8px' }}>
+                              <button className="btn btn-ghost" onClick={() => setPlanReportMode(false)}>Cancel</button>
+                              <button className="btn btn-primary" style={{ flex: 1, background: '#164e63' }} onClick={() => handleSavePlanReport('draft')}>💾 Save Draft</button>
+                              <button className="btn btn-primary" style={{ flex: 1, background: '#059669' }} onClick={() => handleSavePlanReport('ready_to_share')}>✅ Mark Ready to Share</button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {selected.metadata.reviewed_plan_report && !planReportMode && (
+                        <div style={{ marginTop: '16px', background: 'white', padding: '16px', borderRadius: '8px', border: selected.metadata.reviewed_plan_report.status === 'ready_to_share' ? '2px solid #22c55e' : '1px solid #cffafe' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                            <div style={{ fontSize: '13px', fontWeight: 800, color: '#164e63' }}>📄 Reviewed Plan Report</div>
+                            <div style={{ display: 'flex', gap: '8px' }}>
+                              <span style={{ fontSize: '10px', background: selected.metadata.reviewed_plan_report.status === 'ready_to_share' ? '#dcfce7' : '#fef08a', color: selected.metadata.reviewed_plan_report.status === 'ready_to_share' ? '#166534' : '#854d0e', padding: '2px 8px', borderRadius: '99px', fontWeight: 700, textTransform: 'uppercase' }}>
+                                {selected.metadata.reviewed_plan_report.status.replace(/_/g, ' ')}
+                              </span>
+                              <button className="btn btn-ghost btn-sm" style={{ padding: '0 4px', color: '#0891b2' }} onClick={() => {
+                                setPlanReportForm(selected.metadata.reviewed_plan_report);
+                                setPlanReportMode(true);
+                              }}>✏️ Edit</button>
+                            </div>
+                          </div>
+                          <div style={{ fontSize: '12px', color: '#334155', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                            <div><strong>Executive Summary:</strong><br/>{selected.metadata.reviewed_plan_report.executive_summary}</div>
+                            {selected.metadata.reviewed_plan_report.buildogram_recommendation && (
+                              <div><strong>Buildogram Recommendation:</strong><br/>{selected.metadata.reviewed_plan_report.buildogram_recommendation}</div>
+                            )}
+                          </div>
+                          {selected.metadata.reviewed_plan_report.status === 'ready_to_share' && (
+                            <div style={{ marginTop: '16px', borderTop: '1px solid #e2e8f0', paddingTop: '16px', display: 'flex', gap: '8px' }}>
+                              <a href={`/plan-review-report/${selected.id}/print`} target="_blank" rel="noreferrer" className="btn btn-sm" style={{ background: '#4f46e5', color: 'white', flex: 1, textAlign: 'center', textDecoration: 'none' }}>
+                                🖨️ Print / Save PDF
+                              </a>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
