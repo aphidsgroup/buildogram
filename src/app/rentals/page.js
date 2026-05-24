@@ -27,13 +27,13 @@ export default async function RentalsPage() {
     <>
       {/* ── Hero ── */}
       <section style={{ background: '#292929', color: 'white', padding: '80px 0 60px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 80% -20%, rgba(255,218,1,0.15) 0%, transparent 60%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 80% -20%, rgba(204,255,0,0.15) 0%, transparent 60%)' }} />
         <div className="container" style={{ position: 'relative', textAlign: 'center', maxWidth: '720px' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.1)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
-            <span style={{ color: '#FFDA01', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Zero Brokerage · 100% Verified</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(204,255,0,0.1)', border: '1px solid rgba(204,255,0,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
+            <span style={{ color: '#CCFF00', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Zero Brokerage · 100% Verified</span>
           </div>
           <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', lineHeight: 1.1, marginBottom: '20px' }}>
-            Rent a Home that comes with a <span style={{ color: '#FFDA01' }}>Verified Passport.</span>
+            Rent a Home that comes with a <span style={{ color: '#CCFF00' }}>Verified Passport.</span>
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', lineHeight: 1.6, marginBottom: '0' }}>
             No hidden plumbing issues. No electrical surprises. Every rental listed here was either built or audited by Buildogram engineers.
@@ -42,7 +42,7 @@ export default async function RentalsPage() {
       </section>
 
       {/* ── Features Bar ── */}
-      <section style={{ background: '#FFDA01', padding: '24px 0' }}>
+      <section style={{ background: '#CCFF00', padding: '24px 0' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '48px', flexWrap: 'wrap' }}>
           {[
             { icon: '📸', text: '360° Virtual Tours' },
@@ -89,7 +89,7 @@ export default async function RentalsPage() {
                         <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '12px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '2px' }}>Monthly Rent</div>
                         <div style={{ color: 'white', fontSize: '24px', fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif' }}>{fmt(p.listing_rent_monthly)}</div>
                       </div>
-                      <div style={{ background: '#FFDA01', color: '#292929', padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 800 }}>
+                      <div style={{ background: '#CCFF00', color: '#292929', padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 800 }}>
                         {p.passport_completeness}% VERIFIED
                       </div>
                     </div>

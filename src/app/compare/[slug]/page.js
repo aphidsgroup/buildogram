@@ -54,7 +54,7 @@ export default function ComparisonPage({ params }) {
               <tr style={{ background: 'var(--secondary)', color: 'white' }}>
                 <th style={{ padding: '14px 20px', textAlign: 'left', fontWeight: 600, width: '30%' }}>Feature</th>
                 <th style={{ padding: '14px 20px', textAlign: 'left', fontWeight: 600, width: '35%' }}>Typical Approach</th>
-                <th style={{ padding: '14px 20px', textAlign: 'left', fontWeight: 600, width: '35%', color: '#FFDA01' }}>Buildogram Approach</th>
+                <th style={{ padding: '14px 20px', textAlign: 'left', fontWeight: 600, width: '35%', color: '#CCFF00' }}>Buildogram Approach</th>
               </tr>
             </thead>
             <tbody>

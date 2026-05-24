@@ -52,9 +52,9 @@ export default function GlossaryTermPage({ params }) {
           <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '20px', fontSize: '13px' }}>
             <Link href="/glossary" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none' }}>Glossary</Link>
             <span style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-            <span style={{ color: '#FFDA01' }}>{categoryLabel}</span>
+            <span style={{ color: '#CCFF00' }}>{categoryLabel}</span>
           </nav>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(255,218,1,0.1)', borderRadius: '6px', padding: '4px 12px', marginBottom: '16px', fontSize: '12px', color: '#FFDA01', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(204,255,0,0.1)', borderRadius: '6px', padding: '4px 12px', marginBottom: '16px', fontSize: '12px', color: '#CCFF00', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
             {categoryLabel} Term
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(24px, 3.5vw, 46px)', lineHeight: 1.2, marginBottom: '0' }}>
@@ -66,7 +66,7 @@ export default function GlossaryTermPage({ params }) {
       <div className="container" style={{ padding: '56px 24px', maxWidth: '860px' }}>
 
         {/* DEFINITION */}
-        <div className="card" style={{ borderLeft: '4px solid var(--primary)', borderRadius: '0 12px 12px 0', marginBottom: '40px', background: 'rgba(255,218,1,0.04)' }}>
+        <div className="card" style={{ borderLeft: '4px solid var(--primary)', borderRadius: '0 12px 12px 0', marginBottom: '40px', background: 'rgba(204,255,0,0.04)' }}>
           <div style={{ fontSize: '11px', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '10px' }}>Definition</div>
           <p style={{ fontSize: '17px', color: 'var(--secondary)', lineHeight: 1.7, fontWeight: 500 }}>{term.definition}</p>
         </div>

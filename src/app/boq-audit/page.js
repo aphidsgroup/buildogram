@@ -40,13 +40,13 @@ export default function BOQAuditPage() {
     <>
       {/* ── Hero ── */}
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 20%, rgba(255,218,1,0.08) 0%, transparent 55%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 20%, rgba(204,255,0,0.08) 0%, transparent 55%)' }} />
         <div className="container" style={{ position: 'relative' }}>
           {/* Breadcrumb */}
           <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
             <Link href="/build" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px' }}>Build</Link>
             <span style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-            <span style={{ color: '#FFDA01', fontSize: '14px' }}>BOQ Audit</span>
+            <span style={{ color: '#CCFF00', fontSize: '14px' }}>BOQ Audit</span>
           </div>
           <div style={{ maxWidth: '720px' }}>
             {/* Alert pill */}
@@ -56,7 +56,7 @@ export default function BOQAuditPage() {
             </div>
             <h1 style={{ color: 'white', fontSize: 'clamp(32px, 5vw, 58px)', lineHeight: 1.08, marginBottom: '24px' }}>
               Get Your Contractor<br />
-              <span style={{ color: '#FFDA01' }}>Quote Audited.</span>
+              <span style={{ color: '#CCFF00' }}>Quote Audited.</span>
             </h1>
             <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: '18px', lineHeight: 1.75, marginBottom: '40px' }}>
               Before you sign anything — let Buildogram engineers check every line item, rate and spec in your contractor's quote. We expose what's inflated, what's missing, and what's non-negotiable.
@@ -70,7 +70,7 @@ export default function BOQAuditPage() {
       </section>
 
       {/* ── Stats bar ── */}
-      <section style={{ background: '#FFDA01', padding: '26px 0' }}>
+      <section style={{ background: '#CCFF00', padding: '26px 0' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '48px', flexWrap: 'wrap' }}>
           {[['₹5–20L', 'Avg hidden charges found'], ['8+', 'Audit categories'], ['48hrs', 'Report turnaround'], ['Free', 'Initial audit consult']].map(([n, l]) => (
             <div key={l} style={{ textAlign: 'center' }}>
@@ -98,7 +98,7 @@ export default function BOQAuditPage() {
               <thead>
                 <tr style={{ background: '#292929' }}>
                   <th style={{ padding: '14px 20px', textAlign: 'left', color: 'rgba(255,255,255,0.7)', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Hidden Cost Item</th>
-                  <th style={{ padding: '14px 20px', textAlign: 'right', color: '#FFDA01', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Typical Impact</th>
+                  <th style={{ padding: '14px 20px', textAlign: 'right', color: '#CCFF00', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Typical Impact</th>
                 </tr>
               </thead>
               <tbody>
@@ -150,7 +150,7 @@ export default function BOQAuditPage() {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {PROCESS.map((s, i) => (
               <div key={s.step} style={{ display: 'flex', gap: '28px', alignItems: 'flex-start', padding: '28px 0', borderBottom: i < PROCESS.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--secondary)', color: '#FFDA01', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800, fontSize: '18px', flexShrink: 0 }}>
+                <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--secondary)', color: '#CCFF00', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800, fontSize: '18px', flexShrink: 0 }}>
                   {s.step}
                 </div>
                 <div style={{ paddingTop: '8px' }}>

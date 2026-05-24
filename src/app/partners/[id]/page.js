@@ -62,7 +62,7 @@ export default async function PartnerProfilePage({ params }) {
       
       {/* ── Cover / Hero ── */}
       <div style={{ height: '200px', background: 'var(--secondary)', position: 'relative' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 0%, rgba(255,218,1,0.08) 0%, transparent 55%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 0%, rgba(204,255,0,0.08) 0%, transparent 55%)' }} />
       </div>
 
       <div className="container mx-auto max-w-4xl px-4" style={{ marginTop: '-80px', position: 'relative', zIndex: 10 }}>
