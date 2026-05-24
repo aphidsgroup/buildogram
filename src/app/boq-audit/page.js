@@ -63,7 +63,7 @@ export default function BOQAuditPage() {
             </p>
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
               <Link href="#audit-form" className="btn btn-primary btn-lg">Get Free BOQ Audit</Link>
-              <Link href="/cost-estimator" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Calculate True Cost</Link>
+              <Link href="/cost-estimator" className="btn btn-lg btn-outline-light">Calculate True Cost</Link>
             </div>
           </div>
         </div>

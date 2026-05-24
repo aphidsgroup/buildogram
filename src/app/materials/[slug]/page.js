@@ -164,7 +164,7 @@ export default function MaterialPage({ params }) {
           <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '24px' }}>Get verified delivery with invoice documentation and brand confirmation.</p>
           <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="/materials/request-quote" className="btn btn-primary btn-lg">Request Quote</Link>
-            <Link href="/contact" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Speak to Engineer</Link>
+            <Link href="/contact" className="btn btn-lg btn-outline-light">Speak to Engineer</Link>
           </div>
         </div>
 

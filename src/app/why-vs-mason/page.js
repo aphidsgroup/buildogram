@@ -47,7 +47,7 @@ export default function WhyVsMason() {
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>Building without independent structural oversight is a financial and structural gamble. Compare the risks of direct-labour builds against Buildogram's mediated, engineer-verified protection model.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <a href="/contact" className="btn btn-primary btn-lg">Get Free Plan Audit</a>
-            <a href="/how-it-works" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>How We Mediate</a>
+            <a href="/how-it-works" className="btn btn-lg btn-outline-light">How We Mediate</a>
           </div>
         </div>
       </section>

@@ -54,7 +54,7 @@ export default function ChennaiConstruction() {
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>Chennai has unique challenges — from the clay-heavy waterlogged pockets of Velachery to the high-salinity coastal winds of ECR. We engineer specifically for Chennai soil types, weather, and building regulations.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <a href="/contact" className="btn btn-primary btn-lg">Start Chennai Construction</a>
-            <a href="/cost-estimator" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Estimate Cost</a>
+            <a href="/cost-estimator" className="btn btn-lg btn-outline-light">Estimate Cost</a>
           </div>
         </div>
       </section>

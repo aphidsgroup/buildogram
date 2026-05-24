@@ -46,7 +46,7 @@ export default function About() {
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>Transforming unorganized residential construction in Chennai into an engineer-led, tech-enabled, and highly transparent construction platform — backed by soil tests, BOQ contracts, and 10-year structural warranties.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <a href="/contact" className="btn btn-primary btn-lg">Talk to Our Founders</a>
-            <a href="/how-it-works" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>How We Work</a>
+            <a href="/how-it-works" className="btn btn-lg btn-outline-light">How We Work</a>
           </div>
         </div>
       </section>

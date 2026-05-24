@@ -105,7 +105,7 @@ export default function Specifications() {
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>Choose from engineer-vetted construction packages. Every concrete grade, steel brand, and material standard is specified in your contract before work begins.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <a href="/cost-estimator" className="btn btn-primary btn-lg">Estimate Build Cost</a>
-            <a href="/contact" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Talk to an Engineer</a>
+            <a href="/contact" className="btn btn-lg btn-outline-light">Talk to an Engineer</a>
           </div>
         </div>
       </section>

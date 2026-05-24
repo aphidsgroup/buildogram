@@ -42,7 +42,7 @@ export default function WhyVsAggregators() {
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>We are not a passive lead directory. We are your legally accountable construction mediator — with a Tripartite Agreement, milestone escrow, and open-book materials pricing.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <a href="/contact" className="btn btn-primary btn-lg">Consult Our Engineers</a>
-            <a href="/how-it-works" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>How Escrow Works</a>
+            <a href="/how-it-works" className="btn btn-lg btn-outline-light">How Escrow Works</a>
           </div>
         </div>
       </section>

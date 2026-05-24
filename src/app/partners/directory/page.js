@@ -18,7 +18,7 @@ export default function PartnerDirectoryPage() {
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>Work with Buildogram-verified professionals who have been assessed for project quality, engineering credentials, and client satisfaction.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <a href="/partners" className="btn btn-primary btn-lg">Join Partner Network</a>
-            <a href="/contact" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Contact Us</a>
+            <a href="/contact" className="btn btn-lg btn-outline-light">Contact Us</a>
           </div>
         </div>
       </section>

@@ -39,7 +39,7 @@ export default function VillaConstructionPage() {
             </p>
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
               <Link href="#consult" className="btn btn-primary btn-lg">Start Villa Consultation</Link>
-              <Link href="/cost-estimator" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Calculate Cost</Link>
+              <Link href="/cost-estimator" className="btn btn-lg btn-outline-light">Calculate Cost</Link>
             </div>
           </div>
         </div>
