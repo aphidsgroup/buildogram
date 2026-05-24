@@ -65,6 +65,24 @@ export default function OpsDashboard() {
               </div>
             </div>
           )}
+          {alerts.pendingQueueApprovals > 0 && (
+            <div style={{ background: '#fffbeb', border: '1px solid #fde68a', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '24px' }}>⏳</span>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 700, color: '#92400e' }}>{alerts.pendingQueueApprovals} Pending Approvals</div>
+                <Link href="/ops/notification-queue" style={{ fontSize: '12px', color: '#d97706', fontWeight: 600 }}>Review WhatsApp Queue →</Link>
+              </div>
+            </div>
+          )}
+          {alerts.failedQueueMessages > 0 && (
+            <div style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span style={{ fontSize: '24px' }}>❌</span>
+              <div>
+                <div style={{ fontSize: '14px', fontWeight: 700, color: '#991b1b' }}>{alerts.failedQueueMessages} Failed Messages</div>
+                <Link href="/ops/notification-queue" style={{ fontSize: '12px', color: '#dc2626', fontWeight: 600 }}>Retry Failed Messages →</Link>
+              </div>
+            </div>
+          )}
           {alerts.pendingPartners > 0 && (
             <div style={{ background: '#fffbeb', border: '1px solid #fde68a', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
               <span style={{ fontSize: '24px' }}>🤝</span>
@@ -116,6 +134,12 @@ export default function OpsDashboard() {
       </div>
 
       <div className="grid-4 mb-8" style={{ gap: '16px' }}>
+        <div className="card" style={{ padding: '20px', border: '1px solid #e0e7ff', background: 'white' }}>
+            <div style={{ background: '#eff6ff', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>💬</div>
+            <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>{data?.queue?.sentThisMonth || 0}</div>
+            <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Messages Sent</div>
+            <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '8px', fontWeight: 500 }}>Via Auto-Queue this month</div>
+        </div>
         <div className="card" style={{ padding: '20px', border: '1px solid #fef08a', background: '#fefce8' }}>
             <div style={{ background: '#fef08a', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>🤝</div>
             <div style={{ fontSize: '24px', fontWeight: 800, color: '#854d0e', marginBottom: '4px' }}>{kpis.referredLeads}</div>

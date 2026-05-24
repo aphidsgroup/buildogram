@@ -99,6 +99,12 @@ export async function GET(req) {
     // 3. Alerts
     const [[urgentMaintenance]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='maintenance' AND metadata->>'urgency' IN ('emergency', 'high') AND metadata->>'maintenance_status' NOT IN ('completed', 'closed', 'cancelled')`;
     const [[draftListings]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_listing' AND metadata->>'public_status'='draft'`;
+    const [[overdueFollowups]] = await sql`SELECT COUNT(*)::int as count FROM lead_activities WHERE type = 'follow_up' AND follow_up_at < NOW()`;
+
+    // 4. Notification Queue Metrics
+    const [[pendingQueueApprovals]] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='pending_review'`;
+    const [[failedQueueMessages]] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='failed'`;
+    const [[sentQueueMessagesMonth]] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='sent' AND sent_at >= date_trunc('month', current_date)`;
 
     // 4. Follow-up Actions
     const activeLeadStatus = ['new', 'contacted', 'qualified', 'proposal', 'inspection_scheduled', 'work_started', 'approved', 'quoted'];
@@ -170,8 +176,14 @@ export async function GET(req) {
         pendingPartners: pendingPartners.count,
         urgentMaintenance: urgentMaintenance.count,
         draftListings: draftListings.count,
+        overdueFollowups: overdueFollowups.count,
+        pendingQueueApprovals: pendingQueueApprovals.count,
+        failedQueueMessages: failedQueueMessages.count,
         overdueFollowUps: followUps.overdue.length,
         todayFollowUps: followUps.today.length,
+      },
+      queue: {
+        sentThisMonth: sentQueueMessagesMonth.count
       },
       followUps,
       recent: {
