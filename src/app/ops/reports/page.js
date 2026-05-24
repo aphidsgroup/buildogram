@@ -135,11 +135,74 @@ export default function OpsReportsPage() {
             {downloading === 'followups' ? 'Generating CSV...' : '⬇️ Export Follow-ups CSV'}
           </button>
         </div>
+        {/* BOQ AUDIT REPORT */}
+        <div className="card p-6 border border-slate-200">
+          <div className="flex-between mb-4">
+            <h3 className="font-bold text-lg flex items-center gap-2"><span className="text-2xl">📋</span> BOQ Audit Report</h3>
+          </div>
+          <p className="text-sm text-slate-500 mb-6">Extract of all BOQ requests, quoted amounts, AI drafts, and review statuses.</p>
+          
+          <button 
+            className="btn btn-primary w-full"
+            disabled={downloading === 'boq'}
+            onClick={() => handleDownload('boq', `/api/ops/reports/boq.csv`)}
+          >
+            {downloading === 'boq' ? 'Generating CSV...' : '⬇️ Export BOQ CSV'}
+          </button>
+        </div>
+
+        {/* PROPERTY PASSPORT REPORT */}
+        <div className="card p-6 border border-slate-200">
+          <div className="flex-between mb-4">
+            <h3 className="font-bold text-lg flex items-center gap-2"><span className="text-2xl">🛂</span> Property Passport Report</h3>
+          </div>
+          <p className="text-sm text-slate-500 mb-6">Extract of property passports, completeness percentages, and document tallies.</p>
+          
+          <button 
+            className="btn btn-primary w-full"
+            disabled={downloading === 'passports'}
+            onClick={() => handleDownload('passports', `/api/ops/reports/passports.csv`)}
+          >
+            {downloading === 'passports' ? 'Generating CSV...' : '⬇️ Export Passports CSV'}
+          </button>
+        </div>
+
+        {/* MAINTENANCE REPORT */}
+        <div className="card p-6 border border-slate-200">
+          <div className="flex-between mb-4">
+            <h3 className="font-bold text-lg flex items-center gap-2"><span className="text-2xl">🔧</span> Maintenance Report</h3>
+          </div>
+          <p className="text-sm text-slate-500 mb-6">Extract of maintenance issues, urgencies, vendors, and estimated vs final costs.</p>
+          
+          <button 
+            className="btn btn-primary w-full"
+            disabled={downloading === 'maintenance'}
+            onClick={() => handleDownload('maintenance', `/api/ops/reports/maintenance.csv`)}
+          >
+            {downloading === 'maintenance' ? 'Generating CSV...' : '⬇️ Export Maintenance CSV'}
+          </button>
+        </div>
+
+        {/* MATERIAL QUOTE REPORT */}
+        <div className="card p-6 border border-slate-200">
+          <div className="flex-between mb-4">
+            <h3 className="font-bold text-lg flex items-center gap-2"><span className="text-2xl">🧱</span> Material Quote Report</h3>
+          </div>
+          <p className="text-sm text-slate-500 mb-6">Extract of material requests, order values, expected commissions, and categories.</p>
+          
+          <button 
+            className="btn btn-primary w-full"
+            disabled={downloading === 'materials'}
+            onClick={() => handleDownload('materials', `/api/ops/reports/materials.csv`)}
+          >
+            {downloading === 'materials' ? 'Generating CSV...' : '⬇️ Export Materials CSV'}
+          </button>
+        </div>
       </div>
 
       <h3 className="mb-4 font-bold" style={{ fontSize: '18px' }}>Coming Soon (V2)</h3>
       <div className="grid-3 gap-4 opacity-60 grayscale pointer-events-none">
-        {['Property Passport Report', 'Material Quote Report', 'Maintenance Report', 'Partner Referral Report', 'BOQ Audit Report'].map(title => (
+        {['Partner Referral Report', 'Marketing Campaigns Report', 'System Audit Log'].map(title => (
           <div key={title} className="card p-4 border border-slate-200">
             <div className="flex-between mb-2">
               <h4 className="font-bold text-sm">{title}</h4>
