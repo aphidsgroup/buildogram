@@ -44,7 +44,7 @@ export async function POST(req) {
     await sql`
       INSERT INTO progress_logs (project_id, log_type, notes, created_by)
       VALUES (
-        (SELECT project_id FROM invoice_records WHERE id = ${order.invoice_id} LIMIT 1),
+        (SELECT source_id FROM invoice_records WHERE id = ${order.invoice_id} LIMIT 1),
         'payment_received',
         ${`Online payment of ₹${order.amount} received via Razorpay for Invoice ${invoice.invoice_number}`},
         ${order.client_user_id}
