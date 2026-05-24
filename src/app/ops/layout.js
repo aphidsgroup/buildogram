@@ -20,6 +20,7 @@ const OPS_NAV = [
   { href: '/ops/reports',     icon: '📈', label: 'Reports', requiredPerm: 'view_reports' },
   { href: '/ops/cost-config', icon: '📊', label: 'Cost Config' },
   { href: '/ops/revenue',     icon: '💰', label: 'Revenue', requiredPerm: 'view_revenue' },
+  { href: '/ops/invoices',    icon: '🧾', label: 'Invoices', requiredPerm: 'manage_invoices' },
 ];
 
 export default function OpsLayout({ children }) {

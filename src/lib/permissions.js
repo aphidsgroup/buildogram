@@ -12,6 +12,7 @@ export const PERMISSIONS = {
     'send_whatsapp_message',
     'manage_notification_rules',
     'manage_notification_queue',
+    'manage_invoices',
     'view_reports',
   ],
   ops_engineer: [

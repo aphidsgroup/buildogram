@@ -100,6 +100,7 @@ export default function OpsRevenuePage() {
                 <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Received</th>
                 <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Pending</th>
                 <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Status</th>
+                <th style={{ padding: '12px 16px', textAlign: 'right', fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -119,6 +120,14 @@ export default function OpsRevenuePage() {
                     <span className={`badge ${r.status === 'received' ? 'bg-green-100 text-green-700' : r.status === 'partially_received' ? 'bg-yellow-100 text-yellow-700' : 'badge-gray'}`}>
                       {r.status}
                     </span>
+                  </td>
+                  <td style={{ padding: '12px 16px', textAlign: 'right' }}>
+                    <Link 
+                      href={`/ops/invoices?action=create&rev_id=${r.id}&name=${encodeURIComponent(r.customer_name)}&cat=${r.revenue_category}&sub=${r.amount_expected}&paid=${r.amount_received}`}
+                      className="btn btn-sm btn-outline text-xs"
+                    >
+                      + Invoice
+                    </Link>
                   </td>
                 </tr>
               ))}
