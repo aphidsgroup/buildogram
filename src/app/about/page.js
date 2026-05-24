@@ -36,16 +36,22 @@ export default function About() {
 
   return (
     <>
-            <div className="page" style={{ paddingTop: '40px', minHeight: '100vh' }}>
-      <div className="container">
-        {/* HEADER */}
-        <div className="page-header text-center animate-fade-in" style={{ border: 'none', marginBottom: '60px' }}>
-          <div className="tag mb-4">Our Engineering DNA</div>
-          <h1 style={{ fontSize: '44px', color: 'var(--primary-dark)' }}>We Are Buildogram</h1>
-          <p className="text-muted mt-4" style={{ maxWidth: '650px', margin: '0 auto', fontSize: '17px' }}>
-            Transforming unorganized residential construction into an engineer-led, tech-enabled, highly transparent CaaS aggregator platform.
-          </p>
+      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(255,218,1,0.07) 0%, transparent 55%)' }} />
+        <div className="container" style={{ position: 'relative' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.12)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
+            <span style={{ color: '#FFDA01', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Our Engineering DNA</span>
+          </div>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>We Are Buildogram — Build with Proof, Not Promises</h1>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>Transforming unorganized residential construction in Chennai into an engineer-led, tech-enabled, and highly transparent construction platform — backed by soil tests, BOQ contracts, and 10-year structural warranties.</p>
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+            <a href="/contact" className="btn btn-primary btn-lg">Talk to Our Founders</a>
+            <a href="/how-it-works" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>How We Work</a>
+          </div>
         </div>
+      </section>
+
+      <div className="container" style={{ padding: '56px 24px' }}>
 
         {/* MISSION GRID */}
         <div className="grid-2 mb-8 animate-fade-in" style={{ alignItems: 'center', gap: '48px' }}>
@@ -120,7 +126,6 @@ export default function About() {
         </div>
 
       </div>
-    </div>
     </>
   );
 }

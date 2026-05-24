@@ -19,15 +19,18 @@ export default async function Blog() {
 
   return (
     <>
-            <div className="page" style={{ paddingTop: '40px', minHeight: '100vh' }}>
-      <div className="container">
-        <div className="page-header text-center" style={{ border: 'none', marginBottom: '60px' }}>
-          <div className="tag mb-4">Insights & Guides</div>
-          <h1 style={{ fontSize: '48px', color: 'var(--primary-dark)' }}>Buildogram Blog</h1>
-          <p className="text-muted mt-4" style={{ maxWidth: '600px', margin: '0 auto', fontSize: '18px' }}>
-            Expert advice on home construction, material costs, and structural engineering.
-          </p>
+      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(255,218,1,0.07) 0%, transparent 55%)' }} />
+        <div className="container" style={{ position: 'relative' }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.12)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
+            <span style={{ color: '#FFDA01', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Buildogram Blog</span>
+          </div>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>Construction & Property Insights — Written by Engineers</h1>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7 }}>Expert articles on home construction, BOQ, material quality, property investment, and maintenance — written by our structural engineering team.</p>
         </div>
+      </section>
+
+      <div className="container" style={{ padding: '56px 24px' }}>
 
         {posts.length === 0 ? (
           <div className="empty-state">
@@ -55,7 +58,6 @@ export default async function Blog() {
           </div>
         )}
       </div>
-    </div>
     </>
   );
 }
