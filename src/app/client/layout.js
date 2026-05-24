@@ -11,6 +11,7 @@ const CLIENT_NAV = [
   { href: '/client/passport', icon: '🛂', label: 'Property Passport' },
   { href: '/client/documents', icon: '📁', label: 'Documents' },
   { href: '/client/payments', icon: '💰', label: 'Payments' },
+  { href: '/client/profile', icon: '👤', label: 'My Profile' },
   { href: '/client/issues', icon: '⚠️', label: 'Raise Issue' },
 ];
 
