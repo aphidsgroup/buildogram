@@ -966,6 +966,24 @@ export default function OpsLeads() {
                           </ul>
 
                           <div style={{ fontSize: '10px', color: '#64748b', fontStyle: 'italic', padding: '8px', background: '#f8fafc', borderRadius: '4px', marginBottom: '16px' }}>
+                            <button className="btn btn-outline" style={{ width: '100%' }} onClick={() => setShowWaPreview(true)}>
+                              👁️ Open Live Preview & Direct Send
+                            </button>
+                            <button className="btn btn-primary" style={{ width: '100%', background: '#f59e0b', color: 'white', border: 'none', marginTop: '8px' }} onClick={async () => {
+                              try {
+                                const res = await fetch('/api/ops/notification-queue/draft', {
+                                  method: 'POST',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({ event_type: 'new_lead_created', lead_id: selected.id })
+                                });
+                                const d = await res.json();
+                                if (d.success) showToast('Draft added to Queue (Pending Review)!');
+                                else alert('Draft generation failed: ' + d.error);
+                              } catch(e) { console.error(e); }
+                            }}>
+                              ⏳ Queue Rule Draft (e.g. New Lead Alert)
+                            </button>
+                            <br/><br/>
                             <strong>Disclaimer:</strong> {selected.metadata.latest_draft.disclaimer}
                           </div>
 
