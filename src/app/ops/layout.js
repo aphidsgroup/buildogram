@@ -16,6 +16,7 @@ const OPS_NAV = [
   { href: '/ops/blog',        icon: '📝', label: 'Blog CMS' },
   { href: '/ops/whatsapp-templates', icon: '💬', label: 'WA Templates', requiredPerm: 'manage_whatsapp_templates' },
   { href: '/ops/notification-rules', icon: '⚙️', label: 'Notif Rules', requiredPerm: 'manage_notification_rules' },
+  { href: '/ops/notification-queue', icon: '⏳', label: 'WA Queue', requiredPerm: 'manage_notification_queue' },
   { href: '/ops/reports',     icon: '📈', label: 'Reports', requiredPerm: 'view_reports' },
   { href: '/ops/cost-config', icon: '📊', label: 'Cost Config' },
   { href: '/ops/revenue',     icon: '💰', label: 'Revenue', requiredPerm: 'view_revenue' },
