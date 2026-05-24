@@ -116,8 +116,10 @@ export default function Home() {
 
             {/* CTA row */}
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '60px' }}>
-              <Link href="/cost-estimator" className="btn btn-primary btn-lg">Calculate Construction Cost →</Link>
-              <Link href="/property-passport" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Create Property Passport</Link>
+              <Link href="/contact" className="btn btn-primary btn-lg">Get Construction Consultation</Link>
+              <Link href="/boq-audit" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Upload BOQ for Review</Link>
+              <Link href="/properties/list-your-property" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>List Your Property</Link>
+              <Link href="/materials" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Request Material Quote</Link>
             </div>
 
             {/* Mini stats */}

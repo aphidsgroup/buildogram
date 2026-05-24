@@ -210,7 +210,9 @@ function ListYourPropertyPageInner() {
           <button type="submit" disabled={submitting} className="btn btn-primary btn-lg" style={{ justifyContent: 'center', marginTop: '8px' }}>
             {submitting ? 'Submitting Listing...' : 'Submit Property Listing'}
           </button>
-
+          <div style={{ marginTop: '16px', padding: '16px', borderTop: '1px solid #e2e8f0', textAlign: 'center', color: '#64748b', fontSize: '12px', lineHeight: 1.5 }}>
+            <strong>Disclaimer:</strong> Buildogram only connects buyers and sellers. We do not participate in negotiations or offer real estate brokerage guarantees.
+          </div>
         </form>
       </div>
     </main>

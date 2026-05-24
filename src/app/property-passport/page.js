@@ -152,6 +152,9 @@ export default function PropertyPassportPage() {
           <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', padding: '40px' }}>
             <PassportLeadForm />
           </div>
+          <div style={{ marginTop: '24px', padding: '16px', borderTop: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '12px', lineHeight: 1.5 }}>
+            <strong>Disclaimer:</strong> Property Passport is a private record management system. It does not replace official government registration or serve as legal proof of ownership.
+          </div>
         </div>
       </section>
     </>
