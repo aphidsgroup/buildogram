@@ -1244,9 +1244,38 @@ export default function OpsLeads() {
             <div style={{ marginBottom: '24px' }}>
               <label style={{ fontSize: '12px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '6px' }}>Message Content</label>
               <textarea className="input" rows={6} value={waModal.message} onChange={e => setWaModal(p => ({ ...p, message: e.target.value }))} style={{ fontSize: '14px', lineHeight: 1.5 }} />
+              <div style={{ fontSize: '11px', color: '#f59e0b', marginTop: '6px', fontWeight: 600 }}>⚠️ Official WhatsApp API may require approved templates for first messages. Plain text sending is restricted by Meta.</div>
             </div>
             <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
               <button className="btn btn-ghost" onClick={() => setWaModal({ open: false, lead: null, message: '', phone: '' })}>Cancel</button>
+              
+              {user && roleCan(user.role, 'send_whatsapp_message') && (
+                <button className="btn" style={{ background: '#0284c7', color: 'white' }} onClick={async () => {
+                  setSaving(true);
+                  try {
+                    const res = await fetch('/api/ops/whatsapp/send', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        lead_id: waModal.lead.id,
+                        phone: waModal.phone,
+                        message: waModal.message,
+                        send_mode: 'cloud_api'
+                      })
+                    });
+                    const data = await res.json();
+                    if (!res.ok) throw new Error(data.error || 'Failed to send API message');
+                    
+                    showToast('WhatsApp message sent via API!', 'success');
+                    setWaModal({ open: false, lead: null, message: '', phone: '' });
+                    load(); // refresh timeline
+                  } catch (e) {
+                    showToast(e.message, 'error');
+                  } finally {
+                    setSaving(false);
+                  }
+                }}>Send via WhatsApp API ☁️</button>
+              )}
               <button className="btn" style={{ background: '#22c55e', color: 'white' }} onClick={async () => { 
                 const link = getWhatsAppLink(waModal.phone, waModal.message); 
                 if (link) {
@@ -1302,7 +1331,9 @@ export default function OpsLeads() {
           animation: 'slideUp 0.3s ease',
         }}>
           <div style={{ flex: 1 }}>
-            <div style={{ fontWeight: 700, fontSize: '14px', marginBottom: '4px' }}>Property Passport Created ✅</div>
+            <div style={{ fontWeight: 700, fontSize: '14px', marginBottom: '4px' }}>
+              {toast.type === 'error' ? 'Error ❌' : 'Success ✅'}
+            </div>
             <div style={{ fontSize: '13px', color: 'rgba(255,255,255,0.75)', lineHeight: 1.5 }}>{toast.message}</div>
             {toast.propertyId && (
               <a href="/ops/properties" target="_blank" rel="noreferrer"
