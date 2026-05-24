@@ -30,9 +30,24 @@ export default function OpsProjects() {
 
   return (
     <div>
-      <div className="page-header flex-between">
+      <div className="page-header flex-between mb-4">
         <div><h1>Projects</h1><p className="text-muted mt-2">{projects.length} total projects</p></div>
         <button onClick={() => setShowModal(true)} className="btn btn-primary">+ New Project</button>
+      </div>
+
+      <div className="grid-3 mb-6">
+        <div className="stat-card">
+          <div className="stat-label">Active Projects</div>
+          <div className="stat-value" style={{ fontSize: '28px', color: 'var(--primary)' }}>{projects.filter(p => p.status !== 'complete').length}</div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-label">Active Pipeline Value</div>
+          <div className="stat-value" style={{ fontSize: '28px' }}>{fmt(projects.filter(p => p.status !== 'complete').reduce((sum, p) => sum + (Number(p.total_contract_value) || 0), 0))}</div>
+        </div>
+        <div className="stat-card" style={{ borderLeft: '4px solid #ef4444' }}>
+          <div className="stat-label">At Risk / On Hold</div>
+          <div className="stat-value" style={{ fontSize: '28px', color: '#ef4444' }}>{projects.filter(p => p.status === 'on_hold').length}</div>
+        </div>
       </div>
 
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>

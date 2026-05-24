@@ -9,7 +9,7 @@ export default function OpsProjectDetail({ params }) {
   const [loading, setLoading] = useState(true);
   const [milestoneForm, setMilestoneForm] = useState({ name: '', description: '', planned_date: '', payment_amount: '' });
   const [boqForm, setBoqForm] = useState({ category: '', activity: '', unit: 'sqft', quantity: '', rate: '' });
-  const [logForm, setLogForm] = useState({ notes: '', workers_count: '', weather: '' });
+  const [logForm, setLogForm] = useState({ notes: '', workers_count: '', weather: '', photo_urls: '' });
 
   const load = () => fetch(`/api/projects/${id}`).then(r => r.json()).then(d => { setData(d); setLoading(false); });
   useEffect(() => { load(); }, [id]);
@@ -36,14 +36,35 @@ export default function OpsProjectDetail({ params }) {
 
   const addLog = async (e) => {
     e.preventDefault();
-    await fetch('/api/progress-logs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...logForm, project_id: id }) });
-    setLogForm({ notes: '', workers_count: '', weather: '' });
+    const photosArray = logForm.photo_urls.split(',').map(u => u.trim()).filter(Boolean);
+    await fetch('/api/progress-logs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...logForm, photos: photosArray, project_id: id }) });
+    setLogForm({ notes: '', workers_count: '', weather: '', photo_urls: '' });
     load();
   };
 
   const updateStatus = async (status) => {
     await fetch(`/api/projects/${id}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
     load();
+  };
+
+  const generateInvoice = async (m) => {
+    if (!confirm(`Generate invoice for ₹${m.payment_amount}?`)) return;
+    const res = await fetch('/api/ops/invoices', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        source_type: 'project_milestone',
+        source_id: m.id,
+        customer_name: p.client_name,
+        customer_email: p.client_phone || '', // fallback
+        amount: m.payment_amount,
+        status: 'unpaid',
+        due_date: new Date(Date.now() + 7 * 86400000).toISOString(),
+        metadata: { client_user_id: p.client_id, project_id: id, milestone_name: m.name }
+      })
+    });
+    if (res.ok) alert('Invoice Generated successfully!');
+    else alert('Failed to generate invoice');
   };
 
   const statusColor = { design: 'badge-blue', boq_approval: 'badge-yellow', execution: 'badge-orange', handover: 'badge-green', complete: 'badge-green', on_hold: 'badge-gray' };
@@ -127,7 +148,14 @@ export default function OpsProjectDetail({ params }) {
                   </select>
                 </div>
               </div>
-              {m.payment_amount > 0 && <div className="mt-4" style={{ padding: '10px 14px', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: '8px', fontSize: '13px' }}>💰 Payment on completion: {fmt(m.payment_amount)}</div>}
+              {m.payment_amount > 0 && (
+                <div className="mt-4 flex-between" style={{ padding: '10px 14px', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', borderRadius: '8px', fontSize: '13px' }}>
+                  <span>💰 Payment on completion: {fmt(m.payment_amount)}</span>
+                  {m.status === 'complete' && (
+                    <button onClick={() => generateInvoice(m)} className="btn btn-sm" style={{ background: '#16a34a', color: 'white', padding: '4px 10px', fontSize: '11px' }}>🧾 Generate Invoice</button>
+                  )}
+                </div>
+              )}
             </div>
           ))}
           <div className="card">
@@ -187,11 +215,16 @@ export default function OpsProjectDetail({ params }) {
             <h3 style={{ fontSize: '15px', marginBottom: '16px' }}>Add Progress Log</h3>
             <form onSubmit={addLog} style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
               <textarea className="input" placeholder="Progress notes..." required style={{ flex: '3', minWidth: '200px', minHeight: '60px' }} value={logForm.notes} onChange={e => setLogForm(f => ({ ...f, notes: e.target.value }))} />
-              <input className="input" type="number" placeholder="Workers count" style={{ flex: '1', minWidth: '100px' }} value={logForm.workers_count} onChange={e => setLogForm(f => ({ ...f, workers_count: e.target.value }))} />
-              <select className="input" style={{ flex: '1', minWidth: '100px' }} value={logForm.weather} onChange={e => setLogForm(f => ({ ...f, weather: e.target.value }))}>
-                <option value="">Weather</option><option>Sunny</option><option>Cloudy</option><option>Rainy</option><option>Windy</option>
-              </select>
-              <button type="submit" className="btn btn-primary">Log</button>
+              <div style={{ flex: '1', minWidth: '200px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <input className="input" type="text" placeholder="Photo URLs (comma separated)" value={logForm.photo_urls} onChange={e => setLogForm(f => ({ ...f, photo_urls: e.target.value }))} />
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <input className="input" type="number" placeholder="Workers" style={{ flex: '1' }} value={logForm.workers_count} onChange={e => setLogForm(f => ({ ...f, workers_count: e.target.value }))} />
+                  <select className="input" style={{ flex: '1' }} value={logForm.weather} onChange={e => setLogForm(f => ({ ...f, weather: e.target.value }))}>
+                    <option value="">Weather</option><option>Sunny</option><option>Cloudy</option><option>Rainy</option><option>Windy</option>
+                  </select>
+                </div>
+                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>Log Progress</button>
+              </div>
             </form>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
