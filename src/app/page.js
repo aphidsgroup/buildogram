@@ -87,13 +87,12 @@ export default function Home() {
       <Navbar />
 
       {/* ══════════════════════ HERO ══════════════════════ */}
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '110px 0 90px', position: 'relative', overflow: 'hidden', minHeight: '90vh', display: 'flex', alignItems: 'center' }}>
-        {/* Ambient glow */}
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 65% 40%, rgba(255,218,1,0.09) 0%, transparent 55%)' }} />
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(255,218,1,0.4), transparent)' }} />
+      <section className={styles.hero}>
+        <div className={styles.heroAmbient} />
+        <div className={styles.heroLine} />
 
-        <div className="container" style={{ position: 'relative', width: '100%' }}>
-          <div style={{ maxWidth: '760px' }}>
+        <div className={`container ${styles.heroContent} ${styles.mobileCenter}`}>
+          <div>
             {/* Pill badge */}
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'rgba(255,218,1,0.1)', border: '1px solid rgba(255,218,1,0.25)', borderRadius: '999px', padding: '8px 20px', marginBottom: '32px' }}>
               <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#FFDA01', display: 'inline-block', boxShadow: '0 0 8px #FFDA01' }} />
@@ -115,15 +114,15 @@ export default function Home() {
             </p>
 
             {/* CTA row */}
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '60px' }}>
+            <div className={styles.btnRow}>
               <Link href="/contact" className="btn btn-primary btn-lg">Get Construction Consultation</Link>
-              <Link href="/boq-audit" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Upload BOQ for Review</Link>
-              <Link href="/properties/list-your-property" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>List Your Property</Link>
-              <Link href="/materials" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Request Material Quote</Link>
+              <Link href="/boq-audit" className="btn btn-lg btn-outline" style={{ border: '2px solid rgba(255,255,255,0.3) !important', color: 'white !important' }}>Upload BOQ for Review</Link>
+              <Link href="/properties/list-your-property" className="btn btn-lg btn-outline" style={{ border: '2px solid rgba(255,255,255,0.3) !important', color: 'white !important' }}>List Your Property</Link>
+              <Link href="/materials" className="btn btn-lg btn-outline" style={{ border: '2px solid rgba(255,255,255,0.3) !important', color: 'white !important' }}>Request Material Quote</Link>
             </div>
 
             {/* Mini stats */}
-            <div style={{ display: 'flex', gap: '40px', flexWrap: 'wrap' }}>
+            <div className={styles.statsRow}>
               {[['2500+', 'Quality Checks'], ['BOQ', 'Transparent Pricing'], ['Lifetime', 'Property Passport'], ['Chennai', 'Primary Market']].map(([v, l]) => (
                 <div key={l}>
                   <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '26px', fontWeight: 800, color: '#FFDA01' }}>{v}</div>
@@ -137,7 +136,7 @@ export default function Home() {
 
       {/* ══════════════════ ECOSYSTEM STRIP ══════════════════ */}
       <section style={{ background: '#FFDA01', padding: '0' }}>
-        <div className="container" style={{ display: 'flex', gap: '0', overflowX: 'auto' }}>
+        <div className={`container ${styles.ecosystemStrip}`}>
           {ECOSYSTEM.map((e, i) => (
             <Link key={e.title} href={e.href} style={{ flex: '1 0 auto', minWidth: '140px', textDecoration: 'none', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '20px 16px', gap: '6px', borderRight: i < ECOSYSTEM.length - 1 ? '1px solid rgba(0,0,0,0.08)' : 'none', transition: 'background 0.2s', cursor: 'pointer' }}
               onMouseEnter={e2 => e2.currentTarget.style.background = 'rgba(0,0,0,0.06)'}
@@ -189,7 +188,7 @@ export default function Home() {
       {/* ══════════════════ BUILD WITH PROOF ══════════════════ */}
       <section className="section" style={{ background: 'var(--secondary)', color: 'white' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }}>
+          <div className={`${styles.splitSection} ${styles.mobileCenter}`}>
             <div>
               <span className="tag" style={{ background: 'rgba(255,218,1,0.12)', color: '#FFDA01', border: '1px solid rgba(255,218,1,0.2)' }}>Build with Proof</span>
               <h2 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 44px)', marginTop: '16px', marginBottom: '24px' }}>
@@ -198,12 +197,12 @@ export default function Home() {
               <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', lineHeight: 1.75, marginBottom: '36px' }}>
                 Construction with Buildogram means a transparent BOQ, 2500+ quality checks, verified material records and a Property Passport at handover. No surprises.
               </p>
-              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+              <div className={styles.btnRow}>
                 <Link href="/build" className="btn btn-primary btn-lg">Explore Construction</Link>
-                <Link href="/cost-estimator" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.25)', color: 'white', background: 'transparent' }}>Calculate Cost</Link>
+                <Link href="/cost-estimator" className="btn btn-lg btn-outline" style={{ border: '2px solid rgba(255,255,255,0.25) !important', color: 'white !important' }}>Calculate Cost</Link>
               </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className={styles.comparisonGrid} style={{ textAlign: 'left' }}>
               {PROOF_PILLARS.map(p => (
                 <div key={p.title} style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '16px', padding: '20px' }}>
                   <div style={{ fontSize: '28px', marginBottom: '10px' }}>{p.icon}</div>
@@ -219,9 +218,9 @@ export default function Home() {
       {/* ══════════════════ PROPERTY PASSPORT ══════════════════ */}
       <section className="section" style={{ background: '#F9F9F9' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '64px', alignItems: 'center' }}>
+          <div className={`${styles.splitSection} ${styles.mobileCenter}`}>
             {/* Left: Passport visual */}
-            <div style={{ background: 'var(--secondary)', borderRadius: '24px', padding: '40px', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ background: 'var(--secondary)', borderRadius: '24px', padding: '40px', position: 'relative', overflow: 'hidden', textAlign: 'left' }}>
               <div style={{ position: 'absolute', top: 0, right: 0, width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(255,218,1,0.12), transparent)', borderRadius: '50%' }} />
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.12)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '5px 14px', marginBottom: '20px' }}>
                 <span style={{ color: '#FFDA01', fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>🛂 Property Passport™</span>
@@ -243,18 +242,22 @@ export default function Home() {
               <p style={{ color: 'var(--text-muted)', fontSize: '17px', lineHeight: 1.75, marginBottom: '28px' }}>
                 Property Passport is Buildogram's biggest moat. It's a permanent, secure digital record of your property — covering everything from Day 1 of construction to years of maintenance.
               </p>
-              {[
-                { icon: '🏗️', text: 'Makes construction transparent from the start' },
-                { icon: '📈', text: 'Increases resale value with verified quality proof' },
-                { icon: '🏡', text: 'Faster rental conversions with verified property records' },
-                { icon: '🔧', text: 'Maintenance history tracked for every repair' },
-              ].map(b => (
-                <div key={b.text} style={{ display: 'flex', alignItems: 'flex-start', gap: '14px', marginBottom: '16px' }}>
-                  <span style={{ fontSize: '20px', flexShrink: 0 }}>{b.icon}</span>
-                  <span style={{ fontSize: '16px', color: 'var(--text)', lineHeight: 1.5 }}>{b.text}</span>
-                </div>
-              ))}
-              <Link href="/property-passport" className="btn btn-primary btn-lg" style={{ marginTop: '12px' }}>Create Property Passport →</Link>
+              <div style={{ textAlign: 'left' }}>
+                {[
+                  { icon: '🏗️', text: 'Makes construction transparent from the start' },
+                  { icon: '📈', text: 'Increases resale value with verified quality proof' },
+                  { icon: '🏡', text: 'Faster rental conversions with verified property records' },
+                  { icon: '🔧', text: 'Maintenance history tracked for every repair' },
+                ].map(b => (
+                  <div key={b.text} style={{ display: 'flex', alignItems: 'flex-start', gap: '14px', marginBottom: '16px' }}>
+                    <span style={{ fontSize: '20px', flexShrink: 0 }}>{b.icon}</span>
+                    <span style={{ fontSize: '16px', color: 'var(--text)', lineHeight: 1.5 }}>{b.text}</span>
+                  </div>
+                ))}
+              </div>
+              <div className={styles.btnRow} style={{ marginTop: '12px' }}>
+                <Link href="/property-passport" className="btn btn-primary btn-lg">Create Property Passport →</Link>
+              </div>
             </div>
           </div>
         </div>
@@ -263,7 +266,7 @@ export default function Home() {
       {/* ══════════════════ MATERIALS STRIP ══════════════════ */}
       <section style={{ background: 'white', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <div className="container" style={{ padding: '64px 24px' }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '64px', alignItems: 'center' }}>
+          <div className={`${styles.splitSectionAlt} ${styles.mobileCenter}`}>
             <div>
               <span className="tag">Material Marketplace</span>
               <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 40px)', marginTop: '16px', marginBottom: '16px', color: '#292929' }}>
@@ -272,9 +275,11 @@ export default function Home() {
               <p style={{ color: 'var(--text-muted)', fontSize: '16px', lineHeight: 1.7, marginBottom: '28px' }}>
                 Cement, steel, sand, tiles, electrical and plumbing materials — with brand verification, delivery proof and material records added to your Property Passport.
               </p>
-              <Link href="/materials" className="btn btn-primary">Request Material Quote →</Link>
+              <div className={styles.btnRow}>
+                <Link href="/materials" className="btn btn-primary">Request Material Quote →</Link>
+              </div>
             </div>
-            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <div className={styles.miniCardGrid} style={{ textAlign: 'left' }}>
               {[
                 { icon: '🏭', name: 'Cement', brands: 'UltraTech, Ramco, Dalmia' },
                 { icon: '⚙️', name: 'Steel', brands: 'Tata Tiscon, SAIL, Vizag' },
@@ -285,7 +290,7 @@ export default function Home() {
                 { icon: '🏠', name: 'Tiles', brands: 'Asian, Kajaria, Johnson' },
                 { icon: '🎨', name: 'Paint', brands: 'Asian, Berger, Nerolac' },
               ].map(m => (
-                <div key={m.name} style={{ background: '#F9F9F9', border: '1px solid var(--border)', borderRadius: '12px', padding: '14px 16px', minWidth: '130px', flex: '1 0 auto' }}>
+                <div key={m.name} className={styles.miniCard}>
                   <div style={{ fontSize: '22px', marginBottom: '6px' }}>{m.icon}</div>
                   <div style={{ fontWeight: 700, fontSize: '13px', color: '#292929', marginBottom: '3px' }}>{m.name}</div>
                   <div style={{ fontSize: '11px', color: 'var(--text-muted)' }}>{m.brands}</div>
@@ -308,14 +313,14 @@ export default function Home() {
               Builders, contractors, architects, suppliers, agents and maintenance vendors — get leads, verified profile, reels and material benefits.
             </p>
           </div>
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '48px' }}>
+          <div className={styles.featuresRow}>
             {PARTNER_TYPES.map(p => (
               <div key={p} style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '999px', padding: '12px 24px', fontSize: '15px', fontWeight: 600, color: '#292929', boxShadow: 'var(--shadow)' }}>
                 {p}
               </div>
             ))}
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px', marginBottom: '48px' }}>
+          <div className="grid-3" style={{ marginBottom: '48px' }}>
             {[
               { icon: '🎯', title: 'Quality Leads', desc: 'Pre-qualified homeowner leads delivered in your service area.' },
               { icon: '✅', title: 'Verified Badge', desc: 'Buildogram-verified profile that builds instant customer trust.' },
@@ -336,7 +341,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ══════════════════ COMPARISON (kept) ══════════════════ */}
+      {/* ══════════════════ COMPARISON ══════════════════ */}
       <section className="section" style={{ background: 'white' }}>
         <div className="container">
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
@@ -346,7 +351,7 @@ export default function Home() {
               Building a home is your lifetime investment. Do not trust generic square-foot quotes that hide material grades and structural design standards.
             </p>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginBottom: '28px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginBottom: '28px', flexWrap: 'wrap' }}>
             {[['contractor', 'Traditional Contractors', '#dc2626'], ['buildogram', 'Buildogram', '#292929']].map(([key, label, bg]) => (
               <button key={key} onClick={() => setActiveComparison(key)}
                 style={{ padding: '12px 28px', borderRadius: '999px', fontWeight: 700, fontSize: '14px', cursor: 'pointer', border: '2px solid', transition: 'all 0.2s',
@@ -374,9 +379,9 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ MAINTENANCE ══════════════════ */}
-      <section style={{ background: 'var(--secondary)', padding: '80px 0' }}>
+      <section className="section" style={{ background: 'var(--secondary)' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '64px', alignItems: 'center' }}>
+          <div className={`${styles.splitSectionAlt} ${styles.mobileCenter}`}>
             <div>
               <span className="tag" style={{ background: 'rgba(255,218,1,0.12)', color: '#FFDA01', border: '1px solid rgba(255,218,1,0.2)' }}>After Handover</span>
               <h2 style={{ color: 'white', fontSize: 'clamp(26px, 3.5vw, 42px)', marginTop: '16px', marginBottom: '20px' }}>
@@ -385,12 +390,12 @@ export default function Home() {
               <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', lineHeight: 1.75, marginBottom: '32px' }}>
                 Waterproofing, plumbing, electrical repairs and AMC contracts — with before/after photos and maintenance history added to your Property Passport.
               </p>
-              <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+              <div className={styles.btnRow}>
                 <Link href="/maintenance" className="btn btn-primary btn-lg">Request Maintenance</Link>
-                <Link href="/maintenance#amc" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.25)', color: 'white', background: 'transparent' }}>View AMC Plans</Link>
+                <Link href="/maintenance#amc" className="btn btn-lg btn-outline" style={{ border: '2px solid rgba(255,255,255,0.25) !important', color: 'white !important' }}>View AMC Plans</Link>
               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', textAlign: 'left' }}>
               {[
                 { icon: '💧', service: 'Waterproofing', desc: 'Terrace, bathroom, wall waterproofing with warranty' },
                 { icon: '🚿', service: 'Plumbing Repair', desc: 'Pipe leaks, blockages, fitting replacements' },
@@ -418,7 +423,7 @@ export default function Home() {
             <h2 style={{ fontSize: 'clamp(26px, 4vw, 42px)', marginTop: '16px', color: '#292929' }}>Vetted Brand Packages</h2>
             <p style={{ color: 'var(--text-muted)', marginTop: '12px', fontSize: '16px' }}>Select a specification level to preview brand inclusions. Every brand is verified.</p>
           </div>
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '28px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '12px', marginBottom: '28px', flexWrap: 'wrap' }}>
             {['classic', 'premium', 'royal'].map(s => (
               <button key={s} onClick={() => setActiveSpecTab(s)} style={{ padding: '10px 24px', borderRadius: '999px', fontSize: '14px', fontWeight: 700, cursor: 'pointer', border: '2px solid', transition: 'all 0.2s', textTransform: 'capitalize',
                 background: activeSpecTab === s ? '#292929' : 'white',
@@ -474,8 +479,8 @@ export default function Home() {
       </section>
 
       {/* ══════════════════ FINAL CTA ══════════════════ */}
-      <section style={{ background: 'var(--secondary)', padding: '100px 0' }}>
-        <div className="container" style={{ textAlign: 'center', maxWidth: '760px' }}>
+      <section className={styles.finalCta}>
+        <div className="container" style={{ maxWidth: '760px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.12)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
             <span style={{ color: '#FFDA01', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Start Your Property Journey</span>
           </div>
@@ -486,10 +491,10 @@ export default function Home() {
           <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '18px', marginBottom: '44px', lineHeight: 1.7 }}>
             Whether you're building, buying materials, listing a property, joining as a partner or requesting maintenance — Buildogram connects it all.
           </p>
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+          <div className={styles.btnRow} style={{ justifyContent: 'center' }}>
             <Link href="/cost-estimator" className="btn btn-primary btn-lg">Calculate Construction Cost</Link>
-            <Link href="/property-passport" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.3)', color: 'white', background: 'transparent' }}>Create Property Passport</Link>
-            <Link href="/contact" className="btn btn-lg" style={{ border: '2px solid rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.7)', background: 'transparent' }}>Talk to Us</Link>
+            <Link href="/property-passport" className="btn btn-lg btn-outline" style={{ border: '2px solid rgba(255,255,255,0.3) !important', color: 'white !important' }}>Create Property Passport</Link>
+            <Link href="/contact" className="btn btn-lg btn-outline" style={{ border: '2px solid rgba(255,255,255,0.2) !important', color: 'rgba(255,255,255,0.7) !important' }}>Talk to Us</Link>
           </div>
         </div>
       </section>
@@ -497,9 +502,9 @@ export default function Home() {
       {/* ══════════════════ FOOTER ══════════════════ */}
       <footer style={{ background: '#111111', color: 'white', padding: '64px 0 32px' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr 1fr 1fr', gap: '40px', marginBottom: '48px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px', marginBottom: '48px' }}>
             {/* Brand col */}
-            <div>
+            <div style={{ gridColumn: '1 / -1', maxWidth: '300px' }}>
               <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', marginBottom: '16px', textDecoration: 'none' }}>
                 <span style={{ fontSize: '24px' }}>⬡</span>
                 <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800, fontSize: '20px', color: 'white' }}>Buildogram</span>

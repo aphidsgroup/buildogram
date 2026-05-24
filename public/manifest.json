@@ -1,11 +1,12 @@
 {
   "name": "Buildogram",
   "short_name": "Buildogram",
-  "description": "Engineer-Led Home Construction in Chennai",
+  "description": "Engineer-Led Home Construction in Chennai. India's Property Transparency Platform.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#4f46e5",
+  "theme_color": "#FFDA01",
   "orientation": "portrait-primary",
   "icons": [
     {
