@@ -19,15 +19,14 @@ export default function Navbar() {
         {/* Nav Links */}
         <div className={`${styles.navLinks} ${menuOpen ? styles.open : ''}`}>
 
-          {/* Build */}
+          {/* Construction */}
           <div className={styles.dropdown}>
-            <span className={styles.dropdownTrigger}>Build <span className={styles.arrow}>▾</span></span>
+            <span className={styles.dropdownTrigger}>Construction <span className={styles.arrow}>▾</span></span>
             <div className={styles.dropdownMenu}>
               <Link href="/build" onClick={close}>All Services</Link>
               <Link href="/build/home-construction" onClick={close}>Home Construction</Link>
               <Link href="/build/villa-construction" onClick={close}>Villa Construction</Link>
               <Link href="/build/renovation" onClick={close}>Renovation</Link>
-              <Link href="/cost-estimator" onClick={close}>Cost Estimator</Link>
               <hr style={{ margin: '6px 0', border: 'none', borderTop: '1px solid var(--border)' }} />
               <Link href="/boq-audit" onClick={close}>📊 BOQ Audit</Link>
               <Link href="/plan-review" onClick={close}>📐 Plan Review</Link>
@@ -37,9 +36,9 @@ export default function Navbar() {
           {/* Materials */}
           <Link href="/materials" onClick={close}>Materials</Link>
 
-          {/* Property */}
+          {/* Properties */}
           <div className={styles.dropdown}>
-            <span className={styles.dropdownTrigger}>Property <span className={styles.arrow}>▾</span></span>
+            <span className={styles.dropdownTrigger}>Properties <span className={styles.arrow}>▾</span></span>
             <div className={styles.dropdownMenu}>
               <Link href="/properties/buy" onClick={close}>Buy Properties</Link>
               <Link href="/properties/rent" onClick={close}>Rent Properties</Link>
@@ -58,27 +57,23 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Projects */}
-          <Link href="/projects" onClick={close}>Projects</Link>
-
           {/* Resources */}
           <div className={styles.dropdown}>
-            <span className={styles.dropdownTrigger}>Learn <span className={styles.arrow}>▾</span></span>
+            <span className={styles.dropdownTrigger}>Resources <span className={styles.arrow}>▾</span></span>
             <div className={styles.dropdownMenu}>
-              <Link href="/how-it-works" onClick={close}>How It Works</Link>
-              <Link href="/specifications" onClick={close}>Specifications</Link>
-              <Link href="/construction-in-chennai" onClick={close}>Chennai Guide</Link>
-              <Link href="/blog" onClick={close}>Blog</Link>
-              <Link href="/about" onClick={close}>About Us</Link>
+              <Link href="/guides/what-is-boq-in-construction" onClick={close}>Guides</Link>
+              <Link href="/faqs/construction" onClick={close}>FAQs</Link>
+              <Link href="/glossary/boq" onClick={close}>Glossary</Link>
+              <Link href="/cost-estimator" onClick={close}>Cost Estimator</Link>
             </div>
           </div>
-
-          {/* CTAs */}
+          
           <Link href="/contact" onClick={close}>Contact</Link>
-          <Link href="/login" className="btn btn-primary btn-sm" onClick={close}>Client Login</Link>
+
         </div>
 
-        <button className={styles.menuBtn} onClick={() => setMenuOpen(!menuOpen)} aria-label="Toggle menu">
+        {/* Mobile Toggle */}
+        <button className={styles.mobileMenuToggle} onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? '✕' : '☰'}
         </button>
       </div>

@@ -3,11 +3,11 @@ import SiteLayoutClient from './SiteLayoutClient';
 
 export const metadata = {
   title: 'Buildogram | India’s Property Transparency Platform',
-  description: 'Build your dream home in Chennai with PhD-grade structural engineering, 100% transparent BOQ pricing, and a digital Property Passport. Construction with proof, not promises.',
-  keywords: ['home construction chennai', 'transparent builders', 'boq audit', 'structural engineering chennai', 'property passport', 'buildogram'],
+  description: 'Buildogram is a construction and property marketplace for property owners, builders, contractors, material suppliers, 360° property listings, BOQ clarity, Property Passport records, and maintenance support.',
+  keywords: ['construction marketplace', 'property marketplace', 'buildogram', 'chennai', 'property passport'],
   openGraph: {
     title: 'Buildogram | India’s Property Transparency Platform',
-    description: 'Build your dream home in Chennai with PhD-grade structural engineering and 100% transparent BOQ pricing.',
+    description: 'Buildogram is a construction and property marketplace for property owners, builders, contractors, material suppliers, 360° property listings, BOQ clarity, Property Passport records, and maintenance support.',
     url: 'https://buildogram.in',
     siteName: 'Buildogram',
     images: [
@@ -23,7 +23,7 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Buildogram | India’s Property Transparency Platform',
-    description: 'Build your dream home in Chennai with PhD-grade structural engineering and 100% transparent BOQ pricing.',
+    description: 'Buildogram is a construction and property marketplace for property owners, builders, contractors, material suppliers, 360° property listings, BOQ clarity, Property Passport records, and maintenance support.',
   },
   manifest: '/manifest.json',
 };

@@ -2,8 +2,8 @@ import Link from 'next/link';
 import BuildLeadForm from './BuildLeadForm';
 
 export const metadata = {
-  title: 'Build Your Home or Villa in Chennai | Buildogram Construction',
-  description: 'Build your home, villa, commercial property or renovation with cost clarity, BOQ transparency, BQS quality checks and Property Passport. Serving Chennai and Tamil Nadu.',
+  title: 'Construction Support and Contractor Marketplace | Buildogram',
+  description: 'Find construction clarity, BOQ support, project tracking, partner coordination, and material support through Buildogram. Serving Chennai and Tamil Nadu.',
 };
 
 const services = [

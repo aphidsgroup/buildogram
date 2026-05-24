@@ -2,8 +2,8 @@ import Link from 'next/link';
 import BOQAuditForm from './BOQAuditForm';
 
 export const metadata = {
-  title: 'BOQ Audit — Catch Hidden Charges in Your Contractor Quote | Buildogram',
-  description: 'Get your contractor quote audited by Buildogram engineers. We check every item, rate and quantity to expose inflated pricing, missing items and spec substitutions. Chennai & Tamil Nadu.',
+  title: 'BOQ Review and Contractor Quote Audit | Buildogram',
+  description: 'Before you finalize a contractor, understand what is included, what is unclear, and what questions to ask. BOQ clarity service inside the Buildogram marketplace. Chennai & Tamil Nadu.',
 };
 
 const WHAT_WE_CHECK = [
