@@ -1,90 +1,69 @@
 import Link from 'next/link';
+import { localities } from '@/data/seo/localities';
 
 export const metadata = {
-  title: 'Top Construction Company in Chennai | Buildogram',
-  description: 'Looking for the best home builders in Chennai? Buildogram offers PhD-grade structural engineering, transparent BOQ pricing, and 100% verified material tracking.',
-  keywords: ['home construction chennai', 'builders in chennai', 'house construction cost chennai', 'best construction company chennai', 'turnkey contractors chennai', 'buildogram chennai'],
+  title: 'House Construction in Chennai | All Localities | Buildogram',
+  description: 'Buildogram provides engineer-led house construction services across Chennai. Browse all localities including OMR, ECR, Tambaram, Anna Nagar, Porur, Velachery, and more.',
 };
 
-export default function ChennaiLocationPage() {
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  name: 'Buildogram',
+  description: 'Engineer-led construction and property services across Chennai',
+  url: 'https://buildogram.in',
+  areaServed: { '@type': 'City', name: 'Chennai', containsPlace: localities.map((l) => ({ '@type': 'Place', name: `${l.name}, Chennai` })) },
+};
+
+export default function ChennaiHub() {
+  const regions = [...new Set(localities.map((l) => l.region))];
+
   return (
     <>
-            <div className="page" style={{ paddingTop: '40px', minHeight: '100vh', background: '#f8fafc' }}>
-        
-        {/* HERO */}
-        <section style={{ background: 'var(--primary-dark)', color: 'white', padding: '80px 0', textAlign: 'center' }}>
-          <div className="container" style={{ maxWidth: '800px' }}>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.12)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
-              <span style={{ color: '#FFDA01', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Chennai's Leading Engineers</span>
-            </div>
-            <h1 style={{ fontSize: 'clamp(32px, 5vw, 56px)', lineHeight: 1.1, marginBottom: '24px' }}>
-              Building <span style={{ color: '#FFDA01' }}>Chennai</span> with Proof,<br /> Not Promises.
-            </h1>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', lineHeight: 1.7, marginBottom: '32px' }}>
-              Whether you're building in OMR, ECR, Anna Nagar, or Tambaram, our PhD-led structural team ensures your home withstands coastal salinity, clay soil profiles, and monsoon flooding.
-            </p>
-            <Link href="/contact" className="btn btn-primary btn-lg">Book Free Chennai Site Visit</Link>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
+
+      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
+        <div className="container">
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.12)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
+            <span style={{ color: '#FFDA01', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>📍 Chennai</span>
           </div>
-        </section>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 50px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>
+            House Construction in Chennai — All Localities
+          </h1>
+          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', maxWidth: '580px', lineHeight: 1.7 }}>
+            Buildogram provides engineer-led construction, BOQ-based contracts, and quality supervision across all major Chennai localities.
+          </p>
+        </div>
+      </section>
 
-        {/* CONTENT */}
-        <section className="container" style={{ padding: '64px 20px' }}>
-          <div className="grid-2" style={{ gap: '48px', alignItems: 'center' }}>
-            <div>
-              <h2 style={{ fontSize: '32px', color: 'var(--primary-dark)', marginBottom: '24px' }}>Why Build in Chennai with Buildogram?</h2>
-              
-              <div style={{ marginBottom: '24px' }}>
-                <h3 style={{ fontSize: '18px', color: 'var(--primary-dark)', marginBottom: '8px' }}>1. Coastal Soil Engineering</h3>
-                <p style={{ color: '#475569', lineHeight: 1.6 }}>Chennai's ECR and OMR regions have high salinity and sandy soil profiles. We design deep pile foundations and use Tata CRS (Anti-Corrosion) steel to ensure a 50+ year lifespan.</p>
-              </div>
-
-              <div style={{ marginBottom: '24px' }}>
-                <h3 style={{ fontSize: '18px', color: 'var(--primary-dark)', marginBottom: '8px' }}>2. CMDA & GCC Compliance</h3>
-                <p style={{ color: '#475569', lineHeight: 1.6 }}>We handle all local planning permissions, ensuring your FSI (Floor Space Index) matches the latest Greater Chennai Corporation rules without illegal deviations.</p>
-              </div>
-
-              <div style={{ marginBottom: '24px' }}>
-                <h3 style={{ fontSize: '18px', color: 'var(--primary-dark)', marginBottom: '8px' }}>3. Transparent Broadway Material Rates</h3>
-                <p style={{ color: '#475569', lineHeight: 1.6 }}>We source materials directly from primary dealers in Broadway and Mannady, passing the wholesale cost savings directly to you through our open-book BOQ system.</p>
-              </div>
-            </div>
-            
-            <div className="card" style={{ padding: '40px', background: 'white', boxShadow: '0 10px 40px rgba(0,0,0,0.05)' }}>
-              <h3 style={{ fontSize: '24px', color: 'var(--primary-dark)', marginBottom: '16px' }}>Current Chennai Build Rates (2025)</h3>
-              <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <li style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '16px', borderBottom: '1px solid #e2e8f0' }}>
-                  <span style={{ fontWeight: 600, color: '#334155' }}>Classic Spec</span>
-                  <span style={{ color: 'var(--primary)' }}>₹1,750 / sq.ft</span>
-                </li>
-                <li style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '16px', borderBottom: '1px solid #e2e8f0' }}>
-                  <span style={{ fontWeight: 600, color: '#334155' }}>Premium Spec</span>
-                  <span style={{ color: 'var(--primary)' }}>₹2,200 / sq.ft</span>
-                </li>
-                <li style={{ display: 'flex', justifyContent: 'space-between', paddingBottom: '16px', borderBottom: '1px solid #e2e8f0' }}>
-                  <span style={{ fontWeight: 600, color: '#334155' }}>Royal Spec</span>
-                  <span style={{ color: 'var(--primary)' }}>₹2,850 / sq.ft</span>
-                </li>
-              </ul>
-              <div style={{ marginTop: '24px', textAlign: 'center' }}>
-                <Link href="/cost-estimator" className="btn btn-outline" style={{ width: '100%', justifyContent: 'center' }}>Calculate Exact Cost</Link>
+      <div className="container" style={{ padding: '60px 24px' }}>
+        {regions.map((region) => {
+          const regionLocalities = localities.filter((l) => l.region === region);
+          return (
+            <div key={region} style={{ marginBottom: '48px' }}>
+              <h2 style={{ fontSize: '18px', color: 'var(--secondary)', marginBottom: '20px', paddingBottom: '10px', borderBottom: '2px solid var(--border)' }}>
+                📍 {region}
+              </h2>
+              <div className="grid-3" style={{ gap: '16px' }}>
+                {regionLocalities.map((loc) => (
+                  <Link key={loc.slug} href={`/locations/chennai/${loc.slug}`} style={{ textDecoration: 'none' }}>
+                    <div className="card card-hover">
+                      <h3 style={{ fontSize: '16px', color: 'var(--secondary)', fontWeight: 700, marginBottom: '8px' }}>{loc.name}</h3>
+                      <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '12px' }}>{loc.desc.slice(0, 90)}…</p>
+                      <div style={{ fontSize: '11px', color: 'var(--accent)', fontWeight: 600 }}>Construction & property guide →</div>
+                    </div>
+                  </Link>
+                ))}
               </div>
             </div>
-          </div>
-        </section>
+          );
+        })}
 
-        {/* NEIGHBORHOODS */}
-        <section style={{ background: 'white', padding: '64px 0' }}>
-          <div className="container" style={{ textAlign: 'center' }}>
-            <h2 style={{ fontSize: '32px', color: 'var(--primary-dark)', marginBottom: '40px' }}>Areas We Serve in Chennai</h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center', maxWidth: '800px', margin: '0 auto' }}>
-              {['OMR', 'ECR', 'Anna Nagar', 'Velachery', 'Tambaram', 'Porur', 'Guindy', 'Adyar', 'Madipakkam', 'Medavakkam', 'Navalur', 'Sholinganallur', 'Pallikaranai', 'Guduvanchery'].map(area => (
-                <span key={area} style={{ padding: '8px 16px', background: '#f1f5f9', color: '#475569', borderRadius: '8px', fontSize: '14px', fontWeight: 500 }}>
-                  {area}
-                </span>
-              ))}
-            </div>
-          </div>
-        </section>
+        <div className="card" style={{ background: 'var(--gradient-dark)', border: 'none', textAlign: 'center', padding: '48px', marginTop: '20px' }}>
+          <h2 style={{ color: 'white', fontSize: '26px', marginBottom: '12px' }}>Not sure about your locality?</h2>
+          <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '24px' }}>Our engineers are familiar with construction conditions across all Chennai localities. Get site-specific advice.</p>
+          <Link href="/contact" className="btn btn-primary btn-lg">Talk to Our Engineers</Link>
+        </div>
       </div>
     </>
   );
