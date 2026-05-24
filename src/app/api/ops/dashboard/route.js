@@ -16,6 +16,11 @@ export async function GET(req) {
     // Revenue metrics from JSONB
     const [[matOrderVal]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'estimated_order_value', '') AS numeric)) as total FROM leads WHERE lead_type='material_quote'`;
     const [[matComm]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'expected_commission', '') AS numeric)) as total FROM leads WHERE lead_type='material_quote'`;
+    // Referral Metrics
+    const [[referredLeads]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE metadata->>'referral_partner_lead_id' IS NOT NULL`;
+    const [[convertedReferrals]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE metadata->>'referral_status'='converted'`;
+    const [[referralExpected]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'referral_commission_expected', '') AS numeric)) as total FROM leads`;
+    const [[referralPaid]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'referral_commission_paid', '') AS numeric)) as total FROM leads`;
     
     const [[publishedListings]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_listing' AND metadata->>'public_status'='published'`;
     const [[activePassports]] = await sql`SELECT COUNT(*)::int as count FROM properties WHERE passport_status='active'`;
@@ -139,6 +144,10 @@ export async function GET(req) {
         publishedListings: publishedListings.count,
         activePassports: activePassports.count,
         avgCompleteness: avgCompleteness.avg || 0,
+        referredLeads: referredLeads.count,
+        convertedReferrals: convertedReferrals.count,
+        referralExpected: referralExpected.total || 0,
+        referralPaid: referralPaid.total || 0,
       },
       breakdowns: {
         leadTypes: leadTypeBreakdown,

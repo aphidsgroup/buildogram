@@ -1,6 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 const ISSUE_CATEGORIES = [
   { id: 'plumbing', label: 'Plumbing & Leakage' },
@@ -20,7 +21,10 @@ const URGENCIES = [
   { id: 'low', label: 'Low (Within a Week)' }
 ];
 
-export default function MaintenanceRequestForm() {
+function MaintenanceRequestFormInner() {
+  const searchParams = useSearchParams();
+  const refPartnerId = searchParams.get('ref');
+
   const [form, setForm] = useState({ 
     name: '', phone: '', email: '', 
     property_location: '', issue_category: 'plumbing', urgency: 'medium',
@@ -40,6 +44,10 @@ export default function MaintenanceRequestForm() {
       maintenance_status: 'requested',
       passport_link_status: 'not_linked'
     };
+
+    if (refPartnerId) {
+      metadata.public_referral_code = refPartnerId;
+    }
 
     try {
       const res = await fetch('/api/leads', {
@@ -141,5 +149,13 @@ export default function MaintenanceRequestForm() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function MaintenanceRequestForm() {
+  return (
+    <Suspense fallback={<div className="flex-center min-h-screen">Loading...</div>}>
+      <MaintenanceRequestFormInner />
+    </Suspense>
   );
 }

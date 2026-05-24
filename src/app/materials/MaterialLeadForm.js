@@ -1,10 +1,19 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 const MATERIAL_CATEGORIES = ['Cement', 'Steel / TMT', 'Sand', 'M-Sand', 'Solid Blocks', 'Red Bricks', 'Electricals', 'Plumbing', 'Tiles', 'Paint', 'Doors & Windows', 'RMC', 'Other'];
 const CUSTOMER_TYPES = ['Home Owner', 'Contractor', 'Builder', 'Architect', 'Supplier', 'Other'];
 
-export default function MaterialLeadForm() {
+function MaterialLeadFormInner() {
+  const searchParams = useSearchParams();
+  const [refPartnerId, setRefPartnerId] = useState(null);
+
+  useEffect(() => {
+    const ref = searchParams.get('ref');
+    if (ref) setRefPartnerId(ref);
+  }, [searchParams]);
+
   const [form, setForm] = useState({
     name: '', phone: '', email: '',
     customer_type: 'Home Owner',
@@ -42,6 +51,10 @@ export default function MaterialLeadForm() {
         unit: form.unit
       }]
     };
+
+    if (refPartnerId) {
+      metadata.public_referral_code = refPartnerId;
+    }
 
     try {
       const res = await fetch('/api/leads', {
@@ -137,5 +150,13 @@ export default function MaterialLeadForm() {
       </button>
       {status === 'error' && <p style={{ color: '#f87171', textAlign: 'center', fontSize: '14px' }}>Something went wrong. Please try again.</p>}
     </form>
+  );
+}
+
+export default function MaterialLeadForm() {
+  return (
+    <Suspense fallback={<div>Loading form...</div>}>
+      <MaterialLeadFormInner />
+    </Suspense>
   );
 }
