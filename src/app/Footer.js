@@ -8,7 +8,7 @@ const FOOTER_COLS = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: '#111111', color: 'white', padding: '64px 0 32px' }}>
+    <footer style={{ background: '#101828', color: 'white', padding: '64px 0 32px' }}>
       <div className="container">
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '40px', marginBottom: '48px' }}>
           {/* Brand col */}
@@ -20,7 +20,7 @@ export default function Footer() {
             <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '14px', lineHeight: 1.7, maxWidth: '240px', marginBottom: '20px' }}>
               Buildogram is a construction and property marketplace that connects property owners, construction professionals, material suppliers, property listings, and digital property records.
             </p>
-            <div style={{ fontFamily: 'DM Serif Text, serif', fontStyle: 'italic', color: '#BBA07A', fontSize: '15px' }}>
+            <div style={{ fontFamily: 'DM Serif Text, serif', fontStyle: 'italic', color: '#1E5BFF', fontSize: '15px' }}>
               Showcase. Connect. Build.
             </div>
           </div>
@@ -35,7 +35,7 @@ export default function Footer() {
                       target={href.startsWith('http') ? '_blank' : undefined}
                       rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                       style={{ color: 'rgba(255,255,255,0.65)', fontSize: '14px', textDecoration: 'none', transition: 'color 0.2s' }}
-                      onMouseEnter={e => e.currentTarget.style.color = '#CCFF00'}
+                      onMouseEnter={e => e.currentTarget.style.color = '#1E5BFF'}
                       onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.65)'}
                     >{label}</Link>
                   </li>
