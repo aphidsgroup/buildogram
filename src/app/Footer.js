@@ -35,7 +35,7 @@ export default function Footer() {
                       target={href.startsWith('http') ? '_blank' : undefined}
                       rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                       style={{ color: 'rgba(255,255,255,0.65)', fontSize: '14px', textDecoration: 'none', transition: 'color 0.2s' }}
-                      onMouseEnter={e => e.currentTarget.style.color = '#FFDA01'}
+                      onMouseEnter={e => e.currentTarget.style.color = '#CCFF00'}
                       onMouseLeave={e => e.currentTarget.style.color = 'rgba(255,255,255,0.65)'}
                     >{label}</Link>
                   </li>

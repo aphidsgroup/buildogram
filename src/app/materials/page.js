@@ -31,14 +31,14 @@ export default function MaterialsPage() {
     <>
       {/* ── Hero ── */}
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(255,218,1,0.07) 0%, transparent 55%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(204,255,0,0.07) 0%, transparent 55%)' }} />
         <div className="container" style={{ position: 'relative', textAlign: 'center' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.12)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
-            <span style={{ color: '#FFDA01', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Material Marketplace</span>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(204,255,0,0.12)', border: '1px solid rgba(204,255,0,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
+            <span style={{ color: '#CCFF00', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Material Marketplace</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(34px, 5vw, 60px)', lineHeight: 1.1, marginBottom: '24px' }}>
             Buy Construction Materials<br />
-            <span style={{ color: '#FFDA01' }}>with Verified Proof.</span>
+            <span style={{ color: '#CCFF00' }}>with Verified Proof.</span>
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', maxWidth: '600px', margin: '0 auto 40px', lineHeight: 1.7 }}>
             Cement, steel, sand, blocks, electrical, plumbing, tiles, paint — at market-best rates with delivery verification and material proof records.

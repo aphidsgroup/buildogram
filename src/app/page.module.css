@@ -12,8 +12,8 @@
 /* HERO */
 .hero { background: var(--secondary); color: white; padding: 60px 0 90px; position: relative; overflow: hidden; min-height: 90vh; display: flex; align-items: center; }
 .heroContent { max-width: 760px; position: relative; width: 100%; z-index: 2; }
-.heroAmbient { position: absolute; inset: 0; background: radial-gradient(ellipse at 65% 40%, rgba(255,218,1,0.09) 0%, transparent 55%); z-index: 1;}
-.heroLine { position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,218,1,0.4), transparent); z-index: 1;}
+.heroAmbient { position: absolute; inset: 0; background: radial-gradient(ellipse at 65% 40%, rgba(204,255,0,0.09) 0%, transparent 55%); z-index: 1;}
+.heroLine { position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(204,255,0,0.4), transparent); z-index: 1;}
 
 /* LAYOUT UTILS FOR PAGE.JS */
 .splitSection { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
