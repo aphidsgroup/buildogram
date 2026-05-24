@@ -10,8 +10,8 @@ export async function GET(req) {
   }
 
   try {
-    const [[leadsCount]] = await sql`SELECT COUNT(*)::int as count FROM leads`;
-    const [[newLeadsMonth]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE created_at >= date_trunc('month', current_date)`;
+    const [leadsCount] = await sql`SELECT COUNT(*)::int as count FROM leads`;
+    const [newLeadsMonth] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE created_at >= date_trunc('month', current_date)`;
     
     // Revenue metrics from JSONB (Only if role allows)
     const canViewRevenue = roleCan(u.role, 'view_revenue');
@@ -19,23 +19,23 @@ export async function GET(req) {
     let referralExpected = { total: 0 }, referralPaid = { total: 0 };
     
     if (canViewRevenue) {
-      [[matOrderVal]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'estimated_order_value', '') AS numeric)) as total FROM leads WHERE lead_type='material_quote'`;
-      [[matComm]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'expected_commission', '') AS numeric)) as total FROM leads WHERE lead_type='material_quote'`;
-      [[referralExpected]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'referral_commission_expected', '') AS numeric)) as total FROM leads`;
-      [[referralPaid]] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'referral_commission_paid', '') AS numeric)) as total FROM leads`;
+      [matOrderVal] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'estimated_order_value', '') AS numeric)) as total FROM leads WHERE lead_type='material_quote'`;
+      [matComm] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'expected_commission', '') AS numeric)) as total FROM leads WHERE lead_type='material_quote'`;
+      [referralExpected] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'referral_commission_expected', '') AS numeric)) as total FROM leads`;
+      [referralPaid] = await sql`SELECT SUM(CAST(NULLIF(metadata->>'referral_commission_paid', '') AS numeric)) as total FROM leads`;
     }
     // Referral Metrics
-    const [[referredLeads]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE metadata->>'referral_partner_lead_id' IS NOT NULL`;
-    const [[convertedReferrals]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE metadata->>'referral_status'='converted'`;
+    const [referredLeads] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE metadata->>'referral_partner_lead_id' IS NOT NULL`;
+    const [convertedReferrals] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE metadata->>'referral_status'='converted'`;
     
     let publishedListings = { count: 0 }, activePassports = { count: 0 }, avgCompleteness = { avg: 0 }, propertyInquiries = { count: 0 };
     try {
-      [[publishedListings]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_listing' AND metadata->>'public_status'='published'`;
-      [[propertyInquiries]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_inquiry'`;
+      [publishedListings] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_listing' AND metadata->>'public_status'='published'`;
+      [propertyInquiries] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_inquiry'`;
     } catch(e) {}
     try {
-      [[activePassports]] = await sql`SELECT COUNT(*)::int as count FROM properties WHERE passport_status='active'`;
-      [[avgCompleteness]] = await sql`SELECT AVG(passport_completeness)::int as avg FROM properties WHERE passport_status='active'`;
+      [activePassports] = await sql`SELECT COUNT(*)::int as count FROM properties WHERE passport_status='active'`;
+      [avgCompleteness] = await sql`SELECT AVG(passport_completeness)::int as avg FROM properties WHERE passport_status='active'`;
     } catch(e) {}
     // Breakdown by lead type
     const leadTypeBreakdown = await sql`
@@ -85,7 +85,7 @@ export async function GET(req) {
     // 3. Alerts Data
     let pendingPartners = { count: 0 };
     try {
-      [[pendingPartners]] = await sql`SELECT COUNT(*)::int as count FROM users WHERE role='partner' AND verification_status='pending'`;
+      [pendingPartners] = await sql`SELECT COUNT(*)::int as count FROM users WHERE role='partner' AND verification_status='pending'`;
     } catch(e) {}
 
     // 2. Revenue Totals
@@ -124,17 +124,17 @@ export async function GET(req) {
     // 3. Alerts
     let urgentMaintenance = { count: 0 }, draftListings = { count: 0 }, overdueFollowups = { count: 0 };
     try {
-      [[urgentMaintenance]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='maintenance' AND metadata->>'urgency' IN ('emergency', 'high') AND metadata->>'maintenance_status' NOT IN ('completed', 'closed', 'cancelled')`;
-      [[draftListings]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_listing' AND metadata->>'public_status'='draft'`;
-      [[overdueFollowups]] = await sql`SELECT COUNT(*)::int as count FROM lead_activities WHERE type = 'follow_up' AND follow_up_at < NOW()`;
+      [urgentMaintenance] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='maintenance' AND metadata->>'urgency' IN ('emergency', 'high') AND metadata->>'maintenance_status' NOT IN ('completed', 'closed', 'cancelled')`;
+      [draftListings] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_listing' AND metadata->>'public_status'='draft'`;
+      [overdueFollowups] = await sql`SELECT COUNT(*)::int as count FROM lead_activities WHERE type = 'follow_up' AND follow_up_at < NOW()`;
     } catch(e) {}
 
     // 4. Notification Queue Metrics
     let pendingQueueApprovals = { count: 0 }, failedQueueMessages = { count: 0 }, sentQueueMessagesMonth = { count: 0 };
     try {
-      [[pendingQueueApprovals]] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='pending_review'`;
-      [[failedQueueMessages]] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='failed'`;
-      [[sentQueueMessagesMonth]] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='sent' AND sent_at >= date_trunc('month', current_date)`;
+      [pendingQueueApprovals] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='pending_review'`;
+      [failedQueueMessages] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='failed'`;
+      [sentQueueMessagesMonth] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='sent' AND sent_at >= date_trunc('month', current_date)`;
     } catch(e) {}
 
     // 4. Follow-up Actions
@@ -244,7 +244,7 @@ export async function GET(req) {
     });
 
   } catch (e) {
-    console.error('[ops dashboard GET]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    console.error('[ops dashboard GET]', e.message, e.stack);
+    return NextResponse.json({ success: false, error: e.message, stack: e.stack }, { status: 500 });
   }
 }
