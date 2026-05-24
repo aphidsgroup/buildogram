@@ -1,0 +1,20 @@
+CREATE TABLE IF NOT EXISTS payment_orders (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  invoice_id UUID REFERENCES invoice_records(id) ON DELETE CASCADE,
+  revenue_record_id UUID,
+  client_user_id UUID REFERENCES users(id),
+  provider TEXT NOT NULL,
+  provider_order_id TEXT NOT NULL,
+  provider_payment_id TEXT,
+  amount NUMERIC NOT NULL,
+  currency TEXT DEFAULT 'INR',
+  status TEXT DEFAULT 'created' CHECK (status IN ('created','pending','paid','failed','expired','cancelled','refunded')),
+  payment_link TEXT,
+  gateway_response JSONB,
+  verified BOOLEAN DEFAULT FALSE,
+  created_by UUID REFERENCES users(id),
+  paid_at TIMESTAMPTZ,
+  metadata JSONB,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);

@@ -73,8 +73,8 @@ export default function ClientInvoicesPage() {
                   <td>{getStatusBadge(inv.status)}</td>
                   <td>{inv.issue_date ? new Date(inv.issue_date).toLocaleDateString('en-IN') : '-'}</td>
                   <td>
-                    <Link href={`/client/invoices/${inv.id}/print`} target="_blank" className="btn btn-sm btn-outline text-xs">
-                      View / PDF
+                    <Link href={`/client/invoices/${inv.id}`} className="btn btn-sm btn-outline text-xs">
+                      View / Pay
                     </Link>
                   </td>
                 </tr>
