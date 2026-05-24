@@ -38,19 +38,36 @@ function ProjectContent() {
         <p className="text-muted mt-2">{p.city}{p.locality ? `, ${p.locality}` : ''} · {p.plot_area_sqft} sqft · {p.floors} · {p.spec_level} spec</p>
       </div>
 
-      {/* PROGRESS OVERVIEW */}
-      <div className="card mb-6" style={{ background: 'linear-gradient(135deg, rgba(15,118,110,0.1), rgba(249,115,22,0.05))', border: '1px solid rgba(15,118,110,0.2)' }}>
-        <div className="flex-between mb-3">
-          <span style={{ fontWeight: '600' }}>Overall Completion</span>
-          <span style={{ fontWeight: '800', fontSize: '20px', color: 'var(--primary)' }}>{p.completion_pct || 0}%</span>
+      {/* DASHBOARD OVERVIEW */}
+      <div className="grid-2 mb-6">
+        <div className="card" style={{ background: 'linear-gradient(135deg, rgba(15,118,110,0.1), rgba(249,115,22,0.05))', border: '1px solid rgba(15,118,110,0.2)' }}>
+          <div className="flex-between mb-3">
+            <span style={{ fontWeight: '600' }}>Overall Completion</span>
+            <span style={{ fontWeight: '800', fontSize: '20px', color: 'var(--primary)' }}>{p.completion_pct || 0}%</span>
+          </div>
+          <div className="progress-bar" style={{ height: '12px' }}>
+            <div className="progress-fill" style={{ width: `${p.completion_pct || 0}%` }} />
+          </div>
+          <div className="grid-2 mt-6">
+            {[['PM', p.pm_name || '—'], ['Status', p.status?.replace('_',' ')]].map(([k, v]) => (
+              <div key={k}><div className="text-muted text-xs mb-1">{k}</div><div style={{ fontWeight: '600', fontSize: '14px' }}>{v}</div></div>
+            ))}
+          </div>
         </div>
-        <div className="progress-bar" style={{ height: '12px' }}>
-          <div className="progress-fill" style={{ width: `${p.completion_pct || 0}%` }} />
-        </div>
-        <div className="grid-4 mt-6">
-          {[['PM', p.pm_name || '—'], ['Contract', fmt(p.total_contract_value)], ['Started', p.start_date ? new Date(p.start_date).toLocaleDateString('en-IN') : 'TBD'], ['Status', p.status?.replace('_',' ')]].map(([k, v]) => (
-            <div key={k}><div className="text-muted text-xs mb-1">{k}</div><div style={{ fontWeight: '600', fontSize: '14px' }}>{v}</div></div>
-          ))}
+
+        <div className="card" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.05), rgba(124,58,237,0.05))', border: '1px solid rgba(37,99,235,0.15)' }}>
+          <div className="flex-between mb-4">
+            <span style={{ fontWeight: '600' }}>Financial Tracking</span>
+            <span style={{ fontWeight: '800', fontSize: '20px', color: '#2563eb' }}>{fmt(p.total_contract_value)}</span>
+          </div>
+          <div className="flex-between" style={{ paddingBottom: '12px', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+            <span className="text-muted text-sm">Amount Paid</span>
+            <span style={{ fontWeight: '600', color: 'var(--success)' }}>{fmt(milestones.filter(m => m.status === 'complete').reduce((sum, m) => sum + (Number(m.payment_amount) || 0), 0))}</span>
+          </div>
+          <div className="flex-between" style={{ paddingTop: '12px' }}>
+            <span className="text-muted text-sm">Balance Remaining</span>
+            <span style={{ fontWeight: '600', color: '#ef4444' }}>{fmt(Number(p.total_contract_value || 0) - milestones.filter(m => m.status === 'complete').reduce((sum, m) => sum + (Number(m.payment_amount) || 0), 0))}</span>
+          </div>
         </div>
       </div>
 
