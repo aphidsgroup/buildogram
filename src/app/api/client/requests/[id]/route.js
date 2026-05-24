@@ -42,8 +42,21 @@ export async function GET(request, { params }) {
       materials_required: m.materials_required,
       delivery_location: m.delivery_location,
       materials_status: m.materials_status,
-      source_listing_lead_id: m.source_listing_lead_id
+      source_listing_lead_id: m.source_listing_lead_id,
+      
+      // BOQ Audit Safe Fields
+      project_type: m.project_type,
+      quoted_amount: m.quoted_amount,
+      built_up_area: m.built_up_area,
+      floors: m.floors,
+      customer_concern: m.customer_concern,
+      boq_file_url: m.boq_file_url
     };
+
+    // Safely attach reviewed BOQ report ONLY if Ops marked it ready to share
+    if (row.lead_type === 'boq_audit' && m.reviewed_boq_report && m.reviewed_boq_report.status === 'ready_to_share') {
+      safeMetadata.reviewed_boq_report = m.reviewed_boq_report;
+    }
 
     return NextResponse.json({ 
       success: true, 

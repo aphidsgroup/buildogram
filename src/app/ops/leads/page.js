@@ -777,7 +777,27 @@ export default function OpsLeads() {
             {/* BOQ Audit Draft Metadata */}
             {selected.lead_type === 'boq_audit' && selected.metadata && (
               <div style={{ marginBottom: '16px', padding: '16px', background: '#f5f3ff', borderRadius: '8px', border: '1px solid #ddd6fe' }}>
-                <div style={{ fontSize: '11px', fontWeight: 700, color: '#6d28d9', textTransform: 'uppercase', marginBottom: '12px' }}>BOQ Audit Submission</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+                  <div style={{ fontSize: '11px', fontWeight: 700, color: '#6d28d9', textTransform: 'uppercase' }}>BOQ Audit Submission</div>
+                  {selected.metadata.client_user_id && (
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+                      <span style={{ fontSize: '10px', background: 'white', color: '#6d28d9', border: '1px solid #ddd6fe', padding: '2px 8px', borderRadius: '4px', fontWeight: 700 }}>
+                        👤 Linked to Client Portal
+                      </span>
+                      {selected.metadata.reviewed_boq_report?.status === 'ready_to_share' ? (
+                        <>
+                          <span style={{ fontSize: '10px', color: '#16a34a', fontWeight: 600 }}>👁️ Visible in Client Portal</span>
+                          <button className="btn btn-sm" style={{ background: 'white', color: '#4f46e5', border: '1px solid #c7d2fe', marginTop: '4px', fontSize: '10px', padding: '2px 6px' }} onClick={() => {
+                            navigator.clipboard.writeText(window.location.origin + '/client/requests/' + selected.id);
+                            showToast('Client Portal Link Copied!');
+                          }}>🔗 Copy Portal Link</button>
+                        </>
+                      ) : (
+                        <span style={{ fontSize: '10px', color: '#94a3b8', fontWeight: 600 }}>🙈 Report Hidden from Client</span>
+                      )}
+                    </div>
+                  )}
+                </div>
                 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
                   {[
