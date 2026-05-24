@@ -10,6 +10,7 @@ export const PERMISSIONS = {
     'generate_boq',
     'view_revenue',
     'send_whatsapp_message',
+    'manage_notification_rules',
   ],
   ops_engineer: [
     'view_pipeline',
