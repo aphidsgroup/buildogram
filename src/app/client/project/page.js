@@ -29,7 +29,10 @@ function ProjectContent() {
   if (loading) return <div className="flex-center" style={{ height: '60vh' }}><div className="spinner" /></div>;
   if (!data) return <div className="empty-state"><div className="empty-icon">🏗️</div><p>No project found. Please contact your PM.</p></div>;
 
-  const { project: p, milestones = [], logs = [], issues = [] } = data;
+  const { project: p, milestones = [], logs = [], issues = [], changeOrders = [] } = data;
+
+  const approvedChangesTotal = changeOrders.filter(c => c.status === 'approved').reduce((sum, c) => sum + Number(c.amount), 0);
+  const revisedContractValue = Number(p.total_contract_value || 0) + approvedChangesTotal;
 
   return (
     <div>
@@ -57,8 +60,8 @@ function ProjectContent() {
 
         <div className="card" style={{ background: 'linear-gradient(135deg, rgba(37,99,235,0.05), rgba(124,58,237,0.05))', border: '1px solid rgba(37,99,235,0.15)' }}>
           <div className="flex-between mb-4">
-            <span style={{ fontWeight: '600' }}>Financial Tracking</span>
-            <span style={{ fontWeight: '800', fontSize: '20px', color: '#2563eb' }}>{fmt(p.total_contract_value)}</span>
+            <span style={{ fontWeight: '600' }}>Revised Contract Value</span>
+            <span style={{ fontWeight: '800', fontSize: '20px', color: '#2563eb' }}>{fmt(revisedContractValue)}</span>
           </div>
           <div className="flex-between" style={{ paddingBottom: '12px', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
             <span className="text-muted text-sm">Amount Paid</span>
@@ -66,7 +69,7 @@ function ProjectContent() {
           </div>
           <div className="flex-between" style={{ paddingTop: '12px' }}>
             <span className="text-muted text-sm">Balance Remaining</span>
-            <span style={{ fontWeight: '600', color: '#ef4444' }}>{fmt(Number(p.total_contract_value || 0) - milestones.filter(m => m.status === 'complete').reduce((sum, m) => sum + (Number(m.payment_amount) || 0), 0))}</span>
+            <span style={{ fontWeight: '600', color: '#ef4444' }}>{fmt(revisedContractValue - milestones.filter(m => m.status === 'complete').reduce((sum, m) => sum + (Number(m.payment_amount) || 0), 0))}</span>
           </div>
         </div>
       </div>
@@ -147,6 +150,25 @@ function ProjectContent() {
               </tbody>
             </table>
           </div>
+          
+          {changeOrders.filter(c => c.status === 'approved').length > 0 && (
+            <div className="mt-8">
+              <h3 style={{ fontSize: '16px', marginBottom: '12px' }}>Approved Change Orders (Variations)</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {changeOrders.filter(c => c.status === 'approved').map(c => (
+                  <div key={c.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 16px', background: 'rgba(37,99,235,0.04)', border: '1px solid rgba(37,99,235,0.15)', borderRadius: '8px' }}>
+                    <div>
+                      <div style={{ fontWeight: '600', fontSize: '14px' }}>{c.title}</div>
+                      <div className="text-muted text-xs mt-1">{c.description}</div>
+                    </div>
+                    <div style={{ fontWeight: '700', color: c.amount < 0 ? 'var(--error)' : 'var(--success)' }}>
+                      {c.amount > 0 ? '+' : ''}{fmt(c.amount)}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
