@@ -88,3 +88,72 @@ export async function evaluateNotificationRule(eventType, context) {
     return { should_send: false, reason: 'Internal error evaluating rule.' };
   }
 }
+
+/**
+ * Triggers a notification event. Checks global settings for automation modes,
+ * rate limits, and quiet hours to safely route the message.
+ */
+export async function triggerNotificationEvent({ eventName, userId, templateId, ruleId, metadata = {} }) {
+  try {
+    // 1. Fetch Global Settings
+    const [settings] = await sql`SELECT * FROM notification_settings LIMIT 1`;
+    if (!settings) throw new Error('Settings missing');
+
+    const { automation_mode, respect_quiet_hours, max_messages_per_user_per_day } = settings;
+
+    if (automation_mode === 'disabled') {
+      console.log('Notifications disabled globally.');
+      return { success: true, status: 'skipped' };
+    }
+
+    // 2. Determine initial status based on automation mode
+    let targetStatus = 'pending_review';
+
+    if (automation_mode === 'auto_send_low_risk') {
+      const lowRiskEvents = ['payment_success', 'invoice_issued', 'maintenance_status_changed', 'material_quote_status_changed'];
+      if (lowRiskEvents.includes(eventName)) {
+        targetStatus = 'pending'; // ready to send
+      }
+    } else if (automation_mode === 'queue_only') {
+      targetStatus = 'draft';
+    }
+
+    // 3. Quiet Hours Check (9 PM to 8 AM)
+    if (targetStatus === 'pending' && respect_quiet_hours) {
+      const currentHour = new Date().getHours();
+      if (currentHour >= 21 || currentHour < 8) {
+        targetStatus = 'pending_review'; // Downgrade to manual review
+        metadata.quiet_hours_delayed = true;
+      }
+    }
+
+    // 4. Rate Limiting Check (per user per day)
+    if (targetStatus === 'pending' && userId) {
+      const [limitCheck] = await sql`
+        SELECT COUNT(id) FROM notification_queue 
+        WHERE user_id = ${userId} 
+          AND created_at >= NOW() - INTERVAL '1 day'
+          AND status = 'sent'
+      `;
+      if (parseInt(limitCheck.count) >= max_messages_per_user_per_day) {
+        targetStatus = 'pending_review';
+        metadata.rate_limit_exceeded = true;
+      }
+    }
+
+    // 5. Insert into Queue
+    const [queuedItem] = await sql`
+      INSERT INTO notification_queue (
+        user_id, template_id, rule_id, status, metadata, scheduled_for
+      ) VALUES (
+        ${userId || null}, ${templateId || null}, ${ruleId || null}, ${targetStatus}, ${metadata}, NOW()
+      )
+      RETURNING *
+    `;
+
+    return { success: true, queue_id: queuedItem.id, status: targetStatus };
+  } catch (error) {
+    console.error('Notification Trigger Error:', error);
+    return { success: false, error: error.message };
+  }
+}

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import crypto from 'crypto';
-
+import { triggerNotificationEvent } from '@/lib/notifications';
 export async function POST(req) {
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = await req.json();
@@ -50,6 +50,13 @@ export async function POST(req) {
         ${order.client_user_id}
       )
     `;
+
+    // Trigger WhatsApp Automation Queue
+    await triggerNotificationEvent({
+      eventName: 'payment_success',
+      userId: order.client_user_id,
+      metadata: { invoice_number: invoice.invoice_number, amount: order.amount }
+    });
 
     return NextResponse.json({ success: true, order });
   } catch (e) {
