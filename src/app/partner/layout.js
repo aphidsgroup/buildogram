@@ -2,47 +2,196 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import styles from '../ops/layout.module.css';
+import styles from '../ops/layout.module.css'; // Reusing Ops Layout CSS for consistency
 
-const PARTNER_NAV = [
-  { href: '/partner/dashboard', icon: '📊', label: 'Dashboard' },
-  { href: '/partner/projects', icon: '🏗️', label: 'My Projects' },
-  { href: '/partner/logs', icon: '📸', label: 'Daily Logs' },
-  { href: '/partner/qc', icon: '✅', label: 'QC Checklists' },
-  { href: '/partner/settings', icon: '⚙️', label: 'Settings' },
-];
+// All Possible Modules in Partner OS
+const MODULES = {
+  dashboard: { href: '/partner/dashboard', icon: '📊', label: 'Home Dashboard' },
+  leads: { href: '/partner/leads', icon: '🎯', label: 'Lead & Sales CRM' },
+  preConstruction: { href: '/partner/pre-construction', icon: '📐', label: 'Pre-Construction' },
+  projects: { href: '/partner/projects', icon: '🏗️', label: 'Project Control' },
+  boq: { href: '/partner/boq-studio', icon: '💰', label: 'BOQ Studio' },
+  budget: { href: '/partner/budget', icon: '📉', label: 'Budget & Cost' },
+  design: { href: '/partner/design', icon: '🎨', label: 'Design Manager' },
+  logbook: { href: '/partner/site-logbook', icon: '📓', label: 'Site Logbook' },
+  progress: { href: '/partner/progress', icon: '📈', label: 'Progress Tracker' },
+  materials: { href: '/partner/materials', icon: '🧱', label: 'Material Flow' },
+  procurement: { href: '/partner/procurement', icon: '🛒', label: 'Procurement' },
+  vendors: { href: '/partner/vendors', icon: '🤝', label: 'Vendors & Subs' },
+  crew: { href: '/partner/crew', icon: '👷', label: 'Crew Manager' },
+  equipment: { href: '/partner/equipment', icon: '🚜', label: 'Asset & Equipment' },
+  quality: { href: '/partner/quality', icon: '✅', label: 'Quality Vault' },
+  issues: { href: '/partner/issues', icon: '🚩', label: 'Issue & Blocker' },
+  clientRoom: { href: '/partner/client-room', icon: '💬', label: 'Client Room' },
+  documents: { href: '/partner/documents', icon: '📁', label: 'Document Locker' },
+  finance: { href: '/partner/finance', icon: '💸', label: 'Finance Tracker' },
+  invoices: { href: '/partner/invoices', icon: '🧾', label: 'Invoice Manager' },
+  maintenance: { href: '/partner/maintenance', icon: '🔧', label: 'Maintenance & AMC' },
+  reports: { href: '/partner/reports', icon: '📑', label: 'Smart MIS Reports' },
+  aiAssistant: { href: '/partner/ai-assistant', icon: '🤖', label: 'AI Site Assistant' },
+  profile: { href: '/partner/profile', icon: '🏢', label: 'Public Profile' },
+  settings: { href: '/partner/settings', icon: '⚙️', label: 'Settings' }
+};
+
+// Category Role Mapping
+const ROLE_MENUS = {
+  builder: [
+    MODULES.dashboard, MODULES.leads, MODULES.preConstruction, MODULES.projects,
+    MODULES.boq, MODULES.budget, MODULES.logbook, MODULES.progress, MODULES.materials,
+    MODULES.procurement, MODULES.vendors, MODULES.crew, MODULES.equipment, MODULES.quality,
+    MODULES.issues, MODULES.clientRoom, MODULES.documents, MODULES.finance, MODULES.invoices,
+    MODULES.maintenance, MODULES.reports, MODULES.aiAssistant, MODULES.profile, MODULES.settings
+  ],
+  architect: [
+    MODULES.dashboard, MODULES.leads, 
+    { ...MODULES.projects, label: 'Design Projects' }, MODULES.design, 
+    MODULES.documents, { ...MODULES.boq, label: 'BOQ Estimation' }, 
+    MODULES.clientRoom, MODULES.reports, MODULES.aiAssistant, MODULES.profile, MODULES.settings
+  ],
+  interior: [
+    MODULES.dashboard, MODULES.leads, { ...MODULES.projects, label: 'Interior Projects' }, 
+    MODULES.design, { ...MODULES.boq, label: 'Room-wise BOQ' }, MODULES.materials, 
+    MODULES.procurement, MODULES.clientRoom, MODULES.documents, MODULES.finance, 
+    MODULES.reports, MODULES.aiAssistant, MODULES.profile, MODULES.settings
+  ],
+  supplier: [
+    MODULES.dashboard, MODULES.leads, { ...MODULES.projects, label: 'Orders & Tracking' },
+    { ...MODULES.materials, label: 'Product Catalogue' }, MODULES.procurement, 
+    MODULES.invoices, MODULES.finance, MODULES.reports, MODULES.profile, MODULES.settings
+  ],
+  solar: [
+    MODULES.dashboard, MODULES.leads, { ...MODULES.projects, label: 'Solar Installations' },
+    { ...MODULES.preConstruction, label: 'Site & Roof Assesment' }, MODULES.quality, 
+    MODULES.maintenance, MODULES.boq, MODULES.reports, MODULES.aiAssistant, MODULES.profile, MODULES.settings
+  ],
+  elevator: [
+    MODULES.dashboard, MODULES.leads, { ...MODULES.projects, label: 'Lift Installations' },
+    { ...MODULES.preConstruction, label: 'Dimension Checklist' }, MODULES.quality, 
+    MODULES.maintenance, MODULES.boq, MODULES.reports, MODULES.aiAssistant, MODULES.profile, MODULES.settings
+  ],
+  waterproofing: [
+    MODULES.dashboard, MODULES.leads, { ...MODULES.projects, label: 'Waterproofing Projects' },
+    { ...MODULES.preConstruction, label: 'Site Inspection' }, { ...MODULES.issues, label: 'Leakage Tracker' },
+    MODULES.quality, MODULES.maintenance, MODULES.boq, MODULES.reports, MODULES.aiAssistant, MODULES.profile, MODULES.settings
+  ],
+  homeAutomation: [
+    MODULES.dashboard, MODULES.leads, { ...MODULES.projects, label: 'Automation Projects' },
+    { ...MODULES.boq, label: 'Package Builder' }, { ...MODULES.quality, label: 'Device Installation' },
+    MODULES.maintenance, MODULES.documents, MODULES.reports, MODULES.aiAssistant, MODULES.profile, MODULES.settings
+  ]
+};
 
 export default function PartnerLayout({ children }) {
   const pathname = usePathname();
   const router = useRouter();
   const [user, setUser] = useState(null);
+  const [category, setCategory] = useState('builder'); // default fallback
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  useEffect(() => { fetch('/api/auth/me').then(r => r.json()).then(d => { if (d.user) setUser(d.user); }); }, []);
+  useEffect(() => { 
+    // Fetch user and profile to determine category
+    fetch('/api/auth/me').then(r => r.json()).then(d => { 
+      if (d.user) setUser(d.user); 
+    });
+    fetch('/api/partner/profile').then(r => r.json()).then(p => {
+      if (p.success && p.profile?.metadata?.category) {
+        // Map category string to our role keys
+        const rawCat = p.profile.metadata.category.toLowerCase();
+        if (rawCat.includes('architect')) setCategory('architect');
+        else if (rawCat.includes('interior')) setCategory('interior');
+        else if (rawCat.includes('supplier')) setCategory('supplier');
+        else if (rawCat.includes('solar')) setCategory('solar');
+        else if (rawCat.includes('elevator')) setCategory('elevator');
+        else if (rawCat.includes('waterproofing')) setCategory('waterproofing');
+        else if (rawCat.includes('automation')) setCategory('homeAutomation');
+        else setCategory('builder');
+      }
+    });
+  }, []);
+
   const logout = async () => { await fetch('/api/auth/logout', { method: 'POST' }); router.push('/login'); };
+
+  const currentMenu = ROLE_MENUS[category] || ROLE_MENUS.builder;
 
   return (
     <div className={styles.shell}>
-      <aside className={styles.sidebar}>
-        <div className={styles.sidebarHeader}>
-          <Link href="/" className={styles.logo}><span>⬡</span> Buildogram</Link>
-          <div className={styles.sidebarBadge}>Partner Portal</div>
+      <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`} style={{ width: '280px', zIndex: 100 }}>
+        <div className={styles.sidebarHeader} style={{ padding: '20px' }}>
+          <Link href="/" className={styles.logo} style={{ fontSize: '18px' }}>
+            <span style={{ color: 'var(--accent)' }}>■</span> Buildogram <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>OS</span>
+          </Link>
+          <div className={styles.sidebarBadge} style={{ background: 'var(--gradient-orange)', color: 'white' }}>
+            {category.toUpperCase()} PARTNER
+          </div>
         </div>
-        <nav className={styles.nav}>
-          {PARTNER_NAV.map(({ href, icon, label }) => (
-            <Link key={href} href={href} className={`${styles.navItem} ${pathname.startsWith(href) ? styles.active : ''}`}>
-              <span className={styles.navIcon}>{icon}</span><span>{label}</span>
+        
+        <nav className={styles.nav} style={{ padding: '16px 12px' }}>
+          {currentMenu.map((item, idx) => (
+            <Link 
+              key={idx} 
+              href={item.href} 
+              onClick={() => setSidebarOpen(false)}
+              className={`${styles.navItem} ${pathname === item.href || pathname.startsWith(item.href + '/') ? styles.active : ''}`}
+            >
+              <span className={styles.navIcon}>{item.icon}</span>
+              <span style={{ fontSize: '14.5px' }}>{item.label}</span>
             </Link>
           ))}
         </nav>
+
         <div className={styles.sidebarFooter}>
-          {user && <div className={styles.userInfo}><div className={styles.avatar}>{user.name[0]}</div><div><div style={{ fontSize: '13px', fontWeight: '600' }}>{user.name}</div><div className="text-muted text-xs">{user.role}</div></div></div>}
+          {user && (
+            <div className={styles.userInfo}>
+              <div className={styles.avatar} style={{ background: 'var(--gradient-orange)' }}>
+                {user.name[0]}
+              </div>
+              <div style={{ overflow: 'hidden' }}>
+                <div style={{ fontSize: '13px', fontWeight: '600', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                  {user.name}
+                </div>
+                <div className="text-muted text-xs" style={{ textTransform: 'capitalize' }}>
+                  {category} Partner
+                </div>
+              </div>
+            </div>
+          )}
           <button onClick={logout} className={styles.logoutBtn}>Sign Out</button>
         </div>
       </aside>
-      <div className={styles.main}>
-        <header className={styles.topbar}><div style={{ flex: 1 }} /></header>
-        <div className={styles.content}>{children}</div>
+
+      {sidebarOpen && <div className={styles.overlay} onClick={() => setSidebarOpen(false)} style={{ zIndex: 90 }} />}
+
+      <div className={styles.main} style={{ marginLeft: '280px', background: '#F8FAFC' }}>
+        <header className={styles.topbar}>
+          <button className={styles.menuBtn} onClick={() => setSidebarOpen(true)}>☰</button>
+          <div style={{ flex: 1, fontWeight: 600, fontSize: '16px' }}>
+            {currentMenu.find(m => m.href === pathname)?.label || 'Partner OS'}
+          </div>
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+            <button style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '50%', width: '36px', height: '36px', fontSize: '16px' }}>🔔</button>
+            <Link href="/partner/profile" style={{ background: 'var(--gradient-orange)', color: 'white', border: 'none', borderRadius: '50%', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', fontWeight: 600 }}>
+              {user ? user.name[0] : 'P'}
+            </Link>
+          </div>
+        </header>
+        
+        <div className={styles.content} style={{ maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
+          {children}
+        </div>
       </div>
+      
+      {/* Dynamic CSS override for mobile layout sidebar width compensation */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @media (max-width: 900px) {
+          .${styles.main} { margin-left: 0 !important; }
+        }
+        .${styles.navItem}.${styles.active} {
+          background: linear-gradient(90deg, rgba(252, 110, 32, 0.08) 0%, transparent 100%) !important;
+          color: #FC6E20 !important;
+          border-left: 3px solid #FC6E20;
+          border-radius: 0 10px 10px 0;
+        }
+      `}} />
     </div>
   );
 }
