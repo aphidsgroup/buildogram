@@ -27,7 +27,7 @@ export default function OpsDashboard() {
       const msg = err.message || '';
       if (msg.startsWith('401')) setErrorMsg('Session expired or not logged in.');
       else if (msg.startsWith('403')) setErrorMsg('You do not have admin permission.');
-      else if (msg.startsWith('500')) setErrorMsg('Server error while loading dashboard.');
+      else if (msg.startsWith('500')) setErrorMsg('Server error: ' + msg);
       else setErrorMsg('Cannot connect to backend API: ' + msg);
       setLoading(false);
     });

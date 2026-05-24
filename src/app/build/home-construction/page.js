@@ -27,17 +27,17 @@ export default function HomeConstructionPage() {
     <>
       {/* ── Hero ── */}
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 30%, rgba(204,255,0,0.07) 0%, transparent 55%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 30%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
         <div className="container" style={{ position: 'relative' }}>
           <div style={{ maxWidth: '680px' }}>
             <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap' }}>
               <Link href="/build" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px' }}>Build</Link>
               <span style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-              <span style={{ color: '#CCFF00', fontSize: '14px' }}>Home Construction</span>
+              <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '14px' }}>Home Construction</span>
             </div>
             <h1 style={{ color: 'white', fontSize: 'clamp(32px, 5vw, 56px)', lineHeight: 1.1, marginBottom: '24px' }}>
               Build Your Home in Chennai<br />
-              <span style={{ color: '#CCFF00' }}>with Proof at Every Stage.</span>
+              <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>with Proof at Every Stage.</span>
             </h1>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', lineHeight: 1.7, marginBottom: '40px' }}>
               Individual house construction with transparent BOQ, 2500+ quality checks, material verification and a permanent Property Passport. No surprises.
@@ -51,7 +51,7 @@ export default function HomeConstructionPage() {
       </section>
 
       {/* ── Stats ── */}
-      <section style={{ background: '#CCFF00', padding: '28px 0' }}>
+      <section style={{ background: 'var(--gradient-orange)', padding: '28px 0' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '48px', flexWrap: 'wrap' }}>
           {[['₹1,600', 'Per sqft onwards'], ['2500+', 'Quality Checks'], ['6', 'Stage Process'], ['Lifetime', 'Property Passport']].map(([n, l]) => (
             <div key={l} style={{ textAlign: 'center' }}>
@@ -72,7 +72,7 @@ export default function HomeConstructionPage() {
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {process.map((s, i) => (
               <div key={s.step} style={{ display: 'flex', gap: '28px', alignItems: 'flex-start', padding: '28px 0', borderBottom: i < process.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--secondary)', color: '#CCFF00', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800, fontSize: '18px', flexShrink: 0 }}>{s.step}</div>
+                <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--secondary)', background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800, fontSize: '18px', flexShrink: 0 }}>{s.step}</div>
                 <div style={{ paddingTop: '6px' }}>
                   <h3 style={{ fontSize: '18px', marginBottom: '6px' }}>{s.title}</h3>
                   <p style={{ color: 'var(--text-muted)', fontSize: '15px', lineHeight: 1.6 }}>{s.desc}</p>
@@ -93,7 +93,7 @@ export default function HomeConstructionPage() {
           <div className="grid-3">
             {included.map(item => (
               <div key={item} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 16px', border: '1px solid var(--border)', borderRadius: '12px' }}>
-                <span style={{ color: '#292929', background: '#CCFF00', borderRadius: '50%', width: '22px', height: '22px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', flexShrink: 0, fontWeight: 800 }}>✓</span>
+                <span style={{ color: '#292929', background: 'var(--gradient-orange)', borderRadius: '50%', width: '22px', height: '22px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', flexShrink: 0, fontWeight: 800 }}>✓</span>
                 <span style={{ fontSize: '14px', fontWeight: 500 }}>{item}</span>
               </div>
             ))}

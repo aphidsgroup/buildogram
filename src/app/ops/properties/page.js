@@ -290,7 +290,7 @@ function NewPropertyModal({ onClose, onSaved }) {
                 <button key={s.key} type="button" onClick={() => toggle(s.key)}
                   style={{ padding: '8px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 600, border: '1px solid', cursor: 'pointer', transition: 'all 0.15s',
                     background: form[s.key] ? '#292929' : '#f8fafc',
-                    color: form[s.key] ? '#CCFF00' : '#64748b',
+                    color: form[s.key] ? '#FC6E20' : '#64748b',
                     borderColor: form[s.key] ? '#292929' : '#e2e8f0',
                   }}>
                   {s.icon} {s.label}
@@ -473,7 +473,7 @@ export default function OpsProperties() {
             const psCfg = PASSPORT_COLORS[p.passport_status] || PASSPORT_COLORS.pending;
             const completedSections = RECORD_SECTIONS.filter(s => p[s.key]).length;
             return (
-              <div key={p.id} className="card" style={{ padding: '24px', cursor: 'pointer', transition: 'all 0.2s', border: selected?.id === p.id ? '2px solid #CCFF00' : '1px solid var(--border)' }}
+              <div key={p.id} className="card" style={{ padding: '24px', cursor: 'pointer', transition: 'all 0.2s', border: selected?.id === p.id ? '2px solid #FC6E20' : '1px solid var(--border)' }}
                 onClick={() => setSelected(p)}>
                 {/* Header */}
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '14px' }}>
@@ -641,7 +641,7 @@ export default function OpsProperties() {
                     <button key={s.key} onClick={() => update(selected.id, { [s.key]: !selected[s.key] })}
                       style={{ padding: '8px 12px', borderRadius: '10px', fontSize: '12px', fontWeight: 600, border: '1px solid', cursor: 'pointer', transition: 'all 0.15s',
                         background: selected[s.key] ? '#292929' : '#f8fafc',
-                        color: selected[s.key] ? '#CCFF00' : '#64748b',
+                        color: selected[s.key] ? '#FC6E20' : '#64748b',
                         borderColor: selected[s.key] ? '#292929' : '#e2e8f0',
                       }}>
                       {s.icon} {s.label}

@@ -29,7 +29,7 @@ export const metadata = {
 };
 
 export const viewport = {
-  themeColor: '#CCFF00',
+  themebackground: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,

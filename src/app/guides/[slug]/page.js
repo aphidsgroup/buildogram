@@ -67,7 +67,7 @@ export default function GuidePage({ params }) {
           <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '24px', fontSize: '13px' }}>
             <Link href="/guides" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none' }}>Guides</Link>
             <span style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-            <span style={{ color: '#CCFF00', textTransform: 'capitalize' }}>{categoryLabel}</span>
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', textTransform: 'capitalize' }}>{categoryLabel}</span>
           </nav>
           <h1 style={{ color: 'white', fontSize: 'clamp(24px, 3.5vw, 46px)', lineHeight: 1.2, marginBottom: '16px', maxWidth: '800px' }}>
             {guide.title}
@@ -106,7 +106,7 @@ export default function GuidePage({ params }) {
 
           {/* CHECKLIST */}
           {guide.checklist && guide.checklist.length > 0 && (
-            <div className="card" style={{ background: 'rgba(204,255,0,0.05)', border: '1px solid rgba(204,255,0,0.2)', marginBottom: '48px' }}>
+            <div className="card" style={{ background: 'rgba(252, 110, 32, 0.05)', border: '1px solid rgba(252, 110, 32, 0.28)', marginBottom: '48px' }}>
               <h2 style={{ fontSize: '20px', color: 'var(--secondary)', marginBottom: '20px' }}>📋 Quick Checklist</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {guide.checklist.map((item, i) => (

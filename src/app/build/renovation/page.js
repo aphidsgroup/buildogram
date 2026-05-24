@@ -19,17 +19,17 @@ export default function RenovationPage() {
   return (
     <>
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 40% 60%, rgba(204,255,0,0.06) 0%, transparent 55%)' }} />
+        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 40% 60%, rgba(252, 110, 32, 0.06) 0%, transparent 55%)' }} />
         <div className="container" style={{ position: 'relative' }}>
           <div style={{ maxWidth: '680px' }}>
             <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
               <Link href="/build" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px' }}>Build</Link>
               <span style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-              <span style={{ color: '#CCFF00', fontSize: '14px' }}>Renovation</span>
+              <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '14px' }}>Renovation</span>
             </div>
             <h1 style={{ color: 'white', fontSize: 'clamp(32px, 5vw, 56px)', lineHeight: 1.1, marginBottom: '24px' }}>
               Renovate with Proof.<br />
-              <span style={{ color: '#CCFF00' }}>Not just promises.</span>
+              <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>Not just promises.</span>
             </h1>
             <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', lineHeight: 1.7, marginBottom: '40px' }}>
               Structural review, waterproofing, electrical, plumbing, interiors — every renovation work captured with before/after proof and material records.
@@ -68,14 +68,14 @@ export default function RenovationPage() {
               <h2 style={{ fontSize: 'clamp(24px, 4vw, 36px)', marginTop: '16px', marginBottom: '24px' }}>Before/after proof at every stage</h2>
               {['Structural assessment before any work begins', 'BOQ declared before work starts — no surprises', 'Before photos documented at every item', 'After photos with quality sign-off', 'Material records (brand, batch, quantity)', 'All work added to your Property Passport'].map(p => (
                 <div key={p} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', marginBottom: '14px' }}>
-                  <span style={{ background: '#CCFF00', color: '#292929', borderRadius: '50%', width: '22px', height: '22px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 800, flexShrink: 0, marginTop: '2px' }}>✓</span>
+                  <span style={{ background: 'var(--gradient-orange)', color: '#292929', borderRadius: '50%', width: '22px', height: '22px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '12px', fontWeight: 800, flexShrink: 0, marginTop: '2px' }}>✓</span>
                   <span style={{ fontSize: '15px', color: 'var(--text)' }}>{p}</span>
                 </div>
               ))}
             </div>
             <div style={{ background: 'linear-gradient(135deg, #292929, #1a1a1a)', borderRadius: '20px', padding: '40px', color: 'white' }}>
               <div style={{ fontSize: '48px', marginBottom: '16px' }}>📸</div>
-              <h3 style={{ color: '#CCFF00', fontSize: '22px', marginBottom: '12px' }}>Before/After Proof</h3>
+              <h3 style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '22px', marginBottom: '12px' }}>Before/After Proof</h3>
               <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '15px', lineHeight: 1.6 }}>Every renovation item is photographed before and after, with material records attached. You get a digital proof trail, not just a bill.</p>
             </div>
           </div>

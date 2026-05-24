@@ -51,9 +51,9 @@ export default function LocalityPage({ params }) {
           <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '20px', fontSize: '13px' }}>
             <Link href="/locations/chennai" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none' }}>Chennai</Link>
             <span style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-            <span style={{ color: '#CCFF00' }}>{loc.name}</span>
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>{loc.name}</span>
           </nav>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'rgba(204,255,0,0.1)', borderRadius: '6px', padding: '4px 12px', marginBottom: '16px', fontSize: '12px', color: '#CCFF00', fontWeight: 700 }}>
+          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', borderRadius: '6px', padding: '4px 12px', marginBottom: '16px', fontSize: '12px', background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontWeight: 700 }}>
             📍 {loc.region}
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(26px, 4vw, 50px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '800px' }}>

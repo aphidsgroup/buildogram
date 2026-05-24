@@ -51,10 +51,10 @@ export default async function PublicPassportPage({ params }) {
   return (
     <div style={{ background: '#F8FAFC', minHeight: '100vh' }}>
       {/* ── Public Topbar ── */}
-      <header style={{ background: '#292929', padding: '16px 0', borderBottom: '4px solid #CCFF00' }}>
+      <header style={{ background: '#292929', padding: '16px 0', borderBottom: '4px solid #FC6E20' }}>
         <div className="container" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Link href="/" style={{ color: 'white', fontWeight: 800, fontSize: '20px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ color: '#CCFF00' }}>⬡</span> Buildogram
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>⬡</span> Buildogram
           </Link>
           <div style={{ background: 'rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: '999px', fontSize: '13px', color: 'rgba(255,255,255,0.9)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span>🛂</span> Verified Property Passport™
@@ -134,7 +134,7 @@ export default async function PublicPassportPage({ params }) {
                 <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '4px' }}>👓 360° Virtual Tour</h3>
                 <p style={{ color: '#64748b', fontSize: '14px', margin: 0 }}>Explore every room before scheduling a visit.</p>
               </div>
-              <div style={{ background: '#CCFF00', color: '#292929', padding: '6px 14px', borderRadius: '8px', fontSize: '18px', fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif' }}>
+              <div style={{ background: 'var(--gradient-orange)', color: '#292929', padding: '6px 14px', borderRadius: '8px', fontSize: '18px', fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif' }}>
                 ₹{Number(property.listing_rent_monthly).toLocaleString('en-IN')}/mo
               </div>
             </div>

@@ -187,7 +187,7 @@ export default function OpsPartners() {
             const ptCfg = PARTNER_TYPES[pType] || { color: '#64748b', bg: '#f8fafc', icon: '🤝' };
             const stCfg = PIPELINE_COLORS[p.status] || PIPELINE_COLORS.new;
             return (
-              <div key={p.id} className="card" style={{ position: 'relative', padding: '24px', cursor: 'pointer', transition: 'all 0.2s', border: selected?.id === p.id ? '2px solid #CCFF00' : '1px solid var(--border)' }}
+              <div key={p.id} className="card" style={{ position: 'relative', padding: '24px', cursor: 'pointer', transition: 'all 0.2s', border: selected?.id === p.id ? '2px solid #FC6E20' : '1px solid var(--border)' }}
                 onClick={() => { setSelected(p); setNotes(p.notes || ''); }}
               >
                 {/* Type icon */}
