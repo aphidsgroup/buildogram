@@ -6,11 +6,13 @@ export default function PartnerDashboard() {
   const [user, setUser] = useState(null);
   const [profile, setProfile] = useState(null);
   
-  // Execution Projects State (Keeping original functionality intact)
   const [projects, setProjects] = useState([]);
   const [logForm, setLogForm] = useState({ project_id: '', notes: '', workers_count: '', weather: '' });
   const [logMsg, setLogMsg] = useState('');
   
+  // Referrals State
+  const [referrals, setReferrals] = useState([]);
+
   // Profile Edit State
   const [editForm, setEditForm] = useState({});
   const [saving, setSaving] = useState(false);
@@ -22,8 +24,9 @@ export default function PartnerDashboard() {
     Promise.all([
       fetch('/api/auth/me').then(r => r.json()), 
       fetch('/api/projects').then(r => r.json()),
-      fetch('/api/partner/profile').then(r => r.json())
-    ]).then(([ud, pd, prd]) => { 
+      fetch('/api/partner/profile').then(r => r.json()),
+      fetch('/api/partner/referrals').then(r => r.json())
+    ]).then(([ud, pd, prd, refData]) => { 
       setUser(ud.user); 
       setProjects(pd.projects || []); 
       
@@ -31,6 +34,11 @@ export default function PartnerDashboard() {
         setProfile(prd.profile);
         setEditForm(prd.profile.metadata || {});
       }
+      
+      if (refData.success) {
+        setReferrals(refData.referrals || []);
+      }
+      
       setLoading(false); 
     });
   }, []);
@@ -157,27 +165,46 @@ export default function PartnerDashboard() {
           </div>
         </div>
 
-        {/* ── ECOSYSTEM PLACEHOLDERS ── */}
-        <div className="grid-3 mb-8" style={{ gap: '24px' }}>
-          <div className="card text-center" style={{ padding: '32px', background: 'white' }}>
-            <div style={{ fontSize: '32px', marginBottom: '12px', opacity: 0.5 }}>👥</div>
-            <h3 style={{ fontSize: '15px', fontWeight: 700, marginBottom: '8px' }}>Leads from Buildogram</h3>
-            <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '16px' }}>Track leads routed to you via your verified profile.</p>
-            <span className="badge badge-gray">Coming Soon</span>
+        {/* ── REFERRALS ── */}
+        <h2 style={{ fontSize: '24px', fontWeight: 800, marginBottom: '24px', color: '#0f172a' }}>My Referrals & Earnings</h2>
+        
+        <div className="card" style={{ padding: 0, overflow: 'hidden', background: 'white', marginBottom: '32px' }}>
+          <div style={{ padding: '16px 20px', borderBottom: '1px solid #e2e8f0', background: '#f8fafc' }}>
+            <p style={{ margin: 0, fontSize: '14px', color: '#64748b' }}>Track leads routed to you, or leads you referred to Buildogram.</p>
           </div>
-          
-          <div className="card text-center" style={{ padding: '32px', background: 'white' }}>
-            <div style={{ fontSize: '32px', marginBottom: '12px', opacity: 0.5 }}>🧱</div>
-            <h3 style={{ fontSize: '15px', fontWeight: 700, marginBottom: '8px' }}>Material Referrals</h3>
-            <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '16px' }}>Earn commission when your clients purchase via Buildogram.</p>
-            <span className="badge badge-gray">Coming Soon</span>
-          </div>
-
-          <div className="card text-center" style={{ padding: '32px', background: 'white' }}>
-            <div style={{ fontSize: '32px', marginBottom: '12px', opacity: 0.5 }}>🎥</div>
-            <h3 style={{ fontSize: '15px', fontWeight: 700, marginBottom: '8px' }}>Content Collaboration</h3>
-            <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '16px' }}>Request a shoot day for your site with our media team.</p>
-            <span className="badge badge-gray">Coming Soon</span>
+          <div style={{ overflowX: 'auto' }}>
+            <table className="table" style={{ width: '100%', minWidth: '600px', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr style={{ background: 'white', borderBottom: '2px solid #e2e8f0' }}>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Date</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Customer Name</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Type / City</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Status</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Expected Comm.</th>
+                  <th style={{ padding: '12px 16px', textAlign: 'left', fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Paid Comm.</th>
+                </tr>
+              </thead>
+              <tbody>
+                {referrals.length === 0 && <tr><td colSpan={6} className="text-center py-8 text-muted">No referrals tracked yet.</td></tr>}
+                {referrals.map(r => (
+                  <tr key={r.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                    <td style={{ padding: '12px 16px', fontSize: '13px' }}>{new Date(r.created_at).toLocaleDateString('en-IN')}</td>
+                    <td style={{ padding: '12px 16px', fontWeight: 600, fontSize: '13px', color: '#0f172a' }}>{r.masked_name}</td>
+                    <td style={{ padding: '12px 16px' }}>
+                      <span className="badge badge-gray capitalize" style={{ marginBottom: '4px' }}>{r.lead_type.replace('_', ' ')}</span>
+                      <div style={{ fontSize: '11px', color: '#64748b' }}>{r.city}</div>
+                    </td>
+                    <td style={{ padding: '12px 16px' }}>
+                      <span className={`badge ${r.referral_status === 'converted' ? 'bg-green-100 text-green-700' : r.referral_status === 'rejected' ? 'bg-red-100 text-red-700' : 'badge-yellow capitalize'}`}>
+                        {r.referral_status || 'Pending'}
+                      </span>
+                    </td>
+                    <td style={{ padding: '12px 16px', fontSize: '13px', fontWeight: 600, color: '#166534' }}>{r.expected_commission ? `₹${Number(r.expected_commission).toLocaleString('en-IN')}` : '—'}</td>
+                    <td style={{ padding: '12px 16px', fontSize: '13px', fontWeight: 600, color: '#0369a1' }}>{r.paid_commission ? `₹${Number(r.paid_commission).toLocaleString('en-IN')}` : '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 

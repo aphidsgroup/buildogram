@@ -1,10 +1,12 @@
 'use client';
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function ListYourPropertyPage() {
+function ListYourPropertyPageInner() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const refPartnerId = searchParams.get('ref');
   const [form, setForm] = useState({
     name: '', phone: '', email: '',
     city: 'Chennai', locality: '',
@@ -53,7 +55,8 @@ export default function ListYourPropertyPage() {
             tour_required: form.tour_required === 'yes',
             tour_status: embedUrl ? 'available' : (form.tour_required === 'yes' ? 'pending' : 'not_required'),
             tour_embed_url: embedUrl || null,
-            public_status: 'draft'
+            public_status: 'draft',
+            public_referral_code: refPartnerId || null
           }
         }),
       });
@@ -211,5 +214,13 @@ export default function ListYourPropertyPage() {
         </form>
       </div>
     </main>
+  );
+}
+
+export default function ListYourPropertyPage() {
+  return (
+    <Suspense fallback={<div className="flex-center min-h-screen">Loading...</div>}>
+      <ListYourPropertyPageInner />
+    </Suspense>
   );
 }

@@ -128,6 +128,25 @@ export default function OpsDashboard() {
         </div>
       </div>
 
+      <div className="grid-4 mb-8" style={{ gap: '16px' }}>
+        <div className="card" style={{ padding: '20px', border: '1px solid #fef08a', background: '#fefce8' }}>
+            <div style={{ background: '#fef08a', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>🤝</div>
+            <div style={{ fontSize: '24px', fontWeight: 800, color: '#854d0e', marginBottom: '4px' }}>{kpis.referredLeads}</div>
+            <div style={{ fontSize: '12px', fontWeight: 700, color: '#a16207', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Partner Referrals</div>
+            <div style={{ fontSize: '12px', color: '#ca8a04', marginTop: '8px', fontWeight: 500 }}>{kpis.convertedReferrals} Converted</div>
+        </div>
+        <div className="card" style={{ padding: '20px', border: '1px solid #fed7aa', background: '#fff7ed' }}>
+            <div style={{ background: '#fed7aa', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>💰</div>
+            <div style={{ fontSize: '24px', fontWeight: 800, color: '#9a3412', marginBottom: '4px' }}>{fmt(kpis.referralExpected)}</div>
+            <div style={{ fontSize: '12px', fontWeight: 700, color: '#c2410c', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Exp. Referral Comm.</div>
+        </div>
+        <div className="card" style={{ padding: '20px', border: '1px solid #bbf7d0', background: '#f0fdf4' }}>
+            <div style={{ background: '#bbf7d0', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>💸</div>
+            <div style={{ fontSize: '24px', fontWeight: 800, color: '#166534', marginBottom: '4px' }}>{fmt(kpis.referralPaid)}</div>
+            <div style={{ fontSize: '12px', fontWeight: 700, color: '#15803d', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Paid Referral Comm.</div>
+        </div>
+      </div>
+
       <div className="grid-2" style={{ gap: '24px', marginBottom: '32px' }}>
         {/* ── LEAD BREAKDOWN ── */}
         <div className="card" style={{ background: 'white', padding: '24px' }}>

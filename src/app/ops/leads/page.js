@@ -328,6 +328,84 @@ export default function OpsLeads() {
               </div>
             )}
 
+            {/* Referral / Partner Source Block */}
+            <div style={{ marginBottom: '16px', padding: '16px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase' }}>🤝 Referral Source</div>
+                {selected.metadata?.public_referral_code && !selected.metadata?.referral_partner_lead_id && (
+                  <span className="badge badge-yellow" style={{ fontSize: '10px' }}>Public Code: {selected.metadata.public_referral_code}</span>
+                )}
+              </div>
+              
+              <div className="grid-2" style={{ gap: '12px', alignItems: 'end' }}>
+                <div>
+                  <label style={{ fontSize: '11px', fontWeight: 600, color: '#64748b', display: 'block', marginBottom: '4px' }}>Assign Partner</label>
+                  <select className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white' }}
+                    value={selected.metadata?.referral_partner_lead_id || ''}
+                    onChange={e => {
+                      const partnerId = e.target.value;
+                      const partner = leads.find(l => l.id === partnerId);
+                      update(selected.id, { 
+                        metadata: { 
+                          ...selected.metadata, 
+                          referral_partner_lead_id: partnerId,
+                          referral_partner_user_id: partner?.metadata?.partner_user_id || null,
+                          referral_status: selected.metadata?.referral_status || 'pending'
+                        } 
+                      });
+                    }}
+                  >
+                    <option value="">-- No Partner Assigned --</option>
+                    {leads.filter(l => l.lead_type === 'partner_application' && l.metadata?.verification_status === 'verified').map(p => (
+                      <option key={p.id} value={p.id}>{p.name} ({p.metadata?.partner_category || 'Partner'})</option>
+                    ))}
+                  </select>
+                </div>
+                
+                {selected.metadata?.referral_partner_lead_id && (
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 600, color: '#64748b', display: 'block', marginBottom: '4px' }}>Referral Status</label>
+                    <select className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white' }}
+                      value={selected.metadata?.referral_status || 'pending'}
+                      onChange={e => update(selected.id, { metadata: { ...selected.metadata, referral_status: e.target.value } })}
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="accepted">Accepted</option>
+                      <option value="converted">Converted (Won)</option>
+                      <option value="rejected">Rejected</option>
+                    </select>
+                  </div>
+                )}
+              </div>
+              
+              {selected.metadata?.referral_partner_lead_id && (
+                <div className="grid-2" style={{ gap: '12px', marginTop: '12px' }}>
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 600, color: '#64748b', display: 'block', marginBottom: '4px' }}>Expected Comm. (₹)</label>
+                    <input type="number" className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white' }}
+                      defaultValue={selected.metadata?.referral_commission_expected || ''}
+                      onBlur={e => {
+                        const val = e.target.value;
+                        if (val !== String(selected.metadata?.referral_commission_expected)) {
+                          update(selected.id, { metadata: { ...selected.metadata, referral_commission_expected: Number(val) } });
+                        }
+                      }} />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 600, color: '#64748b', display: 'block', marginBottom: '4px' }}>Paid Comm. (₹)</label>
+                    <input type="number" className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white' }}
+                      defaultValue={selected.metadata?.referral_commission_paid || ''}
+                      onBlur={e => {
+                        const val = e.target.value;
+                        if (val !== String(selected.metadata?.referral_commission_paid)) {
+                          update(selected.id, { metadata: { ...selected.metadata, referral_commission_paid: Number(val) } });
+                        }
+                      }} />
+                  </div>
+                </div>
+              )}
+            </div>
+
             {/* Material Quote Metadata */}
             {selected.lead_type === 'material_quote' && selected.metadata && (
               <div style={{ marginBottom: '16px', padding: '16px', background: '#f0f9ff', borderRadius: '8px', border: '1px solid #bae6fd' }}>
