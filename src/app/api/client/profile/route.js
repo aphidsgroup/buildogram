@@ -24,7 +24,7 @@ export async function PUT(req) {
     const body = await req.json();
     
     // Explicitly destructure only allowed fields
-    const { name, phone, city, alternate_phone, preferred_channel } = body;
+    const { name, phone, city, alternate_phone } = body;
 
     if (!name) {
       return NextResponse.json({ success: false, error: 'Name is required' }, { status: 400 });
@@ -37,8 +37,7 @@ export async function PUT(req) {
     const newMeta = {
       ...oldMeta,
       city: city || oldMeta.city,
-      alternate_phone: alternate_phone || oldMeta.alternate_phone,
-      preferred_channel: preferred_channel || oldMeta.preferred_channel || 'whatsapp'
+      alternate_phone: alternate_phone || oldMeta.alternate_phone
     };
 
     const [user] = await sql`
