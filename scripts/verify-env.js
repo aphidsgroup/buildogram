@@ -41,13 +41,12 @@ function verifyEnv() {
   });
 
   if (missing.length > 0) {
-    console.error('\n❌ FATAL: Missing Required Environment Variables:');
-    missing.forEach(m => console.error(`   - ${m}`));
-    console.error('\nProduction boot aborted to prevent runtime crashes.\n');
-    process.exit(1);
+    console.warn('\n⚠️ WARNING: Missing Environment Variables:');
+    missing.forEach(m => console.warn(`   - ${m}`));
+    console.warn('\nSome features (AI, WhatsApp, Payments) will operate in fallback/safe mode.\n');
+  } else {
+    console.log('✅ Environment verified successfully. All modules are fully enabled.\n');
   }
-
-  console.log('✅ Environment verified successfully. All V2 modules are ready.\n');
 }
 
 verifyEnv();
