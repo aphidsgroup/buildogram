@@ -29,6 +29,8 @@ export async function PUT(req, { params }) {
       else autoStatus = 'issued';
     }
 
+    const metadata = { client_user_id: body.client_user_id || null };
+
     const [invoice] = await sql`
       UPDATE invoice_records SET
         customer_name = ${body.customer_name},
@@ -47,6 +49,7 @@ export async function PUT(req, { params }) {
         due_date = ${body.due_date || null},
         payment_mode = ${body.payment_mode || null},
         notes = ${body.notes || null},
+        metadata = coalesce(metadata, '{}'::jsonb) || ${metadata}::jsonb,
         updated_at = NOW()
       WHERE id = ${id}
       RETURNING *

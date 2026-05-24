@@ -72,20 +72,22 @@ export async function POST(req) {
       else autoStatus = 'issued';
     }
 
+    const metadata = { client_user_id: body.client_user_id || null };
+
     const [invoice] = await sql`
       INSERT INTO invoice_records (
         invoice_number, revenue_record_id, source_type, source_id,
         customer_name, customer_phone, customer_email, billing_address,
         invoice_category, subtotal, tax_amount, discount_amount, total_amount,
         amount_paid, amount_due, status, issue_date, due_date, payment_mode, notes,
-        created_by
+        metadata, created_by
       ) VALUES (
         ${invNumber}, ${body.revenue_record_id || null}, ${body.source_type || null}, ${body.source_id || null},
         ${body.customer_name}, ${body.customer_phone || null}, ${body.customer_email || null}, ${body.billing_address || null},
         ${body.invoice_category}, ${subtotal}, ${tax}, ${discount}, ${total},
         ${paid}, ${due}, ${autoStatus}, ${body.issue_date || new Date().toISOString().split('T')[0]}, 
         ${body.due_date || null}, ${body.payment_mode || null}, ${body.notes || null},
-        ${u.id}
+        ${metadata}, ${u.id}
       )
       RETURNING *
     `;
