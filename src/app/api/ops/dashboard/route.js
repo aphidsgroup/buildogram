@@ -26,6 +26,8 @@ export async function GET(req) {
     const [[activePassports]] = await sql`SELECT COUNT(*)::int as count FROM properties WHERE passport_status='active'`;
     const [[avgCompleteness]] = await sql`SELECT AVG(passport_completeness)::int as avg FROM properties WHERE passport_status='active'`;
     
+    const [[propertyInquiries]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_inquiry'`;
+    
     // Breakdown by lead type
     const leadTypeBreakdown = await sql`
       SELECT lead_type, COUNT(*)::int as count 
@@ -148,6 +150,7 @@ export async function GET(req) {
         convertedReferrals: convertedReferrals.count,
         referralExpected: referralExpected.total || 0,
         referralPaid: referralPaid.total || 0,
+        propertyInquiries: propertyInquiries.count,
       },
       breakdowns: {
         leadTypes: leadTypeBreakdown,

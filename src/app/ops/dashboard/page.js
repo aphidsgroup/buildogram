@@ -98,6 +98,12 @@ export default function OpsDashboard() {
             <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Published Listings</div>
             <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '8px', fontWeight: 500 }}>Public facing properties</div>
         </div>
+        <div className="card" style={{ padding: '20px', border: '1px solid #fbcfe8', background: '#fdf2f8' }}>
+            <div style={{ background: '#fce7f3', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>📞</div>
+            <div style={{ fontSize: '24px', fontWeight: 800, color: '#831843', marginBottom: '4px' }}>{kpis.propertyInquiries}</div>
+            <div style={{ fontSize: '12px', fontWeight: 700, color: '#be185d', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Property Inquiries</div>
+            <div style={{ fontSize: '12px', color: '#9d174d', marginTop: '8px', fontWeight: 500 }}>From public listings</div>
+        </div>
         <div className="card" style={{ padding: '20px', border: '1px solid #d1fae5', background: 'white' }}>
             <div style={{ background: '#ecfdf5', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>🛂</div>
             <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>{kpis.activePassports}</div>

@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import sql from '@/lib/db';
+import InquiryForm from './InquiryForm';
 
 export const revalidate = 60;
 
@@ -128,17 +129,9 @@ export default async function PropertyListingDetailPage({ params }) {
 
             {/* Right Col: Sticky Action Box */}
             <div style={{ position: 'sticky', top: '24px' }}>
-              <div className="card" style={{ padding: '32px', background: 'white' }}>
-                <h3 style={{ fontSize: '20px', marginBottom: '16px' }}>Interested?</h3>
-                <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '24px', lineHeight: 1.5 }}>
-                  Like what you see in the 360° tour? Contact us to schedule an in-person visit or proceed with the paperwork. Zero brokerage.
-                </p>
-                <Link href={`/contact?subject=Inquiry for Property Listing ID: ${listing.id}`} className="btn btn-primary btn-lg" style={{ width: '100%', justifyContent: 'center', marginBottom: '16px' }}>
-                  Inquire Now
-                </Link>
-                
-                <hr style={{ border: 'none', borderTop: '1px solid #e2e8f0', margin: '24px 0' }} />
-                
+              <InquiryForm listing={listing} />
+              
+              <div className="card mt-6" style={{ padding: '24px', background: 'white', border: '1px solid #e2e8f0' }}>
                 <h4 style={{ fontSize: '14px', marginBottom: '8px', color: '#0f172a' }}>Have a property of your own?</h4>
                 <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '16px' }}>List it with Buildogram for free and get verified leads.</p>
                 <Link href="/properties/list-your-property" className="btn btn-ghost" style={{ width: '100%', justifyContent: 'center', border: '1px solid #cbd5e1' }}>

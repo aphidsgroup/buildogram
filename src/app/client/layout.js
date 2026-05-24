@@ -6,6 +6,7 @@ import styles from '../ops/layout.module.css';
 
 const CLIENT_NAV = [
   { href: '/client/dashboard', icon: '🏠', label: 'My Dashboard' },
+  { href: '/client/requests', icon: '📝', label: 'My Requests' },
   { href: '/client/project', icon: '🏗️', label: 'My Project' },
   { href: '/client/passport', icon: '🛂', label: 'Property Passport' },
   { href: '/client/documents', icon: '📁', label: 'Documents' },

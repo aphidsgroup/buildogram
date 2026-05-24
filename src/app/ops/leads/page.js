@@ -9,9 +9,10 @@ const LEAD_TYPE_LABELS = {
   boq_audit:           { label: 'BOQ Audit',          color: '#7c3aed', bg: '#f5f3ff' },
   plan_review:         { label: 'Plan Review',        color: '#0891b2', bg: '#ecfeff' },
   material_quote:      { label: 'Materials',          color: '#d97706', bg: '#fffbeb' },
-  partner_application: { label: 'Partner',            color: '#059669', bg: '#ecfdf5' },
-  rental_listing:      { label: 'Rental Listing',     color: '#dc2626', bg: '#fef2f2' },
-  resale_listing:      { label: 'Resale Listing',     color: '#db2777', bg: '#fdf2f8' },
+  partner_application: { label: 'Partner App', color: 'badge-green' },
+  property_listing:    { label: 'Property Listing', color: 'badge-indigo' },
+  property_inquiry:    { label: 'Property Inquiry', color: 'badge-pink' },
+  rental_listing:      { label: 'Rental', color: 'badge-gray' },
   property_passport:   { label: 'Property Passport',  color: '#9333ea', bg: '#faf5ff' },
   maintenance:         { label: 'Maintenance',        color: '#ea580c', bg: '#fff7ed' },
   property_listing:    { label: 'Property Listing',   color: '#e11d48', bg: '#fff1f2' },
@@ -635,6 +636,97 @@ export default function OpsLeads() {
                 </div>
               </div>
             )}
+
+            {/* Property Inquiry Metadata */}
+            {selected.lead_type === 'property_inquiry' && selected.metadata && (
+              <div style={{ marginBottom: '16px', padding: '16px', background: '#fdf2f8', borderRadius: '8px', border: '1px solid #fbcfe8' }}>
+                <div style={{ fontSize: '11px', fontWeight: 700, color: '#be185d', textTransform: 'uppercase', marginBottom: '12px' }}>Inquiry Details</div>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+                  {[
+                    ['Inquiry Type', selected.metadata.inquiry_type],
+                    ['Property Location', selected.metadata.property_location],
+                    ['Listing Type', selected.metadata.listing_type],
+                    ['Pref. Visit Time', selected.metadata.preferred_visit_time],
+                    ['Expected Price', selected.metadata.expected_price_or_rent ? `₹${Number(selected.metadata.expected_price_or_rent).toLocaleString('en-IN')}` : '—']
+                  ].filter(([, v]) => v).map(([k, v]) => (
+                    <div key={k}>
+                      <span style={{ fontSize: '11px', color: '#db2777', display: 'block' }}>{k}</span>
+                      <span style={{ fontSize: '13px', fontWeight: 600, color: '#831843', textTransform: 'capitalize' }}>{v}</span>
+                    </div>
+                  ))}
+                  
+                  {selected.metadata.source_listing_lead_id && (
+                    <div style={{ gridColumn: '1 / -1', marginTop: '8px' }}>
+                      <span style={{ fontSize: '11px', color: '#db2777', display: 'block', marginBottom: '4px' }}>Source Listing</span>
+                      <a href={`/properties/listing/${selected.metadata.source_listing_lead_id}`} target="_blank" rel="noreferrer" className="btn btn-sm" style={{ background: 'white', color: '#db2777', border: '1px solid #fbcfe8' }}>
+                        View Public Listing ↗
+                      </a>
+                    </div>
+                  )}
+                </div>
+
+                {/* Ops Controls for Inquiry */}
+                <div className="grid-2" style={{ gap: '12px', marginTop: '16px', borderTop: '1px solid #fbcfe8', paddingTop: '16px' }}>
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 600, color: '#db2777', display: 'block', marginBottom: '4px' }}>Inquiry Status</label>
+                    <select className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white', borderColor: '#fbcfe8' }}
+                      value={selected.metadata.inquiry_status || 'new'}
+                      onChange={e => {
+                        const val = e.target.value;
+                        update(selected.id, { metadata: { ...selected.metadata, inquiry_status: val } });
+                        setSelected(p => ({ ...p, metadata: { ...p.metadata, inquiry_status: val } }));
+                        logActivity(selected.id, { activity_type: 'status_change', title: 'Inquiry Status Changed', description: `Status updated to ${val}` });
+                      }}>
+                      <option value="new">New</option>
+                      <option value="contacted">Contacted</option>
+                      <option value="visit_scheduled">Visit Scheduled</option>
+                      <option value="visited">Visited</option>
+                      <option value="negotiation">Negotiation</option>
+                      <option value="converted">Converted</option>
+                      <option value="lost">Lost</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 600, color: '#db2777', display: 'block', marginBottom: '4px' }}>Scheduled Visit Date</label>
+                    <input type="date" className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white', borderColor: '#fbcfe8' }}
+                      defaultValue={selected.metadata.visit_scheduled_at || ''}
+                      onBlur={e => update(selected.id, { metadata: { ...selected.metadata, visit_scheduled_at: e.target.value } })} />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── CLIENT PORTAL LINKAGE ── */}
+            <div style={{ marginTop: '24px', borderTop: '2px solid #e2e8f0', paddingTop: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#0f172a', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span>👤</span> Client Portal Access
+                </h3>
+              </div>
+              <div style={{ background: '#f8fafc', padding: '16px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                <label style={{ fontSize: '11px', fontWeight: 600, color: '#64748b', display: 'block', marginBottom: '4px' }}>Linked Client User ID</label>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <input 
+                    type="text" 
+                    className="input" 
+                    style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white', flex: 1 }}
+                    placeholder="Enter User ID to give portal access..."
+                    defaultValue={selected.metadata?.client_user_id || ''}
+                    onBlur={e => {
+                      const val = e.target.value.trim();
+                      if (val !== (selected.metadata?.client_user_id || '')) {
+                        update(selected.id, { metadata: { ...selected.metadata, client_user_id: val || null } });
+                        setSelected(p => ({ ...p, metadata: { ...p.metadata, client_user_id: val || null } }));
+                      }
+                    }} 
+                  />
+                </div>
+                <p style={{ fontSize: '10px', color: '#94a3b8', marginTop: '6px' }}>
+                  Assigning a user ID allows the client to view the status of this request in their "My Requests" dashboard.
+                </p>
+              </div>
+            </div>
 
             {/* ── ACTIVITY TIMELINE SECTION ── */}
             <div style={{ marginTop: '24px', borderTop: '2px solid #e2e8f0', paddingTop: '24px' }}>
