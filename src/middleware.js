@@ -30,6 +30,7 @@ export function middleware(request) {
     const prefix = dashMap[user.role] || 'client';
     return NextResponse.redirect(new URL(`/${prefix}/dashboard`, request.url));
   }
+  } // <-- Added closing brace for if (isProtected)
 
   return NextResponse.next();
 }
