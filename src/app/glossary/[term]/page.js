@@ -12,6 +12,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${term.term} — Buildogram Construction Glossary`,
     description: `${term.definition} Learn the full meaning and importance of ${term.term} in home construction and property in India.`,
+      alternates: { canonical: `https://buildogram.in/glossary/${term.slug}` },
   };
 }
 
@@ -23,6 +24,17 @@ const termSchema = (term) => ({
   inDefinedTermSet: { '@type': 'DefinedTermSet', name: 'Buildogram Construction Glossary', url: 'https://buildogram.in/glossary' },
 });
 
+
+const breadcrumbSchema = (itemData) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://buildogram.in' },
+    { '@type': 'ListItem', position: 2, name: 'Glossary', item: 'https://buildogram.in/glossary' },
+    { '@type': 'ListItem', position: 3, name: itemData.term.term, item: `https://buildogram.in/glossary/${itemData.term.slug}` },
+  ],
+});
+
 export default function GlossaryTermPage({ params }) {
   const term = glossaryMap[params.term];
   if (!term) notFound();
@@ -31,7 +43,9 @@ export default function GlossaryTermPage({ params }) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(termSchema(term)) }} />
+      
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(term)) }} />
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(termSchema(term)) }} />
 
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '52px 0 64px' }}>
         <div className="container">

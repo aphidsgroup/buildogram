@@ -9,8 +9,21 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const cat = faqMap[params.category];
   if (!cat) return {};
-  return { title: cat.metaTitle, description: cat.metaDescription };
+  return { title: cat.metaTitle, description: cat.metaDescription,
+    alternates: { canonical: `https://buildogram.in/faqs/${cat.slug}` },
+  };
 }
+
+
+const breadcrumbSchema = (itemData) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://buildogram.in' },
+    { '@type': 'ListItem', position: 2, name: 'Faqs', item: 'https://buildogram.in/faqs' },
+    { '@type': 'ListItem', position: 3, name: itemData.cat.title, item: `https://buildogram.in/faqs/${itemData.cat.slug}` },
+  ],
+});
 
 export default function FaqCategoryPage({ params }) {
   const cat = faqMap[params.category];
@@ -28,7 +41,9 @@ export default function FaqCategoryPage({ params }) {
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(cat)) }} />
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
 
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">

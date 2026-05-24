@@ -12,6 +12,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `House Construction in ${loc.name}, Chennai | Buildogram`,
     description: `Build your home in ${loc.name}, Chennai with Buildogram. Engineer-led construction, itemized BOQ, soil conditions, rental demand, and property types in ${loc.name}.`,
+      alternates: { canonical: `https://buildogram.in/locations/chennai/${loc.slug}` },
   };
 }
 
@@ -24,13 +25,26 @@ const localBusinessSchema = (loc) => ({
   areaServed: { '@type': 'Place', name: `${loc.name}, Chennai, Tamil Nadu, India` },
 });
 
+
+const breadcrumbSchema = (loc) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://buildogram.in' },
+    { '@type': 'ListItem', position: 2, name: 'Locations', item: 'https://buildogram.in/locations/chennai' },
+    { '@type': 'ListItem', position: 3, name: loc.name, item: `https://buildogram.in/locations/chennai/${loc.slug}` },
+  ],
+});
+
 export default function LocalityPage({ params }) {
   const loc = localityMap[params.locality];
   if (!loc) notFound();
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema(loc)) }} />
+      
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(loc)) }} />
+<script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema(loc)) }} />
 
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">

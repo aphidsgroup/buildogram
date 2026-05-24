@@ -11,7 +11,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const mat = materialMap[params.slug];
   if (!mat) return {};
-  return { title: mat.metaTitle, description: mat.metaDescription };
+  return { title: mat.metaTitle, description: mat.metaDescription,
+    alternates: { canonical: `https://buildogram.in/materials/${mat.slug}` },
+  };
 }
 
 const faqSchema = (faqs) => ({
@@ -24,13 +26,26 @@ const faqSchema = (faqs) => ({
   })),
 });
 
+
+const breadcrumbSchema = (itemData) => ({
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://buildogram.in' },
+    { '@type': 'ListItem', position: 2, name: 'Materials', item: 'https://buildogram.in/materials' },
+    { '@type': 'ListItem', position: 3, name: itemData.mat.name, item: `https://buildogram.in/materials/${itemData.mat.slug}` },
+  ],
+});
+
 export default function MaterialPage({ params }) {
   const mat = materialMap[params.slug];
   if (!mat) notFound();
 
   return (
     <>
-      {mat.faqs && mat.faqs.length > 0 && (
+      
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(mat)) }} />
+{mat.faqs && mat.faqs.length > 0 && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(mat.faqs)) }} />
       )}
 
