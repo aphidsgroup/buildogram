@@ -28,12 +28,15 @@ export async function GET(req) {
     const [[referredLeads]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE metadata->>'referral_partner_lead_id' IS NOT NULL`;
     const [[convertedReferrals]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE metadata->>'referral_status'='converted'`;
     
-    const [[publishedListings]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_listing' AND metadata->>'public_status'='published'`;
-    const [[activePassports]] = await sql`SELECT COUNT(*)::int as count FROM properties WHERE passport_status='active'`;
-    const [[avgCompleteness]] = await sql`SELECT AVG(passport_completeness)::int as avg FROM properties WHERE passport_status='active'`;
-    
-    const [[propertyInquiries]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_inquiry'`;
-    
+    let publishedListings = { count: 0 }, activePassports = { count: 0 }, avgCompleteness = { avg: 0 }, propertyInquiries = { count: 0 };
+    try {
+      [[publishedListings]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_listing' AND metadata->>'public_status'='published'`;
+      [[propertyInquiries]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_inquiry'`;
+    } catch(e) {}
+    try {
+      [[activePassports]] = await sql`SELECT COUNT(*)::int as count FROM properties WHERE passport_status='active'`;
+      [[avgCompleteness]] = await sql`SELECT AVG(passport_completeness)::int as avg FROM properties WHERE passport_status='active'`;
+    } catch(e) {}
     // Breakdown by lead type
     const leadTypeBreakdown = await sql`
       SELECT lead_type, COUNT(*)::int as count 
@@ -80,7 +83,10 @@ export async function GET(req) {
     `;
 
     // 3. Alerts Data
-    const [[pendingPartners]] = await sql`SELECT COUNT(*)::int as count FROM users WHERE role='partner' AND verification_status='pending'`;
+    let pendingPartners = { count: 0 };
+    try {
+      [[pendingPartners]] = await sql`SELECT COUNT(*)::int as count FROM users WHERE role='partner' AND verification_status='pending'`;
+    } catch(e) {}
 
     // 2. Revenue Totals
     let rev = { actual_received: 0, total_pending: 0, commission_received: 0 };
@@ -116,37 +122,59 @@ export async function GET(req) {
     }
 
     // 3. Alerts
-    const [[urgentMaintenance]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='maintenance' AND metadata->>'urgency' IN ('emergency', 'high') AND metadata->>'maintenance_status' NOT IN ('completed', 'closed', 'cancelled')`;
-    const [[draftListings]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_listing' AND metadata->>'public_status'='draft'`;
-    const [[overdueFollowups]] = await sql`SELECT COUNT(*)::int as count FROM lead_activities WHERE type = 'follow_up' AND follow_up_at < NOW()`;
+    let urgentMaintenance = { count: 0 }, draftListings = { count: 0 }, overdueFollowups = { count: 0 };
+    try {
+      [[urgentMaintenance]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='maintenance' AND metadata->>'urgency' IN ('emergency', 'high') AND metadata->>'maintenance_status' NOT IN ('completed', 'closed', 'cancelled')`;
+      [[draftListings]] = await sql`SELECT COUNT(*)::int as count FROM leads WHERE lead_type='property_listing' AND metadata->>'public_status'='draft'`;
+      [[overdueFollowups]] = await sql`SELECT COUNT(*)::int as count FROM lead_activities WHERE type = 'follow_up' AND follow_up_at < NOW()`;
+    } catch(e) {}
 
     // 4. Notification Queue Metrics
-    const [[pendingQueueApprovals]] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='pending_review'`;
-    const [[failedQueueMessages]] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='failed'`;
-    const [[sentQueueMessagesMonth]] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='sent' AND sent_at >= date_trunc('month', current_date)`;
+    let pendingQueueApprovals = { count: 0 }, failedQueueMessages = { count: 0 }, sentQueueMessagesMonth = { count: 0 };
+    try {
+      [[pendingQueueApprovals]] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='pending_review'`;
+      [[failedQueueMessages]] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='failed'`;
+      [[sentQueueMessagesMonth]] = await sql`SELECT COUNT(*)::int as count FROM notification_queue WHERE status='sent' AND sent_at >= date_trunc('month', current_date)`;
+    } catch(e) {}
 
     // 4. Follow-up Actions
     const activeLeadStatus = ['new', 'contacted', 'qualified', 'proposal', 'inspection_scheduled', 'work_started', 'approved', 'quoted'];
     
     // Using a single CTE/query to get all relevant follow-ups to save DB hits
-    const rawFollowUps = await sql`
-      SELECT 
-        a.id as activity_id, 
-        a.title, 
-        a.description, 
-        a.follow_up_at,
-        l.id as lead_id, 
-        l.name as lead_name, 
-        l.phone as lead_phone, 
-        l.lead_type, 
-        l.status as lead_status
-      FROM lead_activities a
-      JOIN leads l ON a.lead_id = l.id
-      WHERE a.follow_up_at IS NOT NULL
-        AND l.status NOT IN ('won', 'lost', 'closed', 'cancelled')
-        AND a.follow_up_at <= CURRENT_DATE + INTERVAL '7 days'
-      ORDER BY a.follow_up_at ASC
-    `;
+    let rawFollowUps = [];
+    let scheduledActivities = [];
+    try {
+      rawFollowUps = await sql`
+        SELECT 
+          a.id as activity_id, 
+          a.title, 
+          a.description, 
+          a.follow_up_at,
+          l.id as lead_id, 
+          l.name as lead_name, 
+          l.phone as lead_phone, 
+          l.lead_type, 
+          l.status as lead_status
+        FROM lead_activities a
+        JOIN leads l ON a.lead_id = l.id
+        WHERE l.status = ANY(${activeLeadStatus})
+          AND a.type = 'follow_up'
+          AND a.follow_up_at >= date_trunc('day', NOW())
+          AND a.follow_up_at < date_trunc('day', NOW() + INTERVAL '7 days')
+        ORDER BY a.follow_up_at ASC
+      `;
+      scheduledActivities = rawFollowUps.map(row => ({
+        id: row.activity_id,
+        title: row.title,
+        description: row.description,
+        follow_up_at: row.follow_up_at,
+        lead_id: row.lead_id,
+        lead_name: row.lead_name,
+        lead_phone: row.lead_phone,
+        lead_type: row.lead_type,
+        lead_status: row.lead_status,
+      }));
+    } catch(e) {}
 
     const now = new Date();
     const todayStr = now.toISOString().split('T')[0];
