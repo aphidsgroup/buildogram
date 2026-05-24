@@ -6,20 +6,17 @@ export function middleware(request) {
   const token = request.cookies.get('buildogram_token')?.value;
   const user = token ? verifyToken(token) : null;
 
-  // Public routes
-  const publicPaths = ['/', '/how-it-works', '/cost-estimator', '/construction-in-chennai',
-    '/projects', '/about', '/contact', '/blog', '/login', '/api/auth', '/api/leads',
-    '/api/cost-estimate', '/api/blog', '/api/test'];
-  const isPublic = publicPaths.some(p => pathname === p || pathname.startsWith(p + '/'));
-  if (isPublic) return NextResponse.next();
-
   // Protected routes
-  if (!user) {
-    const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    url.searchParams.set('from', pathname);
-    return NextResponse.redirect(url);
-  }
+  const protectedPrefixes = ['/client', '/ops', '/partner', '/api/client', '/api/ops', '/api/partner'];
+  const isProtected = protectedPrefixes.some(p => pathname === p || pathname.startsWith(p + '/'));
+
+  if (isProtected) {
+    if (!user) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/login';
+      url.searchParams.set('from', pathname);
+      return NextResponse.redirect(url);
+    }
 
   // Role guards
   if (pathname.startsWith('/ops') && !['ops_admin','ops_pm','ops_engineer'].includes(user.role)) {
