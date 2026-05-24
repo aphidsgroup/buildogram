@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
-import Navbar from '../Navbar';
 import styles from './page.module.css';
 
 const fmt = n => '₹' + (n >= 10000000 ? (n / 10000000).toFixed(1) + 'Cr' : n >= 100000 ? (n / 100000).toFixed(1) + 'L' : n.toLocaleString('en-IN'));
@@ -62,8 +61,7 @@ export default function CostEstimator() {
 
   return (
     <div className={styles.page}>
-      <Navbar />
-
+      
       <div className="container animate-fade-in" style={{ paddingTop: '110px', paddingBottom: '60px' }}>
         {/* PROGRESS STEPPER */}
         <div style={{ maxWidth: '700px', margin: '0 auto 40px' }}>

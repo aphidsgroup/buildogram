@@ -87,7 +87,7 @@ function ListYourPropertyPageInner() {
   }
 
   return (
-    <main style={{ background: '#F8FAFC', padding: '60px 0' }}>
+    <main style={{ background: '#F8FAFC', padding: '40px 0' }}>
       <div className="container" style={{ maxWidth: '700px' }}>
         
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>

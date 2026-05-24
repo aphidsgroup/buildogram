@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Navbar from '../../Navbar';
 
 export const metadata = {
   title: 'Top Construction Company in Chennai | Buildogram',
@@ -10,8 +9,7 @@ export const metadata = {
 export default function ChennaiLocationPage() {
   return (
     <>
-      <Navbar />
-      <div className="page" style={{ paddingTop: '100px', minHeight: '100vh', background: '#f8fafc' }}>
+            <div className="page" style={{ paddingTop: '40px', minHeight: '100vh', background: '#f8fafc' }}>
         
         {/* HERO */}
         <section style={{ background: 'var(--primary-dark)', color: 'white', padding: '80px 0', textAlign: 'center' }}>

@@ -39,7 +39,7 @@ export default function BOQAuditPage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '100px 0 80px', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ background: 'var(--secondary)', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 20%, rgba(255,218,1,0.08) 0%, transparent 55%)' }} />
         <div className="container" style={{ position: 'relative' }}>
           {/* Breadcrumb */}

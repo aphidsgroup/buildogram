@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Navbar from '../Navbar';
 
 export const metadata = {
   title: 'About Us | Buildogram',
@@ -37,8 +36,7 @@ export default function About() {
 
   return (
     <>
-      <Navbar />
-      <div className="page" style={{ paddingTop: '100px', minHeight: '100vh' }}>
+            <div className="page" style={{ paddingTop: '40px', minHeight: '100vh' }}>
       <div className="container">
         {/* HEADER */}
         <div className="page-header text-center animate-fade-in" style={{ border: 'none', marginBottom: '60px' }}>

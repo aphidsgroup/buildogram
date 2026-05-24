@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import Navbar from '../Navbar';
 import Link from 'next/link';
 
 export default function PlanReviewPage() {
@@ -55,8 +54,7 @@ export default function PlanReviewPage() {
   if (status === 'success') {
     return (
       <main className="min-h-screen bg-slate-50 flex flex-col">
-        <Navbar />
-        <div className="flex-1 flex items-center justify-center p-4">
+                <div className="flex-1 flex items-center justify-center p-4">
           <div className="card text-center max-w-md p-8">
             <div className="text-6xl mb-4">✅</div>
             <h1 className="text-2xl font-bold mb-2 text-slate-800">Request Submitted</h1>
@@ -73,8 +71,7 @@ export default function PlanReviewPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 flex flex-col">
-      <Navbar />
-      
+            
       <section className="bg-indigo-900 text-white py-16 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <span className="badge bg-indigo-800 text-indigo-100 mb-4 inline-block">AI-Assisted Expert Review</span>

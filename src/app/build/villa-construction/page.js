@@ -18,7 +18,7 @@ const features = [
 export default function VillaConstructionPage() {
   return (
     <>
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '100px 0 80px', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ background: 'var(--secondary)', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 30%, rgba(187,160,122,0.12) 0%, transparent 55%)' }} />
         <div className="container" style={{ position: 'relative' }}>
           <div style={{ maxWidth: '680px' }}>

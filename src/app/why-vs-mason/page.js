@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import Navbar from '../Navbar';
 
 export default function WhyVsMason() {
   const comparisonItems = [
@@ -38,8 +37,7 @@ export default function WhyVsMason() {
 
   return (
     <>
-      <Navbar />
-      <div className="page" style={{ paddingTop: '100px', minHeight: '100vh' }}>
+            <div className="page" style={{ paddingTop: '40px', minHeight: '100vh' }}>
         <div className="container">
           {/* HEADER */}
           <div className="page-header text-center animate-fade-in" style={{ border: 'none', marginBottom: '50px' }}>

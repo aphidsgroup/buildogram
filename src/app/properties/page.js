@@ -9,7 +9,7 @@ export default function PropertiesHubPage() {
   return (
     <>
       {/* ── Hero ── */}
-      <section style={{ background: '#292929', color: 'white', padding: '100px 0 80px', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ background: '#292929', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(circle at 50% -20%, rgba(255,218,1,0.15) 0%, transparent 70%)' }} />
         <div className="container" style={{ position: 'relative', textAlign: 'center', maxWidth: '800px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(255,218,1,0.1)', border: '1px solid rgba(255,218,1,0.2)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>

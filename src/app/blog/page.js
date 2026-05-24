@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import sql from '@/lib/db';
-import Navbar from '../Navbar';
 
 export const metadata = {
   title: 'Construction Blog | Buildogram',
@@ -20,8 +19,7 @@ export default async function Blog() {
 
   return (
     <>
-      <Navbar />
-      <div className="page" style={{ paddingTop: '100px', minHeight: '100vh' }}>
+            <div className="page" style={{ paddingTop: '40px', minHeight: '100vh' }}>
       <div className="container">
         <div className="page-header text-center" style={{ border: 'none', marginBottom: '60px' }}>
           <div className="tag mb-4">Insights & Guides</div>
