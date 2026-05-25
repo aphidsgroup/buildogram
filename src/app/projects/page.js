@@ -96,108 +96,108 @@ export default function Projects() {
   };
 
   return (
-    <>
+    <div className="marketplacePage">
       {/* HERO */}
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
+      <section className="fullBleedSection" style={{ background: 'var(--secondary)', color: 'white', padding: 'clamp(48px, 6vw, 88px) 0 clamp(56px, 7vw, 104px) 0', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
-        <div className="container" style={{ position: 'relative' }}>
+        <div className="sectionInnerWide" style={{ position: 'relative' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Completed Portfolio</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '720px' }}>Engineer-Verified Homes — Built with Proof</h1>
+          <h1 style={{ color: 'white', fontSize: 'clamp(32px, 5vw, 56px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '800px', fontFamily: '"Space Grotesk", sans-serif' }}>Engineer-Verified Homes — Built with Proof</h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '600px', lineHeight: 1.7, marginBottom: '32px' }}>
             We don't just hand over keys — we hand over concrete compression test records, lab-certified material reports, and 10-year structural warranties.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <a href="/contact" className="btn btn-primary btn-lg">Request Site Audit Visit</a>
-            <a href="/cost-estimator" className="btn btn-lg btn-outline-light">Estimate Build Cost</a>
+            <a href="/contact" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px' }}>Request Site Audit Visit</a>
+            <a href="/cost-estimator" className="btn btn-outline" style={{ background: 'rgba(255,255,255,0.05)', color: 'white', borderColor: 'rgba(255,255,255,0.2)', padding: '16px 32px', fontSize: '16px' }}>Estimate Build Cost</a>
           </div>
         </div>
       </section>
 
-      <div className="container" style={{ padding: '56px 24px' }}>
+      <section className="fullBleedSection" style={{ padding: 'clamp(64px, 8vw, 112px) 0' }}>
+        <div className="sectionInnerWide">
 
-        {/* MOCK VR BLUEPRINT VIEWPORT - MATCHES BUILDNEXT TECH TRANSITION */}
-        <div className="card mb-8 animate-fade-in" style={{ padding: '0', overflow: 'hidden', border: 'none', boxShadow: 'var(--shadow-premium)' }}>
-          <div style={{ background: 'var(--gradient-dark)', color: 'white', padding: '24px 32px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
-            <div>
-              <span className="badge badge-orange mb-2">Buildogram Tech-Studio</span>
-              <h3 style={{ fontSize: '20px', color: 'white' }}>Virtual VR 3D Structural Walkthrough</h3>
-              <p className="text-muted text-xs" style={{ color: 'rgba(255,255,255,0.7) !important', marginTop: '4px' }}>
-                Interact with our mock structural framing models. See how we lay steel reinforcements, beam alignments, and pile footings.
-              </p>
+          {/* MOCK VR BLUEPRINT VIEWPORT */}
+          <div style={{ borderRadius: '24px', overflow: 'hidden', border: '1px solid var(--border)', boxShadow: '0 12px 40px rgba(0,0,0,0.08)', marginBottom: '64px' }}>
+            <div style={{ background: 'var(--secondary)', color: 'white', padding: '32px 40px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '24px' }}>
+              <div>
+                <span style={{ display: 'inline-flex', padding: '4px 12px', background: 'rgba(252, 110, 32, 0.1)', color: 'var(--primary)', borderRadius: '999px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', marginBottom: '12px' }}>Buildogram Tech-Studio</span>
+                <h3 style={{ fontSize: '24px', color: 'white', marginBottom: '8px', fontFamily: '"Space Grotesk", sans-serif' }}>Virtual VR 3D Structural Walkthrough</h3>
+                <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '15px' }}>
+                  Interact with our mock structural framing models. See how we lay steel reinforcements, beam alignments, and pile footings.
+                </p>
+              </div>
+              {vrStatus === 'idle' && <button onClick={startVrDemo} className="btn btn-primary" style={{ padding: '14px 24px' }}>Initialize 3D VR Viewport</button>}
+              {vrStatus === 'loading' && <button className="btn btn-primary" disabled style={{ padding: '14px 24px', opacity: 0.7 }}>Loading Blueprints...</button>}
+              {vrStatus === 'ready' && <button onClick={() => setVrStatus('idle')} className="btn btn-outline" style={{ color: 'white', borderColor: 'rgba(255,255,255,0.3)', padding: '14px 24px' }}>Close Interactive Simulator</button>}
             </div>
-            {vrStatus === 'idle' && <button onClick={startVrDemo} className="btn btn-primary" style={{ background: 'var(--accent)' }}>Initialize 3D VR Viewport</button>}
-            {vrStatus === 'loading' && <button className="btn btn-primary" disabled style={{ background: 'var(--accent)', opacity: 0.7 }}>Loading Blueprints...</button>}
-            {vrStatus === 'ready' && <button onClick={() => setVrStatus('idle')} className="btn btn-outline" style={{ color: 'white', borderColor: 'white' }}>Close Interactive Simulator</button>}
-          </div>
 
-          {vrStatus === 'loading' && (
-            <div style={{ height: '350px', background: '#090d16', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', gap: '12px' }}>
-              <div className="spinner" style={{ borderColor: 'rgba(255,255,255,0.2)', borderTopColor: 'var(--accent)' }} />
-              <span style={{ fontSize: '14px', letterSpacing: '1px', textTransform: 'uppercase' }}>Mapping soil bearings and frame loads...</span>
-            </div>
-          )}
+            {vrStatus === 'loading' && (
+              <div style={{ height: '400px', background: '#090d16', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', gap: '16px' }}>
+                <div style={{ width: '40px', height: '40px', border: '3px solid rgba(255,255,255,0.1)', borderTopColor: 'var(--primary)', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+                <span style={{ fontSize: '14px', letterSpacing: '1px', textTransform: 'uppercase', color: 'rgba(255,255,255,0.7)' }}>Mapping soil bearings and frame loads...</span>
+              </div>
+            )}
 
-          {vrStatus === 'ready' && (
-            <div style={{ height: '380px', background: '#0f172a', position: 'relative', overflow: 'hidden' }}>
-              {/* Fake 3D blueprint drawing */}
-              <div style={{ position: 'absolute', inset: 0, opacity: 0.1, backgroundImage: 'radial-gradient(circle, #38bdf8 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
-              
-              <div className="flex-center" style={{ height: '100%', flexDirection: 'column', color: 'white', padding: '24px', zIndex: 10 }}>
-                {/* Visual simulator graphics */}
-                <div style={{ border: '2px dashed var(--accent)', padding: '24px', borderRadius: '12px', textAlign: 'center', maxWidth: '500px', background: 'rgba(15, 23, 42, 0.9)' }}>
-                  <div style={{ fontSize: '40px', marginBottom: '12px' }}>🎮</div>
-                  <h4 className="mb-2" style={{ fontSize: '16px', color: 'white' }}>Interactive 3D Framework Model Activated</h4>
-                  <p className="text-muted text-xs mb-4">
-                    Rotate column alignments, trigger M25 concrete flow metrics, and toggle coastal salinity CRS steel jackets to simulate real-world durability tests.
-                  </p>
-                  <div className="flex-center gap-3">
-                    <button onClick={() => alert("Simulating 7.5 Richter earthquake... Frame load absorbs force correctly. SBC check approved!")} className="btn btn-primary btn-sm" style={{ background: 'var(--primary)', fontSize: '12px' }}>Simulate Seismic Load</button>
-                    <button onClick={() => alert("Simulating 30-year ECR saline wind corrosion... Standard rebar corrodes. CRS rebar locks out corrosion. Plaster shield activated!")} className="btn btn-outline btn-sm" style={{ color: 'white', borderColor: 'var(--accent)', fontSize: '12px' }}>Simulate Coastal Winds</button>
+            {vrStatus === 'ready' && (
+              <div style={{ height: '500px', background: '#0f172a', position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', inset: 0, opacity: 0.1, backgroundImage: 'radial-gradient(circle, #38bdf8 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+                
+                <div style={{ display: 'flex', height: '100%', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', color: 'white', padding: '24px', zIndex: 10, position: 'relative' }}>
+                  <div style={{ border: '2px dashed var(--primary)', padding: '40px', borderRadius: '16px', textAlign: 'center', maxWidth: '600px', background: 'rgba(15, 23, 42, 0.9)' }}>
+                    <div style={{ fontSize: '48px', marginBottom: '16px' }}>🎮</div>
+                    <h4 style={{ fontSize: '20px', color: 'white', marginBottom: '12px' }}>Interactive 3D Framework Model Activated</h4>
+                    <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '15px', marginBottom: '24px', lineHeight: 1.6 }}>
+                      Rotate column alignments, trigger M25 concrete flow metrics, and toggle coastal salinity CRS steel jackets to simulate real-world durability tests.
+                    </p>
+                    <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
+                      <button onClick={() => alert("Simulating 7.5 Richter earthquake... Frame load absorbs force correctly. SBC check approved!")} className="btn btn-primary">Simulate Seismic Load</button>
+                      <button onClick={() => alert("Simulating 30-year ECR saline wind corrosion... Standard rebar corrodes. CRS rebar locks out corrosion. Plaster shield activated!")} className="btn btn-outline" style={{ color: 'white', borderColor: 'rgba(255,255,255,0.3)' }}>Simulate Coastal Winds</button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
 
-        {/* CATEGORY TABS */}
-        <div className="flex-center mb-8 animate-fade-in" style={{ gap: '10px' }}>
-          {[
-            { id: 'all', label: 'All Projects' },
-            { id: 'villa', label: '🏡 Modern Villas' },
-            { id: 'duplex', label: '🏢 Contemporary Duplexes' },
-            { id: 'coastal', label: '🌊 Coastal ECR Shielded' },
-            { id: 'apartment', label: '🏢 Small Apartments' }
-          ].map(cat => (
-            <button
-              key={cat.id}
-              onClick={() => setActiveCategory(cat.id)}
-              className="btn"
-              style={{
-                background: activeCategory === cat.id ? 'var(--primary)' : 'var(--bg-card)',
-                color: activeCategory === cat.id ? 'white' : 'var(--text-muted)',
-                boxShadow: 'var(--shadow)',
-                border: activeCategory === cat.id ? 'none' : '1px solid var(--border)',
-                padding: '10px 20px',
-                fontSize: '13px',
-                borderRadius: '8px'
-              }}
-            >
-              {cat.label}
-            </button>
-          ))}
-        </div>
+          {/* CATEGORY TABS */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '40px' }}>
+            {[
+              { id: 'all', label: 'All Projects' },
+              { id: 'villa', label: '🏡 Modern Villas' },
+              { id: 'duplex', label: '🏢 Contemporary Duplexes' },
+              { id: 'coastal', label: '🌊 Coastal ECR Shielded' },
+              { id: 'apartment', label: '🏢 Small Apartments' }
+            ].map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                style={{
+                  background: activeCategory === cat.id ? 'var(--primary)' : 'white',
+                  color: activeCategory === cat.id ? 'white' : 'var(--secondary)',
+                  border: `1px solid ${activeCategory === cat.id ? 'var(--primary)' : 'var(--border)'}`,
+                  padding: '12px 24px',
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  borderRadius: '999px',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
+                  boxShadow: activeCategory === cat.id ? '0 4px 12px rgba(252, 110, 32, 0.2)' : 'none'
+                }}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
 
-        {/* DENSE PROJECTS LIST */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '32px', marginBottom: '48px' }}>
-          {filteredProjects.map(p => (
-            <div key={p.id} className="card animate-fade-in" style={{ padding: '0', overflow: 'hidden', boxShadow: 'var(--shadow-premium)' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1.5fr', gap: '0' }} className="grid-2">
+          {/* DENSE PROJECTS LIST */}
+          <div style={{ display: 'grid', gap: '40px', marginBottom: '80px' }}>
+            {filteredProjects.map(p => (
+              <div key={p.id} style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.2fr) minmax(0, 1.5fr)', background: 'white', border: '1px solid var(--border)', borderRadius: '24px', overflow: 'hidden', boxShadow: '0 8px 32px rgba(0,0,0,0.04)' }}>
                 
                 {/* Media Container with internal tabs */}
-                <div style={{ position: 'relative', height: '100%', minHeight: '380px' }}>
+                <div style={{ position: 'relative', height: '100%', minHeight: '400px', borderRight: '1px solid var(--border)' }}>
                   {getActiveTab(p.id) === 'photo' && (
                     <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${p.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
                   )}
@@ -205,21 +205,21 @@ export default function Projects() {
                     <div style={{ position: 'absolute', inset: 0, backgroundImage: `url(${p.blueprintImg})`, backgroundSize: 'cover', backgroundPosition: 'center', filter: 'hue-rotate(140deg) brightness(0.8)' }} />
                   )}
                   {getActiveTab(p.id) === 'specs' && (
-                    <div style={{ position: 'absolute', inset: 0, background: 'var(--primary-dark)', color: 'white', padding: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                      <h4 className="mb-4" style={{ color: 'white', borderBottom: '1px dashed rgba(255,255,255,0.2)', paddingBottom: '12px' }}>
+                    <div style={{ position: 'absolute', inset: 0, background: 'var(--secondary)', color: 'white', padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                      <h4 style={{ color: 'white', borderBottom: '1px dashed rgba(255,255,255,0.2)', paddingBottom: '16px', marginBottom: '24px', fontSize: '20px' }}>
                         🧬 Engineering Specs:
                       </h4>
-                      <ul style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '13px' }}>
-                        <li><strong>🏗️ Concrete Mix:</strong> {p.concreteGrade}</li>
-                        <li><strong>⛓️ Steel reinforcement:</strong> {p.steelBrand}</li>
-                        <li><strong>⛰️ Cement Grade:</strong> {p.cementBrand}</li>
-                        <li><strong>🌊 Waterproofing:</strong> {p.waterproofing}</li>
+                      <ul style={{ display: 'flex', flexDirection: 'column', gap: '20px', fontSize: '15px', listStyle: 'none', padding: 0 }}>
+                        <li><strong>🏗️ Concrete Mix:</strong> <span style={{ color: 'rgba(255,255,255,0.7)' }}>{p.concreteGrade}</span></li>
+                        <li><strong>⛓️ Steel reinforcement:</strong> <span style={{ color: 'rgba(255,255,255,0.7)' }}>{p.steelBrand}</span></li>
+                        <li><strong>⛰️ Cement Grade:</strong> <span style={{ color: 'rgba(255,255,255,0.7)' }}>{p.cementBrand}</span></li>
+                        <li><strong>🌊 Waterproofing:</strong> <span style={{ color: 'rgba(255,255,255,0.7)' }}>{p.waterproofing}</span></li>
                       </ul>
                     </div>
                   )}
 
                   {/* Tab switches overlay */}
-                  <div style={{ position: 'absolute', bottom: '16px', left: '16px', right: '16px', display: 'flex', gap: '8px', zIndex: 10 }}>
+                  <div style={{ position: 'absolute', bottom: '24px', left: '24px', right: '24px', display: 'flex', gap: '8px', zIndex: 10 }}>
                     {[
                       { id: 'photo', label: 'Completed Photo' },
                       { id: 'specs', label: 'Structural Specs' },
@@ -230,14 +230,16 @@ export default function Projects() {
                         onClick={() => handleTabChange(p.id, tab.id)}
                         style={{
                           flex: 1,
-                          padding: '6px 8px',
-                          borderRadius: '4px',
-                          fontSize: '11px',
+                          padding: '10px',
+                          borderRadius: '8px',
+                          fontSize: '13px',
                           fontWeight: '600',
                           background: getActiveTab(p.id) === tab.id ? 'var(--primary)' : 'rgba(15, 23, 42, 0.8)',
                           color: 'white',
-                          backdropFilter: 'blur(4px)',
-                          whiteSpace: 'nowrap'
+                          backdropFilter: 'blur(8px)',
+                          border: 'none',
+                          cursor: 'pointer',
+                          transition: 'background 0.2s'
                         }}
                       >
                         {tab.label}
@@ -247,49 +249,53 @@ export default function Projects() {
                 </div>
 
                 {/* Info Container */}
-                <div style={{ padding: '36px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                <div style={{ padding: '48px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                   <div>
-                    <div className="flex-between mb-3">
-                      <span style={{ fontSize: '13px', fontWeight: '600', color: 'var(--primary)' }}>📍 {p.location}</span>
-                      <span className="badge badge-blue">{p.type} Package</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                      <span style={{ fontSize: '14px', fontWeight: '700', color: 'var(--primary)' }}>📍 {p.location}</span>
+                      <span style={{ padding: '4px 12px', background: 'rgba(0,0,0,0.05)', borderRadius: '999px', fontSize: '13px', fontWeight: 600 }}>{p.type} Package</span>
                     </div>
-                    <h2 style={{ fontSize: '28px', color: 'var(--primary-dark)', marginBottom: '8px' }}>{p.title}</h2>
-                    <div className="flex gap-4 text-muted text-xs mb-6">
+                    <h2 style={{ fontSize: '32px', color: 'var(--secondary)', marginBottom: '16px', fontFamily: '"Space Grotesk", sans-serif' }}>{p.title}</h2>
+                    <div style={{ display: 'flex', gap: '24px', color: 'var(--text-muted)', fontSize: '15px', marginBottom: '32px' }}>
                       <span><strong>📐 Total Area:</strong> {p.sqft} sq.ft</span>
                       <span><strong>⏱️ Project Duration:</strong> {p.duration}</span>
                     </div>
-                    <div style={{ borderTop: '1px solid var(--border)', paddingTop: '20px' }}>
-                      <p style={{ fontStyle: 'italic', fontSize: '14px', lineHeight: '1.7', color: 'var(--text-muted)' }}>
+                    <div style={{ borderTop: '1px solid var(--border)', paddingTop: '24px' }}>
+                      <p style={{ fontStyle: 'italic', fontSize: '16px', lineHeight: '1.7', color: 'var(--text-muted)', marginBottom: '16px' }}>
                         "{p.quote}"
                       </p>
-                      <h4 className="mt-4" style={{ fontSize: '13px', color: 'var(--primary-dark)' }}>— {p.clientName}</h4>
+                      <h4 style={{ fontSize: '15px', color: 'var(--secondary)', fontWeight: 600 }}>— {p.clientName}</h4>
                     </div>
                   </div>
 
-                  <div className="mt-8">
-                    <Link href={`/cost-estimator?sqft=${p.sqft.replace(',','')}`} className="btn btn-outline btn-sm">
+                  <div style={{ marginTop: '40px' }}>
+                    <Link href={`/cost-estimator?sqft=${p.sqft.replace(',','')}`} className="btn btn-outline" style={{ display: 'inline-block' }}>
                       Estimate Similar Build Cost
                     </Link>
                   </div>
                 </div>
 
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* CALL TO ACTION */}
-        <div className="card text-center mb-8" style={{ padding: '50px', background: 'var(--gradient-dark)', color: 'white', border: 'none' }}>
-          <h3 style={{ fontSize: '30px', color: 'white', marginBottom: '12px' }}>Want to inspect our active construction sites?</h3>
-          <p className="text-muted mb-6" style={{ color: 'rgba(255,255,255,0.7) !important', maxWidth: '600px', margin: '12px auto' }}>
-            We arrange physical site audits across Chennai so you can see concrete cube slump testing and rebar CRS steel placements live.
-          </p>
-          <div className="flex-center gap-4">
-            <Link href="/contact" className="btn btn-primary" style={{ background: 'var(--accent)' }}>Request Site Audit Visit</Link>
-            <Link href="/cost-estimator" className="btn btn-outline" style={{ color: 'white !important', borderColor: 'white !important' }}>Estimate Build Cost</Link>
+            ))}
           </div>
+
+          {/* CALL TO ACTION */}
+          <div style={{ padding: '64px', background: 'var(--secondary)', color: 'white', borderRadius: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
+            <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 0%, rgba(252, 110, 32, 0.15) 0%, transparent 60%)' }} />
+            <div style={{ position: 'relative' }}>
+              <h3 style={{ fontSize: '36px', color: 'white', marginBottom: '16px', fontFamily: '"Space Grotesk", sans-serif' }}>Want to inspect our active construction sites?</h3>
+              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', maxWidth: '700px', margin: '0 auto 32px', lineHeight: 1.6 }}>
+                We arrange physical site audits across Chennai so you can see concrete cube slump testing and rebar CRS steel placements live.
+              </p>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: '16px' }}>
+                <Link href="/contact" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px' }}>Request Site Audit Visit</Link>
+                <Link href="/cost-estimator" className="btn btn-outline" style={{ color: 'white', borderColor: 'rgba(255,255,255,0.3)', padding: '16px 32px', fontSize: '16px' }}>Estimate Build Cost</Link>
+              </div>
+            </div>
+          </div>
+
         </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 }
