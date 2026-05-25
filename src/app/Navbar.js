@@ -128,7 +128,7 @@ export default function Navbar() {
         </div>
 
         {/* Mobile Toggle */}
-        <button className={styles.mobileMenuToggle} onClick={() => setMenuOpen(!menuOpen)}>
+        <button className={styles.menuBtn} onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? '✕' : '☰'}
         </button>
       </div>
