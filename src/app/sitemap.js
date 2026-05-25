@@ -28,6 +28,7 @@ export default function sitemap() {
     { url: `${baseUrl}/maintenance/request`, priority: 0.8, changeFrequency: 'weekly' },
     { url: `${baseUrl}/partners`, priority: 0.8, changeFrequency: 'weekly' },
     { url: `${baseUrl}/partners/directory`, priority: 0.8, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/partners/register`, priority: 0.8, changeFrequency: 'weekly' },
     { url: `${baseUrl}/blog`, priority: 0.8, changeFrequency: 'weekly' },
     { url: `${baseUrl}/specifications`, priority: 0.75, changeFrequency: 'monthly' },
     { url: `${baseUrl}/warranty-and-maintenance`, priority: 0.75, changeFrequency: 'monthly' },

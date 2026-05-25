@@ -22,31 +22,40 @@ export default function LeadsCRM() {
   const [toast, setToast] = useState('');
 
   useEffect(() => {
-    // Fetch from API (falls back to localStorage automatically)
-    fetchPartnerEnquiries().then(apiLeads => {
-      if (apiLeads && apiLeads.length > 0) {
-        setLeads(apiLeads);
-      } else {
-        // Fallback: internal leads + local enquiries
+    // Fetch from API
+    fetch('/api/partner/leads')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.leads) {
+          setLeads(data.leads);
+        } else {
+          // Fallback
+          const stored = typeof window !== 'undefined' && localStorage.getItem('bos_leads');
+          setLeads(stored ? JSON.parse(stored) : DEMO_LEADS);
+        }
+      }).catch(() => {
         const stored = typeof window !== 'undefined' && localStorage.getItem('bos_leads');
         setLeads(stored ? JSON.parse(stored) : DEMO_LEADS);
-      }
-    }).catch(() => {
-      const stored = typeof window !== 'undefined' && localStorage.getItem('bos_leads');
-      setLeads(stored ? JSON.parse(stored) : DEMO_LEADS);
-    });
+      });
   }, []);
 
   const save = (arr) => { setLeads(arr); localStorage.setItem('bos_leads', JSON.stringify(arr)); };
 
-
   const openAdd = () => { setForm(BLANK); setEditingLead(null); setModalOpen(true); };
   const openEdit = (l) => { setForm({ ...l }); setEditingLead(l.id); setModalOpen(true); };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form.customerName || !form.phone) return alert('Customer Name and Phone are required');
     if (editingLead) {
-      save(leads.map(l => l.id === editingLead ? { ...form, id: editingLead } : l));
+      // It's a real lead if it doesn't start with L (our local mock prefix)
+      if (!String(editingLead).startsWith('L')) {
+        await fetch('/api/partner/leads', {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ id: editingLead, status: form.status, partner_notes: form.notes })
+        });
+      }
+      save(leads.map(l => l.id === editingLead ? { ...l, ...form } : l));
     } else {
       save([{ ...form, id: generateId(), createdAt: new Date().toISOString().slice(0, 10) }, ...leads]);
     }
@@ -55,18 +64,34 @@ export default function LeadsCRM() {
 
   const deleteLead = (id) => { if (confirm('Delete this lead?')) save(leads.filter(l => l.id !== id)); };
 
-  const convertToProject = (l) => {
+  const convertToProject = async (l) => {
+    if (!String(l.id).startsWith('L')) {
+      // Real API Conversion
+      try {
+        const res = await fetch(`/api/partner/leads/${l.id}/convert-to-project`, { method: 'POST' });
+        const d = await res.json();
+        if (d.success) {
+          showToast(`✅ Lead converted! Project "${d.project.project_name}" created.`);
+          return;
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
     const stored = localStorage.getItem('bos_projects');
     const projects = stored ? JSON.parse(stored) : [];
-    const newP = { id: 'P' + Date.now().toString().slice(-6), name: `${l.requirement} – ${l.customerName}`, client: l.customerName, location: l.location, type: l.projectType, startDate: new Date().toISOString().slice(0, 10), targetDate: '', stage: 'Agreement', progress: 0, budget: 0, status: 'Planning' };
+    const newP = { id: 'P' + Date.now().toString().slice(-6), name: `${l.requirement || l.lead_type} – ${l.name || l.customerName}`, client: l.name || l.customerName, location: l.locality || l.city || l.location, type: l.lead_type || l.projectType, startDate: new Date().toISOString().slice(0, 10), targetDate: '', stage: 'Agreement', progress: 0, budget: 0, status: 'Planning' };
     localStorage.setItem('bos_projects', JSON.stringify([...projects, newP]));
-    showToast(`✅ Lead converted! Project "${newP.name}" created.`);
+    showToast(`✅ Lead converted locally! Project "${newP.name}" created.`);
   };
 
   const showToast = (msg) => { setToast(msg); setTimeout(() => setToast(''), 3500); };
 
   const filtered = leads.filter(l => {
-    const matchSearch = !search || l.customerName.toLowerCase().includes(search.toLowerCase()) || l.location?.toLowerCase().includes(search.toLowerCase()) || l.requirement?.toLowerCase().includes(search.toLowerCase());
+    const custName = l.name || l.customerName || '';
+    const loc = l.locality || l.city || l.location || '';
+    const req = l.requirement || l.lead_type || '';
+    const matchSearch = !search || custName.toLowerCase().includes(search.toLowerCase()) || loc.toLowerCase().includes(search.toLowerCase()) || req.toLowerCase().includes(search.toLowerCase());
     const matchStatus = filterStatus === 'All' || l.status === filterStatus;
     return matchSearch && matchStatus;
   });
@@ -113,15 +138,15 @@ export default function LeadsCRM() {
                 <tr key={l.id} style={{ borderBottom: '1px solid var(--border)', transition: 'background 0.1s' }}
                   onMouseEnter={e => e.currentTarget.style.background = '#FAFBFC'}
                   onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-                  <td style={{ padding: '12px 14px', fontWeight: 600 }}>{l.customerName}</td>
+                  <td style={{ padding: '12px 14px', fontWeight: 600 }}>{l.name || l.customerName}</td>
                   <td style={{ padding: '12px 14px', color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>{l.phone}</td>
-                  <td style={{ padding: '12px 14px', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.requirement}</td>
-                  <td style={{ padding: '12px 14px', whiteSpace: 'nowrap' }}>{l.location}</td>
-                  <td style={{ padding: '12px 14px', whiteSpace: 'nowrap' }}>{l.budgetRange}</td>
-                  <td style={{ padding: '12px 14px', whiteSpace: 'nowrap' }}>{l.projectType}</td>
-                  <td style={{ padding: '12px 14px' }}>{l.source}</td>
+                  <td style={{ padding: '12px 14px', maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{l.requirement || l.message || '—'}</td>
+                  <td style={{ padding: '12px 14px', whiteSpace: 'nowrap' }}>{l.locality || l.city || l.location}</td>
+                  <td style={{ padding: '12px 14px', whiteSpace: 'nowrap' }}>{l.budgetRange || l.rough_budget || '—'}</td>
+                  <td style={{ padding: '12px 14px', whiteSpace: 'nowrap' }}>{l.lead_type || l.projectType || '—'}</td>
+                  <td style={{ padding: '12px 14px' }}>{l.source || 'Buildogram'}</td>
                   <td style={{ padding: '12px 14px' }}><StatusBadge status={l.status} /></td>
-                  <td style={{ padding: '12px 14px', whiteSpace: 'nowrap', color: 'var(--text-muted)' }}>{l.followUpDate || '—'}</td>
+                  <td style={{ padding: '12px 14px', whiteSpace: 'nowrap', color: 'var(--text-muted)' }}>{l.follow_up_date ? new Date(l.follow_up_date).toLocaleDateString() : (l.followUpDate || '—')}</td>
                   <td style={{ padding: '12px 14px', whiteSpace: 'nowrap' }}>
                     <div style={{ display: 'flex', gap: '6px' }}>
                       <button title="Edit" onClick={() => openEdit(l)} style={{ background: 'none', border: '1px solid var(--border)', borderRadius: '6px', padding: '4px 8px', cursor: 'pointer', fontSize: '14px' }}>✏️</button>

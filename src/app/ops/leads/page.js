@@ -70,6 +70,9 @@ export default function OpsLeads() {
   const [actForm, setActForm] = useState({ type: 'note', title: '', description: '', follow_up: '' });
   const [actLoading, setActLoading] = useState(false);
 
+  // Partners State
+  const [partners, setPartners] = useState([]);
+
   // Revenue Modal State
   const [revModal, setRevModal] = useState({ open: false, data: {} });
   const [revSaving, setRevSaving] = useState(false);
@@ -105,6 +108,9 @@ export default function OpsLeads() {
     fetch('/api/ops/whatsapp/templates')
       .then(r => r.json())
       .then(d => { if (d.success) setWaTemplates(d.templates); });
+    fetch('/api/ops/partners')
+      .then(r => r.json())
+      .then(d => { if (d.success) setPartners(d.partners || []); });
   };
 
   useEffect(() => { load(); }, []);
@@ -433,78 +439,48 @@ export default function OpsLeads() {
                   <div>
                     <label style={{ fontSize: '11px', fontWeight: 700, color: '#92400e', display: 'block', marginBottom: '4px' }}>Select Verified Partner</label>
                     <select className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white', borderColor: '#fcd34d' }}
-                      value={selected.metadata?.assigned_partner_lead_id || ''}
+                      value={selected.assigned_partner_id || ''}
                       onChange={e => {
                         const partnerId = e.target.value;
                         if (!partnerId) {
-                          update(selected.id, { 
-                            metadata: { 
-                              ...selected.metadata, 
-                              assigned_partner_lead_id: null,
-                              assigned_partner_user_id: null,
-                              partner_assignment_status: 'not_assigned'
-                            } 
-                          });
+                          update(selected.id, { assigned_partner_id: null });
                           logActivity(selected.id, { activity_type: 'system', title: 'Partner Unassigned', description: 'Lead assignment was removed.' });
                           return;
                         }
-                        const partner = leads.find(l => l.id === partnerId);
-                        update(selected.id, { 
-                          metadata: { 
-                            ...selected.metadata, 
-                            assigned_partner_lead_id: partnerId,
-                            assigned_partner_user_id: partner?.metadata?.partner_user_id || null,
-                            partner_assignment_status: 'assigned',
-                            partner_assignment_created_at: new Date().toISOString()
-                          } 
-                        });
-                        logActivity(selected.id, { activity_type: 'system', title: 'Partner Assigned', description: `Assigned to ${partner.name}` });
+                        const partner = partners.find(p => p.id === partnerId);
+                        update(selected.id, { assigned_partner_id: partnerId });
+                        logActivity(selected.id, { activity_type: 'system', title: 'Partner Assigned', description: `Assigned to ${partner?.companyName}` });
                       }}
                     >
                       <option value="">-- No Partner Assigned --</option>
-                      {leads.filter(l => l.lead_type === 'partner_application' && l.metadata?.verification_status === 'verified').map(p => (
-                        <option key={p.id} value={p.id}>{p.name} ({p.city})</option>
+                      {partners.filter(p => p.approvalStatus === 'Verified').map(p => (
+                        <option key={p.id} value={p.id}>{p.companyName} ({p.location})</option>
                       ))}
                     </select>
                   </div>
-                  
-                  {selected.metadata?.assigned_partner_lead_id && (
-                    <div>
-                      <label style={{ fontSize: '11px', fontWeight: 700, color: '#92400e', display: 'block', marginBottom: '4px' }}>Partner Response Status</label>
-                      <div style={{ display: 'flex', alignItems: 'center', height: '31px', padding: '0 10px', background: 'white', border: '1px solid #fcd34d', borderRadius: '6px', fontSize: '12px', fontWeight: 600, color: '#b45309', textTransform: 'capitalize' }}>
-                        {selected.metadata?.partner_assignment_status || 'assigned'}
-                      </div>
-                    </div>
-                  )}
                 </div>
 
-                {selected.metadata?.assigned_partner_lead_id && (
+                {selected.assigned_partner_id && (
                   <div style={{ marginTop: '12px' }}>
                     <label style={{ fontSize: '11px', fontWeight: 700, color: '#92400e', display: 'block', marginBottom: '4px' }}>Internal Assignment Notes (Not visible to partner)</label>
                     <textarea 
                       className="input" 
                       rows={2} 
                       style={{ fontSize: '12px', background: 'white', borderColor: '#fcd34d' }}
-                      defaultValue={selected.metadata?.partner_assignment_notes || ''}
+                      defaultValue={selected.internal_notes || ''}
                       onBlur={e => {
-                        if (e.target.value !== selected.metadata?.partner_assignment_notes) {
-                          update(selected.id, { metadata: { ...selected.metadata, partner_assignment_notes: e.target.value } });
+                        if (e.target.value !== selected.internal_notes) {
+                          update(selected.id, { internal_notes: e.target.value });
                         }
                       }}
                     />
                     
-                    {selected.metadata?.partner_response_note && (
+                    {selected.partner_notes && (
                       <div style={{ marginTop: '12px', padding: '8px', background: '#fef3c7', borderRadius: '4px', borderLeft: '3px solid #d97706' }}>
                         <div style={{ fontSize: '10px', fontWeight: 800, color: '#92400e', textTransform: 'uppercase', marginBottom: '4px' }}>Partner's Note:</div>
-                        <div style={{ fontSize: '12px', color: '#78350f' }}>{selected.metadata.partner_response_note}</div>
+                        <div style={{ fontSize: '12px', color: '#78350f' }}>{selected.partner_notes}</div>
                       </div>
                     )}
-                    
-                    <div style={{ marginTop: '8px', textAlign: 'right' }}>
-                      <a href={`/partners/${selected.metadata.assigned_partner_lead_id}`} target="_blank" rel="noreferrer" style={{ fontSize: '11px', color: '#d97706', fontWeight: 700, textDecoration: 'none' }}>
-                        View Partner Profile ↗
-                      </a>
-                    </div>
                   </div>
                 )}
               </div>

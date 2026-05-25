@@ -1,38 +1,27 @@
-// /src/lib/notifications/notifyPartner.js
 import { sendEmail } from './emailService';
-import { sendWhatsApp } from './whatsappService';
 
-export async function notifyPartner(partner, enquiry) {
-  if (!partner) return;
-
-  const partnerEmail = partner.email;
-  const partnerPhone = partner.whatsapp || partner.phone;
-
-  const subject = `New Buildogram Enquiry: ${enquiry.customerName}`;
+export async function notifyPartner(partner, data) {
+  const email = partner.email;
   
-  const message = `New enquiry received through Buildogram
-
-Customer:
-${enquiry.customerName}
-${enquiry.phone}
-
-Requirement:
-${enquiry.requirement}
-
-Location:
-${enquiry.location || 'Not provided'}
-
-Login to Partner OS to update lead status.`;
-
-  const promises = [];
-  
-  if (partnerEmail) {
-    promises.push(sendEmail({ to: partnerEmail, subject, body: message }));
-  }
-  
-  if (partnerPhone) {
-    promises.push(sendWhatsApp({ to: partnerPhone, message }));
+  if (!email) {
+    console.error('[NOTIFY PARTNER] No email provided for partner', partner.id);
+    return;
   }
 
-  await Promise.allSettled(promises);
+  await sendEmail({
+    to: email,
+    subject: `Buildogram: ${data.type === 'welcome' ? 'Welcome!' : 'Notification'}`,
+    html: `
+      <div style="font-family: sans-serif; padding: 20px;">
+        <p>Hi ${partner.contact_person || 'Partner'},</p>
+        <p>${data.message || 'You have a new update in your Partner OS.'}</p>
+        <br/>
+        <a href="https://buildogram.in/partner/login" style="padding: 10px 20px; background: #e85d04; color: white; text-decoration: none; border-radius: 5px;">Go to Partner OS</a>
+      </div>
+    `
+  });
+
+  console.log(`[NOTIFY PARTNER] -> ${email}`);
+  console.log(`Type: ${data.type}`);
+  console.log(`Message: ${data.message}`);
 }

@@ -1,17 +1,47 @@
 import { NextResponse } from 'next/server';
-import { uploadImage } from '@/lib/cloudinary';
+import { v2 as cloudinary } from 'cloudinary';
 import { getUserFromRequest } from '@/lib/auth';
 
-export async function POST(req) {
-  const u = getUserFromRequest(req);
-  if (!u) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+cloudinary.config({
+  secure: true
+});
+
+export const dynamic = 'force-dynamic';
+
+export async function POST(request) {
+  const user = getUserFromRequest(request);
+  if (!user) {
+    return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+  }
+
   try {
-    const formData = await req.formData();
+    const formData = await request.formData();
     const file = formData.get('file');
-    const folder = formData.get('folder') || 'buildogram';
-    if (!file) return NextResponse.json({ error: 'No file provided' }, { status: 400 });
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const result = await uploadImage(buffer, folder);
-    return NextResponse.json({ url: result.secure_url, public_id: result.public_id });
-  } catch (e) { return NextResponse.json({ error: e.message }, { status: 500 }); }
+
+    if (!file) {
+      return NextResponse.json({ success: false, message: 'No file provided' }, { status: 400 });
+    }
+
+    // Convert file to base64 buffer
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+    const b64 = buffer.toString('base64');
+    const dataURI = `data:${file.type};base64,${b64}`;
+
+    // Upload to Cloudinary
+    const uploadRes = await cloudinary.uploader.upload(dataURI, {
+      folder: `buildogram/${user.role}/${user.id}`,
+      resource_type: 'auto',
+    });
+
+    return NextResponse.json({
+      success: true,
+      url: uploadRes.secure_url,
+      format: uploadRes.format,
+      bytes: uploadRes.bytes
+    });
+  } catch (e) {
+    console.error('[Upload API]', e.message);
+    return NextResponse.json({ success: false, message: 'Upload failed: ' + e.message }, { status: 500 });
+  }
 }
