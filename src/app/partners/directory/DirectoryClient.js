@@ -143,7 +143,7 @@ export default function DirectoryClient() {
       {!loading && (
         <>
         {/* Filter Pills */}
-        <div style={{ display: 'flex', gap: '10px', marginBottom: '32px', flexWrap: 'wrap' }}>
+        <div className="scroll-x-mobile" style={{ marginBottom: '32px' }}>
           {FILTERS.map(f => (
             <button
               key={f.id}

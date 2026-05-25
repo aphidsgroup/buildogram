@@ -209,7 +209,7 @@ export default function PartnerProfilePage({ params }) {
   const portfolio = Array.isArray(partner.portfolio) ? partner.portfolio : [];
 
   return (
-    <div style={{ background: '#F8FAFC', minHeight: '100vh', paddingBottom: '80px' }}>
+    <div className="has-sticky-cta" style={{ background: '#F8FAFC', minHeight: '100vh', paddingBottom: '80px' }}>
       {/* ── COVER ── */}
       <div style={{ height: '280px', background: partner.coverUrl ? `url(${partner.coverUrl}) center/cover no-repeat` : `linear-gradient(135deg,${catColor}33,${catColor}66)`, position: 'relative' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%)' }} />
@@ -217,7 +217,7 @@ export default function PartnerProfilePage({ params }) {
 
       <div className="container" style={{ marginTop: '-70px', position: 'relative', zIndex: 10 }}>
         {/* ── HERO CARD ── */}
-        <div style={{ background: 'white', borderRadius: '24px', border: '1px solid #E2E8F0', padding: '28px', marginBottom: '28px', boxShadow: '0 8px 30px rgba(0,0,0,0.1)', display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: '24px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
+        <div className="partner-hero-grid" style={{ background: 'white', borderRadius: '24px', border: '1px solid #E2E8F0', padding: '28px', marginBottom: '28px', boxShadow: '0 8px 30px rgba(0,0,0,0.1)' }}>
           {/* Logo */}
           <div style={{ width: '100px', height: '100px', borderRadius: '18px', background: partner.logoUrl ? `url(${partner.logoUrl}) center/cover` : catColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', fontWeight: 900, color: 'white', border: '4px solid white', boxShadow: '0 4px 20px rgba(0,0,0,0.15)', flexShrink: 0 }}>
             {!partner.logoUrl && partner.companyName?.[0]}
@@ -265,7 +265,7 @@ export default function PartnerProfilePage({ params }) {
         </div>
 
         {/* ── MAIN LAYOUT ── */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,2fr) minmax(0,1fr)', gap: '24px', alignItems: 'start' }}>
+        <div className="partner-main-grid">
           
           {/* LEFT COLUMN */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
@@ -425,11 +425,50 @@ export default function PartnerProfilePage({ params }) {
       </div>
 
       <style dangerouslySetInnerHTML={{__html:`
-        @media(max-width:900px){
-          .partner-hero-grid{grid-template-columns:1fr!important}
-          .partner-main-grid{grid-template-columns:1fr!important}
+        .partner-main-grid {
+          display: grid;
+          grid-template-columns: minmax(0,2fr) minmax(0,1fr);
+          gap: 24px;
+          align-items: start;
+        }
+        .partner-hero-grid {
+          display: grid;
+          grid-template-columns: auto 1fr auto;
+          gap: 24px;
+          align-items: flex-start;
+          flex-wrap: wrap;
+        }
+        .mobile-sticky-cta {
+          display: none;
+        }
+        @media(max-width: 900px){
+          .partner-hero-grid { grid-template-columns: 1fr !important; text-align: center; justify-items: center; }
+          .partner-main-grid { grid-template-columns: 1fr !important; }
+          .mobile-sticky-cta {
+            display: block;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 16px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            z-index: 1000;
+            border-top: 1px solid #E2E8F0;
+          }
+          .has-sticky-cta {
+            padding-bottom: 90px !important;
+          }
         }
       `}} />
+
+      {/* MOBILE STICKY CTA */}
+      <div className="mobile-sticky-cta">
+        <a href="#enquiry-form" style={{ display: 'block', textAlign: 'center', background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', padding: '16px', borderRadius: '12px', fontSize: '15px', fontWeight: 800, textDecoration: 'none', boxShadow: '0 4px 14px rgba(252,110,32,0.3)' }}>
+          🚀 Request Quote
+        </a>
+      </div>
+
     </div>
   );
 }

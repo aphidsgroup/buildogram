@@ -40,6 +40,40 @@ input,textarea,select { font-family: inherit; }
 img { max-width: 100%; }
 ul { list-style: none; }
 
+/* 
+==================================================
+PHASE 7 UI OVERHAUL UTILITIES 
+================================================== 
+*/
+/* Visibility Toggles */
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+}
+@media (min-width: 769px) {
+  .hide-desktop { display: none !important; }
+}
+
+/* Horizontal scroll for filter pills on mobile */
+.scroll-x-mobile {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+  padding-bottom: 4px;
+}
+.scroll-x-mobile::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* Touch Targets for inputs/buttons on mobile */
+@media (max-width: 768px) {
+  .input, .btn {
+    min-height: 44px;
+  }
+}
+
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
