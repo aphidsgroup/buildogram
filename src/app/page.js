@@ -13,8 +13,9 @@ export default function Home() {
         <div className={styles.heroAmbient} />
         <div className={styles.heroLine} />
 
-        <div className={`container ${styles.heroContent} ${styles.mobileCenter}`}>
-          <div>
+        <div className={`container ${styles.heroContainer}`}>
+          {/* Left Text */}
+          <div className={`${styles.heroText} ${styles.mobileCenter}`}>
             {/* Pill badge */}
             <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.25)', borderRadius: '999px', padding: '8px 20px', marginBottom: '32px' }}>
               <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--gradient-orange)', display: 'inline-block', boxShadow: '0 0 8px #FC6E20' }} />
@@ -39,13 +40,44 @@ export default function Home() {
 
             {/* CTA row */}
             <div className={styles.btnRow}>
-              <Link href="/about" className="btn btn-primary btn-lg">Explore Buildogram</Link>
-              <Link href="/partners" className="btn btn-lg btn-outline-light">Join the Marketplace</Link>
+              <Link href="/partners" className="btn btn-primary btn-lg" style={{ width: '100%', maxWidth: '300px', justifyContent: 'center' }}>Join the Marketplace</Link>
+              <Link href="/about" className="btn btn-lg btn-outline-light hide-mobile">Explore Buildogram</Link>
             </div>
             
             <div className={styles.btnRow} style={{ marginTop: '16px' }}>
                <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" className="btn btn-ghost-light">Buy/Sell Properties →</a>
                <Link href="/materials" className="btn btn-ghost-light">Request Material Quote →</Link>
+            </div>
+          </div>
+
+          {/* Right Visual (Hidden or adjusted on mobile) */}
+          <div className={styles.heroVisual}>
+            <div className={styles.floatingCard2}>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
+                <span style={{ fontSize: '24px' }}>🧱</span>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: '15px' }}>Material Suppliers</h4>
+                  <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px' }}>24+ Verified Brands</div>
+                </div>
+              </div>
+            </div>
+            
+            <div className={styles.floatingCard}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
+                <span style={{ background: 'rgba(252, 110, 32, 0.2)', color: '#FFB347', padding: '4px 10px', borderRadius: '100px', fontSize: '12px', fontWeight: 600 }}>⭐ Featured Partner</span>
+                <span style={{ color: '#22C55E', fontSize: '12px', fontWeight: 700 }}>✅ Verified</span>
+              </div>
+              <h3 style={{ fontSize: '22px', marginBottom: '8px' }}>Pioneer Builders Ltd.</h3>
+              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', marginBottom: '16px', lineHeight: 1.5 }}>Premium residential construction and turnkey contracting in Chennai.</p>
+              
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '20px' }}>
+                <span style={{ background: 'rgba(255,255,255,0.1)', padding: '4px 10px', borderRadius: '6px', fontSize: '12px' }}>Turnkey Construction</span>
+                <span style={{ background: 'rgba(255,255,255,0.1)', padding: '4px 10px', borderRadius: '6px', fontSize: '12px' }}>Renovation</span>
+              </div>
+              
+              <Link href="/partners/directory" style={{ display: 'block', textAlign: 'center', width: '100%', background: 'white', color: 'var(--secondary)', padding: '12px', borderRadius: '8px', fontWeight: 600 }}>
+                View Profile
+              </Link>
             </div>
           </div>
         </div>
