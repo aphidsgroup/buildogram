@@ -47,17 +47,19 @@ export default function GlossaryTermPage({ params }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(term)) }} />
 <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(termSchema(term)) }} />
 
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '52px 0 64px' }}>
+      <section style={{ background: '#0F172A', color: 'white', padding: '52px 0 64px' }}>
         <div className="container">
-          <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '20px', fontSize: '13px' }}>
-            <Link href="/glossary" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none' }}>Glossary</Link>
-            <span style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>{categoryLabel}</span>
+          <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '24px', fontSize: '14px' }}>
+            <Link href="/glossary" style={{ color: '#94A3B8', textDecoration: 'none' }}>Glossary</Link>
+            <span style={{ color: '#475569' }}>/</span>
+            <span style={{ color: 'white', fontWeight: 600 }}>{categoryLabel}</span>
           </nav>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', borderRadius: '6px', padding: '4px 12px', marginBottom: '16px', fontSize: '12px', background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-            {categoryLabel} Term
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+            <span style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#60A5FA', padding: '6px 14px', borderRadius: '100px', fontSize: '13px', fontWeight: 700, border: '1px solid rgba(59, 130, 246, 0.3)' }}>📖 {categoryLabel} Term</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(24px, 3.5vw, 46px)', lineHeight: 1.2, marginBottom: '0' }}>
+
+          <h1 style={{ color: 'white', fontSize: 'clamp(32px, 4.5vw, 56px)', lineHeight: 1.15, marginBottom: '20px', maxWidth: '800px', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800 }}>
             {term.term}
           </h1>
         </div>
@@ -127,9 +129,38 @@ export default function GlossaryTermPage({ params }) {
           </div>
         )}
 
+        {/* MARKETPLACE DISCOVERY BLOCK */}
+        <div style={{ marginBottom: '64px', marginTop: '48px', background: '#F8FAFC', padding: '40px', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
+          <h2 style={{ fontSize: '24px', fontWeight: 800, marginBottom: '24px', color: '#0F172A' }}>Explore Buildogram Marketplace</h2>
+          <div className="grid-4" style={{ gap: '16px' }}>
+            <Link href="/partners/directory?category=Builder" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🏗️</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Hire Builders</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Turnkey construction</span>
+            </Link>
+            <Link href="/materials" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🧱</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Buy Materials</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Direct from suppliers</span>
+            </Link>
+            <Link href="/partners/directory?category=Architect" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>📐</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Find Architects</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Planning & Design</span>
+            </Link>
+            <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🏠</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Property Portal</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Buy/Sell with 360° tours</span>
+            </a>
+          </div>
+        </div>
+
         {/* BROWSE ALL */}
-        <div style={{ paddingTop: '32px', borderTop: '1px solid var(--border)', marginTop: '8px' }}>
-          <Link href="/glossary" style={{ fontSize: '14px', color: 'var(--accent)', textDecoration: 'none', fontWeight: 600 }}>← Browse All Glossary Terms</Link>
+        <div style={{ paddingTop: '32px', borderTop: '1px solid #E2E8F0', marginTop: '8px' }}>
+          <Link href="/glossary" style={{ fontSize: '15px', color: 'var(--primary)', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <span>←</span> Browse All Glossary Terms
+          </Link>
         </div>
 
       </div>

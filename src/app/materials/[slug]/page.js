@@ -49,20 +49,31 @@ export default function MaterialPage({ params }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(mat.faqs)) }} />
       )}
 
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
+      <section style={{ background: '#0F172A', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">
-          <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '20px', fontSize: '13px' }}>
-            <Link href="/materials" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none' }}>Materials</Link>
-            <span style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>{mat.name}</span>
+          <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '24px', fontSize: '14px' }}>
+            <Link href="/materials" style={{ color: '#94A3B8', textDecoration: 'none' }}>Materials Marketplace</Link>
+            <span style={{ color: '#475569' }}>/</span>
+            <span style={{ color: 'white', fontWeight: 600 }}>{mat.name}</span>
           </nav>
-          <div style={{ fontSize: '40px', marginBottom: '16px' }}>{mat.icon}</div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(26px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>
-            {mat.name} for Construction in Chennai
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+            <span style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#60A5FA', padding: '6px 14px', borderRadius: '100px', fontSize: '13px', fontWeight: 700, border: '1px solid rgba(59, 130, 246, 0.3)' }}>{mat.icon} Construction Material</span>
+            <span style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#4ADE80', padding: '6px 14px', borderRadius: '100px', fontSize: '13px', fontWeight: 700, border: '1px solid rgba(34, 197, 94, 0.3)' }}>✅ Best Rates in Chennai</span>
+          </div>
+
+          <h1 style={{ color: 'white', fontSize: 'clamp(32px, 4.5vw, 56px)', lineHeight: 1.15, marginBottom: '20px', maxWidth: '800px', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800 }}>
+            {mat.name} Suppliers & Rates in <span style={{ color: '#3B82F6' }}>Chennai</span>
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '17px', maxWidth: '640px', lineHeight: 1.7 }}>
-            {mat.intro}
+          
+          <p style={{ color: '#CBD5E1', fontSize: '18px', maxWidth: '700px', lineHeight: 1.6, marginBottom: '40px' }}>
+            {mat.intro} Source high-quality {mat.name} directly from verified suppliers for your construction project.
           </p>
+
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <Link href="/materials/request-quote" className="btn btn-primary" style={{ padding: '14px 24px', fontSize: '16px' }}>Request Quote Now</Link>
+            <Link href="/partners/directory?category=Supplier" className="btn btn-outline-light" style={{ padding: '14px 24px', fontSize: '16px' }}>Find Local Suppliers</Link>
+          </div>
         </div>
       </section>
 
@@ -159,17 +170,46 @@ export default function MaterialPage({ params }) {
           </div>
         )}
 
-        <div className="card" style={{ background: 'var(--gradient-dark)', border: 'none', textAlign: 'center', padding: '44px' }}>
-          <h3 style={{ color: 'white', fontSize: '22px', marginBottom: '12px' }}>Need {mat.name} for your project?</h3>
-          <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '24px' }}>Get verified delivery with invoice documentation and brand confirmation.</p>
-          <div style={{ display: 'flex', gap: '14px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/materials/request-quote" className="btn btn-primary btn-lg">Request Quote</Link>
-            <Link href="/contact" className="btn btn-lg btn-outline-light">Speak to Engineer</Link>
+        {/* MARKETPLACE DISCOVERY BLOCK */}
+        <div style={{ marginBottom: '64px', background: '#F8FAFC', padding: '40px', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
+          <h2 style={{ fontSize: '24px', fontWeight: 800, marginBottom: '24px', color: '#0F172A' }}>Buildogram Ecosystem Partners</h2>
+          <div className="grid-4" style={{ gap: '16px' }}>
+            <Link href="/partners/directory?category=Builder" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🏗️</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Hire Builders</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Experts in using {mat.name}</span>
+            </Link>
+            <Link href="/partners/directory?category=Supplier" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🚚</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Find Suppliers</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Verified Local Sellers</span>
+            </Link>
+            <Link href="/services/cost-estimator" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>💰</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Estimate Cost</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Calculate {mat.name} quantity</span>
+            </Link>
+            <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🏠</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Property Portal</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Buy/Sell with 360° tours</span>
+            </a>
           </div>
         </div>
 
-        <div style={{ marginTop: '28px', textAlign: 'center' }}>
-          <Link href="/materials" style={{ fontSize: '14px', color: 'var(--accent)', fontWeight: 600, textDecoration: 'none' }}>← All Materials</Link>
+        <div className="card" style={{ background: '#0F172A', border: 'none', textAlign: 'center', padding: '44px', borderRadius: '16px' }}>
+          <h3 style={{ color: 'white', fontSize: '24px', fontWeight: 800, marginBottom: '12px' }}>Need {mat.name} for your project?</h3>
+          <p style={{ color: '#CBD5E1', fontSize: '16px', marginBottom: '28px' }}>Get verified delivery with invoice documentation and top brand confirmation.</p>
+          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+            <Link href="/materials/request-quote" className="btn btn-primary" style={{ padding: '14px 28px', fontSize: '16px' }}>Request Quote</Link>
+            <Link href="/partners/register" className="btn btn-outline-light" style={{ padding: '14px 28px', fontSize: '16px' }}>Join as Supplier</Link>
+          </div>
+        </div>
+
+        <div style={{ marginTop: '32px', textAlign: 'center' }}>
+          <Link href="/materials" style={{ fontSize: '15px', color: 'var(--primary)', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <span>←</span> Explore All Materials
+          </Link>
         </div>
       </div>
     </>

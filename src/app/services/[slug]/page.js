@@ -52,22 +52,32 @@ export default function ServicePage({ params }) {
       />
 
       {/* HERO */}
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ background: '#0F172A', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
         <div className="container" style={{ position: 'relative' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{svc.heroTag}</span>
+          <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '24px', fontSize: '14px' }}>
+            <Link href="/services" style={{ color: '#94A3B8', textDecoration: 'none' }}>Construction Services</Link>
+            <span style={{ color: '#475569' }}>/</span>
+            <span style={{ color: 'white', fontWeight: 600 }}>{svc.heroTitle}</span>
+          </nav>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+            <span style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#60A5FA', padding: '6px 14px', borderRadius: '100px', fontSize: '13px', fontWeight: 700, border: '1px solid rgba(59, 130, 246, 0.3)' }}>{svc.heroTag}</span>
+            <span style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#4ADE80', padding: '6px 14px', borderRadius: '100px', fontSize: '13px', fontWeight: 700, border: '1px solid rgba(34, 197, 94, 0.3)' }}>✅ Buildogram Verified Service</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '20px', maxWidth: '760px' }}>
+
+          <h1 style={{ color: 'white', fontSize: 'clamp(32px, 4.5vw, 56px)', lineHeight: 1.15, marginBottom: '20px', maxWidth: '800px', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800 }}>
             {svc.heroTitle}
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '600px', lineHeight: 1.7, marginBottom: '32px' }}>
+          
+          <p style={{ color: '#CBD5E1', fontSize: '18px', maxWidth: '700px', lineHeight: 1.6, marginBottom: '40px' }}>
             {svc.heroSubtitle}
           </p>
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <Link href={svc.cta.href} className="btn btn-primary btn-lg">{svc.cta.text}</Link>
+
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <Link href={svc.cta.href} className="btn btn-primary" style={{ padding: '14px 24px', fontSize: '16px' }}>{svc.cta.text}</Link>
             {svc.ctaSecondary && (
-              <Link href={svc.ctaSecondary.href} className="btn btn-lg btn-outline-light">{svc.ctaSecondary.text}</Link>
+              <Link href={svc.ctaSecondary.href} className="btn btn-outline-light" style={{ padding: '14px 24px', fontSize: '16px' }}>{svc.ctaSecondary.text}</Link>
             )}
           </div>
         </div>
@@ -168,13 +178,40 @@ export default function ServicePage({ params }) {
           </div>
         )}
 
+        {/* MARKETPLACE DISCOVERY BLOCK */}
+        <div style={{ marginBottom: '64px', background: '#F8FAFC', padding: '40px', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
+          <h2 style={{ fontSize: '24px', fontWeight: 800, marginBottom: '24px', color: '#0F172A' }}>Explore Buildogram Marketplace</h2>
+          <div className="grid-4" style={{ gap: '16px' }}>
+            <Link href="/partners/directory?category=Builder" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🏗️</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Hire Builders</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Turnkey construction</span>
+            </Link>
+            <Link href="/materials" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🧱</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Buy Materials</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Direct from suppliers</span>
+            </Link>
+            <Link href="/partners/directory?category=Architect" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>📐</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Find Architects</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Planning & Design</span>
+            </Link>
+            <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🏠</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Property Portal</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Buy/Sell with 360° tours</span>
+            </a>
+          </div>
+        </div>
+
         {/* CTA */}
-        <div className="card" style={{ background: 'var(--gradient-dark)', color: 'white', border: 'none', textAlign: 'center', padding: '48px' }}>
-          <h2 style={{ color: 'white', fontSize: '28px', marginBottom: '12px' }}>Ready to get started?</h2>
-          <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '28px', fontSize: '16px' }}>Talk to our structural engineers and get a free initial consultation.</p>
+        <div className="card" style={{ background: '#0F172A', border: 'none', textAlign: 'center', padding: '44px', borderRadius: '16px' }}>
+          <h2 style={{ color: 'white', fontSize: '28px', fontWeight: 800, marginBottom: '12px' }}>Ready to get started?</h2>
+          <p style={{ color: '#CBD5E1', fontSize: '16px', marginBottom: '28px' }}>Talk to our structural engineers and get a free initial consultation.</p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href={svc.cta.href} className="btn btn-primary btn-lg">{svc.cta.text}</Link>
-            {svc.ctaSecondary && <Link href={svc.ctaSecondary.href} className="btn btn-lg btn-outline-light">{svc.ctaSecondary.text}</Link>}
+            <Link href={svc.cta.href} className="btn btn-primary" style={{ padding: '14px 28px', fontSize: '16px' }}>{svc.cta.text}</Link>
+            {svc.ctaSecondary && <Link href={svc.ctaSecondary.href} className="btn btn-outline-light" style={{ padding: '14px 28px', fontSize: '16px' }}>{svc.ctaSecondary.text}</Link>}
           </div>
         </div>
 

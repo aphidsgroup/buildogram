@@ -46,25 +46,30 @@ export default function LocalityPage({ params }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(loc)) }} />
 <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema(loc)) }} />
 
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
+      <section style={{ background: '#0F172A', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">
-          <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '20px', fontSize: '13px' }}>
-            <Link href="/locations/chennai" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none' }}>Chennai</Link>
-            <span style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>{loc.name}</span>
+          <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '24px', fontSize: '14px' }}>
+            <Link href="/locations/chennai" style={{ color: '#94A3B8', textDecoration: 'none' }}>Chennai Locations</Link>
+            <span style={{ color: '#475569' }}>/</span>
+            <span style={{ color: 'white', fontWeight: 600 }}>{loc.name}</span>
           </nav>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', borderRadius: '6px', padding: '4px 12px', marginBottom: '16px', fontSize: '12px', background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontWeight: 700 }}>
-            📍 {loc.region}
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+            <span style={{ background: 'rgba(252, 110, 32, 0.15)', color: '#FFB347', padding: '6px 14px', borderRadius: '100px', fontSize: '13px', fontWeight: 700, border: '1px solid rgba(252, 110, 32, 0.3)' }}>📍 {loc.region} Region</span>
+            <span style={{ background: 'rgba(34, 197, 94, 0.15)', color: '#4ADE80', padding: '6px 14px', borderRadius: '100px', fontSize: '13px', fontWeight: 700, border: '1px solid rgba(34, 197, 94, 0.3)' }}>✅ Verified Partners Available</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(26px, 4vw, 50px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '800px' }}>
-            House Construction in {loc.name}, Chennai
+
+          <h1 style={{ color: 'white', fontSize: 'clamp(32px, 4.5vw, 56px)', lineHeight: 1.15, marginBottom: '20px', maxWidth: '800px', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800 }}>
+            Construction Services & Verified Builders in <span style={{ color: '#FC6E20' }}>{loc.name}</span>
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '17px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>
-            {loc.desc}
+          
+          <p style={{ color: '#CBD5E1', fontSize: '18px', maxWidth: '700px', lineHeight: 1.6, marginBottom: '40px' }}>
+            {loc.desc} Explore local property trends, soil conditions, and connect with top-rated construction professionals serving the {loc.name} area.
           </p>
-          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <Link href="/contact" className="btn btn-primary btn-lg">Start {loc.name} Construction</Link>
-            <Link href="/cost-estimator" className="btn btn-lg btn-outline-light">Estimate Cost</Link>
+
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
+            <Link href={`/partners/directory?q=${encodeURIComponent(loc.name)}`} className="btn btn-primary" style={{ padding: '14px 24px', fontSize: '16px' }}>Find Verified Builders</Link>
+            <Link href="/materials" className="btn btn-outline-light" style={{ padding: '14px 24px', fontSize: '16px' }}>Request Material Quotes</Link>
           </div>
         </div>
       </section>
@@ -122,40 +127,38 @@ export default function LocalityPage({ params }) {
           </div>
         </div>
 
-        {/* BUILDOGRAM SERVICES IN AREA */}
-        <div className="card" style={{ marginBottom: '48px' }}>
-          <h2 style={{ fontSize: '20px', color: 'var(--secondary)', marginBottom: '20px' }}>Buildogram Services in {loc.name}</h2>
-          <div className="grid-3" style={{ gap: '12px' }}>
-            {[
-              { label: '🏗 House Construction', href: '/services/house-construction' },
-              { label: '📋 Project Management (PMC)', href: '/services/construction-project-management' },
-              { label: '🔍 Quality Inspection', href: '/services/quality-inspection' },
-              { label: '👷 Site Supervision', href: '/services/site-supervision' },
-              { label: '📊 BOQ Review', href: '/services/boq-review' },
-              { label: '📐 Plan Review', href: '/services/house-plan-review' },
-            ].map((svc) => (
-              <Link key={svc.href} href={svc.href} style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 16px', background: 'var(--bg-alt)', borderRadius: '8px', textDecoration: 'none', fontSize: '13px', color: 'var(--text)', fontWeight: 500, border: '1px solid var(--border)', lineHeight: 1.4 }}>
-                {svc.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-
-        {/* CTA */}
-        <div className="card" style={{ background: 'var(--gradient-dark)', border: 'none', textAlign: 'center', padding: '48px' }}>
-          <h2 style={{ color: 'white', fontSize: '26px', marginBottom: '12px' }}>Building in {loc.name}?</h2>
-          <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '28px', fontSize: '16px' }}>
-            Get a free consultation with our structural engineers — including {loc.name}-specific site advice.
-          </p>
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/contact" className="btn btn-primary btn-lg">Free Consultation</Link>
-            <Link href="/cost-estimator" className="btn btn-lg btn-outline-light">Estimate Cost</Link>
+        {/* MARKETPLACE DISCOVERY BLOCK */}
+        <div style={{ marginBottom: '64px', background: '#F8FAFC', padding: '40px', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
+          <h2 style={{ fontSize: '24px', fontWeight: 800, marginBottom: '24px', color: '#0F172A' }}>Find Trusted Partners for {loc.name}</h2>
+          <div className="grid-4" style={{ gap: '16px' }}>
+            <Link href="/partners/directory?category=Builder" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🏗️</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Builders</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Turnkey construction</span>
+            </Link>
+            <Link href="/partners/directory?category=Architect" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>📐</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Architects</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Planning & Design</span>
+            </Link>
+            <Link href="/materials" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🧱</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Materials</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Best rates in {loc.name}</span>
+            </Link>
+            <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <span style={{ fontSize: '24px' }}>🏠</span>
+              <span style={{ fontWeight: 700, fontSize: '15px' }}>Buy/Sell Plots</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>360° Property Tours</span>
+            </a>
           </div>
         </div>
 
         {/* BROWSE ALL */}
         <div style={{ marginTop: '32px', textAlign: 'center' }}>
-          <Link href="/locations/chennai" style={{ fontSize: '14px', color: 'var(--accent)', fontWeight: 600, textDecoration: 'none' }}>← All Chennai Locations</Link>
+          <Link href="/locations/chennai" style={{ fontSize: '15px', color: 'var(--primary)', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+            <span>←</span> Explore All Chennai Locations
+          </Link>
         </div>
       </div>
     </>
