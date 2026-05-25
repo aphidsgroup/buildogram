@@ -1,8 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getPartnerBySlug, getApprovedPartners } from '@/lib/partnerStore';
-import { createLead, BUDGET_RANGES } from '@/lib/leadStore';
+import { fetchPartnerBySlug, fetchApprovedPartners } from '@/lib/partnerApi';
+import { submitEnquiry } from '@/lib/enquiryApi';
+import { BUDGET_RANGES } from '@/lib/leadStore';
+
 
 // ── helpers ──────────────────────────────────────────────────────────
 function toArr(v) {
@@ -25,29 +27,49 @@ const CATEGORY_COLORS = {
 
 // ── Lead Form ─────────────────────────────────────────────────────────
 function LeadForm({ partner }) {
-  const blank = { customerName: '', phone: '', email: '', requirement: '', location: '', budgetRange: '', message: '' };
+  const blank = { customerName: '', phone: '', email: '', requirement: '', location: '', budgetRange: '', message: '', companyWebsite: '' };
   const [form, setForm] = useState(blank);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [mountTime, setMountTime] = useState(0);
+
+  useEffect(() => {
+    setMountTime(Date.now());
+  }, []);
+
 
   const f = k => e => setForm(p => ({ ...p, [k]: e.target.value }));
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    if (!form.customerName || !form.phone) return alert('Name and phone are required');
+    if (!form.customerName || !form.phone || !form.requirement) return alert('Name, phone, and requirement are required');
+    if (submitting) return; // prevent double submit
+    setSubmitting(true);
     setLoading(true);
-    setTimeout(() => {
-      createLead({
-        ...form,
-        partnerSlug: partner.slug,
-        partnerName: partner.companyName,
-        category: partner.category,
-        source: 'Partner Profile',
-      });
-      setLoading(false);
+
+    let spamStatus = 'clean';
+    if (form.companyWebsite) spamStatus = 'spam'; // honeypot caught
+    else if (Date.now() - mountTime < 2000) spamStatus = 'suspicious'; // too fast
+
+    const result = await submitEnquiry({
+      ...form,
+      partnerSlug: partner.slug,
+      partnerName: partner.companyName,
+      category: partner.category,
+      sourcePage: `/partners/${partner.slug}`,
+      spamStatus,
+      userAgent: navigator.userAgent
+    });
+    setLoading(false);
+    if (result.success) {
       setSubmitted(true);
-    }, 600);
+    } else {
+      alert('Submission failed: ' + (result.message || 'Please try again'));
+      setSubmitting(false);
+    }
   };
+
 
   if (submitted) {
     return (
@@ -66,6 +88,12 @@ function LeadForm({ partner }) {
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+      {/* Honeypot field - visually hidden */}
+      <div style={{ position: 'absolute', opacity: 0, top: '-9999px', left: '-9999px' }} aria-hidden="true">
+        <label>Website</label>
+        <input type="text" value={form.companyWebsite} onChange={f('companyWebsite')} tabIndex="-1" autoComplete="off" />
+      </div>
+
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
         <div>
           <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#64748B', marginBottom: '6px', textTransform: 'uppercase' }}>Your Name *</label>
@@ -84,8 +112,8 @@ function LeadForm({ partner }) {
           <input style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', fontSize: '14px', boxSizing: 'border-box', outline: 'none' }} value={form.location} onChange={f('location')} placeholder="Your area / city" />
         </div>
         <div>
-          <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#64748B', marginBottom: '6px', textTransform: 'uppercase' }}>Requirement</label>
-          <input style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', fontSize: '14px', boxSizing: 'border-box', outline: 'none' }} value={form.requirement} onChange={f('requirement')} placeholder="e.g. G+2 Home Construction" />
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#64748B', marginBottom: '6px', textTransform: 'uppercase' }}>Requirement *</label>
+          <input style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', fontSize: '14px', boxSizing: 'border-box', outline: 'none' }} value={form.requirement} onChange={f('requirement')} placeholder="e.g. G+2 Home Construction" required />
         </div>
         <div>
           <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#64748B', marginBottom: '6px', textTransform: 'uppercase' }}>Budget Range</label>
@@ -150,16 +178,17 @@ export default function PartnerProfilePage({ params }) {
   const [notFound, setNotFound] = useState(false);
 
   useEffect(() => {
-    const p = getPartnerBySlug(slug);
-    if (!p || !p.isActive || p.approvalStatus !== 'Approved') {
-      setNotFound(true);
-      return;
-    }
-    setPartner(p);
-    // Related
-    const all = getApprovedPartners();
-    setRelated(all.filter(r => r.category === p.category && r.slug !== slug).slice(0, 3));
+    if (!slug) return;
+    fetchPartnerBySlug(slug).then(p => {
+      if (!p) { setNotFound(true); return; }
+      setPartner(p);
+      // Load related partners
+      fetchApprovedPartners().then(all => {
+        setRelated(all.filter(r => r.category === p.category && r.slug !== slug).slice(0, 3));
+      }).catch(() => {});
+    }).catch(() => setNotFound(true));
   }, [slug]);
+
 
   if (notFound) return <NotFoundView />;
   if (!partner) return (

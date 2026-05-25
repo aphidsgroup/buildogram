@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /ops/
+Disallow: /partner/
+Disallow: /api/
+
+Sitemap: https://www.buildogram.in/sitemap.xml

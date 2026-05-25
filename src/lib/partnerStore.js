@@ -369,10 +369,51 @@ export function deletePartner(slug) {
 }
 
 export function calcProfileCompletion(p) {
-  const fields = ['companyName', 'category', 'shortDescription', 'fullDescription', 'logoUrl', 'coverUrl', 'location', 'serviceAreas', 'phone', 'email', 'website', 'services', 'certifications'];
-  const filled = fields.filter(k => {
-    const v = p[k];
-    return v && (Array.isArray(v) ? v.length > 0 : String(v).trim() !== '');
-  }).length;
-  return Math.round((filled / fields.length) * 100);
+  const requirements = [
+    { key: 'companyName', weight: 8, label: 'Company Name' },
+    { key: 'category', weight: 8, label: 'Category' },
+    { key: 'logoUrl', weight: 8, label: 'Logo' },
+    { key: 'coverUrl', weight: 8, label: 'Cover Image' },
+    { key: 'shortDescription', weight: 4, label: 'Short Description' },
+    { key: 'fullDescription', weight: 4, label: 'Full Description' },
+    { key: 'location', weight: 5, label: 'Location' },
+    { key: 'serviceAreas', weight: 5, label: 'Service Areas' },
+    { key: 'phone', weight: 5, label: 'Phone Number' },
+    { key: 'email', weight: 5, label: 'Email Address' },
+    { key: 'whatsapp', weight: 5, label: 'WhatsApp Number' },
+    { key: 'services', weight: 10, label: 'Services List' },
+    { key: 'galleryImages', weight: 10, label: 'Gallery Images' },
+    { key: 'portfolio', weight: 5, label: 'Portfolio Projects' },
+    { key: 'certifications', weight: 5, label: 'Certifications' },
+    { key: 'brands', weight: 5, label: 'Brands Used' }
+  ];
+
+  let score = 0;
+  const missing = [];
+
+  requirements.forEach(req => {
+    const v = p[req.key];
+    const isFilled = v && (Array.isArray(v) ? v.length > 0 : String(v).trim() !== '');
+    if (isFilled) {
+      score += req.weight;
+    } else {
+      missing.push(req.label);
+    }
+  });
+
+  // Ensure max score is 100
+  score = Math.min(100, score);
+
+  let suggestions = '';
+  if (missing.length > 0) {
+    const topMissing = missing.slice(0, 2).join(' and ');
+    suggestions = `Your profile is ${score}% complete. Add ${topMissing} to improve visibility.`;
+  } else {
+    suggestions = 'Your profile is 100% complete! Great job.';
+  }
+
+  // To remain backwards compatible with parts of the app expecting just a number,
+  // we attach the extra data to a Number object or we just return an object.
+  // We'll return an object. Places using this might need updates.
+  return { score, missing, suggestions };
 }

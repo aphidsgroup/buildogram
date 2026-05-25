@@ -2,34 +2,63 @@
 import { useState, useEffect } from 'react';
 import { SectionHeader, FormField, StatusBadge } from '../_shared/components';
 import { DEMO_PROFILE } from '../_shared/demoData';
-import { getPartnerBySlug, updatePartner, getPartners, saveAllPartners } from '@/lib/partnerStore';
+import { getPartnerBySlug, updatePartner, getPartners, saveAllPartners, calcProfileCompletion } from '@/lib/partnerStore';
+import { isValidImageUrl, isYouTubeUrl, isInstagramUrl, getYouTubeEmbedUrl } from '@/lib/media/mediaUtils';
 
 const CATEGORIES = ['Builder', 'Architect', 'Interior Designer', 'Material Supplier', 'Home Automation', 'Solar', 'Elevators', 'Waterproofing'];
-
-function calcCompletion(profile) {
-  const fields = ['companyName', 'category', 'description', 'services', 'serviceAreas', 'contactPerson', 'phone', 'email', 'whatsapp', 'website', 'logoUrl', 'certifications'];
-  const filled = fields.filter(k => profile[k] && String(profile[k]).trim() !== '').length;
-  return Math.round((filled / fields.length) * 100);
-}
 
 export default function PartnerProfile() {
   const [profile, setProfile] = useState(DEMO_PROFILE);
   const [saved, setSaved] = useState(false);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    const stored = typeof window !== 'undefined' && localStorage.getItem('bos_profile');
-    if (stored) setProfile(JSON.parse(stored));
+    fetch('/api/partner/profile')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.profile) {
+          // Map DB response to client state
+          setProfile({
+            ...data.profile,
+            description: data.profile.description || data.profile.shortDescription || '',
+            galleryUrls: (data.profile.galleryImages || []).map(g => g.url).join('\n'),
+            videoUrls: (data.profile.videoGallery || []).map(v => v.url).join('\n')
+          });
+        } else {
+          // Fallback to local storage if no DB profile
+          const stored = typeof window !== 'undefined' && localStorage.getItem('bos_profile');
+          if (stored) setProfile(JSON.parse(stored));
+        }
+        setLoading(false);
+      })
+      .catch(e => {
+        console.error(e);
+        const stored = typeof window !== 'undefined' && localStorage.getItem('bos_profile');
+        if (stored) setProfile(JSON.parse(stored));
+        setLoading(false);
+      });
   }, []);
 
   const f = (k) => (e) => setProfile(p => ({ ...p, [k]: e.target.value }));
 
-  const handleSave = () => {
+  const handleSave = async () => {
     localStorage.setItem('bos_profile', JSON.stringify(profile));
-    // Sync into shared partner store so public pages reflect changes
-    // Map profile fields to partnerStore schema
+
+    // Try API save
+    try {
+      await fetch('/api/partner/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profile)
+      });
+    } catch(e) {
+      console.error('API save failed', e);
+    }
+
+    // Sync into shared partner store so public pages reflect changes (localStorage fallback)
     if (profile.companyName) {
       const allPartners = getPartners();
-      // Find partner by slug derived from companyName or existing localStorage slug
       const partnerSlug = profile.partnerSlug || 'demo-builder';
       const exists = allPartners.find(p => p.slug === partnerSlug);
       if (exists) {
@@ -55,7 +84,7 @@ export default function PartnerProfile() {
     setTimeout(() => setSaved(false), 3000);
   };
 
-  const completion = calcCompletion(profile);
+  const { score: completion, missing, suggestions } = calcProfileCompletion(profile);
 
   return (
     <div>
@@ -76,7 +105,11 @@ export default function PartnerProfile() {
         <div style={{ background: '#E2E8F0', borderRadius: '8px', height: '10px', overflow: 'hidden' }}>
           <div style={{ width: `${completion}%`, height: '100%', background: completion >= 80 ? 'linear-gradient(90deg,#34D399,#10B981)' : 'linear-gradient(90deg,#FFB347,#FC6E20)', borderRadius: '8px', transition: 'width 0.4s' }} />
         </div>
-        {completion < 100 && <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '8px' }}>Fill in all sections to maximize your visibility on the partner directory.</div>}
+        {completion < 100 && (
+          <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '8px' }}>
+            {suggestions}
+          </div>
+        )}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '24px', alignItems: 'start' }}>

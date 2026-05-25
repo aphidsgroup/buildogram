@@ -23,9 +23,41 @@ export default function MaterialFlow() {
   const [editId, setEditId] = useState(null);
   const [form, setForm] = useState(BLANK);
 
+  const [loading, setLoading] = useState(true);
+
+  const fetchItems = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/partner/material-requests');
+      const data = await res.json();
+      if (data.success) {
+        const mapped = (data.requests || []).map(r => ({
+          id: r.id,
+          material: r.materialName,
+          project: r.projectId,
+          qty: r.qty,
+          unit: r.unit,
+          requiredDate: r.requiredDate,
+          priority: r.priority,
+          status: r.status,
+          vendorQuote: r.vendorQuoteStatus,
+          bestRateRequest: r.bestRateRequest
+        }));
+        setItems(mapped);
+        localStorage.setItem('bos_materials', JSON.stringify(mapped));
+      } else throw new Error(data.message);
+    } catch (e) {
+      console.error('API fetch failed, fallback', e);
+      const stored = typeof window !== 'undefined' && localStorage.getItem('bos_materials');
+      if (stored) setItems(JSON.parse(stored));
+      else setItems(DEMO_MATERIALS);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const stored = typeof window !== 'undefined' && localStorage.getItem('bos_materials');
-    setItems(stored ? JSON.parse(stored) : DEMO_MATERIALS);
+    fetchItems();
     const storedP = typeof window !== 'undefined' && localStorage.getItem('bos_projects');
     if (storedP) setProjects(JSON.parse(storedP));
   }, []);
@@ -36,14 +68,34 @@ export default function MaterialFlow() {
   const openEdit = (item) => { setForm({ ...item }); setEditId(item.id); setModalOpen(true); };
   const deleteItem = (id) => { if (confirm('Remove this material request?')) save(items.filter(i => i.id !== id)); };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form.material) return alert('Material name is required');
-    if (editId) {
-      save(items.map(i => i.id === editId ? { ...form, id: editId } : i));
-    } else {
-      save([{ ...form, id: 'M' + Date.now().toString().slice(-6) }, ...items]);
-    }
+    
+    let optArr = [];
+    if (editId) optArr = items.map(i => i.id === editId ? { ...form, id: editId } : i);
+    else optArr = [{ ...form, id: 'temp_' + Date.now().toString() }, ...items];
+    save(optArr);
     setModalOpen(false);
+
+    try {
+      const url = editId && String(editId).length > 10 ? `/api/partner/material-requests/${editId}` : '/api/partner/material-requests';
+      const method = editId && String(editId).length > 10 ? 'PUT' : 'POST';
+      const payload = {
+        materialName: form.material,
+        projectId: form.project,
+        qty: Number(form.qty) || 1,
+        unit: form.unit,
+        requiredDate: form.requiredDate,
+        priority: form.priority,
+        status: form.status,
+        vendorQuoteStatus: form.vendorQuote,
+        bestRateRequest: form.bestRateRequest
+      };
+      const res = await fetch(url, { method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      if ((await res.json()).success) fetchItems();
+    } catch(e) {
+      console.error('API save fail', e);
+    }
   };
 
   const updateStatus = (id, status) => { save(items.map(i => i.id === id ? { ...i, status } : i)); };

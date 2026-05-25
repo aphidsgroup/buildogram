@@ -26,9 +26,31 @@ export default function ProjectsPage() {
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(BLANK);
 
+  const [loading, setLoading] = useState(true);
+
+  const fetchProjects = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/partner/projects');
+      const data = await res.json();
+      if (data.success) {
+        setProjects(data.items || []);
+        localStorage.setItem('bos_projects', JSON.stringify(data.items || []));
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (e) {
+      console.error('API fetch failed, using fallback:', e);
+      const stored = typeof window !== 'undefined' && localStorage.getItem('bos_projects');
+      if (stored) setProjects(JSON.parse(stored));
+      else setProjects(DEMO_PROJECTS);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const stored = typeof window !== 'undefined' && localStorage.getItem('bos_projects');
-    setProjects(stored ? JSON.parse(stored) : DEMO_PROJECTS);
+    fetchProjects();
   }, []);
 
   const save = (arr) => { setProjects(arr); localStorage.setItem('bos_projects', JSON.stringify(arr)); };
@@ -36,14 +58,37 @@ export default function ProjectsPage() {
   const openAdd = () => { setForm(BLANK); setEditingId(null); setModalOpen(true); };
   const openEdit = (p) => { setForm({ ...p }); setEditingId(p.id); setModalOpen(true); };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form.name) return alert('Project name is required');
+    
+    // Optimistic UI + fallback save
+    let optimisticArr = [];
     if (editingId) {
-      save(projects.map(p => p.id === editingId ? { ...form, id: editingId, progress: Number(form.progress), budget: Number(form.budget) } : p));
+      optimisticArr = projects.map(p => p.id === editingId ? { ...form, id: editingId, progress: Number(form.progress), budget: Number(form.budget) } : p);
     } else {
-      save([{ ...form, id: 'P' + Date.now().toString().slice(-6), progress: Number(form.progress), budget: Number(form.budget) }, ...projects]);
+      optimisticArr = [{ ...form, id: 'temp_' + Date.now().toString(), progress: Number(form.progress), budget: Number(form.budget) }, ...projects];
     }
+    save(optimisticArr);
     setModalOpen(false);
+
+    // API save
+    try {
+      const url = editingId ? `/api/partner/projects/${editingId}` : '/api/partner/projects';
+      const method = editingId ? 'PUT' : 'POST';
+      const payload = { ...form, progressPercent: Number(form.progress), budget: Number(form.budget), projectName: form.name, clientName: form.client, projectType: form.type, targetCompletion: form.targetDate, currentStage: form.stage };
+      
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        fetchProjects(); // Reload to get true IDs
+      }
+    } catch(e) {
+      console.error('API save failed', e);
+    }
   };
 
   const deleteProject = (id) => { if (confirm('Delete this project?')) save(projects.filter(p => p.id !== id)); };
