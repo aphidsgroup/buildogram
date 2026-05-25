@@ -130,9 +130,27 @@ export default function DirectoryClient() {
   return (
     <div>
       {loading && (
-        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#64748B' }}>
-          <div style={{ fontSize: '32px', marginBottom: '12px' }}>⏳</div>
-          <p style={{ fontWeight: 600 }}>Loading partners...</p>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px', marginTop: '32px' }}>
+          {[...Array(6)].map((_, i) => (
+            <div key={i} style={{ background: 'white', borderRadius: '20px', overflow: 'hidden', border: '1px solid #E2E8F0', height: '360px', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ height: '120px', background: '#F1F5F9', animation: 'pulse 1.5s infinite' }} />
+              <div style={{ paddingInline: '20px' }}>
+                <div style={{ width: '60px', height: '60px', borderRadius: '14px', background: '#E2E8F0', marginTop: '-30px', border: '3px solid white', animation: 'pulse 1.5s infinite' }} />
+              </div>
+              <div style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px', flex: 1 }}>
+                <div style={{ height: '16px', width: '40%', background: '#F1F5F9', borderRadius: '8px', animation: 'pulse 1.5s infinite' }} />
+                <div style={{ height: '24px', width: '70%', background: '#E2E8F0', borderRadius: '8px', animation: 'pulse 1.5s infinite' }} />
+                <div style={{ height: '12px', width: '30%', background: '#F1F5F9', borderRadius: '8px', animation: 'pulse 1.5s infinite' }} />
+                <div style={{ height: '40px', width: '100%', background: '#F1F5F9', borderRadius: '12px', marginTop: 'auto', animation: 'pulse 1.5s infinite' }} />
+              </div>
+            </div>
+          ))}
+          <style>{`
+            @keyframes pulse {
+              0%, 100% { opacity: 1; }
+              50% { opacity: 0.5; }
+            }
+          `}</style>
         </div>
       )}
       {error && !loading && (
