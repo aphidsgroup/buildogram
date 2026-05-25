@@ -2,7 +2,8 @@
 import { useState, useEffect } from 'react';
 import { StatusBadge, SectionHeader, Modal, FormField, SearchBar, EmptyState } from '../_shared/components';
 import { DEMO_LEADS, LEAD_STATUSES } from '../_shared/demoData';
-import { getAllLeads } from '@/lib/leadStore';
+import { fetchPartnerEnquiries, updateEnquiryStatus } from '@/lib/enquiryApi';
+
 
 const PROJECT_TYPES = ['Residential', 'Villa', 'Interior', 'Commercial', 'Renovation', 'Solar', 'Elevator', 'Waterproofing'];
 const SOURCES = ['Buildogram', 'WhatsApp', 'Referral', 'Google', 'Facebook', 'Direct'];
@@ -21,32 +22,23 @@ export default function LeadsCRM() {
   const [toast, setToast] = useState('');
 
   useEffect(() => {
-    const stored = typeof window !== 'undefined' && localStorage.getItem('bos_leads');
-    const internalLeads = stored ? JSON.parse(stored) : DEMO_LEADS;
-    // Merge public enquiries from shared leadStore (submitted via partner profile page)
-    const publicLeads = getAllLeads().map(l => ({
-      id: l.id,
-      customerName: l.customerName,
-      phone: l.phone,
-      email: l.email || '',
-      requirement: l.requirement || '',
-      location: l.location || '',
-      budgetRange: l.budgetRange || '',
-      projectType: l.category || 'General',
-      source: '🌐 Partner Profile',
-      status: l.status || 'New',
-      followUpDate: l.followUpDate || '',
-      notes: l.notes || (l.message ? `Message: ${l.message}` : ''),
-      createdAt: l.createdAt || '',
-      isPublicEnquiry: true,
-    }));
-    // Merge: avoid duplicates by ID
-    const existingIds = new Set(internalLeads.map(l => l.id));
-    const merged = [...internalLeads, ...publicLeads.filter(l => !existingIds.has(l.id))];
-    setLeads(merged);
+    // Fetch from API (falls back to localStorage automatically)
+    fetchPartnerEnquiries().then(apiLeads => {
+      if (apiLeads && apiLeads.length > 0) {
+        setLeads(apiLeads);
+      } else {
+        // Fallback: internal leads + local enquiries
+        const stored = typeof window !== 'undefined' && localStorage.getItem('bos_leads');
+        setLeads(stored ? JSON.parse(stored) : DEMO_LEADS);
+      }
+    }).catch(() => {
+      const stored = typeof window !== 'undefined' && localStorage.getItem('bos_leads');
+      setLeads(stored ? JSON.parse(stored) : DEMO_LEADS);
+    });
   }, []);
 
   const save = (arr) => { setLeads(arr); localStorage.setItem('bos_leads', JSON.stringify(arr)); };
+
 
   const openAdd = () => { setForm(BLANK); setEditingLead(null); setModalOpen(true); };
   const openEdit = (l) => { setForm({ ...l }); setEditingLead(l.id); setModalOpen(true); };

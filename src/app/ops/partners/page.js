@@ -1,10 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
 import {
-  getPartners, saveAllPartners, addPartner, updatePartner, deletePartner,
   calcProfileCompletion, PARTNER_CATEGORIES, APPROVAL_STATUSES
 } from '@/lib/partnerStore';
-import { getAllLeads } from '@/lib/leadStore';
+import { opsGetPartners, opsCreatePartner, opsUpdatePartner, opsUpdatePartnerStatus, opsDeletePartner } from '@/lib/partnerApi';
+import { opsGetEnquiries } from '@/lib/enquiryApi';
+
 
 const APPROVAL_COLORS = {
   'Approved':       { bg: '#DCFCE7', color: '#166534' },
@@ -76,57 +77,100 @@ export default function OpsPartnersV2() {
   const [editModal, setEditModal] = useState(false);
   const [form, setForm] = useState(BLANK_PARTNER);
   const [editSlug, setEditSlug] = useState(null);
+  const [editId, setEditId] = useState(null);
+  const [loadingPartners, setLoadingPartners] = useState(true);
+  const [activeTab, setActiveTab] = useState('partners');
+  const [enquiries, setEnquiries] = useState([]);
+  const [toast, setToast] = useState('');
 
-  const load = () => {
-    setPartners(getPartners());
-    setAllLeads(getAllLeads());
+  const showToast = (msg, ok = true) => {
+    setToast({ msg, ok });
+    setTimeout(() => setToast(''), 3500);
+  };
+
+  const load = async () => {
+    setLoadingPartners(true);
+    try {
+      const [res, enqRes] = await Promise.all([
+        opsGetPartners().catch(() => ({ success: false })),
+        opsGetEnquiries().catch(() => ({ success: false }))
+      ]);
+      
+      if (res.success && Array.isArray(res.partners)) {
+        setPartners(res.partners);
+      } else {
+        const { getPartners } = await import('@/lib/partnerStore').catch(() => ({ getPartners: () => [] }));
+        setPartners(typeof getPartners === 'function' ? getPartners() : []);
+      }
+
+      if (enqRes.success && Array.isArray(enqRes.enquiries)) {
+        setEnquiries(enqRes.enquiries);
+      }
+    } catch {
+      try {
+        const { getPartners } = await import('@/lib/partnerStore');
+        setPartners(getPartners());
+      } catch {}
+    } finally {
+      setLoadingPartners(false);
+    }
   };
 
   useEffect(() => { load(); }, []);
 
-  const save = (arr) => { saveAllPartners(arr); setPartners(arr); };
-
-  const toggle = (slug, field) => {
-    const all = getPartners();
-    const updated = all.map(p => p.slug === slug ? { ...p, [field]: !p[field] } : p);
-    save(updated);
+  const toggle = async (id, slug, field) => {
+    const partner = partners.find(p => p.id === id || p.slug === slug);
+    if (!partner) return;
+    const update = { [field === 'isActive' ? 'isActive' : 'isFeatured']: !partner[field] };
+    await opsUpdatePartnerStatus(id || slug, update).catch(() => {});
+    load();
   };
 
-  const setApproval = (slug, status) => {
-    const all = getPartners();
-    const updated = all.map(p => p.slug === slug ? { ...p, approvalStatus: status } : p);
-    save(updated);
+  const setApproval = async (id, slug, status) => {
+    await opsUpdatePartnerStatus(id || slug, { approvalStatus: status }).catch(() => {});
+    load();
   };
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!form.companyName || !form.slug || !form.category) return alert('Company name, slug, and category are required');
-    if (partners.find(p => p.slug === form.slug)) return alert('A partner with this slug already exists');
-    addPartner(form);
-    load();
-    setAddModal(false);
-    setForm(BLANK_PARTNER);
+    const res = await opsCreatePartner(form);
+    if (res.success) {
+      showToast('✅ Partner created!');
+      load();
+      setAddModal(false);
+      setForm(BLANK_PARTNER);
+    } else {
+      alert('Error: ' + (res.message || 'Failed to create partner'));
+    }
   };
 
-  const handleEdit = () => {
+  const handleEdit = async () => {
     if (!form.companyName) return alert('Company name is required');
-    updatePartner(editSlug, form);
-    load();
-    setEditModal(false);
-    if (selected?.slug === editSlug) setSelected({ ...selected, ...form });
+    const res = await opsUpdatePartner(editId, form);
+    if (res.success) {
+      showToast('✅ Partner updated!');
+      load();
+      setEditModal(false);
+      if (selected?.id === editId) setSelected({ ...selected, ...form });
+    } else {
+      alert('Error: ' + (res.message || 'Failed to update'));
+    }
   };
 
   const openEdit = (partner) => {
     setForm({ ...partner });
     setEditSlug(partner.slug);
+    setEditId(partner.id);
     setEditModal(true);
   };
 
-  const handleDelete = (slug) => {
-    if (!confirm('Are you sure you want to delete this partner? This cannot be undone.')) return;
-    deletePartner(slug);
+  const handleDelete = async (id, slug) => {
+    if (!confirm('Deactivate this partner? They will no longer appear on the public directory.')) return;
+    await opsDeletePartner(id || slug).catch(() => {});
     load();
-    if (selected?.slug === slug) setSelected(null);
+    if (selected?.id === id || selected?.slug === slug) setSelected(null);
   };
+
 
   const f = k => e => setForm(p => ({ ...p, [k]: e.target.value }));
   const fb = k => e => setForm(p => ({ ...p, [k]: e.target.checked }));
@@ -214,6 +258,21 @@ export default function OpsPartnersV2() {
 
   return (
     <div>
+      {/* Tabs */}
+      <div style={{ display: 'flex', gap: '24px', borderBottom: '2px solid #E2E8F0', marginBottom: '24px' }}>
+        <button
+          onClick={() => setActiveTab('partners')}
+          style={{ background: 'none', border: 'none', borderBottom: activeTab === 'partners' ? '2px solid #FC6E20' : '2px solid transparent', padding: '12px 0', fontSize: '15px', fontWeight: 700, color: activeTab === 'partners' ? '#1E293B' : '#94A3B8', cursor: 'pointer', marginBottom: '-2px' }}
+        >
+          Partner Directory
+        </button>
+        <button
+          onClick={() => setActiveTab('enquiries')}
+          style={{ background: 'none', border: 'none', borderBottom: activeTab === 'enquiries' ? '2px solid #FC6E20' : '2px solid transparent', padding: '12px 0', fontSize: '15px', fontWeight: 700, color: activeTab === 'enquiries' ? '#1E293B' : '#94A3B8', cursor: 'pointer', marginBottom: '-2px' }}
+        >
+          Public Enquiries {enquiries.length > 0 && <span style={{ background: '#FC6E20', color: 'white', borderRadius: '99px', padding: '2px 8px', fontSize: '11px', marginLeft: '6px' }}>{enquiries.length}</span>}
+        </button>
+      </div>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
         <div>
@@ -248,22 +307,24 @@ export default function OpsPartnersV2() {
         ))}
       </div>
 
-      {/* Filters */}
-      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '20px', alignItems: 'center', background: 'white', padding: '16px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
-        <input style={{ ...inputStyle, maxWidth: '260px' }} value={search} onChange={e => setSearch(e.target.value)} placeholder="🔍 Search by name or slug..." />
-        <select style={{ ...inputStyle, maxWidth: '180px' }} value={filterCat} onChange={e => setFilterCat(e.target.value)}>
-          <option value="All">All Categories</option>
-          {PARTNER_CATEGORIES.map(c => <option key={c}>{c}</option>)}
-        </select>
-        <select style={{ ...inputStyle, maxWidth: '180px' }} value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
-          <option value="All">All Statuses</option>
-          {APPROVAL_STATUSES.map(s => <option key={s}>{s}</option>)}
-        </select>
-        <span style={{ fontSize: '13px', color: '#94A3B8', marginLeft: 'auto' }}>{filtered.length} shown</span>
-      </div>
+      {activeTab === 'partners' ? (
+        <>
+          {/* Filters */}
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '20px', alignItems: 'center', background: 'white', padding: '16px', borderRadius: '14px', border: '1px solid #E2E8F0' }}>
+            <input style={{ ...inputStyle, maxWidth: '260px' }} value={search} onChange={e => setSearch(e.target.value)} placeholder="🔍 Search by name or slug..." />
+            <select style={{ ...inputStyle, maxWidth: '180px' }} value={filterCat} onChange={e => setFilterCat(e.target.value)}>
+              <option value="All">All Categories</option>
+              {PARTNER_CATEGORIES.map(c => <option key={c}>{c}</option>)}
+            </select>
+            <select style={{ ...inputStyle, maxWidth: '180px' }} value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
+              <option value="All">All Statuses</option>
+              {APPROVAL_STATUSES.map(s => <option key={s}>{s}</option>)}
+            </select>
+            <span style={{ fontSize: '13px', color: '#94A3B8', marginLeft: 'auto' }}>{filtered.length} shown</span>
+          </div>
 
-      {/* Partner Table */}
-      <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #E2E8F0', overflow: 'hidden' }}>
+          {/* Partner Table */}
+          <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #E2E8F0', overflow: 'hidden' }}>
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', minWidth: '900px' }}>
             <thead>
@@ -275,8 +336,9 @@ export default function OpsPartnersV2() {
             </thead>
             <tbody>
               {filtered.map(partner => {
-                const completion = calcProfileCompletion(partner);
-                const partnerLeads = allLeads.filter(l => l.partnerSlug === partner.slug).length;
+                const completion = partner.profileCompletion || calcProfileCompletion(partner);
+                const partnerLeads = partner.enquiryCount || 0;
+
                 return (
                   <tr key={partner.id} style={{ borderBottom: '1px solid #F1F5F9', cursor: 'pointer' }}
                     onMouseEnter={e => e.currentTarget.style.background = '#FAFBFC'}
@@ -306,7 +368,7 @@ export default function OpsPartnersV2() {
                       <div>
                         <Badge status={partner.approvalStatus} />
                         <div style={{ marginTop: '6px' }}>
-                          <select value={partner.approvalStatus} onChange={e => { e.stopPropagation(); setApproval(partner.slug, e.target.value); }}
+                          <select value={partner.approvalStatus} onChange={e => { e.stopPropagation(); setApproval(partner.id, partner.slug, e.target.value); }}
                             onClick={e => e.stopPropagation()}
                             style={{ fontSize: '11px', padding: '3px 6px', borderRadius: '6px', border: '1px solid #E2E8F0', background: 'white', cursor: 'pointer' }}>
                             {APPROVAL_STATUSES.map(s => <option key={s}>{s}</option>)}
@@ -320,19 +382,19 @@ export default function OpsPartnersV2() {
                     <td style={{ padding: '12px 16px', textAlign: 'center' }}>
                       <span style={{ fontWeight: 700, color: partnerLeads > 0 ? '#8B5CF6' : '#94A3B8' }}>{partnerLeads}</span>
                     </td>
-                    <td style={{ padding: '12px 16px', textAlign: 'center' }} onClick={e => { e.stopPropagation(); toggle(partner.slug, 'isActive'); }}>
+                    <td style={{ padding: '12px 16px', textAlign: 'center' }} onClick={e => { e.stopPropagation(); toggle(partner.id, partner.slug, 'isActive'); }}>
                       <div style={{ width: '36px', height: '20px', borderRadius: '10px', background: partner.isActive ? '#10B981' : '#E2E8F0', cursor: 'pointer', position: 'relative', transition: 'background 0.2s' }}>
                         <div style={{ position: 'absolute', top: '2px', left: partner.isActive ? '18px' : '2px', width: '16px', height: '16px', borderRadius: '50%', background: 'white', boxShadow: '0 1px 3px rgba(0,0,0,0.2)', transition: 'left 0.2s' }} />
                       </div>
                     </td>
-                    <td style={{ padding: '12px 16px', textAlign: 'center' }} onClick={e => { e.stopPropagation(); toggle(partner.slug, 'isFeatured'); }}>
+                    <td style={{ padding: '12px 16px', textAlign: 'center' }} onClick={e => { e.stopPropagation(); toggle(partner.id, partner.slug, 'isFeatured'); }}>
                       <span style={{ fontSize: '18px', cursor: 'pointer', opacity: partner.isFeatured ? 1 : 0.25 }}>⭐</span>
                     </td>
                     <td style={{ padding: '12px 16px' }}>
                       <div style={{ display: 'flex', gap: '6px' }}>
                         <button onClick={e => { e.stopPropagation(); openEdit(partner); }} style={{ background: 'none', border: '1px solid #E2E8F0', borderRadius: '6px', padding: '5px 10px', cursor: 'pointer', fontSize: '12px' }}>✏️ Edit</button>
                         <a href={`/partners/${partner.slug}`} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{ background: 'none', border: '1px solid #E2E8F0', borderRadius: '6px', padding: '5px 10px', cursor: 'pointer', fontSize: '12px', textDecoration: 'none', color: '#FC6E20', fontWeight: 600 }}>👁️</a>
-                        <button onClick={e => { e.stopPropagation(); handleDelete(partner.slug); }} style={{ background: 'none', border: '1px solid #FEE2E2', borderRadius: '6px', padding: '5px 10px', cursor: 'pointer', fontSize: '12px', color: '#EF4444' }}>🗑️</button>
+                        <button onClick={e => { e.stopPropagation(); handleDelete(partner.id, partner.slug); }} style={{ background: 'none', border: '1px solid #FEE2E2', borderRadius: '6px', padding: '5px 10px', cursor: 'pointer', fontSize: '12px', color: '#EF4444' }}>🗑️</button>
                       </div>
                     </td>
                   </tr>
@@ -349,6 +411,59 @@ export default function OpsPartnersV2() {
           </div>
         )}
       </div>
+        </>
+      ) : (
+        <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #E2E8F0', overflow: 'hidden' }}>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px', minWidth: '900px' }}>
+              <thead>
+                <tr style={{ background: '#F8FAFC', borderBottom: '1px solid #E2E8F0', textAlign: 'left', color: '#64748B', fontWeight: 700, fontSize: '12px', textTransform: 'uppercase' }}>
+                  <th style={{ padding: '16px 20px' }}>Date</th>
+                  <th style={{ padding: '16px 20px' }}>Customer</th>
+                  <th style={{ padding: '16px 20px' }}>Partner</th>
+                  <th style={{ padding: '16px 20px' }}>Requirement</th>
+                  <th style={{ padding: '16px 20px' }}>Status</th>
+                  <th style={{ padding: '16px 20px' }}>Spam Flag</th>
+                </tr>
+              </thead>
+              <tbody>
+                {enquiries.map(enq => (
+                  <tr key={enq.id} style={{ borderBottom: '1px solid #E2E8F0' }}>
+                    <td style={{ padding: '16px 20px', color: '#64748B' }}>{new Date(enq.created_at).toLocaleDateString()}</td>
+                    <td style={{ padding: '16px 20px' }}>
+                      <div style={{ fontWeight: 700 }}>{enq.customer_name}</div>
+                      <div style={{ fontSize: '12px', color: '#64748B' }}>{enq.phone}</div>
+                    </td>
+                    <td style={{ padding: '16px 20px' }}>
+                      <div style={{ fontWeight: 600 }}>{enq.partner_name || 'N/A'}</div>
+                      <div style={{ fontSize: '12px', color: '#64748B' }}>{enq.category || 'N/A'}</div>
+                    </td>
+                    <td style={{ padding: '16px 20px' }}>
+                      <div>{enq.requirement}</div>
+                      <div style={{ fontSize: '12px', color: '#64748B' }}>{enq.budget_range}</div>
+                    </td>
+                    <td style={{ padding: '16px 20px' }}>
+                      <Badge status={enq.status} />
+                    </td>
+                    <td style={{ padding: '16px 20px' }}>
+                      {enq.spam_status === 'spam' && <span style={{ background: '#FEE2E2', color: '#991B1B', padding: '3px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: 700 }}>SPAM</span>}
+                      {enq.spam_status === 'suspicious' && <span style={{ background: '#FEF9C3', color: '#854D0E', padding: '3px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: 700 }}>SUSPICIOUS</span>}
+                      {(enq.spam_status === 'clean' || !enq.spam_status) && <span style={{ background: '#DCFCE7', color: '#166534', padding: '3px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: 700 }}>CLEAN</span>}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {enquiries.length === 0 && (
+            <div style={{ padding: '48px', textAlign: 'center', color: '#94A3B8' }}>
+              <div style={{ fontSize: '40px', marginBottom: '12px' }}>📨</div>
+              <div style={{ fontWeight: 700, marginBottom: '8px' }}>No enquiries found</div>
+              <div style={{ fontSize: '14px' }}>Public enquiries will appear here.</div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Partner Detail Slide-Over */}
       {selected && (

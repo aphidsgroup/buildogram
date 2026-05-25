@@ -8,12 +8,9 @@ function verifyEnv() {
   const requiredKeys = [
     'DATABASE_URL',
     'JWT_SECRET',
-    'CLOUDINARY_URL',
-    'NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME',
-    'WHATSAPP_PHONE_NUMBER_ID',
-    'WHATSAPP_TOKEN',
-    'RAZORPAY_KEY_ID',
-    'RAZORPAY_KEY_SECRET'
+    'NEXT_PUBLIC_SITE_URL',
+    'OPS_ADMIN_EMAIL',
+    'OPS_ADMIN_PHONE'
   ];
 
   let missing = [];

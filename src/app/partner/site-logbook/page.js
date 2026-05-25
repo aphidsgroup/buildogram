@@ -14,9 +14,45 @@ export default function SiteLogbook() {
   const [editId, setEditId] = useState(null);
   const [form, setForm] = useState(BLANK);
 
+  const [loading, setLoading] = useState(true);
+
+  const fetchLogs = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/partner/site-logs');
+      const data = await res.json();
+      if (data.success) {
+        // map API response to UI shape
+        const mapped = (data.logs || []).map(l => ({
+          id: l.id,
+          date: l.logDate,
+          project: l.projectId,
+          workDone: l.workCompleted,
+          labourCount: l.labourCount,
+          materialsReceived: l.materialsReceived,
+          issues: l.issuesFaced,
+          tomorrowPlan: l.tomorrowPlan,
+          photoUrl: l.photoUrl,
+          videoUrl: l.videoUrl,
+          clientVisible: l.clientVisible
+        }));
+        setLogs(mapped);
+        localStorage.setItem('bos_logbook', JSON.stringify(mapped));
+      } else {
+        throw new Error(data.message);
+      }
+    } catch (e) {
+      console.error('API fetch failed, using fallback:', e);
+      const stored = typeof window !== 'undefined' && localStorage.getItem('bos_logbook');
+      if (stored) setLogs(JSON.parse(stored));
+      else setLogs(DEMO_LOGBOOK);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const stored = typeof window !== 'undefined' && localStorage.getItem('bos_logbook');
-    setLogs(stored ? JSON.parse(stored) : DEMO_LOGBOOK);
+    fetchLogs();
     const storedP = typeof window !== 'undefined' && localStorage.getItem('bos_projects');
     if (storedP) setProjects(JSON.parse(storedP));
   }, []);
@@ -26,14 +62,48 @@ export default function SiteLogbook() {
   const openAdd = () => { setForm({ ...BLANK, date: new Date().toISOString().slice(0, 10) }); setEditId(null); setModalOpen(true); };
   const openEdit = (log) => { setForm({ ...log }); setEditId(log.id); setModalOpen(true); };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form.workDone) return alert('Work done description is required');
+    
+    // Optimistic
+    let optimisticArr = [];
     if (editId) {
-      save(logs.map(l => l.id === editId ? { ...form, id: editId } : l));
+      optimisticArr = logs.map(l => l.id === editId ? { ...form, id: editId } : l);
     } else {
-      save([{ ...form, id: generateId(), createdAt: new Date().toISOString().slice(0, 10) }, ...logs]);
+      optimisticArr = [{ ...form, id: generateId(), createdAt: new Date().toISOString().slice(0, 10) }, ...logs];
     }
+    save(optimisticArr);
     setModalOpen(false);
+
+    // API save
+    try {
+      const url = editId && String(editId).length > 10 ? `/api/partner/site-logs/${editId}` : '/api/partner/site-logs';
+      const method = editId && String(editId).length > 10 ? 'PUT' : 'POST';
+      const payload = {
+        projectId: form.project,
+        logDate: form.date,
+        workCompleted: form.workDone,
+        labourCount: Number(form.labourCount) || 0,
+        materialsReceived: form.materialsReceived,
+        issuesFaced: form.issues,
+        tomorrowPlan: form.tomorrowPlan,
+        photoUrl: form.photoUrl,
+        videoUrl: form.videoUrl,
+        clientVisible: form.clientVisible
+      };
+      
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        fetchLogs();
+      }
+    } catch(e) {
+      console.error('API save failed', e);
+    }
   };
 
   const deleteLog = (id) => { if (confirm('Delete this log entry?')) save(logs.filter(l => l.id !== id)); };

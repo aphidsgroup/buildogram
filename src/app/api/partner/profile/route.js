@@ -1,74 +1,111 @@
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
-import { getUserFromRequest } from '@/lib/auth';
+import { requirePartner, ok, fail } from '@/lib/apiAuth';
 
-export async function GET(req) {
-  const u = getUserFromRequest(req);
-  if (!u) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+export const dynamic = 'force-dynamic';
+
+// GET — partner fetches own profile
+export async function GET(request) {
+  const { user, error } = requirePartner(request);
+  if (error) return error;
 
   try {
-    const [profile] = await sql`
-      SELECT *
-      FROM leads
-      WHERE lead_type = 'partner_application'
-        AND metadata->>'partner_user_id' = ${u.id}
-      ORDER BY created_at DESC
-      LIMIT 1
-    `;
-    
-    return NextResponse.json({ success: true, profile: profile || null });
+    const [u] = await sql`SELECT partner_id FROM users WHERE id = ${user.id} LIMIT 1`;
+    if (!u?.partner_id) {
+      return ok({ profile: null, message: 'No partner profile linked to this account.' });
+    }
+
+    const [partner] = await sql`SELECT * FROM partners WHERE id = ${u.partner_id} LIMIT 1`;
+    if (!partner) return ok({ profile: null });
+
+    const [gallery, videos, portfolio] = await Promise.all([
+      sql`SELECT id, url, alt, caption FROM partner_gallery WHERE partner_id = ${partner.id} ORDER BY sort_order, created_at`,
+      sql`SELECT id, title, url, video_type FROM partner_videos WHERE partner_id = ${partner.id} ORDER BY sort_order, created_at`,
+      sql`SELECT id, title, location, description, image_url, video_url, completion_year FROM partner_portfolio WHERE partner_id = ${partner.id} ORDER BY completion_year DESC NULLS LAST`,
+    ]);
+
+    return ok({
+      profile: {
+        id: partner.id,
+        slug: partner.slug,
+        companyName: partner.company_name,
+        category: partner.category,
+        description: partner.full_description,
+        shortDescription: partner.short_description,
+        logoUrl: partner.logo_url,
+        coverUrl: partner.cover_url,
+        location: partner.location,
+        serviceAreas: partner.service_areas,
+        yearsExperience: partner.years_experience,
+        contactPerson: partner.contact_person,
+        phone: partner.phone,
+        email: partner.email,
+        whatsapp: partner.whatsapp,
+        website: partner.website,
+        services: (partner.services || []).join(', '),
+        certifications: (partner.certifications || []).join(', '),
+        brands: (partner.brands_handled || []).join(', '),
+        specializations: (partner.specializations || []).join(', '),
+        approvalStatus: partner.approval_status,
+        isActive: partner.active,
+        isFeatured: partner.featured,
+        partnerSlug: partner.slug,
+        galleryImages: gallery,
+        videoGallery: videos,
+        portfolio: portfolio,
+      }
+    });
   } catch (e) {
-    console.error('[partner profile GET]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    console.error('[GET /api/partner/profile]', e.message);
+    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
   }
 }
 
-export async function POST(req) {
-  const u = getUserFromRequest(req);
-  if (!u) return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+// PUT — partner updates own profile (safe fields only)
+export async function PUT(request) {
+  const { user, error } = requirePartner(request);
+  if (error) return error;
 
   try {
-    const b = await req.json();
+    const [u] = await sql`SELECT partner_id FROM users WHERE id = ${user.id} LIMIT 1`;
+    if (!u?.partner_id) return fail('No partner profile linked to this account', 404);
 
-    // 1. Fetch current profile to ensure it exists and belongs to user
-    const [existing] = await sql`
-      SELECT *
-      FROM leads
-      WHERE lead_type = 'partner_application'
-        AND metadata->>'partner_user_id' = ${u.id}
-      ORDER BY created_at DESC
-      LIMIT 1
+    const b = await request.json();
+
+    // Safe fields only — partner cannot change approvalStatus, active, featured
+    const toArr = v => v ? String(v).split(',').map(s => s.trim()).filter(Boolean) : [];
+
+    await sql`
+      UPDATE partners SET
+        company_name      = COALESCE(${b.companyName || null}, company_name),
+        category          = COALESCE(${b.category || null}, category),
+        short_description = ${b.shortDescription || b.description?.slice(0, 200) || null},
+        full_description  = ${b.fullDescription || b.description || null},
+        logo_url          = ${b.logoUrl || null},
+        cover_url         = ${b.coverUrl || null},
+        location          = ${b.location || null},
+        service_areas     = ${b.serviceAreas || null},
+        years_experience  = ${b.yearsExperience ? parseInt(b.yearsExperience) : null},
+        contact_person    = ${b.contactPerson || null},
+        phone             = ${b.phone || null},
+        email             = ${b.email || null},
+        whatsapp          = ${b.whatsapp || null},
+        website           = ${b.website || null},
+        services          = ${toArr(b.services)},
+        certifications    = ${toArr(b.certifications)},
+        brands_handled    = ${toArr(b.brands)},
+        updated_at        = NOW()
+      WHERE id = ${u.partner_id}
     `;
 
-    if (!existing) {
-      return NextResponse.json({ success: false, error: 'No partner profile linked to this account.' }, { status: 404 });
-    }
-
-    // 2. Safe merge of only allowed fields
-    const safeUpdates = {
-      business_name: b.business_name,
-      service_areas: b.service_areas,
-      services_offered: b.services_offered,
-      website_url: b.website_url,
-      instagram_url: b.instagram_url,
-      portfolio_links: b.portfolio_links,
-      // Intentionally NOT allowing verification_status or public_status or partner_user_id to be updated here!
-    };
-
-    const newMetadata = { ...existing.metadata, ...safeUpdates };
-
-    // 3. Update DB
-    const [updated] = await sql`
-      UPDATE leads
-      SET metadata = ${newMetadata}::jsonb
-      WHERE id = ${existing.id}
-      RETURNING *
-    `;
-
-    return NextResponse.json({ success: true, profile: updated });
-
+    return ok({ message: 'Profile updated successfully' });
   } catch (e) {
-    console.error('[partner profile POST]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    console.error('[PUT /api/partner/profile]', e.message);
+    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
   }
+}
+
+// Keep backward-compatible POST alias
+export async function POST(request) {
+  return PUT(request);
 }

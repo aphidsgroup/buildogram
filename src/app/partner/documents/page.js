@@ -22,9 +22,39 @@ export default function DocumentLocker() {
   const [editId, setEditId] = useState(null);
   const [form, setForm] = useState(BLANK);
 
+  const [loading, setLoading] = useState(true);
+
+  const fetchDocs = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/partner/documents');
+      const data = await res.json();
+      if (data.success) {
+        const mapped = (data.documents || []).map(d => ({
+          id: d.id,
+          name: d.documentName,
+          project: d.projectId,
+          type: d.documentType,
+          fileUrl: d.fileUrl,
+          status: d.status,
+          version: d.version,
+          uploadedAt: d.createdAt
+        }));
+        setDocs(mapped);
+        localStorage.setItem('bos_documents', JSON.stringify(mapped));
+      } else throw new Error(data.message);
+    } catch (e) {
+      console.error('API fetch failed, fallback', e);
+      const stored = typeof window !== 'undefined' && localStorage.getItem('bos_documents');
+      if (stored) setDocs(JSON.parse(stored));
+      else setDocs(DEMO_DOCUMENTS);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const stored = typeof window !== 'undefined' && localStorage.getItem('bos_documents');
-    setDocs(stored ? JSON.parse(stored) : DEMO_DOCUMENTS);
+    fetchDocs();
     const storedP = typeof window !== 'undefined' && localStorage.getItem('bos_projects');
     if (storedP) setProjects(JSON.parse(storedP));
   }, []);
@@ -35,14 +65,31 @@ export default function DocumentLocker() {
   const openEdit = (doc) => { setForm({ ...doc }); setEditId(doc.id); setModalOpen(true); };
   const deleteDoc = (id) => { if (confirm('Delete this document?')) save(docs.filter(d => d.id !== id)); };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form.name) return alert('Document name is required');
-    if (editId) {
-      save(docs.map(d => d.id === editId ? { ...form, id: editId } : d));
-    } else {
-      save([{ ...form, id: 'D' + Date.now().toString().slice(-6), uploadedAt: new Date().toISOString().slice(0, 10) }, ...docs]);
-    }
+    
+    let optArr = [];
+    if (editId) optArr = docs.map(d => d.id === editId ? { ...form, id: editId } : d);
+    else optArr = [{ ...form, id: 'temp_' + Date.now().toString(), uploadedAt: new Date().toISOString().slice(0, 10) }, ...docs];
+    save(optArr);
     setModalOpen(false);
+
+    try {
+      const url = editId && String(editId).length > 10 ? `/api/partner/documents/${editId}` : '/api/partner/documents';
+      const method = editId && String(editId).length > 10 ? 'PUT' : 'POST';
+      const payload = {
+        documentName: form.name,
+        projectId: form.project,
+        documentType: form.type,
+        fileUrl: form.fileUrl,
+        status: form.status,
+        version: form.version
+      };
+      const res = await fetch(url, { method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      if ((await res.json()).success) fetchDocs();
+    } catch(e) {
+      console.error('API save fail', e);
+    }
   };
 
   const f = (k) => (e) => setForm(p => ({ ...p, [k]: e.target.value }));

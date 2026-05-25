@@ -1,7 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { getApprovedPartners } from '@/lib/partnerStore';
+import { fetchApprovedPartners } from '@/lib/partnerApi';
+
 
 const FILTERS = [
   { id: 'all', label: '🌐 All Partners' },
@@ -108,59 +109,83 @@ function PartnerCard({ partner }) {
 export default function DirectoryClient() {
   const [allPartners, setAllPartners] = useState([]);
   const [filter, setFilter] = useState('all');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    // Get approved+active partners, featured first
-    const partners = getApprovedPartners();
-    const sorted = [...partners].sort((a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0));
-    setAllPartners(sorted);
+    setLoading(true);
+    fetchApprovedPartners()
+      .then(partners => {
+        const sorted = [...partners].sort((a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0));
+        setAllPartners(sorted);
+      })
+      .catch(() => setError('Could not load partners. Showing cached data.'))
+      .finally(() => setLoading(false));
   }, []);
 
   const visible = filter === 'all' ? allPartners : allPartners.filter(p => p.category === filter);
 
+
+
   return (
     <div>
-      {/* Filter Pills */}
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '32px', flexWrap: 'wrap' }}>
-        {FILTERS.map(f => (
-          <button
-            key={f.id}
-            onClick={() => setFilter(f.id)}
-            style={{
-              padding: '8px 18px', borderRadius: '999px', border: '1.5px solid',
-              fontSize: '13px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap',
-              background: filter === f.id ? 'linear-gradient(135deg,#FFB347,#FC6E20)' : 'white',
-              color: filter === f.id ? 'white' : '#64748B',
-              borderColor: filter === f.id ? '#FC6E20' : '#E2E8F0',
-              boxShadow: filter === f.id ? '0 2px 10px rgba(252,110,32,0.3)' : 'none',
-            }}
-          >
-            {f.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Count */}
-      <div style={{ marginBottom: '24px', fontSize: '14px', color: '#64748B', fontWeight: 600 }}>
-        Showing <strong style={{ color: '#1E293B' }}>{visible.length}</strong> verified partner{visible.length !== 1 ? 's' : ''}
-        {filter !== 'all' && ` in ${filter}`}
-      </div>
-
-      {/* Grid */}
-      {visible.length === 0 ? (
-        <div style={{ textAlign: 'center', padding: '60px 20px' }}>
-          <div style={{ fontSize: '48px', marginBottom: '16px' }}>🤝</div>
-          <h3 style={{ marginBottom: '8px' }}>No partners in this category yet</h3>
-          <p style={{ color: '#64748B' }}>Check back soon or browse all partners.</p>
-          <button onClick={() => setFilter('all')} style={{ marginTop: '16px', padding: '10px 24px', background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', border: 'none', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '14px' }}>
-            View All Partners
-          </button>
-        </div>
-      ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
-          {visible.map(p => <PartnerCard key={p.id} partner={p} />)}
+      {loading && (
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#64748B' }}>
+          <div style={{ fontSize: '32px', marginBottom: '12px' }}>⏳</div>
+          <p style={{ fontWeight: 600 }}>Loading partners...</p>
         </div>
       )}
+      {error && !loading && (
+        <div style={{ marginBottom: '16px', padding: '12px 16px', background: '#FFF7ED', borderRadius: '10px', border: '1px solid #FDBA74', fontSize: '13px', color: '#92400E' }}>
+          ⚠️ {error}
+        </div>
+      )}
+      {!loading && (
+        <>
+        {/* Filter Pills */}
+        <div style={{ display: 'flex', gap: '10px', marginBottom: '32px', flexWrap: 'wrap' }}>
+          {FILTERS.map(f => (
+            <button
+              key={f.id}
+              onClick={() => setFilter(f.id)}
+              style={{
+                padding: '8px 18px', borderRadius: '999px', border: '1.5px solid',
+                fontSize: '13px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap',
+                background: filter === f.id ? 'linear-gradient(135deg,#FFB347,#FC6E20)' : 'white',
+                color: filter === f.id ? 'white' : '#64748B',
+                borderColor: filter === f.id ? '#FC6E20' : '#E2E8F0',
+                boxShadow: filter === f.id ? '0 2px 10px rgba(252,110,32,0.3)' : 'none',
+              }}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Count */}
+        <div style={{ marginBottom: '24px', fontSize: '14px', color: '#64748B', fontWeight: 600 }}>
+          Showing <strong style={{ color: '#1E293B' }}>{visible.length}</strong> verified partner{visible.length !== 1 ? 's' : ''}
+          {filter !== 'all' && ` in ${filter}`}
+        </div>
+
+        {/* Grid */}
+        {visible.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🤝</div>
+            <h3 style={{ marginBottom: '8px' }}>No partners in this category yet</h3>
+            <p style={{ color: '#64748B' }}>Check back soon or browse all partners.</p>
+            <button onClick={() => setFilter('all')} style={{ marginTop: '16px', padding: '10px 24px', background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', border: 'none', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '14px' }}>
+              View All Partners
+            </button>
+          </div>
+        ) : (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
+            {visible.map(p => <PartnerCard key={p.id} partner={p} />)}
+          </div>
+        )}
+        </>
+      )}
+
     </div>
   );
 }
