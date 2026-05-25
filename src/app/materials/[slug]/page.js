@@ -199,7 +199,7 @@ export default function MaterialPage({ params }) {
 
         <div className="card" style={{ background: '#0F172A', border: 'none', textAlign: 'center', padding: '44px', borderRadius: '16px' }}>
           <h3 style={{ color: 'white', fontSize: '24px', fontWeight: 800, marginBottom: '12px' }}>Need {mat.name} for your project?</h3>
-          <p style={{ color: '#CBD5E1', fontSize: '16px', marginBottom: '28px' }}>Get verified delivery with invoice documentation and top brand confirmation.</p>
+          <p style={{ color: '#CBD5E1', fontSize: '16px', marginBottom: '28px' }}>Get delivery proof where available with invoice documentation and top brand confirmation.</p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="/materials/request-quote" className="btn btn-primary" style={{ padding: '14px 28px', fontSize: '16px' }}>Request Quote</Link>
             <Link href="/partners/register" className="btn btn-outline-light" style={{ padding: '14px 28px', fontSize: '16px' }}>Join as Supplier</Link>
