@@ -1,11 +1,52 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 
 /* ─── Component ──────────────────────────────────────────── */
 
 export default function Home() {
+  const router = useRouter();
+  const [searchCategory, setSearchCategory] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  
+  const handleMarketplaceSearch = (e) => {
+    e.preventDefault();
+    if (searchCategory === 'Buy/Sell Property') {
+      window.open('https://www.realproprealty.com', '_blank');
+      return;
+    }
+    if (searchCategory === 'Rent/Lease Property') {
+      window.open('https://toletboardchennai.in', '_blank');
+      return;
+    }
+    if (searchCategory === 'Material Supplier') {
+      router.push('/materials');
+      return;
+    }
+    if (searchCategory === 'Become Partner') {
+      router.push('/partners/register');
+      return;
+    }
+    if (searchCategory === 'BOQ Review') {
+      router.push('/boq-audit');
+      return;
+    }
+
+    // Default to partner directory
+    let url = '/partners/directory';
+    const params = new URLSearchParams();
+    if (searchCategory) params.append('category', searchCategory);
+    if (searchQuery) params.append('q', searchQuery);
+    
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
+    router.push(url);
+  };
+
   return (
     <div className={styles.page}>
       {/* ══════════════════════ HERO ══════════════════════ */}
@@ -14,71 +55,143 @@ export default function Home() {
         <div className={styles.heroLine} />
 
         <div className={`container ${styles.heroContainer}`}>
-          {/* Left Text */}
+          {/* Left Text / Action Panel */}
           <div className={`${styles.heroText} ${styles.mobileCenter}`}>
-            {/* Pill badge */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '10px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.25)', borderRadius: '999px', padding: '8px 20px', marginBottom: '32px' }}>
-              <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'var(--gradient-orange)', display: 'inline-block', boxShadow: '0 0 8px #FC6E20' }} />
-              <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Buildogram</span>
-            </div>
-
             {/* Headline */}
-            <h1 style={{ color: 'white', fontSize: 'clamp(38px, 5vw, 64px)', lineHeight: 1.05, marginBottom: '20px', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800 }}>
-              The Construction &<br />
-              <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>Property Marketplace</span>
+            <h1 style={{ color: 'white', fontSize: 'clamp(38px, 5vw, 64px)', lineHeight: 1.05, marginBottom: '16px', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800 }}>
+              One Marketplace for <br />
+              <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>Construction & Property</span>
             </h1>
 
-            {/* Tagline */}
-            <p style={{ fontFamily: 'DM Serif Text, serif', fontStyle: 'italic', color: '#BBA07A', fontSize: 'clamp(20px, 2.5vw, 26px)', marginBottom: '24px' }}>
-              Showcase. Connect. Build.
-            </p>
-
             {/* Sub */}
-            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: 'clamp(16px, 1.8vw, 19px)', lineHeight: 1.7, marginBottom: '40px', maxWidth: '680px' }}>
-              A platform where property owners, builders, contractors, suppliers, and real estate professionals connect through project showcases, verified partners, 360° property listings, material support, BOQ clarity, Property Passport records, and maintenance services.
+            <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: 'clamp(16px, 1.8vw, 18px)', lineHeight: 1.6, marginBottom: '32px', maxWidth: '640px' }}>
+              Search verified builders, architects, material suppliers, property portals, maintenance vendors, and BOQ support through Buildogram.
             </p>
 
-            {/* CTA row */}
-            <div className={styles.btnRow}>
-              <Link href="/partners" className="btn btn-primary btn-lg" style={{ width: '100%', maxWidth: '300px', justifyContent: 'center' }}>Join the Marketplace</Link>
-              <Link href="/about" className="btn btn-lg btn-outline-light hide-mobile">Explore Buildogram</Link>
+            {/* Marketplace Action Panel */}
+            <div className={styles.actionPanel} style={{ textAlign: 'left' }}>
+              <div className={styles.actionPanelTitle}>What do you need today?</div>
+              <form onSubmit={handleMarketplaceSearch}>
+                <div className={styles.actionGrid}>
+                  <input 
+                    type="text" 
+                    className={styles.actionInput} 
+                    placeholder="Search builder, cement, property..." 
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                  />
+                  <select 
+                    className={styles.actionInput}
+                    value={searchCategory}
+                    onChange={e => setSearchCategory(e.target.value)}
+                  >
+                    <option value="">All Categories</option>
+                    <option value="Builder">Home Construction</option>
+                    <option value="Architect">Architect</option>
+                    <option value="Interior Designer">Interior Designer</option>
+                    <option value="Material Supplier">Material Supplier</option>
+                    <option value="Solar">Solar</option>
+                    <option value="Home Automation">Home Automation</option>
+                    <option value="Elevators">Elevators</option>
+                    <option value="Waterproofing">Waterproofing</option>
+                    <option value="Buy/Sell Property">Buy/Sell Property</option>
+                    <option value="Rent/Lease Property">Rent/Lease Property</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="BOQ Review">BOQ Review</option>
+                  </select>
+                </div>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <button type="submit" className="btn btn-primary" style={{ flex: 1, padding: '14px', fontSize: '15px' }}>Find Options</button>
+                  <Link href="/contact" className="btn btn-outline" style={{ flex: 1, padding: '14px', fontSize: '15px', justifyContent: 'center' }}>Request Quote</Link>
+                </div>
+              </form>
             </div>
-            
-            <div className={styles.btnRow} style={{ marginTop: '16px' }}>
-               <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" className="btn btn-ghost-light">Buy/Sell Properties →</a>
-               <Link href="/materials" className="btn btn-ghost-light">Request Material Quote →</Link>
+
+            {/* Quick Actions */}
+            <div className={styles.quickActions}>
+              <Link href="/partners/directory?category=Builder" className={styles.quickChip}>Find Builder</Link>
+              <Link href="/partners/directory?category=Architect" className={styles.quickChip}>Find Architect</Link>
+              <Link href="/materials" className={styles.quickChip}>Request Material Quote</Link>
+              <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" className={styles.quickChip}>Buy/Sell Property</a>
+              <Link href="/partners/register" className={styles.quickChip}>Join as Partner</Link>
             </div>
           </div>
 
-          {/* Right Visual (Hidden or adjusted on mobile) */}
+          {/* Right Visual (Marketplace Dashboard Cards) */}
           <div className={styles.heroVisual}>
-            <div className={styles.floatingCard2}>
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '12px' }}>
-                <span style={{ fontSize: '24px' }}>🧱</span>
-                <div>
-                  <h4 style={{ margin: 0, fontSize: '15px' }}>Material Suppliers</h4>
-                  <div style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13px' }}>24+ Verified Brands</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', maxWidth: '420px', marginLeft: 'auto' }}>
+              
+              <div className={styles.dashboardCardDark}>
+                <div style={{ fontSize: '12px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', marginBottom: '8px' }}>Verified Categories</div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                  <span style={{ background: 'rgba(255,255,255,0.1)', padding: '4px 10px', borderRadius: '6px', fontSize: '12px', color: 'white' }}>Builders</span>
+                  <span style={{ background: 'rgba(255,255,255,0.1)', padding: '4px 10px', borderRadius: '6px', fontSize: '12px', color: 'white' }}>Architects</span>
+                  <span style={{ background: 'rgba(255,255,255,0.1)', padding: '4px 10px', borderRadius: '6px', fontSize: '12px', color: 'white' }}>Suppliers</span>
+                  <span style={{ background: 'rgba(255,255,255,0.1)', padding: '4px 10px', borderRadius: '6px', fontSize: '12px', color: 'white' }}>Solar</span>
+                  <span style={{ background: 'rgba(255,255,255,0.1)', padding: '4px 10px', borderRadius: '6px', fontSize: '12px', color: 'white' }}>Waterproofing</span>
                 </div>
               </div>
-            </div>
-            
-            <div className={styles.floatingCard}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
-                <span style={{ background: 'rgba(252, 110, 32, 0.2)', color: '#FFB347', padding: '4px 10px', borderRadius: '100px', fontSize: '12px', fontWeight: 600 }}>⭐ Featured Partner</span>
-                <span style={{ color: '#22C55E', fontSize: '12px', fontWeight: 700 }}>✅ Verified</span>
+
+              <div className={styles.dashboardCard}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                  <div style={{ fontSize: '14px', fontWeight: 800 }}>Material Quotes</div>
+                  <span style={{ background: '#DCFCE7', color: '#166534', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: 700 }}>Active</span>
+                </div>
+                <div style={{ display: 'flex', gap: '12px', fontSize: '13px', color: '#64748B' }}>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>🧱 Cement</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>⛓️ Steel</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>⏳ Sand</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>⚡ Electrical</span>
+                </div>
               </div>
-              <h3 style={{ fontSize: '22px', marginBottom: '8px' }}>Pioneer Builders Ltd.</h3>
-              <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', marginBottom: '16px', lineHeight: 1.5 }}>Premium residential construction and turnkey contracting in Chennai.</p>
-              
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '20px' }}>
-                <span style={{ background: 'rgba(255,255,255,0.1)', padding: '4px 10px', borderRadius: '6px', fontSize: '12px' }}>Turnkey Construction</span>
-                <span style={{ background: 'rgba(255,255,255,0.1)', padding: '4px 10px', borderRadius: '6px', fontSize: '12px' }}>Renovation</span>
+
+              <div className={styles.dashboardCard}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                  <div style={{ fontSize: '14px', fontWeight: 800 }}>Property Portals</div>
+                  <span style={{ background: '#EFF6FF', color: '#2563EB', padding: '2px 8px', borderRadius: '4px', fontSize: '11px', fontWeight: 700 }}>Integrated</span>
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                  <div style={{ border: '1px solid #E2E8F0', padding: '8px', borderRadius: '8px', fontSize: '12px', fontWeight: 600, textAlign: 'center' }}>Buy / Sell</div>
+                  <div style={{ border: '1px solid #E2E8F0', padding: '8px', borderRadius: '8px', fontSize: '12px', fontWeight: 600, textAlign: 'center' }}>Rent / Lease</div>
+                </div>
               </div>
-              
-              <Link href="/partners/directory" style={{ display: 'block', textAlign: 'center', width: '100%', background: 'white', color: 'var(--secondary)', padding: '12px', borderRadius: '8px', fontWeight: 600 }}>
-                View Profile
-              </Link>
+
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── INTENT STRIP ── */}
+      <section className={styles.intentStrip}>
+        <div className="container">
+          <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text)' }}>Start with what you need</h2>
+          </div>
+          <div className={styles.intentGrid}>
+            <Link href="/partners/directory?category=Builder" className={styles.intentCard}>
+              <div style={{ fontSize: '24px', marginBottom: '8px' }}>🏗️</div>
+              I want to build a home
+            </Link>
+            <Link href="/partners/directory?category=Architect" className={styles.intentCard}>
+              <div style={{ fontSize: '24px', marginBottom: '8px' }}>📐</div>
+              I need an architect/designer
+            </Link>
+            <Link href="/materials" className={styles.intentCard}>
+              <div style={{ fontSize: '24px', marginBottom: '8px' }}>🧱</div>
+              I want material prices
+            </Link>
+            <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" className={styles.intentCard}>
+              <div style={{ fontSize: '24px', marginBottom: '8px' }}>🏠</div>
+              I want to buy/sell property
+            </a>
+            <a href="https://toletboardchennai.in" target="_blank" rel="noopener noreferrer" className={styles.intentCard}>
+              <div style={{ fontSize: '24px', marginBottom: '8px' }}>🔑</div>
+              I want to rent/lease property
+            </a>
+            <Link href="/partners/register" className={styles.intentCard}>
+              <div style={{ fontSize: '24px', marginBottom: '8px' }}>🤝</div>
+              I want to become a partner
+            </Link>
           </div>
         </div>
       </section>
