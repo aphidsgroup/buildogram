@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { SectionHeader, Modal, FormField, SearchBar, EmptyState, StatusBadge } from '../_shared/components';
 import { DEMO_DOCUMENTS, DEMO_PROJECTS, DOC_TYPES, DOC_STATUSES } from '../_shared/demoData';
+import FileUpload from '@/components/FileUpload';
 
 const DOC_TYPE_ICONS = {
   'Agreement': '📝', 'Quotation': '📋', 'BOQ': '💰', '2D Plan': '📐',
@@ -201,10 +202,22 @@ export default function DocumentLocker() {
           </FormField>
           <FormField label="Version"><input className="input" value={form.version} onChange={f('version')} placeholder="e.g. 1.0" /></FormField>
         </div>
-        <FormField label="File URL (Google Drive / Cloud Link)">
+        <FormField label="File">
+          <FileUpload 
+            label="Upload Document" 
+            accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png"
+            onUploadComplete={(url) => setForm(p => ({ ...p, fileUrl: url }))} 
+          />
+          {form.fileUrl && (
+            <div className="mt-2 text-sm text-green-500 break-all">
+              File uploaded: <a href={form.fileUrl} target="_blank" rel="noreferrer" className="underline">{form.fileUrl}</a>
+            </div>
+          )}
+          <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '8px', marginBottom: '8px' }}>
+            Or provide a manual link:
+          </div>
           <input className="input" value={form.fileUrl} onChange={f('fileUrl')} placeholder="https://drive.google.com/..." />
         </FormField>
-        <div style={{ fontSize: '13px', color: 'var(--text-muted)', marginTop: '4px' }}>💡 Paste a shareable Google Drive, Dropbox, or any cloud storage link.</div>
       </Modal>
     </div>
   );

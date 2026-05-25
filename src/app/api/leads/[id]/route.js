@@ -147,6 +147,11 @@ export async function PUT(req, { params }) {
       property_id    = COALESCE(${propertyId        ?? null}::uuid, property_id),
       converted_at   = COALESCE(${convertedAt       ?? null}::timestamptz, converted_at),
       metadata       = COALESCE(${newMetadata ? JSON.stringify(newMetadata) : null}::jsonb, metadata),
+      assigned_partner_id = COALESCE(${b.assigned_partner_id === '' ? null : (b.assigned_partner_id ?? null)}::uuid, assigned_partner_id),
+      priority       = COALESCE(${b.priority        ?? null}, priority),
+      spam_status    = COALESCE(${b.spam_status     ?? null}, spam_status),
+      internal_notes = COALESCE(${b.internal_notes  ?? null}, internal_notes),
+      partner_notes  = COALESCE(${b.partner_notes   ?? null}, partner_notes),
       updated_at     = NOW()
     WHERE id = ${id}
   `;

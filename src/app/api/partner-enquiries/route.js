@@ -27,18 +27,16 @@ export async function POST(request) {
     }
 
     const [enquiry] = await sql`
-      INSERT INTO partner_enquiries (
-        partner_id, partner_slug, partner_name, category,
-        customer_name, phone, email,
-        requirement, location, budget_range, message,
-        source_page, source_type, status
+      INSERT INTO leads (
+        partner_id, category, name, phone, email,
+        requirement, locality, message,
+        source_page, source, status, lead_type
       ) VALUES (
-        ${partnerId}, ${b.partnerSlug || null}, ${b.partnerName || null}, ${b.category || null},
-        ${b.customerName}, ${b.phone}, ${b.email || null},
-        ${b.requirement || null}, ${b.location || null}, ${b.budgetRange || null}, ${b.message || null},
-        ${b.sourcePage || 'partner_profile'}, ${b.sourceType || 'web'}, 'New'
+        ${partnerId}, ${b.category || null}, ${b.customerName}, ${b.phone}, ${b.email || null},
+        ${b.requirement || null}, ${b.location || null}, ${b.message || null},
+        ${b.sourcePage || 'partner_profile'}, ${b.sourceType || 'web'}, 'new', 'partner_enquiry'
       )
-      RETURNING id, customer_name, status, created_at
+      RETURNING id, name as customer_name, status, created_at
     `;
 
     // Fire notifications non-blockingly
@@ -66,9 +64,10 @@ export async function GET(request) {
 
   try {
     const enquiries = await sql`
-      SELECT pe.*, p.company_name
-      FROM partner_enquiries pe
+      SELECT pe.*, p.company_name as partner_name, p.slug as partner_slug, pe.name as customer_name
+      FROM leads pe
       LEFT JOIN partners p ON pe.partner_id = p.id
+      WHERE pe.lead_type = 'partner_enquiry'
       ORDER BY pe.created_at DESC
       LIMIT 200
     `;

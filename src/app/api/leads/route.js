@@ -64,41 +64,103 @@ export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const leadType = searchParams.get('lead_type');
   const status = searchParams.get('status');
+  const partnerId = searchParams.get('partner_id');
 
-  // Dynamic filter: support filtering by lead_type and/or status
-  let leads;
-  if (leadType && status) {
-    leads = await sql`
-      SELECT l.*, u.name AS assigned_name
+  try {
+    let conditions = [];
+    let args = [];
+
+    if (leadType && leadType !== 'all') {
+      conditions.push(`l.lead_type = $${args.length + 1}`);
+      args.push(leadType);
+    }
+    if (status && status !== 'all') {
+      conditions.push(`l.status = $${args.length + 1}`);
+      args.push(status);
+    }
+    if (partnerId) {
+      conditions.push(`l.assigned_partner_id = $${args.length + 1}`);
+      args.push(partnerId);
+    }
+
+    const whereClause = conditions.length > 0 ? 'WHERE ' + conditions.join(' AND ') : '';
+
+    // Using sql.query for dynamic building
+    const result = await sql.query(`
+      SELECT 
+        l.*, 
+        u.name AS assigned_name,
+        p.company_name AS assigned_partner_name,
+        p.slug AS assigned_partner_slug
       FROM leads l
       LEFT JOIN users u ON u.id = l.assigned_to
-      WHERE l.lead_type = ${leadType} AND l.status = ${status}
+      LEFT JOIN partners p ON p.id = l.assigned_partner_id
+      ${whereClause}
       ORDER BY l.created_at DESC
-    `;
-  } else if (leadType) {
-    leads = await sql`
-      SELECT l.*, u.name AS assigned_name
-      FROM leads l
-      LEFT JOIN users u ON u.id = l.assigned_to
-      WHERE l.lead_type = ${leadType}
-      ORDER BY l.created_at DESC
-    `;
-  } else if (status) {
-    leads = await sql`
-      SELECT l.*, u.name AS assigned_name
-      FROM leads l
-      LEFT JOIN users u ON u.id = l.assigned_to
-      WHERE l.status = ${status}
-      ORDER BY l.created_at DESC
-    `;
-  } else {
-    leads = await sql`
-      SELECT l.*, u.name AS assigned_name
-      FROM leads l
-      LEFT JOIN users u ON u.id = l.assigned_to
-      ORDER BY l.created_at DESC
-    `;
+    `, args);
+
+    return NextResponse.json({ success: true, leads: result.rows || result });
+  } catch (e) {
+    console.error('[leads GET]', e.message);
+    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+  }
+}
+
+export async function PATCH(req) {
+  const u = getUserFromRequest(req);
+  if (!u || !['ops_admin', 'ops_pm', 'ops_engineer'].includes(u.role)) {
+    return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
   }
 
-  return NextResponse.json({ success: true, leads });
+  try {
+    const body = await req.json();
+    const { id, status, priority, spam_status, assigned_partner_id, internal_notes } = body;
+
+    if (!id) return NextResponse.json({ success: false, error: 'ID required' }, { status: 400 });
+
+    const updates = [];
+    const args = [];
+
+    if (status !== undefined) {
+      updates.push(`status = $${args.length + 1}`);
+      args.push(status);
+    }
+    if (priority !== undefined) {
+      updates.push(`priority = $${args.length + 1}`);
+      args.push(priority);
+    }
+    if (spam_status !== undefined) {
+      updates.push(`spam_status = $${args.length + 1}`);
+      args.push(spam_status);
+    }
+    if (assigned_partner_id !== undefined) {
+      updates.push(`assigned_partner_id = $${args.length + 1}`);
+      args.push(assigned_partner_id === '' ? null : assigned_partner_id);
+    }
+    if (internal_notes !== undefined) {
+      updates.push(`internal_notes = $${args.length + 1}`);
+      args.push(internal_notes);
+    }
+
+    if (updates.length === 0) return NextResponse.json({ success: true });
+
+    args.push(id);
+    const result = await sql.query(`
+      UPDATE leads 
+      SET ${updates.join(', ')}, updated_at = NOW() 
+      WHERE id = $${args.length}
+      RETURNING id, status, assigned_partner_id
+    `, args);
+
+    if (!result.rows || result.rows.length === 0) {
+       // Support neon returning array directly
+       const row = Array.isArray(result) ? result[0] : null;
+       if (!row) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (e) {
+    console.error('[leads PATCH]', e.message);
+    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+  }
 }

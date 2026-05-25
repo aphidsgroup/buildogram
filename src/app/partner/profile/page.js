@@ -4,6 +4,7 @@ import { SectionHeader, FormField, StatusBadge } from '../_shared/components';
 import { DEMO_PROFILE } from '../_shared/demoData';
 import { getPartnerBySlug, updatePartner, getPartners, saveAllPartners, calcProfileCompletion } from '@/lib/partnerStore';
 import { isValidImageUrl, isYouTubeUrl, isInstagramUrl, getYouTubeEmbedUrl } from '@/lib/media/mediaUtils';
+import FileUpload from '@/components/FileUpload';
 
 const CATEGORIES = ['Builder', 'Architect', 'Interior Designer', 'Material Supplier', 'Home Automation', 'Solar', 'Elevators', 'Waterproofing'];
 
@@ -127,8 +128,14 @@ export default function PartnerProfile() {
                   {CATEGORIES.map(c => <option key={c}>{c}</option>)}
                 </select>
               </FormField>
-              <FormField label="Logo URL"><input className="input" value={profile.logoUrl} onChange={f('logoUrl')} placeholder="https://..." /></FormField>
-              <FormField label="Cover Image URL"><input className="input" value={profile.coverUrl} onChange={f('coverUrl')} placeholder="https://..." /></FormField>
+              <FormField label="Logo">
+                <FileUpload label="Upload Logo" onUploadComplete={(url) => setProfile(p => ({ ...p, logoUrl: url }))} />
+                <input className="input mt-2" value={profile.logoUrl} onChange={f('logoUrl')} placeholder="Or enter URL (https://...)" />
+              </FormField>
+              <FormField label="Cover Image">
+                <FileUpload label="Upload Cover" onUploadComplete={(url) => setProfile(p => ({ ...p, coverUrl: url }))} />
+                <input className="input mt-2" value={profile.coverUrl} onChange={f('coverUrl')} placeholder="Or enter URL (https://...)" />
+              </FormField>
             </div>
             <FormField label="Company Description">
               <textarea className="input" rows={3} value={profile.description} onChange={f('description')} placeholder="Describe your company, expertise, and what makes you stand out..." style={{ resize: 'vertical' }} />

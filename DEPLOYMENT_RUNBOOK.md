@@ -38,6 +38,12 @@ Now that the server is running, hit the Ops endpoints to set up the database:
 2. Run Migrations: `POST https://www.buildogram.in/api/ops/run-migration` (Include admin token in headers)
 3. Seed Database: `POST https://www.buildogram.in/api/ops/seed-partners` (Include admin token in headers)
 
+> [!WARNING]
+> **Post-Seed Security Actions:**
+> - Change the `admin@buildogram.in` password immediately after running seed.
+> - Do NOT share admin credentials with anyone.
+> - The demo partner accounts created by the seed script are for testing only. Do not use them for real partner data.
+
 ## 2. Zero-Downtime Updates (If using PM2)
 
 When releasing a new feature update:
