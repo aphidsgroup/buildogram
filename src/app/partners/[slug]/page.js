@@ -1,304 +1,406 @@
+'use client';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { notFound } from 'next/navigation';
-import sql from '@/lib/db';
+import { getPartnerBySlug, getApprovedPartners } from '@/lib/partnerStore';
+import { createLead, BUDGET_RANGES } from '@/lib/leadStore';
 
-const DEMO_PARTNERS = [
-  { id: 'demo-1', metadata: { business_name: 'Premium Builders Co.', category: 'Builder', slug: 'demo-builder', location: 'Chennai', services_offered: ['Residential Construction', 'Turnkey Solutions'], shortDescription: 'Premium turnkey builders.' } },
-  { id: 'demo-2', metadata: { business_name: 'Visionary Architects', category: 'Architect', slug: 'demo-architect', location: 'Chennai', services_offered: ['Architectural Design', 'Floor Planning'], shortDescription: 'Award-winning architecture.' } },
-  { id: 'demo-3', metadata: { business_name: 'Elegant Interiors', category: 'Interior Designer', slug: 'demo-interior-designer', location: 'Chennai', services_offered: ['Interior Design', 'Modular Kitchens'], shortDescription: 'Luxury interior designs.' } },
-  { id: 'demo-4', metadata: { business_name: 'Prime Materials', category: 'Material Supplier', slug: 'demo-material-supplier', location: 'Chennai', services_offered: ['Cement', 'Steel', 'Bricks'], shortDescription: 'Wholesale materials.' } },
-  { id: 'demo-5', metadata: { business_name: 'Smart Home Solutions', category: 'Home Automation', slug: 'demo-home-automation', location: 'Chennai', services_offered: ['Lighting Automation', 'Security Systems'], shortDescription: 'Next-gen smart homes.' } },
-  { id: 'demo-6', metadata: { business_name: 'SunPower Solar', category: 'Solar', slug: 'demo-solar', location: 'Chennai', services_offered: ['Solar Panels', 'Inverters'], shortDescription: 'Clean energy solutions.' } },
-  { id: 'demo-7', metadata: { business_name: 'LiftTech Elevators', category: 'Elevators', slug: 'demo-elevator', location: 'Chennai', services_offered: ['Home Elevators', 'Commercial Lifts'], shortDescription: 'Safe and modern elevators.' } },
-  { id: 'demo-8', metadata: { business_name: 'AquaSeal Experts', category: 'Waterproofing', slug: 'demo-waterproofing', location: 'Chennai', services_offered: ['Terrace Waterproofing', 'Basement Waterproofing'], shortDescription: '100% leak-proof solutions.' } }
-];
-
-export const dynamic = 'force-dynamic';
-
-async function getPartner(slug) {
-  const [partner] = await sql`
-    SELECT id, city, metadata
-    FROM leads
-    WHERE lead_type = 'partner_application'
-      AND metadata->>'public_status' = 'published'
-      AND (metadata->>'slug' = ${slug} OR id::text = ${slug})
-    LIMIT 1
-  `;
-  return partner || null;
+// ── helpers ──────────────────────────────────────────────────────────
+function toArr(v) {
+  if (!v) return [];
+  if (Array.isArray(v)) return v;
+  return String(v).split(',').map(s => s.trim()).filter(Boolean);
 }
 
-async function getRelatedPartners(category, excludeSlug) {
-  if (!category) return [];
-  const partners = await sql`
-    SELECT id, city, metadata
-    FROM leads
-    WHERE lead_type = 'partner_application'
-      AND metadata->>'public_status' = 'published'
-      AND metadata->>'category' = ${category}
-      AND metadata->>'slug' != ${excludeSlug}
-    ORDER BY created_at DESC
-    LIMIT 3
-  `;
-  return partners;
+function getYTEmbedUrl(url) {
+  if (!url) return null;
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|watch\?v=))([a-zA-Z0-9_-]{11})/);
+  return m ? `https://www.youtube.com/embed/${m[1]}` : null;
 }
 
-export async function generateMetadata({ params }) {
-  const partner = await getPartner(params.slug);
-  if (!partner) return { title: 'Partner Not Found | Buildogram' };
-  
-  const meta = partner.metadata || {};
-  const name = meta.business_name || meta.name || 'Partner';
-  const category = meta.category || 'Service';
+const CATEGORY_COLORS = {
+  'Builder': '#2563EB', 'Architect': '#7C3AED', 'Interior Designer': '#DB2777',
+  'Material Supplier': '#D97706', 'Home Automation': '#0891B2',
+  'Solar': '#F59E0B', 'Elevators': '#64748B', 'Waterproofing': '#0EA5E9',
+};
 
-  return {
-    title: `${name} - ${category} Partner in Chennai | Buildogram`,
-    description: `View ${name} profile on Buildogram. Explore services, project gallery, videos, and request a quote for ${category} services.`,
+// ── Lead Form ─────────────────────────────────────────────────────────
+function LeadForm({ partner }) {
+  const blank = { customerName: '', phone: '', email: '', requirement: '', location: '', budgetRange: '', message: '' };
+  const [form, setForm] = useState(blank);
+  const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const f = k => e => setForm(p => ({ ...p, [k]: e.target.value }));
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    if (!form.customerName || !form.phone) return alert('Name and phone are required');
+    setLoading(true);
+    setTimeout(() => {
+      createLead({
+        ...form,
+        partnerSlug: partner.slug,
+        partnerName: partner.companyName,
+        category: partner.category,
+        source: 'Partner Profile',
+      });
+      setLoading(false);
+      setSubmitted(true);
+    }, 600);
   };
-}
 
-export default async function PartnerProfilePage({ params }) {
-  let partner = await getPartner(params.slug);
-  
-  if (!partner) {
-    partner = DEMO_PARTNERS.find(p => p.metadata.slug === params.slug);
-    if (!partner) {
-      notFound();
-    }
+  if (submitted) {
+    return (
+      <div style={{ textAlign: 'center', padding: '32px 24px' }}>
+        <div style={{ fontSize: '48px', marginBottom: '16px' }}>✅</div>
+        <h3 style={{ marginBottom: '8px', color: '#10B981' }}>Enquiry Submitted!</h3>
+        <p style={{ color: '#64748B', lineHeight: 1.7, marginBottom: '20px' }}>
+          Your enquiry has been sent to Buildogram. Our team will connect you with <strong>{partner.companyName}</strong> within 24 hours.
+        </p>
+        <button onClick={() => { setForm(blank); setSubmitted(false); }} style={{ background: 'none', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '8px 20px', cursor: 'pointer', fontSize: '14px', color: '#64748B' }}>
+          Submit Another Enquiry
+        </button>
+      </div>
+    );
   }
 
-  const meta = partner.metadata || {};
-  const name = meta.business_name || meta.name || 'Partner';
-  const category = meta.category || 'Service Provider';
-  const logoUrl = meta.logoUrl || null;
-  const coverImageUrl = meta.coverImageUrl || null;
-  const shortDescription = meta.shortDescription || meta.message || '';
-  const fullDescription = meta.fullDescription || '';
-  const location = meta.location || partner.city || 'Chennai';
-  const experience = meta.yearsExperience || '';
-  
-  const services = meta.services_offered || meta.services || [];
-  const specializations = meta.specializations || [];
-  const certifications = meta.certifications || [];
-  const brands = meta.brandsHandled || [];
-  const projectTypes = meta.projectTypes || [];
-  
-  const galleryImages = meta.galleryImages || [];
-  const videoGallery = meta.videoGallery || [];
-  const projects = meta.projects || [];
+  return (
+    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
+        <div>
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#64748B', marginBottom: '6px', textTransform: 'uppercase' }}>Your Name *</label>
+          <input style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', fontSize: '14px', boxSizing: 'border-box', outline: 'none' }} value={form.customerName} onChange={f('customerName')} placeholder="Your full name" required />
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#64748B', marginBottom: '6px', textTransform: 'uppercase' }}>Phone *</label>
+          <input style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', fontSize: '14px', boxSizing: 'border-box', outline: 'none' }} value={form.phone} onChange={f('phone')} placeholder="10-digit mobile" type="tel" required />
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#64748B', marginBottom: '6px', textTransform: 'uppercase' }}>Email</label>
+          <input style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', fontSize: '14px', boxSizing: 'border-box', outline: 'none' }} value={form.email} onChange={f('email')} placeholder="your@email.com" type="email" />
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#64748B', marginBottom: '6px', textTransform: 'uppercase' }}>Location</label>
+          <input style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', fontSize: '14px', boxSizing: 'border-box', outline: 'none' }} value={form.location} onChange={f('location')} placeholder="Your area / city" />
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#64748B', marginBottom: '6px', textTransform: 'uppercase' }}>Requirement</label>
+          <input style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', fontSize: '14px', boxSizing: 'border-box', outline: 'none' }} value={form.requirement} onChange={f('requirement')} placeholder="e.g. G+2 Home Construction" />
+        </div>
+        <div>
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#64748B', marginBottom: '6px', textTransform: 'uppercase' }}>Budget Range</label>
+          <select style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', fontSize: '14px', background: 'white', outline: 'none' }} value={form.budgetRange} onChange={f('budgetRange')}>
+            <option value="">Select budget...</option>
+            {BUDGET_RANGES.map(b => <option key={b}>{b}</option>)}
+          </select>
+        </div>
+      </div>
+      <div>
+        <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#64748B', marginBottom: '6px', textTransform: 'uppercase' }}>Message</label>
+        <textarea style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', fontSize: '14px', resize: 'vertical', minHeight: '80px', boxSizing: 'border-box', outline: 'none', fontFamily: 'inherit' }} value={form.message} onChange={f('message')} placeholder="Describe your project or requirement..." />
+      </div>
+      <button type="submit" disabled={loading} style={{ background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', border: 'none', borderRadius: '12px', padding: '14px 24px', fontSize: '15px', fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1, transition: 'opacity 0.15s' }}>
+        {loading ? 'Sending…' : '🚀 Submit Enquiry to Buildogram'}
+      </button>
+      <p style={{ fontSize: '12px', color: '#94A3B8', textAlign: 'center', margin: 0 }}>
+        Buildogram guarantees pricing transparency and verified partner quality.
+      </p>
+    </form>
+  );
+}
 
-  const relatedPartners = await getRelatedPartners(category, params.slug);
+// ── Tag ───────────────────────────────────────────────────────────────
+function Tag({ label, color = '#64748B', bg = '#F1F5F9' }) {
+  return <span style={{ background: bg, color, padding: '5px 12px', borderRadius: '8px', fontSize: '13px', fontWeight: 600 }}>{label}</span>;
+}
+
+// ── Section ───────────────────────────────────────────────────────────
+function Section({ title, children }) {
+  return (
+    <div style={{ background: 'white', borderRadius: '20px', border: '1px solid #E2E8F0', padding: '28px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+      <h2 style={{ fontSize: '18px', fontWeight: 800, marginBottom: '20px', color: '#1E293B' }}>{title}</h2>
+      {children}
+    </div>
+  );
+}
+
+// ── Not Found ─────────────────────────────────────────────────────────
+function NotFoundView() {
+  return (
+    <div style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ textAlign: 'center', padding: '40px 24px' }}>
+        <div style={{ fontSize: '64px', marginBottom: '20px' }}>🤝</div>
+        <h1 style={{ fontSize: '24px', marginBottom: '12px', color: '#1E293B' }}>Partner Not Found</h1>
+        <p style={{ color: '#64748B', marginBottom: '24px', lineHeight: 1.7 }}>
+          This partner profile does not exist or may have been removed.
+        </p>
+        <Link href="/partners/directory" style={{ display: 'inline-block', background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', padding: '12px 28px', borderRadius: '12px', fontSize: '15px', fontWeight: 700, textDecoration: 'none' }}>
+          ← Browse Partner Directory
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+// ── Main Page ─────────────────────────────────────────────────────────
+export default function PartnerProfilePage({ params }) {
+  const { slug } = params;
+  const [partner, setPartner] = useState(null);
+  const [related, setRelated] = useState([]);
+  const [notFound, setNotFound] = useState(false);
+
+  useEffect(() => {
+    const p = getPartnerBySlug(slug);
+    if (!p || !p.isActive || p.approvalStatus !== 'Approved') {
+      setNotFound(true);
+      return;
+    }
+    setPartner(p);
+    // Related
+    const all = getApprovedPartners();
+    setRelated(all.filter(r => r.category === p.category && r.slug !== slug).slice(0, 3));
+  }, [slug]);
+
+  if (notFound) return <NotFoundView />;
+  if (!partner) return (
+    <div style={{ minHeight: '50vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ width: '40px', height: '40px', borderRadius: '50%', border: '3px solid #FC6E20', borderTopColor: 'transparent', animation: 'spin 0.8s linear infinite' }} />
+      <style>{`@keyframes spin{to{transform:rotate(360deg)}}`}</style>
+    </div>
+  );
+
+  const catColor = CATEGORY_COLORS[partner.category] || '#FC6E20';
+  const services = toArr(partner.services);
+  const specializations = toArr(partner.specializations);
+  const certifications = toArr(partner.certifications);
+  const brands = toArr(partner.brands);
+  const projectTypes = toArr(partner.projectTypes);
+  const gallery = Array.isArray(partner.galleryImages) ? partner.galleryImages : [];
+  const videos = Array.isArray(partner.videoGallery) ? partner.videoGallery : [];
+  const portfolio = Array.isArray(partner.portfolio) ? partner.portfolio : [];
 
   return (
-    <div style={{ background: '#fafafa', minHeight: '100vh', paddingBottom: '80px' }}>
-      
-      {/* Cover Image & Header */}
-      <div style={{ height: '300px', background: coverImageUrl ? `url(${coverImageUrl}) center/cover` : 'var(--secondary)', position: 'relative' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8), transparent)' }} />
+    <div style={{ background: '#F8FAFC', minHeight: '100vh', paddingBottom: '80px' }}>
+      {/* ── COVER ── */}
+      <div style={{ height: '280px', background: partner.coverUrl ? `url(${partner.coverUrl}) center/cover no-repeat` : `linear-gradient(135deg,${catColor}33,${catColor}66)`, position: 'relative' }}>
+        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 60%)' }} />
       </div>
 
-      <div className="container" style={{ marginTop: '-80px', position: 'relative', zIndex: 10 }}>
-        <div className="card" style={{ padding: '32px', marginBottom: '32px', display: 'flex', gap: '32px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-          
+      <div className="container" style={{ marginTop: '-70px', position: 'relative', zIndex: 10 }}>
+        {/* ── HERO CARD ── */}
+        <div style={{ background: 'white', borderRadius: '24px', border: '1px solid #E2E8F0', padding: '28px', marginBottom: '28px', boxShadow: '0 8px 30px rgba(0,0,0,0.1)', display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: '24px', alignItems: 'flex-start', flexWrap: 'wrap' }}>
           {/* Logo */}
-          <div style={{ width: '120px', height: '120px', borderRadius: '16px', background: 'white', border: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, overflow: 'hidden', boxShadow: '0 10px 25px rgba(0,0,0,0.05)' }}>
-            {logoUrl ? (
-              <img src={logoUrl} alt={`${name} Logo`} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-            ) : (
-              <div style={{ fontSize: '48px', fontWeight: 800, color: 'var(--text-muted)' }}>{name[0]}</div>
+          <div style={{ width: '100px', height: '100px', borderRadius: '18px', background: partner.logoUrl ? `url(${partner.logoUrl}) center/cover` : catColor, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', fontWeight: 900, color: 'white', border: '4px solid white', boxShadow: '0 4px 20px rgba(0,0,0,0.15)', flexShrink: 0 }}>
+            {!partner.logoUrl && partner.companyName?.[0]}
+          </div>
+
+          {/* Info */}
+          <div>
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '10px' }}>
+              <span style={{ background: `${catColor}15`, color: catColor, padding: '4px 12px', borderRadius: '99px', fontSize: '12px', fontWeight: 700 }}>{partner.category}</span>
+              <span style={{ background: '#DCFCE7', color: '#166534', padding: '4px 12px', borderRadius: '99px', fontSize: '12px', fontWeight: 700 }}>✅ Verified Partner</span>
+              {partner.isFeatured && <span style={{ background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', padding: '4px 12px', borderRadius: '99px', fontSize: '12px', fontWeight: 700 }}>⭐ Featured</span>}
+            </div>
+            <h1 style={{ fontSize: 'clamp(22px,3vw,32px)', fontWeight: 900, color: '#1E293B', margin: '0 0 8px' }}>{partner.companyName}</h1>
+            <p style={{ color: '#475569', fontSize: '15px', margin: '0 0 12px', lineHeight: 1.6 }}>{partner.shortDescription}</p>
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', color: '#64748B', fontSize: '14px', fontWeight: 600 }}>
+              <span>📍 {partner.location}</span>
+              {partner.yearsExperience && <span>⭐ {partner.yearsExperience}+ Years Experience</span>}
+              {partner.serviceAreas && <span>🗺️ {partner.serviceAreas}</span>}
+            </div>
+          </div>
+
+          {/* CTA Box */}
+          <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '16px', padding: '20px', minWidth: '220px', display: 'flex', flexDirection: 'column', gap: '10px', flexShrink: 0 }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: '#1E293B', marginBottom: '4px' }}>Work With {partner.companyName}</div>
+            <a href="#enquiry-form" style={{ display: 'block', textAlign: 'center', background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', padding: '11px 16px', borderRadius: '10px', fontSize: '13px', fontWeight: 700, textDecoration: 'none' }}>
+              🚀 Request Quote
+            </a>
+            {partner.whatsapp && (
+              <a href={`https://wa.me/${partner.whatsapp.replace(/[^0-9]/g, '')}?text=Hi ${encodeURIComponent(partner.companyName)}, I found your profile on Buildogram and would like to discuss my requirement.`} target="_blank" rel="noreferrer"
+                style={{ display: 'block', textAlign: 'center', background: '#DCFCE7', color: '#166534', padding: '10px 16px', borderRadius: '10px', fontSize: '13px', fontWeight: 700, textDecoration: 'none' }}>
+                💬 WhatsApp
+              </a>
             )}
-          </div>
-
-          <div style={{ flex: 1, minWidth: '280px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-              <span className="badge badge-orange">{category}</span>
-              <span className="badge badge-green">Verified Partner</span>
-            </div>
-            <h1 style={{ fontSize: '32px', margin: '0 0 12px 0', color: 'var(--primary-dark)' }}>{name}</h1>
-            <p style={{ color: 'var(--text-muted)', fontSize: '16px', margin: '0 0 16px 0', lineHeight: 1.6 }}>{shortDescription}</p>
-            
-            <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', color: 'var(--text-muted)', fontSize: '14px', fontWeight: 600 }}>
-              <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>📍 {location}</span>
-              {experience && <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>⭐ {experience} Years Exp.</span>}
-            </div>
-          </div>
-
-          <div style={{ width: '100%', maxWidth: '300px', background: 'var(--bg-card)', padding: '24px', borderRadius: '12px', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--primary-dark)', marginBottom: '4px' }}>Work With {name}</div>
-            <Link href="/contact" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }}>Request Quote Through Buildogram</Link>
-            <Link href="/contact" className="btn btn-outline" style={{ width: '100%', justifyContent: 'center' }}>Contact via Buildogram</Link>
-            <p style={{ fontSize: '12px', color: 'var(--text-muted)', textAlign: 'center', margin: '8px 0 0' }}>Buildogram guarantees pricing transparency.</p>
+            {partner.phone && (
+              <a href={`tel:${partner.phone}`} style={{ display: 'block', textAlign: 'center', background: '#EFF6FF', color: '#2563EB', padding: '10px 16px', borderRadius: '10px', fontSize: '13px', fontWeight: 700, textDecoration: 'none' }}>
+                📞 Call
+              </a>
+            )}
+            {partner.website && (
+              <a href={partner.website} target="_blank" rel="noreferrer" style={{ display: 'block', textAlign: 'center', background: 'white', color: '#64748B', border: '1px solid #E2E8F0', padding: '10px 16px', borderRadius: '10px', fontSize: '13px', fontWeight: 700, textDecoration: 'none' }}>
+                🌐 Website
+              </a>
+            )}
           </div>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 2fr) minmax(0, 1fr)', gap: '32px' }}>
+        {/* ── MAIN LAYOUT ── */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0,2fr) minmax(0,1fr)', gap: '24px', alignItems: 'start' }}>
           
-          {/* Main Content Column */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-            
+          {/* LEFT COLUMN */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+
             {/* About */}
-            {fullDescription && (
-              <div className="card" style={{ padding: '32px' }}>
-                <h2 style={{ fontSize: '20px', marginBottom: '16px' }}>About {name}</h2>
-                <div style={{ color: 'var(--text-muted)', lineHeight: 1.7, fontSize: '15px', whiteSpace: 'pre-wrap' }}>{fullDescription}</div>
-              </div>
+            {partner.fullDescription && (
+              <Section title={`About ${partner.companyName}`}>
+                <p style={{ color: '#475569', lineHeight: 1.8, fontSize: '15px', whiteSpace: 'pre-wrap', margin: 0 }}>{partner.fullDescription}</p>
+              </Section>
             )}
 
-            {/* Services & Specializations */}
+            {/* Services */}
             {(services.length > 0 || specializations.length > 0) && (
-              <div className="card" style={{ padding: '32px' }}>
-                <h2 style={{ fontSize: '20px', marginBottom: '24px' }}>Services & Specializations</h2>
-                
+              <Section title="Services & Specializations">
                 {services.length > 0 && (
                   <div style={{ marginBottom: '20px' }}>
-                    <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '12px' }}>Services Offered</div>
+                    <div style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '12px' }}>Services Offered</div>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                      {services.map((s, i) => <span key={i} className="tag">{s}</span>)}
+                      {services.map((s, i) => <Tag key={i} label={s} color={catColor} bg={`${catColor}12`} />)}
                     </div>
                   </div>
                 )}
-
                 {specializations.length > 0 && (
                   <div>
-                    <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '12px' }}>Specializations</div>
+                    <div style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '12px' }}>Specializations</div>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                      {specializations.map((s, i) => <span key={i} className="tag" style={{ background: '#f0fdf4', color: '#166534', border: '1px solid #dcfce7' }}>{s}</span>)}
+                      {specializations.map((s, i) => <Tag key={i} label={s} color="#166534" bg="#DCFCE7" />)}
                     </div>
                   </div>
                 )}
-              </div>
+                {projectTypes.length > 0 && (
+                  <div style={{ marginTop: '20px' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '12px' }}>Project Types</div>
+                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                      {projectTypes.map((s, i) => <Tag key={i} label={s} color="#7C3AED" bg="#F5F3FF" />)}
+                    </div>
+                  </div>
+                )}
+              </Section>
             )}
 
-            {/* Image Gallery */}
-            <div className="card" style={{ padding: '32px' }}>
-              <h2 style={{ fontSize: '20px', marginBottom: '20px' }}>Image Gallery</h2>
-              {galleryImages.length > 0 ? (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '16px' }}>
-                  {galleryImages.map((img, i) => (
-                    <div key={i} style={{ aspectRatio: '4/3', borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)' }}>
-                      <img src={img.url} alt={img.alt || `${name} Image ${i+1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            {/* Gallery */}
+            {gallery.length > 0 && (
+              <Section title="📸 Image Gallery">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '12px' }}>
+                  {gallery.map((img, i) => (
+                    <div key={i} style={{ aspectRatio: '4/3', borderRadius: '12px', overflow: 'hidden', background: '#F1F5F9' }}>
+                      <img src={img.url || img} alt={img.alt || `Gallery ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={e => { e.target.style.display = 'none'; }} />
                     </div>
                   ))}
                 </div>
-              ) : (
-                <p style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>No gallery images added yet.</p>
-              )}
-            </div>
+              </Section>
+            )}
 
-            {/* Video Gallery */}
-            <div className="card" style={{ padding: '32px' }}>
-              <h2 style={{ fontSize: '20px', marginBottom: '20px' }}>Video Gallery</h2>
-              {videoGallery.length > 0 ? (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
-                  {videoGallery.map((vid, i) => (
-                    <div key={i} style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid var(--border)', background: '#f8fafc' }}>
-                      {vid.type === 'youtube' && vid.url.includes('embed') ? (
-                        <iframe width="100%" height="200" src={vid.url} title={vid.title} frameBorder="0" allowFullScreen></iframe>
-                      ) : (
-                        <div style={{ padding: '24px', textAlign: 'center' }}>
-                          <div style={{ fontSize: '32px', marginBottom: '12px' }}>▶️</div>
-                          <h3 style={{ fontSize: '15px', marginBottom: '12px' }}>{vid.title || 'Watch Video'}</h3>
-                          <a href={vid.url} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline">Watch on {vid.type || 'Platform'}</a>
-                        </div>
-                      )}
-                    </div>
-                  ))}
+            {/* Videos */}
+            {videos.length > 0 && (
+              <Section title="🎥 Video Gallery">
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '16px' }}>
+                  {videos.map((vid, i) => {
+                    const embed = getYTEmbedUrl(vid.url);
+                    return (
+                      <div key={i} style={{ borderRadius: '14px', overflow: 'hidden', border: '1px solid #E2E8F0', background: '#F8FAFC' }}>
+                        {embed ? (
+                          <iframe width="100%" height="200" src={embed} title={vid.title} frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
+                        ) : (
+                          <div style={{ padding: '28px', textAlign: 'center' }}>
+                            <div style={{ fontSize: '36px', marginBottom: '12px' }}>▶️</div>
+                            <div style={{ fontWeight: 700, marginBottom: '12px', fontSize: '14px' }}>{vid.title || 'Watch Video'}</div>
+                            <a href={vid.url} target="_blank" rel="noreferrer" style={{ background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', padding: '8px 16px', borderRadius: '8px', fontSize: '13px', fontWeight: 700, textDecoration: 'none' }}>
+                              Watch on {vid.type || 'Platform'} →
+                            </a>
+                          </div>
+                        )}
+                        {vid.title && embed && <div style={{ padding: '10px 14px', fontSize: '13px', fontWeight: 600, color: '#475569' }}>{vid.title}</div>}
+                      </div>
+                    );
+                  })}
                 </div>
-              ) : (
-                <p style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>No videos added yet.</p>
-              )}
-            </div>
+              </Section>
+            )}
 
-            {/* Projects / Portfolio */}
-            <div className="card" style={{ padding: '32px' }}>
-              <h2 style={{ fontSize: '20px', marginBottom: '20px' }}>Past Projects</h2>
-              {projects.length > 0 ? (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                  {projects.map((proj, i) => (
-                    <div key={i} style={{ display: 'flex', gap: '20px', padding: '20px', border: '1px solid var(--border)', borderRadius: '12px', background: '#f8fafc', flexWrap: 'wrap' }}>
+            {/* Portfolio */}
+            {portfolio.length > 0 && (
+              <Section title="🏗️ Past Projects">
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                  {portfolio.map((proj, i) => (
+                    <div key={i} style={{ display: 'flex', gap: '20px', padding: '20px', background: '#F8FAFC', borderRadius: '14px', border: '1px solid #E2E8F0', flexWrap: 'wrap' }}>
                       {proj.imageUrl && (
-                        <div style={{ width: '200px', height: '140px', borderRadius: '8px', overflow: 'hidden', flexShrink: 0 }}>
-                          <img src={proj.imageUrl} alt={proj.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <div style={{ width: '200px', height: '140px', borderRadius: '10px', overflow: 'hidden', flexShrink: 0 }}>
+                          <img src={proj.imageUrl} alt={proj.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={e => { e.target.style.display = 'none'; }} />
                         </div>
                       )}
                       <div style={{ flex: 1, minWidth: '200px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                          <h3 style={{ fontSize: '18px', margin: '0 0 8px' }}>{proj.title}</h3>
-                          {proj.completionYear && <span className="badge badge-gray">{proj.completionYear}</span>}
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '6px', gap: '12px' }}>
+                          <h3 style={{ fontSize: '17px', fontWeight: 800, margin: 0, color: '#1E293B' }}>{proj.title}</h3>
+                          {proj.completionYear && <span style={{ background: '#F1F5F9', color: '#64748B', padding: '3px 10px', borderRadius: '8px', fontSize: '12px', fontWeight: 700, flexShrink: 0 }}>{proj.completionYear}</span>}
                         </div>
-                        <p style={{ fontSize: '13px', color: 'var(--primary)', fontWeight: 600, margin: '0 0 12px' }}>📍 {proj.location}</p>
-                        <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>{proj.description}</p>
+                        <div style={{ fontSize: '13px', color: catColor, fontWeight: 700, marginBottom: '10px' }}>📍 {proj.location}</div>
+                        <p style={{ fontSize: '14px', color: '#475569', lineHeight: 1.65, margin: 0 }}>{proj.description}</p>
                         {proj.videoUrl && (
-                          <div style={{ marginTop: '16px' }}>
-                            <a href={proj.videoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-outline">▶️ Watch Project Video</a>
-                          </div>
+                          <a href={proj.videoUrl} target="_blank" rel="noreferrer" style={{ display: 'inline-block', marginTop: '14px', background: '#EFF6FF', color: '#2563EB', padding: '7px 14px', borderRadius: '8px', fontSize: '13px', fontWeight: 700, textDecoration: 'none' }}>▶️ Watch Video</a>
                         )}
                       </div>
                     </div>
                   ))}
                 </div>
-              ) : (
-                <p style={{ color: 'var(--text-muted)', fontStyle: 'italic' }}>No projects added yet.</p>
-              )}
+              </Section>
+            )}
+
+            {/* Enquiry Form */}
+            <div id="enquiry-form">
+              <Section title="📩 Request Quote / Contact Partner">
+                <LeadForm partner={partner} />
+              </Section>
             </div>
-            
           </div>
 
-          {/* Sidebar */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-            
+          {/* RIGHT SIDEBAR */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', position: 'sticky', top: '90px' }}>
+
             {/* Quick Facts */}
-            <div className="card" style={{ padding: '24px' }}>
-              <h3 style={{ fontSize: '16px', marginBottom: '16px', borderBottom: '1px solid var(--border)', paddingBottom: '12px' }}>Business Facts</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                {projectTypes.length > 0 && (
-                  <div>
-                    <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '4px' }}>Project Types</div>
-                    <div style={{ fontWeight: 600 }}>{projectTypes.join(', ')}</div>
-                  </div>
-                )}
-                {certifications.length > 0 && (
-                  <div>
-                    <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '4px' }}>Certifications</div>
-                    <div style={{ fontWeight: 600 }}>{certifications.join(', ')}</div>
-                  </div>
-                )}
-                {brands.length > 0 && (
-                  <div>
-                    <div style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600, marginBottom: '4px' }}>Brands Handled</div>
-                    <div style={{ fontWeight: 600 }}>{brands.join(', ')}</div>
-                  </div>
-                )}
+            <div style={{ background: 'white', borderRadius: '20px', border: '1px solid #E2E8F0', padding: '22px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+              <h3 style={{ fontSize: '15px', fontWeight: 800, marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #F1F5F9' }}>📋 Quick Facts</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                {partner.yearsExperience && <div><div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', marginBottom: '3px' }}>Experience</div><div style={{ fontWeight: 700, color: '#1E293B' }}>{partner.yearsExperience}+ Years</div></div>}
+                {partner.serviceAreas && <div><div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', marginBottom: '3px' }}>Service Areas</div><div style={{ fontWeight: 600, color: '#475569', fontSize: '14px' }}>{partner.serviceAreas}</div></div>}
+                {certifications.length > 0 && <div><div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', marginBottom: '6px' }}>Certifications</div><div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>{certifications.map((c, i) => <span key={i} style={{ fontSize: '13px', color: '#475569', fontWeight: 600 }}>✅ {c}</span>)}</div></div>}
+                {brands.length > 0 && <div><div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', marginBottom: '6px' }}>Brands Used</div><div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>{brands.map((b, i) => <Tag key={i} label={b} />)}</div></div>}
               </div>
             </div>
 
-            {/* Related Partners */}
-            {relatedPartners.length > 0 && (
-              <div className="card" style={{ padding: '24px' }}>
-                <h3 style={{ fontSize: '16px', marginBottom: '16px', borderBottom: '1px solid var(--border)', paddingBottom: '12px' }}>Other {category}</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  {relatedPartners.map(rp => {
-                    const rpMeta = rp.metadata || {};
-                    const rpName = rpMeta.business_name || rpMeta.name || 'Partner';
-                    const rpSlug = rpMeta.slug || rp.id;
-                    return (
-                      <Link href={`/partners/${rpSlug}`} key={rp.id} style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }} className="hover-opacity">
-                        <div style={{ width: '40px', height: '40px', borderRadius: '8px', background: 'var(--secondary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '16px' }}>
-                          {rpName[0]}
-                        </div>
-                        <div>
-                          <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--primary-dark)' }}>{rpName}</div>
-                          <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{rp.city || rpMeta.location || 'Chennai'}</div>
-                        </div>
-                      </Link>
-                    )
-                  })}
+            {/* Related */}
+            {related.length > 0 && (
+              <div style={{ background: 'white', borderRadius: '20px', border: '1px solid #E2E8F0', padding: '22px', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 800, marginBottom: '16px', paddingBottom: '12px', borderBottom: '1px solid #F1F5F9' }}>Other {partner.category}s</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                  {related.map(rp => (
+                    <Link href={`/partners/${rp.slug}`} key={rp.id} style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
+                      <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: rp.logoUrl ? `url(${rp.logoUrl}) center/cover` : (CATEGORY_COLORS[rp.category] || '#FC6E20'), display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 800, color: 'white', flexShrink: 0 }}>
+                        {!rp.logoUrl && rp.companyName?.[0]}
+                      </div>
+                      <div>
+                        <div style={{ fontSize: '14px', fontWeight: 700, color: '#1E293B' }}>{rp.companyName}</div>
+                        <div style={{ fontSize: '12px', color: '#94A3B8' }}>{rp.location}</div>
+                      </div>
+                    </Link>
+                  ))}
                 </div>
+                <Link href="/partners/directory" style={{ display: 'block', textAlign: 'center', marginTop: '16px', padding: '9px', background: '#F8FAFC', borderRadius: '10px', fontSize: '13px', fontWeight: 700, color: '#FC6E20', textDecoration: 'none' }}>
+                  View All Partners →
+                </Link>
               </div>
             )}
 
           </div>
         </div>
       </div>
+
+      <style dangerouslySetInnerHTML={{__html:`
+        @media(max-width:900px){
+          .partner-hero-grid{grid-template-columns:1fr!important}
+          .partner-main-grid{grid-template-columns:1fr!important}
+        }
+      `}} />
     </div>
   );
 }
