@@ -24,9 +24,9 @@ export default function Home() {
   ];
 
   const materials = [
-    { name: "TMT Steel 550D", retail: "₹65,000/MT", network: "₹61,000/MT" },
-    { name: "OPC 53 Grade Cement", retail: "₹420/bag", network: "₹385/bag" },
-    { name: "M-Sand (Plastering)", retail: "₹65/cft", network: "₹52/cft" }
+    { name: "TMT Steel 550D", retail: "Request Quotes", network: "Compare Suppliers" },
+    { name: "OPC 53 Grade Cement", retail: "Request Quotes", network: "Compare Suppliers" },
+    { name: "M-Sand (Plastering)", retail: "Request Quotes", network: "Compare Suppliers" }
   ];
 
   const projects = [
@@ -78,7 +78,7 @@ export default function Home() {
             <div className={styles.heroBoard}>
               <div className={styles.metric}>
                 <span>Verified Partners</span>
-                <b>240+</b>
+                <b>Active Network</b>
               </div>
               <div className={styles.metric}>
                 <span>Material Quotes</span>
@@ -161,8 +161,8 @@ export default function Home() {
               {materials.map((m, i) => (
                 <div key={i} className={styles.row}>
                   <b>{m.name}</b>
-                  <span>Retail: {m.retail}</span>
-                  <em>Network: <strong>{m.network}</strong></em>
+                  <span>{m.retail}</span>
+                  <em><strong>{m.network}</strong></em>
                 </div>
               ))}
             </div>
