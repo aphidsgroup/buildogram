@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { SectionHeader, FormField, StatusBadge } from '../_shared/components';
 import { DEMO_PROFILE } from '../_shared/demoData';
+import { getPartnerBySlug, updatePartner, getPartners, saveAllPartners } from '@/lib/partnerStore';
 
 const CATEGORIES = ['Builder', 'Architect', 'Interior Designer', 'Material Supplier', 'Home Automation', 'Solar', 'Elevators', 'Waterproofing'];
 
@@ -24,6 +25,32 @@ export default function PartnerProfile() {
 
   const handleSave = () => {
     localStorage.setItem('bos_profile', JSON.stringify(profile));
+    // Sync into shared partner store so public pages reflect changes
+    // Map profile fields to partnerStore schema
+    if (profile.companyName) {
+      const allPartners = getPartners();
+      // Find partner by slug derived from companyName or existing localStorage slug
+      const partnerSlug = profile.partnerSlug || 'demo-builder';
+      const exists = allPartners.find(p => p.slug === partnerSlug);
+      if (exists) {
+        updatePartner(partnerSlug, {
+          companyName: profile.companyName,
+          category: profile.category,
+          shortDescription: profile.description?.slice(0, 150) || '',
+          fullDescription: profile.description || '',
+          logoUrl: profile.logoUrl || '',
+          coverUrl: profile.coverUrl || '',
+          phone: profile.phone || '',
+          email: profile.email || '',
+          whatsapp: profile.whatsapp || '',
+          website: profile.website || '',
+          serviceAreas: profile.serviceAreas || '',
+          certifications: profile.certifications ? profile.certifications.split(',').map(s => s.trim()) : [],
+          brands: profile.brands ? profile.brands.split(',').map(s => s.trim()) : [],
+          services: profile.services ? profile.services.split(',').map(s => s.trim()) : [],
+        });
+      }
+    }
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
@@ -114,7 +141,10 @@ export default function PartnerProfile() {
               <textarea className="input" rows={2} value={profile.videoUrls} onChange={f('videoUrls')} placeholder="https://youtube.com/watch?v=..." style={{ resize: 'vertical', fontFamily: 'monospace', fontSize: '13px' }} />
             </FormField>
             <div style={{ padding: '14px 16px', background: 'rgba(252,110,32,0.05)', borderRadius: '10px', border: '1px solid rgba(252,110,32,0.15)', fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6 }}>
-              📢 Your profile will appear on the public <strong>Buildogram Partner Directory</strong> after verification by the Buildogram team.
+              📢 Your profile appears on the public <strong>Buildogram Partner Directory</strong>. Save to update your public listing instantly.
+              <div style={{ marginTop: '10px' }}>
+                <a href={`/partners/${profile.partnerSlug || 'demo-builder'}`} target="_blank" rel="noreferrer" style={{ color: '#FC6E20', fontWeight: 700, textDecoration: 'none' }}>👁️ View My Public Profile →</a>
+              </div>
             </div>
           </div>
 
