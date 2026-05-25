@@ -14,53 +14,58 @@ const categories = [
 
 export default function ServicesHub() {
   return (
-    <>
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
-        <div className="container">
+    <div className="marketplacePage">
+      <section className="fullBleedSection" style={{ background: 'var(--secondary)', color: 'white', padding: 'clamp(48px, 6vw, 88px) 0 clamp(56px, 7vw, 104px) 0' }}>
+        <div className="sectionInnerWide" style={{ textAlign: 'center' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Our Services</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '680px' }}>
+          <h1 style={{ color: 'white', fontSize: 'clamp(32px, 5vw, 56px)', lineHeight: 1.15, marginBottom: '24px', maxWidth: '800px', margin: '0 auto', fontFamily: '"Space Grotesk", sans-serif' }}>
             Engineer-Led Construction & Property Services
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', maxWidth: '560px', lineHeight: 1.7 }}>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '600px', lineHeight: 1.7, margin: '24px auto 0' }}>
             Every Buildogram service is backed by structural engineers, itemized documentation, and transparent proof records.
           </p>
         </div>
       </section>
 
-      <div className="container" style={{ padding: '60px 24px' }}>
-        {categories.map((cat) => {
-          const catServices = cat.slugs.map((s) => services.find((sv) => sv.slug === s)).filter(Boolean);
-          return (
-            <div key={cat.label} style={{ marginBottom: '56px' }}>
-              <h2 style={{ fontSize: '22px', color: 'var(--secondary)', marginBottom: '24px', paddingBottom: '12px', borderBottom: '2px solid var(--border)' }}>
-                {cat.label}
-              </h2>
-              <div className="grid-3" style={{ gap: '20px' }}>
-                {catServices.map((svc) => (
-                  <Link key={svc.slug} href={`/services/${svc.slug}`} style={{ textDecoration: 'none' }}>
-                    <div className="card card-hover" style={{ height: '100%', transition: 'transform 0.2s, box-shadow 0.2s' }}>
-                      <div style={{ fontSize: '32px', marginBottom: '12px' }}>{svc.icon}</div>
-                      <h3 style={{ fontSize: '16px', color: 'var(--secondary)', marginBottom: '8px', lineHeight: 1.3 }}>{svc.title}</h3>
-                      <p style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6 }}>{svc.heroSubtitle}</p>
-                      <div style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--accent)', fontSize: '13px', fontWeight: 600 }}>
-                        Learn more <span>→</span>
+      <section className="fullBleedSection" style={{ padding: 'clamp(64px, 8vw, 112px) 0', background: '#F8FAFC' }}>
+        <div className="sectionInnerWide">
+          {categories.map((cat) => {
+            const catServices = cat.slugs.map((s) => services.find((sv) => sv.slug === s)).filter(Boolean);
+            return (
+              <div key={cat.label} style={{ marginBottom: '80px' }}>
+                <h2 style={{ fontSize: '28px', color: 'var(--secondary)', marginBottom: '32px', paddingBottom: '16px', borderBottom: '2px solid var(--border)', fontFamily: '"Space Grotesk", sans-serif' }}>
+                  {cat.label}
+                </h2>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
+                  {catServices.map((svc) => (
+                    <Link key={svc.slug} href={`/services/${svc.slug}`} style={{ textDecoration: 'none' }}>
+                      <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '24px', padding: '32px', height: '100%', display: 'flex', flexDirection: 'column', transition: 'all 0.2s', boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }} className="card-hover">
+                        <div style={{ fontSize: '40px', marginBottom: '20px' }}>{svc.icon}</div>
+                        <h3 style={{ fontSize: '20px', color: 'var(--secondary)', marginBottom: '12px', lineHeight: 1.4, fontFamily: '"Space Grotesk", sans-serif' }}>{svc.title}</h3>
+                        <p style={{ fontSize: '15px', color: 'var(--text-muted)', lineHeight: 1.6, flexGrow: 1 }}>{svc.heroSubtitle}</p>
+                        <div style={{ marginTop: '24px', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--primary)', fontSize: '14px', fontWeight: 600 }}>
+                          Learn more <span>→</span>
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  ))}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
 
-        <div className="card" style={{ background: 'var(--gradient-dark)', color: 'white', border: 'none', textAlign: 'center', padding: '48px', marginTop: '20px' }}>
-          <h2 style={{ color: 'white', fontSize: '28px', marginBottom: '12px' }}>Not sure where to start?</h2>
-          <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '28px', fontSize: '16px' }}>Book a free 30-minute consultation with our structural engineers.</p>
-          <Link href="/contact" className="btn btn-primary btn-lg">Book Free Consultation</Link>
+          <div style={{ padding: '64px', background: 'var(--secondary)', color: 'white', borderRadius: '24px', textAlign: 'center', position: 'relative', overflow: 'hidden', marginTop: '40px' }}>
+            <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 0%, rgba(252, 110, 32, 0.15) 0%, transparent 60%)' }} />
+            <div style={{ position: 'relative' }}>
+              <h2 style={{ color: 'white', fontSize: '36px', marginBottom: '16px', fontFamily: '"Space Grotesk", sans-serif' }}>Not sure where to start?</h2>
+              <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '32px', fontSize: '18px', maxWidth: '600px', margin: '0 auto 32px' }}>Book a free 30-minute consultation with our structural engineers to discuss your project requirements.</p>
+              <Link href="/contact" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px' }}>Book Free Consultation</Link>
+            </div>
+          </div>
         </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 }

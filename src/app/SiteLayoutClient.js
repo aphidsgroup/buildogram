@@ -25,7 +25,11 @@ export default function SiteLayoutClient({ children }) {
   return (
     <>
       {!isDashboard && <Navbar />}
-      <main style={{ paddingTop: !isDashboard ? '72px' : '0' }}>
+      {/* 
+        Removed style={{ paddingTop: '72px' }} since Navbar is position: sticky 
+        This eliminates the white gap between header and hero sections.
+      */}
+      <main>
         {children}
       </main>
       {!isDashboard && <Footer />}

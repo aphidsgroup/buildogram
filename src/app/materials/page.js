@@ -28,15 +28,15 @@ const whyBuildogram = [
 
 export default function MaterialsPage() {
   return (
-    <>
+    <div className="marketplacePage">
       {/* ── Hero ── */}
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
+      <section className="fullBleedSection" style={{ background: 'var(--secondary)', color: 'white', padding: 'clamp(48px, 6vw, 88px) 0 clamp(56px, 7vw, 104px) 0', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
-        <div className="container" style={{ position: 'relative', textAlign: 'center' }}>
+        <div className="sectionInnerWide" style={{ position: 'relative', textAlign: 'center' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Material Marketplace</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(34px, 5vw, 60px)', lineHeight: 1.1, marginBottom: '24px' }}>
+          <h1 style={{ color: 'white', fontSize: 'clamp(38px, 5vw, 64px)', lineHeight: 1.1, marginBottom: '24px' }}>
             Buy Construction Materials<br />
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>with Verified Proof.</span>
           </h1>
@@ -44,26 +44,26 @@ export default function MaterialsPage() {
             Cement, steel, sand, blocks, electrical, plumbing, tiles, paint — at market-best rates with delivery verification and material proof records.
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="#quote" className="btn btn-primary btn-lg">Request Material Quote</Link>
-            <Link href="/cost-estimator" className="btn btn-lg btn-outline-light">Estimate Materials</Link>
+            <Link href="#quote" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px' }}>Request Material Quote</Link>
+            <Link href="/cost-estimator" className="btn btn-outline" style={{ background: 'rgba(255,255,255,0.05)', color: 'white', borderColor: 'rgba(255,255,255,0.2)', padding: '16px 32px', fontSize: '16px' }}>Estimate Materials</Link>
           </div>
         </div>
       </section>
 
       {/* ── Material Categories ── */}
-      <section className="section" style={{ background: '#F9F9F9' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <span className="tag">Material Categories</span>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', marginTop: '16px' }}>All construction materials. One request.</h2>
+      <section className="fullBleedSection" style={{ background: '#F9F9F9', padding: 'clamp(64px, 8vw, 112px) 0' }}>
+        <div className="sectionInnerWide">
+          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', borderRadius: '999px', padding: '0.4rem 0.8rem', background: 'rgba(252, 110, 32, 0.1)', color: 'var(--primary)', border: '1px solid rgba(252, 110, 32, 0.2)', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Material Categories</span>
+            <h2 style={{ fontSize: 'clamp(32px, 4vw, 48px)', marginTop: '20px', fontFamily: '"Space Grotesk", sans-serif', color: 'var(--secondary)' }}>All construction materials. One request.</h2>
           </div>
-          <div className="grid-4">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
             {categories.map(c => (
               <Link key={c.name} href={c.href} style={{ textDecoration: 'none' }}>
-                <div className="card card-hover" style={{ textAlign: 'center', padding: '24px 16px' }}>
-                  <div style={{ fontSize: '40px', marginBottom: '12px' }}>{c.icon}</div>
-                  <h3 style={{ fontSize: '17px', marginBottom: '8px', color: '#292929' }}>{c.name}</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '12px', lineHeight: 1.5 }}>{c.brands}</p>
+                <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '24px', padding: '32px 24px', textAlign: 'center', transition: 'all 0.2s', boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }} className="card-hover">
+                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>{c.icon}</div>
+                  <h3 style={{ fontSize: '20px', marginBottom: '8px', color: '#292929', fontFamily: '"Space Grotesk", sans-serif' }}>{c.name}</h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: 1.5 }}>{c.brands}</p>
                 </div>
               </Link>
             ))}
@@ -72,19 +72,19 @@ export default function MaterialsPage() {
       </section>
 
       {/* ── Why Buildogram ── */}
-      <section className="section" style={{ background: 'white' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <span className="tag">Why Buildogram Materials</span>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', marginTop: '16px' }}>Not just materials. Verified materials.</h2>
+      <section className="fullBleedSection" style={{ background: 'white', padding: 'clamp(64px, 8vw, 112px) 0', borderTop: '1px solid var(--border)' }}>
+        <div className="sectionInnerWide">
+          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', borderRadius: '999px', padding: '0.4rem 0.8rem', background: 'rgba(252, 110, 32, 0.1)', color: 'var(--primary)', border: '1px solid rgba(252, 110, 32, 0.2)', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Why Buildogram Materials</span>
+            <h2 style={{ fontSize: 'clamp(32px, 4vw, 48px)', marginTop: '20px', fontFamily: '"Space Grotesk", sans-serif', color: 'var(--secondary)' }}>Not just materials. Verified materials.</h2>
           </div>
-          <div className="grid-3">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
             {whyBuildogram.map(w => (
-              <div key={w.title} style={{ display: 'flex', gap: '16px', alignItems: 'flex-start', padding: '20px', borderRadius: '16px', border: '1px solid var(--border)' }}>
-                <div style={{ fontSize: '32px', flexShrink: 0 }}>{w.icon}</div>
+              <div key={w.title} style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', padding: '32px', borderRadius: '24px', border: '1px solid var(--border)', background: 'var(--bg-card)' }}>
+                <div style={{ fontSize: '36px', flexShrink: 0 }}>{w.icon}</div>
                 <div>
-                  <h3 style={{ fontSize: '16px', marginBottom: '6px' }}>{w.title}</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: 1.5 }}>{w.desc}</p>
+                  <h3 style={{ fontSize: '18px', marginBottom: '8px', color: 'var(--secondary)' }}>{w.title}</h3>
+                  <p style={{ color: 'var(--text-muted)', fontSize: '15px', lineHeight: 1.6 }}>{w.desc}</p>
                 </div>
               </div>
             ))}
@@ -93,17 +93,17 @@ export default function MaterialsPage() {
       </section>
 
       {/* ── CTA Form ── */}
-      <section id="quote" className="section" style={{ background: 'var(--secondary)' }}>
-        <div className="container" style={{ maxWidth: '640px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <h2 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 42px)', marginBottom: '16px' }}>Request Material Quote</h2>
-            <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '17px' }}>Tell us what materials you need. We'll share competitive quotes within 24 hours.</p>
+      <section id="quote" className="fullBleedSection" style={{ background: 'var(--secondary)', padding: 'clamp(64px, 8vw, 112px) 0' }}>
+        <div className="sectionInnerWide" style={{ maxWidth: '700px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
+            <h2 style={{ color: 'white', fontSize: 'clamp(32px, 4vw, 48px)', marginBottom: '16px', fontFamily: '"Space Grotesk", sans-serif' }}>Request Material Quote</h2>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px' }}>Tell us what materials you need. We'll share competitive quotes within 24 hours.</p>
           </div>
-          <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', padding: '40px' }}>
+          <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '24px', padding: '48px' }}>
             <MaterialLeadForm />
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }
