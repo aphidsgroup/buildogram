@@ -3,15 +3,15 @@ import PartnerJoinForm from './PartnerJoinForm';
 
 export const metadata = {
   title: 'Join Buildogram Partner Marketplace | Builders, Contractors, Suppliers',
-  description: 'Join Buildogram\'s partner ecosystem. Get leads, verified profile, reels, project showcase, material benefits and IT/promotion services. Grow your construction business.',
+  description: 'Join Buildogram\'s partner ecosystem. Get leads, verified profile, project showcase, and material benefits. Grow your construction business.',
 };
 
 const partnerTypes = [
   { icon: '🏗️', type: 'Builders', benefit: 'Showcase projects, get verified, reach property owners who want accountability.' },
   { icon: '👷', type: 'Contractors', benefit: 'Get project leads, material benefits, verified contractor badge and proof records.' },
-  { icon: '📐', type: 'Architects', benefit: 'Showcase designs, get client leads, create reels with Buildogram team.' },
+  { icon: '📐', type: 'Architects', benefit: 'Showcase designs, get client leads, and expand your portfolio.' },
   { icon: '🔧', type: 'Structural Engineers', benefit: 'Get consulting leads, showcase certifications, add value to Buildogram projects.' },
-  { icon: '🎨', type: 'Interior Designers', benefit: 'Showcase interiors, get renovation and interior leads, partner-branded content.' },
+  { icon: '🎨', type: 'Interior Designers', benefit: 'Showcase interiors, get renovation and interior leads.' },
   { icon: '🧱', type: 'Material Suppliers', benefit: 'Sell through Buildogram marketplace, receive quote requests, become verified.' },
   { icon: '🏠', type: 'Real Estate Agents', benefit: 'List properties, get buyer/tenant leads, integrate 360 tours and Passport.' },
   { icon: '🔨', type: 'Maintenance Vendors', benefit: 'Receive maintenance requests, get AMC leads, work with Buildogram customers.' },
@@ -20,10 +20,8 @@ const partnerTypes = [
 const benefits = [
   { icon: '🎯', title: 'Quality Leads', desc: 'Get pre-qualified leads from homeowners and property owners in your service area.' },
   { icon: '✅', title: 'Verified Profile', desc: 'Buildogram-verified badge that signals trust to potential customers.' },
-  { icon: '🎥', title: 'Reels & Content', desc: 'Our content team creates project showcase reels for your social media.' },
   { icon: '💼', title: 'Project Showcase', desc: 'Your best projects featured on the Buildogram platform and website.' },
   { icon: '🧱', title: 'Material Benefits', desc: 'Access our supplier network for better material rates on your projects.' },
-  { icon: '💻', title: 'IT & Promotion Services', desc: 'Website, social media management and digital marketing for your business.' },
 ];
 
 export default function PartnersPage() {
@@ -41,7 +39,7 @@ export default function PartnersPage() {
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>with Buildogram.</span>
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', maxWidth: '600px', margin: '0 auto 40px', lineHeight: 1.7 }}>
-            Join Chennai's growing construction and property ecosystem. Get leads, verified profile, project showcase, reels and material benefits.
+            Join Chennai's growing construction and property ecosystem. Get leads, verified profile, project showcase, and material benefits.
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="#join" className="btn btn-primary btn-lg">Join Partner Network</Link>

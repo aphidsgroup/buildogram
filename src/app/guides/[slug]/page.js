@@ -62,17 +62,23 @@ export default function GuidePage({ params }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(guide.faqs)) }} />
       )}
 
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
+      <section style={{ background: '#0F172A', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">
-          <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '24px', fontSize: '13px' }}>
-            <Link href="/guides" style={{ color: 'rgba(255,255,255,0.6)', textDecoration: 'none' }}>Guides</Link>
-            <span style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', textTransform: 'capitalize' }}>{categoryLabel}</span>
+          <nav style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '24px', fontSize: '14px' }}>
+            <Link href="/guides" style={{ color: '#94A3B8', textDecoration: 'none' }}>Guides</Link>
+            <span style={{ color: '#475569' }}>/</span>
+            <span style={{ color: 'white', fontWeight: 600, textTransform: 'capitalize' }}>{categoryLabel}</span>
           </nav>
-          <h1 style={{ color: 'white', fontSize: 'clamp(24px, 3.5vw, 46px)', lineHeight: 1.2, marginBottom: '16px', maxWidth: '800px' }}>
+          
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '20px' }}>
+            <span style={{ background: 'rgba(59, 130, 246, 0.15)', color: '#60A5FA', padding: '6px 14px', borderRadius: '100px', fontSize: '13px', fontWeight: 700, border: '1px solid rgba(59, 130, 246, 0.3)' }}>📚 Construction Guide</span>
+          </div>
+
+          <h1 style={{ color: 'white', fontSize: 'clamp(32px, 4.5vw, 56px)', lineHeight: 1.15, marginBottom: '20px', maxWidth: '800px', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800 }}>
             {guide.title}
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', maxWidth: '640px', lineHeight: 1.7 }}>
+          
+          <p style={{ color: '#CBD5E1', fontSize: '18px', maxWidth: '700px', lineHeight: 1.6, marginBottom: '40px' }}>
             {guide.metaDescription}
           </p>
         </div>
@@ -134,11 +140,30 @@ export default function GuidePage({ params }) {
             </div>
           )}
 
+          {/* MARKETPLACE DISCOVERY BLOCK */}
+          <div style={{ marginBottom: '64px', marginTop: '48px', background: '#F8FAFC', padding: '40px', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
+            <h2 style={{ fontSize: '24px', fontWeight: 800, marginBottom: '24px', color: '#0F172A' }}>Explore Buildogram Marketplace</h2>
+            <div className="grid-2" style={{ gap: '16px' }}>
+              <Link href="/partners/directory?category=Builder" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <span style={{ fontSize: '24px' }}>🏗️</span>
+                <span style={{ fontWeight: 700, fontSize: '15px' }}>Hire Builders</span>
+                <span style={{ color: '#64748B', fontSize: '13px' }}>Turnkey construction</span>
+              </Link>
+              <Link href="/materials" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <span style={{ fontSize: '24px' }}>🧱</span>
+                <span style={{ fontWeight: 700, fontSize: '15px' }}>Buy Materials</span>
+                <span style={{ color: '#64748B', fontSize: '13px' }}>Direct from suppliers</span>
+              </Link>
+            </div>
+          </div>
+
           {/* CTA */}
-          <div className="card" style={{ background: 'var(--secondary)', border: 'none', textAlign: 'center', padding: '40px' }}>
-            <h3 style={{ color: 'white', fontSize: '22px', marginBottom: '12px' }}>Need expert guidance?</h3>
-            <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '24px', fontSize: '15px' }}>Talk to our structural engineers for project-specific advice.</p>
-            <Link href={guide.cta.href} className="btn btn-primary btn-lg">{guide.cta.text}</Link>
+          <div className="card" style={{ background: '#0F172A', border: 'none', textAlign: 'center', padding: '44px', borderRadius: '16px' }}>
+            <h3 style={{ color: 'white', fontSize: '24px', fontWeight: 800, marginBottom: '12px' }}>Need expert guidance?</h3>
+            <p style={{ color: '#CBD5E1', fontSize: '16px', marginBottom: '28px' }}>Talk to our structural engineers for project-specific advice.</p>
+            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <Link href={guide.cta.href} className="btn btn-primary" style={{ padding: '14px 28px', fontSize: '16px' }}>{guide.cta.text}</Link>
+            </div>
           </div>
 
         </article>
