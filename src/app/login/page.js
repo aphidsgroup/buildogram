@@ -23,7 +23,7 @@ export default function LoginPage() {
       if (!res.ok) { setError(data.error || 'Something went wrong'); return; }
       const role = data.user.role;
       if (['ops_admin', 'ops_pm', 'ops_engineer'].includes(role)) router.push('/ops/dashboard');
-      else if (['partner_contractor', 'partner_supplier'].includes(role)) router.push('/partner/dashboard');
+      else if (['partner', 'partner_contractor', 'partner_supplier'].includes(role)) router.push('/partner/dashboard');
       else router.push('/client/dashboard');
     } catch (e) { setError('Network error. Please try again.'); }
     finally { setLoading(false); }
@@ -71,8 +71,10 @@ export default function LoginPage() {
           </button>
         </p>
         <div className={styles.demoBox}>
-          <p className="text-xs text-muted font-semibold mb-2">Demo Credentials</p>
-          <p className="text-xs text-muted">Admin: admin@buildogram.in / Admin@1234</p>
+          <p className="text-xs text-muted font-semibold mb-2">Demo Credentials (password: password123)</p>
+          <p className="text-xs text-muted">Admin: admin@buildogram.in</p>
+          <p className="text-xs text-muted">Partner: partner@buildogram.in</p>
+          <p className="text-xs text-muted">Client: client@buildogram.in</p>
         </div>
       </div>
     </div>
