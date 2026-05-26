@@ -5,13 +5,13 @@ import { useRouter } from 'next/navigation';
 import styles from './Navbar.module.css';
 
 const NAV_LINKS = [
-  { href: '/contact', label: 'Build Your Home' },
+  { href: '/contact?type=construction', label: 'Talk to an Engineer' },
   { href: '/materials', label: 'Materials' },
   { href: '/partners/directory', label: 'Verified Partners' },
   { href: '/property-passport', label: 'Property Passport' },
   { href: '/properties', label: 'Property Portals' },
   { href: '/partners/register', label: 'Become a Partner' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/contact?type=general', label: 'Contact' },
 ];
 
 export default function Navbar() {
@@ -64,7 +64,7 @@ export default function Navbar() {
         </form>
 
         <div className={`${styles.topActions} hide-mobile`}>
-          <Link href="/contact" className="btn btn-ghost" style={{ padding: '8px 14px', fontSize: '13px', border: 'none' }}>Build Your Home</Link>
+          <Link href="/contact?type=construction" className="btn btn-ghost" style={{ padding: '8px 14px', fontSize: '13px', border: 'none' }}>Talk to an Engineer</Link>
           <Link href="/materials" className="btn btn-ghost" style={{ padding: '8px 14px', fontSize: '13px', border: 'none' }}>Materials</Link>
           <Link href="/partners/directory" className="btn btn-ghost" style={{ padding: '8px 14px', fontSize: '13px', border: 'none' }}>Verified Partners</Link>
           <Link href="/properties" className="btn btn-ghost" style={{ padding: '8px 14px', fontSize: '13px', border: 'none', color: 'var(--text-muted)' }}>Property Portals</Link>

@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { roleCan } from '@/lib/permissions';
+import LeadDetailWorkspace from './LeadDetailWorkspace';
 
 const fmt = (value) => {
   if (value === null || value === undefined || value === "") return "₹0";
@@ -22,8 +23,14 @@ const fmt = (value) => {
 export default function OpsDashboard() {
   const [data, setData] = useState(null);
   const [user, setUser] = useState(null);
+  const [leads, setLeads] = useState([]);
+  const [selectedLead, setSelectedLead] = useState(null);
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState(null);
+
+  // CRM Filters
+  const [pipelineFilter, setPipelineFilter] = useState('All');
+  const [typeFilter, setTypeFilter] = useState('All');
 
   useEffect(() => {
     Promise.all([
@@ -34,10 +41,12 @@ export default function OpsDashboard() {
         }
         return r.json();
       }),
-      fetch('/api/auth/me', { credentials: 'include' }).then(r => r.json())
-    ]).then(([d, u]) => {
+      fetch('/api/auth/me', { credentials: 'include' }).then(r => r.json()),
+      fetch('/api/leads', { credentials: 'include' }).then(r => r.json().catch(() => ({success: false})))
+    ]).then(([d, u, lRes]) => {
       if (d.success) setData(d);
       if (u.user) setUser(u.user);
+      if (lRes && lRes.success) setLeads(lRes.leads);
       setLoading(false);
     }).catch((err) => {
       const msg = err.message || '';
@@ -59,10 +68,10 @@ export default function OpsDashboard() {
 
   return (
     <div className="pb-20">
-      <div className="page-header flex-between mb-8">
+      <div className="page-header flex-between mb-8" style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)', padding: '40px', borderRadius: '24px', color: 'white', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: 800, color: '#0f172a' }}>Founder Dashboard</h1>
-          <p className="text-muted mt-2">Comprehensive overview of revenue, operations, and ecosystem health.</p>
+          <h1 style={{ fontSize: '32px', fontWeight: 800, marginBottom: '8px' }}>Founder Dashboard</h1>
+          <p style={{ color: '#94A3B8', fontSize: '16px' }}>Comprehensive overview of revenue, operations, and ecosystem health.</p>
         </div>
       </div>
 
@@ -162,6 +171,97 @@ export default function OpsDashboard() {
             <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Active Passports</div>
             <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '8px', fontWeight: 500 }}>{kpis.avgCompleteness}% avg completeness</div>
         </div>
+      </div>
+
+      {/* ── CRM PIPELINE ── */}
+      <h2 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '16px', color: '#1e293b' }}>
+        CRM Pipeline
+      </h2>
+      
+      <div className="grid-4 mb-4" style={{ gap: '16px' }}>
+        <div className="card" style={{ padding: '16px', border: '1px solid #e2e8f0', background: 'white' }}>
+            <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a' }}>{leads.length}</div>
+            <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>Total Leads</div>
+        </div>
+        <div className="card" style={{ padding: '16px', border: '1px solid #dbeafe', background: '#eff6ff' }}>
+            <div style={{ fontSize: '20px', fontWeight: 800, color: '#1e40af' }}>{leads.filter(l => l.pipelineStage === 'New').length}</div>
+            <div style={{ fontSize: '11px', fontWeight: 700, color: '#1d4ed8', textTransform: 'uppercase' }}>New Leads</div>
+        </div>
+        <div className="card" style={{ padding: '16px', border: '1px solid #fecaca', background: '#fef2f2' }}>
+            <div style={{ fontSize: '20px', fontWeight: 800, color: '#991b1b' }}>{leads.filter(l => l.priority === 'High').length}</div>
+            <div style={{ fontSize: '11px', fontWeight: 700, color: '#b91c1c', textTransform: 'uppercase' }}>High Priority</div>
+        </div>
+        <div className="card" style={{ padding: '16px', border: '1px solid #fef08a', background: '#fefce8' }}>
+            <div style={{ fontSize: '20px', fontWeight: 800, color: '#854d0e' }}>
+              {leads.filter(l => l.nextFollowUpDate && new Date(l.nextFollowUpDate) < new Date()).length}
+            </div>
+            <div style={{ fontSize: '11px', fontWeight: 700, color: '#a16207', textTransform: 'uppercase' }}>Overdue Follow-ups</div>
+        </div>
+      </div>
+
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
+        <select className="input" style={{ width: '200px' }} value={pipelineFilter} onChange={e => setPipelineFilter(e.target.value)}>
+          <option value="All">All Stages</option>
+          <option value="New">New</option>
+          <option value="Contacted">Contacted</option>
+          <option value="Qualified">Qualified</option>
+          <option value="Requirement Collected">Requirement Collected</option>
+          <option value="BOQ / Scope Review">BOQ / Scope Review</option>
+          <option value="Partner Matching">Partner Matching</option>
+          <option value="Material Quote Shared">Material Quote Shared</option>
+          <option value="Proposal Sent">Proposal Sent</option>
+          <option value="Follow-up">Follow-up</option>
+          <option value="Converted">Converted</option>
+          <option value="Lost">Lost</option>
+        </select>
+        <select className="input" style={{ width: '200px' }} value={typeFilter} onChange={e => setTypeFilter(e.target.value)}>
+          <option value="All">All Types</option>
+          <option value="construction">Construction</option>
+          <option value="boq_audit">BOQ Audit</option>
+          <option value="material_quote">Materials</option>
+          <option value="partner_application">Partner App</option>
+          <option value="property_listing">Property</option>
+        </select>
+      </div>
+
+      <div className="card mb-8" style={{ padding: '0', overflowX: 'auto' }}>
+        <table style={{ minWidth: '900px', width: '100%', borderCollapse: 'collapse' }}>
+          <thead>
+            <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
+              <th style={{ padding: '12px 20px', textAlign: 'left', fontSize: '12px', color: '#64748b' }}>Name</th>
+              <th style={{ padding: '12px 20px', textAlign: 'left', fontSize: '12px', color: '#64748b' }}>Type</th>
+              <th style={{ padding: '12px 20px', textAlign: 'left', fontSize: '12px', color: '#64748b' }}>Stage</th>
+              <th style={{ padding: '12px 20px', textAlign: 'left', fontSize: '12px', color: '#64748b' }}>Priority</th>
+              <th style={{ padding: '12px 20px', textAlign: 'left', fontSize: '12px', color: '#64748b' }}>Follow-up</th>
+              <th style={{ padding: '12px 20px', textAlign: 'right', fontSize: '12px', color: '#64748b' }}>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leads.filter(l => (pipelineFilter === 'All' || l.pipelineStage === pipelineFilter) && (typeFilter === 'All' || l.leadType === typeFilter)).length === 0 ? (
+              <tr><td colSpan="6" style={{ padding: '40px', textAlign: 'center', color: '#94a3b8' }}>No leads match the current filters.</td></tr>
+            ) : leads.filter(l => (pipelineFilter === 'All' || l.pipelineStage === pipelineFilter) && (typeFilter === 'All' || l.leadType === typeFilter)).map(l => (
+              <tr key={l.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                <td style={{ padding: '16px 20px' }}>
+                  <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '14px' }}>{l.name}</div>
+                  <div style={{ fontSize: '12px', color: '#64748b' }}>{l.phone}</div>
+                </td>
+                <td style={{ padding: '16px 20px', fontSize: '13px', color: '#475569', textTransform: 'capitalize' }}>{l.leadType.replace('_', ' ')}</td>
+                <td style={{ padding: '16px 20px' }}>
+                  <span className={`badge ${l.pipelineStage === 'New' ? 'badge-blue' : l.pipelineStage === 'Converted' ? 'badge-green' : l.pipelineStage === 'Lost' ? 'badge-red' : 'badge-yellow'}`}>{l.pipelineStage}</span>
+                </td>
+                <td style={{ padding: '16px 20px' }}>
+                  <span className={`badge ${l.priority === 'High' ? 'badge-red' : l.priority === 'Medium' ? 'badge-yellow' : 'badge-gray'}`}>{l.priority}</span>
+                </td>
+                <td style={{ padding: '16px 20px', fontSize: '13px', color: '#475569' }}>
+                  {l.nextFollowUpDate ? new Date(l.nextFollowUpDate).toLocaleDateString('en-IN') : '—'}
+                </td>
+                <td style={{ padding: '16px 20px', textAlign: 'right' }}>
+                  <button onClick={() => setSelectedLead(l)} className="btn btn-outline btn-sm">Workspace</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       <div className="grid-4 mb-8" style={{ gap: '16px' }}>
@@ -419,6 +519,30 @@ export default function OpsDashboard() {
 
       </div>
 
+      {/* ── CRM WORKSPACE (DRAWER) ── */}
+      {selectedLead && (
+        <LeadDetailWorkspace 
+          lead={selectedLead} 
+          onClose={() => setSelectedLead(null)} 
+          onUpdate={async (id, updates) => {
+            await fetch('/api/leads', { method: 'PATCH', body: JSON.stringify({ id, ...updates }) });
+            // Re-fetch to get activity logs populated by backend
+            const r = await fetch('/api/leads', { credentials: 'include' }).then(res => res.json());
+            if (r.success) {
+              setLeads(r.leads);
+              setSelectedLead(r.leads.find(l => l.id === id));
+            }
+          }}
+          onAddNote={async (id, action, note) => {
+            await fetch('/api/leads', { method: 'PATCH', body: JSON.stringify({ id, action, note }) });
+            const r = await fetch('/api/leads', { credentials: 'include' }).then(res => res.json());
+            if (r.success) {
+              setLeads(r.leads);
+              setSelectedLead(r.leads.find(l => l.id === id));
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

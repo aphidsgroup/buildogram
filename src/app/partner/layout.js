@@ -87,6 +87,7 @@ export default function PartnerLayout({ children }) {
   const [user, setUser] = useState(null);
   const [category, setCategory] = useState('builder'); // default fallback
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [comingSoonModule, setComingSoonModule] = useState(null);
 
   useEffect(() => { 
     // Fetch user and profile to determine category
@@ -115,12 +116,12 @@ export default function PartnerLayout({ children }) {
 
   return (
     <div className={styles.shell}>
-      <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`} style={{ width: '280px', zIndex: 100 }}>
-        <div className={styles.sidebarHeader} style={{ padding: '20px' }}>
-          <Link href="/" className={styles.logo} style={{ fontSize: '18px' }}>
-            <span style={{ color: 'var(--accent)' }}>■</span> Buildogram <span style={{ fontWeight: 400, color: 'var(--text-muted)' }}>OS</span>
+      <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`} style={{ width: '280px', zIndex: 100, background: '#0F172A', color: 'white' }}>
+        <div className={styles.sidebarHeader} style={{ padding: '20px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+          <Link href="/" className={styles.logo} style={{ fontSize: '18px', color: 'white' }}>
+            <span style={{ color: '#FC6E20' }}>⬡</span> Buildogram <span style={{ fontWeight: 400, color: '#94A3B8' }}>OS</span>
           </Link>
-          <div className={styles.sidebarBadge} style={{ background: 'var(--gradient-orange)', color: 'white' }}>
+          <div className={styles.sidebarBadge} style={{ background: 'rgba(252,110,32,0.15)', color: '#FC6E20', border: '1px solid rgba(252,110,32,0.3)' }}>
             {category.toUpperCase()} PARTNER
           </div>
         </div>
@@ -130,7 +131,15 @@ export default function PartnerLayout({ children }) {
             <Link 
               key={idx} 
               href={item.href} 
-              onClick={() => setSidebarOpen(false)}
+              onClick={(e) => {
+                const builtRoutes = ['/partner/dashboard', '/partner/profile'];
+                if (!builtRoutes.includes(item.href)) {
+                  e.preventDefault();
+                  setComingSoonModule(item.label);
+                }
+                setSidebarOpen(false);
+              }}
+              style={{ color: pathname === item.href || pathname.startsWith(item.href + '/') ? 'white' : '#94A3B8' }}
               className={`${styles.navItem} ${pathname === item.href || pathname.startsWith(item.href + '/') ? styles.active : ''}`}
             >
               <span className={styles.navIcon}>{item.icon}</span>
@@ -139,23 +148,23 @@ export default function PartnerLayout({ children }) {
           ))}
         </nav>
 
-        <div className={styles.sidebarFooter}>
+        <div className={styles.sidebarFooter} style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}>
           {user && (
             <div className={styles.userInfo}>
-              <div className={styles.avatar} style={{ background: 'var(--gradient-orange)' }}>
+              <div className={styles.avatar} style={{ background: 'linear-gradient(135deg, #FFB347, #FC6E20)', color: 'white' }}>
                 {user.name[0]}
               </div>
               <div style={{ overflow: 'hidden' }}>
-                <div style={{ fontSize: '13px', fontWeight: '600', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
+                <div style={{ fontSize: '13px', fontWeight: '600', color: 'white', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
                   {user.name}
                 </div>
-                <div className="text-muted text-xs" style={{ textTransform: 'capitalize' }}>
+                <div className="text-muted text-xs" style={{ textTransform: 'capitalize', color: '#94A3B8' }}>
                   {category} Partner
                 </div>
               </div>
             </div>
           )}
-          <button onClick={logout} className={styles.logoutBtn}>Sign Out</button>
+          <button onClick={logout} className={styles.logoutBtn} style={{ color: '#F87171' }}>Sign Out</button>
         </div>
       </aside>
 
@@ -180,13 +189,30 @@ export default function PartnerLayout({ children }) {
         </div>
       </div>
       
+      {/* Coming Soon Modal */}
+      {comingSoonModule && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.6)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', backdropFilter: 'blur(4px)' }}>
+          <div style={{ background: 'white', borderRadius: '24px', padding: '32px', maxWidth: '400px', width: '100%', textAlign: 'center', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
+            <div style={{ fontSize: '48px', marginBottom: '16px' }}>🚧</div>
+            <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#0F172A', marginBottom: '12px' }}>{comingSoonModule} is Upgrading</h3>
+            <p style={{ fontSize: '14px', color: '#64748B', lineHeight: '1.6', marginBottom: '24px' }}>
+              We are currently transitioning this module to our new Engineer-Led Construction Ecosystem. It will be back online soon with enhanced capabilities for {category} partners!
+            </p>
+            <button onClick={() => setComingSoonModule(null)} style={{ background: '#0F172A', color: 'white', padding: '12px 24px', borderRadius: '12px', fontSize: '14px', fontWeight: 700, border: 'none', cursor: 'pointer', width: '100%' }}>
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
+      
       {/* Dynamic CSS override for mobile layout sidebar width compensation */}
       <style dangerouslySetInnerHTML={{__html: `
         @media (max-width: 900px) {
           .${styles.main} { margin-left: 0 !important; }
         }
+        .${styles.navItem}:hover { background: rgba(255,255,255,0.05); color: white !important; }
         .${styles.navItem}.${styles.active} {
-          background: linear-gradient(90deg, rgba(252, 110, 32, 0.08) 0%, transparent 100%) !important;
+          background: rgba(252, 110, 32, 0.1) !important;
           color: #FC6E20 !important;
           border-left: 3px solid #FC6E20;
           border-radius: 0 10px 10px 0;

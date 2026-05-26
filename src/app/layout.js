@@ -3,11 +3,19 @@ import SiteLayoutClient from './SiteLayoutClient';
 
 export const metadata = {
   title: 'Buildogram | Engineer-Led Home Construction & Property Ecosystem in Chennai',
-  description: 'Buildogram helps homeowners and plot owners plan, build, source materials, verify site progress, connect with trusted construction partners, and manage property records through an engineer-led ecosystem.',
-  keywords: ['engineer-led construction', 'construction companion', 'property ecosystem', 'buildogram', 'chennai', 'BOQ review', 'property passport', 'verified builders', 'material sourcing'],
+  description: 'Engineer-led home construction companion in Chennai. We help owners with BOQ reviews, construction project management, finding verified builders and contractors, construction material sourcing, and maintaining a digital Property Passport.',
+  keywords: [
+    'Engineer-led home construction Chennai',
+    'BOQ review Chennai',
+    'Construction project management Chennai',
+    'Verified builders and contractors Chennai',
+    'Construction material sourcing Chennai',
+    'Property Passport',
+    'Buildogram'
+  ],
   openGraph: {
     title: 'Buildogram | Engineer-Led Home Construction & Property Ecosystem',
-    description: 'Buildogram helps homeowners plan, build, source materials, verify site progress, connect with trusted construction partners, and manage property records through an engineer-led ecosystem.',
+    description: 'Engineer-led home construction companion in Chennai. Plan, build, source materials, verify site progress, and manage your Property Passport.',
     url: 'https://buildogram.in',
     siteName: 'Buildogram',
     images: [{ url: 'https://buildogram.in/og-image.jpg', width: 1200, height: 630 }],
@@ -16,8 +24,8 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Buildogram | Engineer-Led Home Construction & Property Ecosystem',
-    description: 'Buildogram helps homeowners plan, build, source materials, verify site progress, connect with trusted partners, and manage property records.',
+    title: 'Buildogram | Engineer-Led Construction Companion',
+    description: 'Engineer-led guidance for home construction in Chennai. Verified builders, BOQ reviews, material sourcing, and Property Passport.',
   },
   manifest: '/manifest.json',
 };
@@ -63,6 +71,25 @@ export default function RootLayout({ children }) {
           }}
         />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
+        
+        {/* Analytics Placeholder */}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}></script>
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+                    page_path: window.location.pathname,
+                  });
+                `,
+              }}
+            />
+          </>
+        )}
       </body>
     </html>
   );

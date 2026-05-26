@@ -23,7 +23,7 @@ const HOW_IT_WORKS = [
 ];
 
 const SERVICES = [
-  { icon: '🏗️', title: 'Home Construction Guidance', desc: 'Engineer-led support from planning to execution — covering scope, specifications, contractor selection, and site coordination.', href: '/contact' },
+  { icon: '🏗️', title: 'Home Construction Guidance', desc: 'Engineer-led support from planning to execution — covering scope, specifications, contractor selection, and site coordination.', href: '/contact?type=construction' },
   { icon: '📋', title: 'BOQ & Plan Review', desc: 'Review scope, quantities, specifications, drawings, and cost clarity before you sign any contractor agreement.', href: '/boq-audit' },
   { icon: '🤝', title: 'Verified Partner Network', desc: 'Connect with trusted builders, contractors, architects, consultants, and suppliers through a reviewed and managed network.', href: '/partners/directory' },
   { icon: '🧱', title: 'Material Sourcing Support', desc: 'Transparent support for cement, steel, sand, electrical, plumbing, tiles, paint, waterproofing, solar, and more.', href: '/materials' },
@@ -79,7 +79,7 @@ export default function Home() {
   };
 
   return (
-    <main className="marketplacePage">
+    <main className="engineerLedPage">
 
       {/* ── 1. HERO ── */}
       <section className={styles.homeHeroBg}>
@@ -108,9 +108,9 @@ export default function Home() {
               </div>
 
               <div className={styles.quick} style={{ marginTop: '28px' }}>
-                <Link href="/contact">Start Your Construction Journey</Link>
+                <Link href="/contact?type=construction">Start Your Construction Journey</Link>
                 <Link href="/materials">Material Support</Link>
-                <Link href="/boq-audit">BOQ Review</Link>
+                <Link href="/contact?type=boq_audit">BOQ Review</Link>
               </div>
             </div>
 
@@ -188,7 +188,7 @@ export default function Home() {
             ))}
           </div>
           <div style={{ marginTop: '40px', textAlign: 'center' }}>
-            <Link href="/contact" className="btn btn-primary btn-lg">Start Your Construction Journey</Link>
+            <Link href="/contact?type=construction" className="btn btn-primary btn-lg">Start Your Construction Journey</Link>
           </div>
         </div>
       </section>
@@ -227,7 +227,7 @@ export default function Home() {
               <p>Buildogram is not just a directory. It is a connected construction ecosystem where every partner, material quote, project update, and property record supports one goal — helping owners build and manage property with confidence.</p>
               <div style={{ marginTop: '24px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
                 <Link href="/partners/directory" className="btn btn-primary">Explore Verified Partners</Link>
-                <Link href="/contact" className="btn btn-outline">Talk to Buildogram</Link>
+                <Link href="/contact?type=construction" className="btn btn-outline">Talk to an Engineer</Link>
               </div>
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
@@ -349,8 +349,8 @@ export default function Home() {
             <h2>Planning to build, renovate, buy, or source materials?</h2>
             <p>Start with Buildogram and get the right guidance, partners, materials, and property records from day one.</p>
             <div className={styles.quick} style={{ justifyContent: 'center' }}>
-              <Link href="/contact" className="btn" style={{ background: 'white', color: 'var(--secondary)' }}>Start Your Construction Journey</Link>
-              <Link href="/contact" className="btn btn-outline-light">Talk to Buildogram</Link>
+              <Link href="/contact?type=construction" className="btn" style={{ background: 'white', color: 'var(--secondary)' }}>Start Your Construction Journey</Link>
+              <Link href="/contact?type=construction" className="btn btn-outline-light">Talk to an Engineer</Link>
               <Link href="/partners/register" className="btn btn-outline-light">Become a Partner</Link>
             </div>
           </div>
