@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { verifyToken } from './lib/auth';
 
-export function middleware(request) {
+export default function proxy(request) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('buildogram_token')?.value;
   const user = token ? verifyToken(token) : null;

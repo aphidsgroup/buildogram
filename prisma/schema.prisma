@@ -1,0 +1,292 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  phone        String?
+  passwordHash String
+  role         String   @default("client") // client, partner, ops, admin
+  status       String   @default("active") // active, pending, disabled
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  clientRequests ClientRequest[]
+  partnerProfile PartnerProfile?
+}
+
+model Lead {
+  id               String   @id @default(uuid())
+  leadType         String
+  name             String
+  phone            String?
+  email            String?
+  location         String?
+  priority         String   @default("Medium")
+  status           String   @default("New")
+  pipelineStage    String   @default("New")
+  source           String?
+  sourcePage       String?
+  sourceCta        String?
+  utmSource        String?
+  utmMedium        String?
+  utmCampaign      String?
+  utmContent       String?
+  referrer         String?
+  deviceType       String?
+  assignedTo       String?
+  nextFollowUpDate DateTime?
+  formData         String?  // JSON stringified
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  activityLog      ActivityLog[]
+  notes            LeadNote[]
+  followUps        FollowUp[]
+  clientRequests   ClientRequest[]
+  partnerOpportunities PartnerOpportunity[]
+}
+
+model ActivityLog {
+  id          String   @id @default(uuid())
+  leadId      String
+  action      String   // Using 'action' instead of 'activityType' to match ops logic
+  note        String?  // Description
+  user        String   @default("System") // createdBy
+  timestamp   DateTime @default(now()) // createdAt
+
+  lead        Lead     @relation(fields: [leadId], references: [id])
+}
+
+model LeadNote {
+  id        String   @id @default(uuid())
+  leadId    String
+  note      String
+  createdBy String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  lead      Lead     @relation(fields: [leadId], references: [id])
+}
+
+model FollowUp {
+  id           String   @id @default(uuid())
+  leadId       String
+  followUpDate DateTime
+  note         String?
+  status       String   @default("pending") // pending, completed, overdue
+  completedAt  DateTime?
+  createdBy    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  lead         Lead     @relation(fields: [leadId], references: [id])
+}
+
+model PartnerProfile {
+  id                   String   @id @default(uuid())
+  userId               String   @unique
+  companyName          String
+  partnerType          String
+  serviceAreas         String?
+  yearsExperience      Int?
+  portfolioLink        String?
+  verificationStatus   String   @default("pending")
+  interestedInShowcase Boolean  @default(false)
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  user                 User     @relation(fields: [userId], references: [id])
+  opportunities        PartnerOpportunity[]
+}
+
+model ClientRequest {
+  id          String   @id @default(uuid())
+  userId      String
+  leadId      String
+  requestType String
+  title       String
+  status      String   @default("pending")
+  summary     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user        User     @relation(fields: [userId], references: [id])
+  lead        Lead     @relation(fields: [leadId], references: [id])
+}
+
+model PartnerOpportunity {
+  id              String   @id @default(uuid())
+  partnerId       String
+  leadId          String
+  opportunityType String
+  title           String
+  status          String   @default("new")
+  summary         String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  partner         PartnerProfile @relation(fields: [partnerId], references: [id])
+  lead            Lead           @relation(fields: [leadId], references: [id])
+}
+
+model ProjectRequirement {
+  id                String   @id @default(uuid())
+  leadId            String
+  clientId          String?
+  requirementType   String   // construction, boq_review, material, property, partner
+  projectTitle      String?
+  projectLocation   String?
+  plotSize          String?
+  builtUpArea       String?
+  floors            String?
+  budgetRange       String?
+  expectedStartDate String?
+  drawingsAvailable Boolean  @default(false)
+  boqAvailable      Boolean  @default(false)
+  scopeSummary      String?
+  currentStage      String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+model BoqReview {
+  id               String   @id @default(uuid())
+  leadId           String
+  requirementId    String?
+  reviewStatus     String   @default("pending") // pending, documents_requested, under_review, completed, shared
+  drawingStatus    String?
+  boqStatus        String?
+  builtUpArea      String?
+  projectType      String?
+  reviewNotes      String?
+  riskItems        String?
+  missingItems     String?
+  costObservation  String?
+  engineerSummary  String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model MaterialQuoteRequest {
+  id                         String   @id @default(uuid())
+  leadId                     String
+  requirementId              String?
+  materialCategory           String?
+  materialItems              String?  // JSON
+  projectLocation            String?
+  deliveryTimeline           String?
+  invoiceRequired            Boolean  @default(false)
+  deliveryProofRequired      Boolean  @default(false)
+  supplierComparisonRequired Boolean  @default(false)
+  quoteStatus                String   @default("requested") // requested, collecting_quotes, quote_prepared, shared, accepted, rejected
+  createdAt                  DateTime @default(now())
+  updatedAt                  DateTime @updatedAt
+}
+
+model SupplierQuote {
+  id                     String   @id @default(uuid())
+  materialQuoteRequestId String
+  supplierName           String
+  supplierContact        String?
+  materialItem           String?
+  specification          String?
+  quantity               String?
+  unit                   String?
+  rate                   Float?
+  totalAmount            Float?
+  deliveryTerms          String?
+  validityDate           DateTime?
+  notes                  String?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
+
+model PartnerMatch {
+  id             String   @id @default(uuid())
+  leadId         String
+  requirementId  String?
+  partnerId      String
+  partnerType    String?
+  matchStatus    String   @default("shortlisted") // shortlisted, contacted, interested, not_available, assigned, rejected
+  reasonForMatch String?
+  estimatedValue String?
+  notes          String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Proposal {
+  id                 String   @id @default(uuid())
+  leadId             String
+  requirementId      String?
+  proposalType       String   // construction, boq_review, material_quote, partner_matching, property_support
+  title              String
+  summary            String?
+  scopeOfWork        String?
+  estimatedValue     String?
+  timeline           String?
+  paymentTerms       String?
+  exclusions         String?
+  termsAndConditions String?
+  proposalStatus     String   @default("draft") // draft, internal_review, shared, accepted, rejected, revised
+  createdBy          String?
+  sharedAt           DateTime?
+  acceptedAt         DateTime?
+  rejectedAt         DateTime?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
+model ProposalLineItem {
+  id          String   @id @default(uuid())
+  proposalId  String
+  itemName    String
+  description String?
+  quantity    String?
+  unit        String?
+  rate        Float?
+  amount      Float?
+  category    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model DocumentAsset {
+  id               String   @id @default(uuid())
+  leadId           String?
+  requirementId    String?
+  proposalId       String?
+  uploadedByUserId String?
+  documentType     String   // drawing, boq, estimate, invoice, site_photo, delivery_proof, proposal_pdf, material_quote, supplier_quote, partner_portfolio, verification_document, other
+  fileName         String
+  originalName     String?
+  mimeType         String?
+  fileSize         Int?
+  fileUrl          String
+  storageKey       String?
+  status           String   @default("uploaded") // requested, uploaded, reviewed, rejected, archived
+  visibility       String   @default("ops_only") // ops_only, client_visible, partner_visible, public
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model SystemAuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  action     String
+  entityType String
+  entityId   String
+  metadata   String?  // JSON stringified
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+}

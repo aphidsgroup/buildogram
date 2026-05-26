@@ -1,35 +1,33 @@
 export const metadata = {
-  title: 'Terms of Use | Buildogram',
-  description: 'Terms and conditions for using Buildogram.',
+  title: 'Terms of Service | Buildogram',
+  description: 'Terms of service for Buildogram.',
 };
 
-export default function TermsPage() {
+export default function Terms() {
   return (
-    <main style={{ padding: '80px 20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h1>Terms of Use</h1>
-      <p style={{ fontStyle: 'italic', color: 'var(--text-light)', marginBottom: '2rem' }}>
-        This document is for platform usage guidance and may be updated. For legal disputes, consult the official agreement signed with Buildogram.
-      </p>
+    <main className="container" style={{ padding: '60px 24px', maxWidth: '800px', lineHeight: 1.7 }}>
+      <h1 style={{ fontSize: '32px', marginBottom: '24px', color: 'var(--primary-dark)' }}>Terms of Service</h1>
+      <p className="text-muted">Last updated: [Insert Date]</p>
+      
+      <section style={{ marginTop: '32px' }}>
+        <h2 style={{ fontSize: '20px', marginBottom: '12px', color: 'var(--secondary)' }}>1. Acceptance of Terms</h2>
+        <p>By accessing or using Buildogram, you agree to be bound by these Terms of Service. Buildogram provides a platform for engineering-led construction coordination, material sourcing support, and partner discovery.</p>
+      </section>
 
-      <h2>1. Acceptance of Terms</h2>
-      <p>
-        By accessing and using Buildogram, you accept and agree to be bound by the terms and provision of this agreement.
-      </p>
+      <section style={{ marginTop: '24px' }}>
+        <h2 style={{ fontSize: '20px', marginBottom: '12px', color: 'var(--secondary)' }}>2. Advisory Role</h2>
+        <p>Buildogram facilitates engineering reviews, documentation, and vendor matching. However, the final execution responsibility, work quality, and liability depend entirely on the legal agreement between the property owner and the selected contractor or vendor.</p>
+      </section>
 
-      <h2>2. Description of Service</h2>
-      <p>
-        Buildogram provides users with access to a rich collection of resources, including property listings, construction tracking, AI estimators, and partner directories (the "Service").
-      </p>
+      <section style={{ marginTop: '24px' }}>
+        <h2 style={{ fontSize: '20px', marginBottom: '12px', color: 'var(--secondary)' }}>3. Material Pricing</h2>
+        <p>Material prices provided through the platform are estimates based on supplier quotes. Final prices may vary based on location, availability, and the actual date of delivery/purchase.</p>
+      </section>
 
-      <h2>3. User Conduct</h2>
-      <p>
-        You understand that all information, data, text, software, photographs, graphics, video, messages or other materials, whether publicly posted or privately transmitted, are the sole responsibility of the person from which such content originated.
-      </p>
-
-      <h2>4. Modifications to Service</h2>
-      <p>
-        Buildogram reserves the right at any time and from time to time to modify or discontinue, temporarily or permanently, the Service (or any part thereof) with or without notice.
-      </p>
+      <section style={{ marginTop: '24px' }}>
+        <h2 style={{ fontSize: '20px', marginBottom: '12px', color: 'var(--secondary)' }}>4. Partner Verification</h2>
+        <p>While Buildogram verifies partner credentials to the best of our ability, we do not guarantee the performance of any independent contractor, architect, or supplier.</p>
+      </section>
     </main>
   );
 }

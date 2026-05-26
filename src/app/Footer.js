@@ -4,12 +4,12 @@ const FOOTER_COLS = [
   {
     title: 'For Owners',
     links: [
-      ['Build Your Home', '/contact'],
-      ['BOQ & Plan Review', '/boq-audit'],
+      ['Build Your Home', '/contact?type=construction'],
+      ['BOQ & Plan Review', '/contact?type=boq_audit'],
       ['Material Support', '/materials'],
       ['Property Passport', '/property-passport'],
       ['Site Progress Tracking', '/projects'],
-      ['Contact Buildogram', '/contact'],
+      ['Contact Buildogram', '/contact?type=general'],
     ],
   },
   {
@@ -36,7 +36,7 @@ const FOOTER_COLS = [
     title: 'Company',
     links: [
       ['About', '/about'],
-      ['Contact', '/contact'],
+      ['Contact', '/contact?type=general'],
       ['Privacy Policy', '/privacy-policy'],
       ['Terms', '/terms'],
       ['Guides', '/guides/what-is-boq-in-construction'],

@@ -1,35 +1,33 @@
 export const metadata = {
   title: 'Privacy Policy | Buildogram',
-  description: 'Read the privacy policy and data practices of Buildogram.',
+  description: 'Privacy policy for Buildogram users.',
 };
 
-export default function PrivacyPolicyPage() {
+export default function PrivacyPolicy() {
   return (
-    <main style={{ padding: '80px 20px', maxWidth: '800px', margin: '0 auto' }}>
-      <h1>Privacy Policy</h1>
-      <p style={{ fontStyle: 'italic', color: 'var(--text-light)', marginBottom: '2rem' }}>
-        This document is for platform usage guidance and may be updated. For legal disputes, consult the official agreement signed with Buildogram.
-      </p>
+    <main className="container" style={{ padding: '60px 24px', maxWidth: '800px', lineHeight: 1.7 }}>
+      <h1 style={{ fontSize: '32px', marginBottom: '24px', color: 'var(--primary-dark)' }}>Privacy Policy</h1>
+      <p className="text-muted">Last updated: [Insert Date]</p>
+      
+      <section style={{ marginTop: '32px' }}>
+        <h2 style={{ fontSize: '20px', marginBottom: '12px', color: 'var(--secondary)' }}>1. Information We Collect</h2>
+        <p>Buildogram collects information you provide directly to us when you request BOQ reviews, register as a partner, or seek material quotes. This includes your name, phone number, email, and project details.</p>
+      </section>
 
-      <h2>1. Information We Collect</h2>
-      <p>
-        We collect information you provide directly to us, such as when you create or modify your account, request on-demand services, contact customer support, or otherwise communicate with us.
-      </p>
+      <section style={{ marginTop: '24px' }}>
+        <h2 style={{ fontSize: '20px', marginBottom: '12px', color: 'var(--secondary)' }}>2. How We Use Your Information</h2>
+        <p>We use your information to facilitate engineering-led coordination, provide accurate material quotes, verify partner credentials, and maintain your digital Property Passport.</p>
+      </section>
 
-      <h2>2. Use of Information</h2>
-      <p>
-        We may use the information we collect about you to provide, maintain, and improve our services, including to facilitate payments, send receipts, provide products and services you request, develop new features, provide customer support, and send updates.
-      </p>
+      <section style={{ marginTop: '24px' }}>
+        <h2 style={{ fontSize: '20px', marginBottom: '12px', color: 'var(--secondary)' }}>3. Information Sharing</h2>
+        <p>We may share your project requirements with verified partners and suppliers within our network to fulfill your requests (such as material sourcing or contractor matching). We do not sell your personal data to third parties.</p>
+      </section>
 
-      <h2>3. Sharing of Information</h2>
-      <p>
-        We may share the information we collect about you with our vendors, consultants, marketing partners, and other service providers who need access to such information to carry out work on our behalf.
-      </p>
-
-      <h2>4. Data Security</h2>
-      <p>
-        We take reasonable measures to help protect information about you from loss, theft, misuse and unauthorized access, disclosure, alteration and destruction.
-      </p>
+      <section style={{ marginTop: '24px' }}>
+        <h2 style={{ fontSize: '20px', marginBottom: '12px', color: 'var(--secondary)' }}>4. Data Security</h2>
+        <p>We implement reasonable security measures to protect your documents, project photos, and personal information stored within the Buildogram ecosystem.</p>
+      </section>
     </main>
   );
 }

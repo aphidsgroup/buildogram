@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "node scripts/verify-env.js && next dev",
-    "build": "node scripts/verify-env.js && next build",
+    "build": "npx prisma generate && node scripts/verify-env.js && next build",
     "start": "node scripts/verify-env.js && next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed:admin": "node prisma/seed-admin.js"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
+    "@prisma/client": "^6.4.1",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.10.0",
     "jsonwebtoken": "^9.0.3",
@@ -25,6 +27,10 @@
   "devDependencies": {
     "dotenv": "^17.4.2",
     "eslint": "^9",
-    "eslint-config-next": "16.2.6"
+    "eslint-config-next": "16.2.6",
+    "prisma": "^6.4.1"
+  },
+  "prisma": {
+    "seed": "node prisma/seed.js"
   }
 }
