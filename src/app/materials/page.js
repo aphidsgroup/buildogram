@@ -41,7 +41,7 @@ export default function MaterialsPage() {
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>with Verified Proof.</span>
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', maxWidth: '600px', margin: '0 auto 40px', lineHeight: 1.7 }}>
-            Cement, steel, sand, blocks, electrical, plumbing, tiles, paint — with competitive quote routing and delivery proof where available.
+            Cement, steel, sand, blocks, electrical, plumbing, tiles, paint — with competitive quote routing and delivery records where submitted by supplier.
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="#quote" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px' }}>Request Current Rate</Link>
