@@ -125,10 +125,10 @@ function LeadForm({ partner }) {
         <textarea style={{ width: '100%', padding: '10px 14px', borderRadius: '10px', border: '1.5px solid #E2E8F0', fontSize: '14px', resize: 'vertical', minHeight: '80px', boxSizing: 'border-box', outline: 'none', fontFamily: 'inherit' }} value={form.message} onChange={f('message')} placeholder="Describe your project or requirement..." />
       </div>
       <button type="submit" disabled={loading} style={{ background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', border: 'none', borderRadius: '12px', padding: '14px 24px', fontSize: '15px', fontWeight: 700, cursor: loading ? 'not-allowed' : 'pointer', opacity: loading ? 0.7 : 1, transition: 'opacity 0.15s' }}>
-        {loading ? 'Sending…' : '🚀 Submit Enquiry to Buildogram'}
+        {loading ? 'Sending…' : '🚀 Request This Partner Through Buildogram'}
       </button>
       <p style={{ fontSize: '12px', color: '#94A3B8', textAlign: 'center', margin: 0 }}>
-        Buildogram guarantees pricing transparency and verified partner quality.
+        Buildogram routes your enquiry and coordinates with this partner to ensure transparent communication.
       </p>
     </form>
   );
@@ -240,9 +240,9 @@ export default function PartnerProfilePage({ params }) {
 
           {/* CTA Box */}
           <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '16px', padding: '20px', minWidth: '220px', display: 'flex', flexDirection: 'column', gap: '10px', flexShrink: 0 }}>
-            <div style={{ fontSize: '13px', fontWeight: 700, color: '#1E293B', marginBottom: '4px' }}>Work With {partner.companyName}</div>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: '#1E293B', marginBottom: '4px' }}>Request {partner.companyName} via Buildogram</div>
             <button onClick={() => setIsModalOpen(true)} style={{ width: '100%', display: 'block', textAlign: 'center', background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', border: 'none', padding: '11px 16px', borderRadius: '10px', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}>
-              🚀 Request Quote
+              🤝 Request This Partner
             </button>
           </div>
         </div>
@@ -443,7 +443,7 @@ export default function PartnerProfilePage({ params }) {
       {/* MOBILE STICKY CTA */}
       <div className="mobile-sticky-cta">
         <button onClick={() => setIsModalOpen(true)} style={{ width: '100%', display: 'block', textAlign: 'center', background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', border: 'none', padding: '16px', borderRadius: '12px', fontSize: '15px', fontWeight: 800, cursor: 'pointer', boxShadow: '0 4px 14px rgba(252,110,32,0.3)' }}>
-          🚀 Request Quote
+          🤝 Request This Partner Through Buildogram
         </button>
       </div>
 
@@ -452,9 +452,9 @@ export default function PartnerProfilePage({ params }) {
         <div style={{ position: 'fixed', inset: 0, zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px', background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(4px)' }}>
           <div style={{ background: 'white', width: '100%', maxWidth: '600px', borderRadius: '20px', padding: '24px', maxHeight: '90vh', overflowY: 'auto', position: 'relative', boxShadow: '0 20px 40px rgba(0,0,0,0.2)' }}>
             <button onClick={() => setIsModalOpen(false)} style={{ position: 'absolute', top: '16px', right: '16px', background: '#F1F5F9', border: 'none', width: '32px', height: '32px', borderRadius: '50%', cursor: 'pointer', fontSize: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748B' }}>✕</button>
-            <h2 style={{ fontSize: '20px', fontWeight: 800, marginBottom: '8px', color: '#1E293B', paddingRight: '40px' }}>Request Quote via Buildogram</h2>
+            <h2 style={{ fontSize: '20px', fontWeight: 800, marginBottom: '8px', color: '#1E293B', paddingRight: '40px' }}>Request This Partner Through Buildogram</h2>
             <p style={{ fontSize: '14px', color: '#64748B', marginBottom: '24px', lineHeight: '1.6' }}>
-              Fill out this form and Buildogram will coordinate with <strong>{partner.companyName}</strong> to ensure you receive the best service and transparent pricing.
+              All partner connections are routed through Buildogram to maintain transparency and proper coordination. Fill out this form and our team will connect you with <strong>{partner.companyName}</strong> while keeping the construction journey accountable.
             </p>
             <LeadForm partner={partner} />
           </div>

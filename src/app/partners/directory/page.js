@@ -1,8 +1,8 @@
 import DirectoryClient from './DirectoryClient';
 
 export const metadata = {
-  title: 'Partner Directory | Buildogram – Builders, Architects & Suppliers in Chennai',
-  description: 'Find profile-reviewed builders, architects, interior designers, and material suppliers in Chennai, OMR, Adyar, ECR, Tambaram and across Tamil Nadu.',
+  title: 'Verified Builders, Contractors, Architects & Suppliers | Buildogram',
+  description: 'Explore verified construction partners connected through Buildogram\'s engineer-led ecosystem, including builders, contractors, architects, consultants, and material suppliers.',
 };
 
 // Server-rendered category and location data — always visible before JS hydration
@@ -34,17 +34,17 @@ export default function PartnerDirectoryPage() {
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
         <div className="sectionInnerWide" style={{ position: 'relative' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Partner Directory</span>
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Verified Construction Partner Network</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(32px, 5vw, 56px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '800px', fontFamily: '"Space Grotesk", sans-serif' }}>
-            Find Builders, Architects &amp; Suppliers — Profile-Reviewed by Buildogram
+            Work With Verified Construction Partners
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '680px', lineHeight: 1.7, marginBottom: '32px' }}>
-            Partners on Buildogram submit credentials, past project records, and relevant certifications for profile review. Browse profiles, compare services, and enquire through Buildogram.
+            Explore builders, contractors, architects, consultants, suppliers, and service providers connected through Buildogram’s engineer-led construction ecosystem. All enquiries are routed through Buildogram for transparency.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <a href="/partners" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px' }}>Join Partner Network</a>
-            <a href="/contact" className="btn btn-outline" style={{ background: 'rgba(255,255,255,0.05)', color: 'white', borderColor: 'rgba(255,255,255,0.2)', padding: '16px 32px', fontSize: '16px' }}>Contact Buildogram</a>
+            <a href="/partners/register" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px' }}>Become a Buildogram Partner</a>
+            <a href="/contact" className="btn btn-outline" style={{ background: 'rgba(255,255,255,0.05)', color: 'white', borderColor: 'rgba(255,255,255,0.2)', padding: '16px 32px', fontSize: '16px' }}>Talk to Buildogram</a>
           </div>
         </div>
       </section>
@@ -112,16 +112,36 @@ export default function PartnerDirectoryPage() {
         </div>
       </section>
 
-      {/* ── Join / Contact CTAs — server-rendered ── */}
+      {/* ── Not Just Listed — server-rendered ── */}
+      <section className="fullBleedSection" style={{ background: '#F8FAFC', padding: 'clamp(56px, 7vw, 96px) 0', borderTop: '1px solid #E2E8F0' }}>
+        <div className="sectionInnerWide" style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
+          <span style={{ display: 'inline-flex', borderRadius: '999px', padding: '0.4rem 0.8rem', background: 'rgba(252, 110, 32, 0.08)', color: 'var(--primary)', border: '1px solid rgba(252, 110, 32, 0.18)', fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Not Just Listed</span>
+          <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 40px)', marginTop: '16px', marginBottom: '20px', color: 'var(--secondary)', fontFamily: '"Space Grotesk", sans-serif' }}>Not Just Listed — Reviewed for Construction Relevance</h2>
+          <p style={{ color: '#64748B', fontSize: '17px', lineHeight: 1.8, maxWidth: '720px', margin: '0 auto 48px' }}>
+            Buildogram focuses on building a trusted partner ecosystem where professionals are showcased based on work relevance, project proof, service category, and ability to support property owners with clarity. Every partner submits credentials, certifications, and project records before going live on the platform.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '20px', textAlign: 'left' }}>
+            {[{ icon: '📋', title: 'Credential Submission', desc: 'Partners submit certifications, licences, and proof of trade experience.' }, { icon: '🏗️', title: 'Project Proof', desc: 'Completed project records, photos, and client references submitted for review.' }, { icon: '🗂️', title: 'Service Category', desc: 'Categorised by specialisation — builder, architect, contractor, supplier, and more.' }, { icon: '🤝', title: 'Buildogram Coordination', desc: 'All owner enquiries are routed through Buildogram for transparency and accountability.' }].map((item, i) => (
+              <div key={i} style={{ background: 'white', borderRadius: '16px', padding: '20px', border: '1px solid #E2E8F0', boxShadow: '0 2px 8px rgba(0,0,0,0.04)' }}>
+                <div style={{ fontSize: '28px', marginBottom: '10px' }}>{item.icon}</div>
+                <div style={{ fontWeight: 700, color: '#1E293B', fontSize: '15px', marginBottom: '6px' }}>{item.title}</div>
+                <div style={{ fontSize: '13px', color: '#64748B', lineHeight: 1.6 }}>{item.desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Join CTA — server-rendered ── */}
       <section className="fullBleedSection" style={{ background: 'var(--secondary)', padding: 'clamp(56px, 7vw, 96px) 0' }}>
         <div className="sectionInnerWide" style={{ display: 'flex', gap: '32px', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between' }}>
           <div>
             <h2 style={{ color: 'white', fontSize: 'clamp(26px, 3.5vw, 40px)', marginBottom: '12px', fontFamily: '"Space Grotesk", sans-serif' }}>Are you a construction professional?</h2>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', maxWidth: '520px', lineHeight: 1.7 }}>Builders, architects, interior designers, suppliers and specialist contractors can apply to join the Buildogram partner network and reach clients across Tamil Nadu.</p>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', maxWidth: '520px', lineHeight: 1.7 }}>Builders, architects, interior designers, suppliers, solar installers, waterproofing specialists and contractors can apply to join Buildogram’s verified construction ecosystem.</p>
           </div>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', flexShrink: 0 }}>
-            <a href="/partners" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px', whiteSpace: 'nowrap' }}>Apply to Join</a>
-            <a href="/contact" className="btn btn-outline" style={{ background: 'rgba(255,255,255,0.05)', color: 'white', borderColor: 'rgba(255,255,255,0.2)', padding: '16px 32px', fontSize: '16px', whiteSpace: 'nowrap' }}>Contact Buildogram</a>
+            <a href="/partners/register" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px', whiteSpace: 'nowrap' }}>Become a Buildogram Partner</a>
+            <a href="/contact" className="btn btn-outline" style={{ background: 'rgba(255,255,255,0.05)', color: 'white', borderColor: 'rgba(255,255,255,0.2)', padding: '16px 32px', fontSize: '16px', whiteSpace: 'nowrap' }}>Talk to Buildogram</a>
           </div>
         </div>
       </section>

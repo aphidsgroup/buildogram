@@ -2,8 +2,8 @@ import Link from 'next/link';
 import MaterialLeadForm from './MaterialLeadForm';
 
 export const metadata = {
-  title: 'Construction Material Quote Marketplace | Buildogram',
-  description: 'Buy cement, steel, sand, blocks, tiles and all construction materials with competitive quote routing and material proof records.',
+  title: 'Construction Material Sourcing Support in Chennai | Buildogram',
+  description: 'Compare construction material quotes, coordinate deliveries, track invoices, and store material records with Buildogram\'s transparent material sourcing support.',
 };
 
 const categories = [
@@ -34,18 +34,18 @@ export default function MaterialsPage() {
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
         <div className="sectionInnerWide" style={{ position: 'relative', textAlign: 'center' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Material Marketplace</span>
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Transparent Material Sourcing</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(38px, 5vw, 64px)', lineHeight: 1.1, marginBottom: '24px' }}>
-            Buy Construction Materials<br />
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>with Verified Proof.</span>
+            Source Construction Materials<br />
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>With Rate Clarity &amp; Delivery Records.</span>
           </h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', maxWidth: '600px', margin: '0 auto 40px', lineHeight: 1.7 }}>
-            Cement, steel, sand, blocks, electrical, plumbing, tiles, paint — with competitive quote routing and delivery records where submitted by supplier.
+          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', maxWidth: '640px', margin: '0 auto 40px', lineHeight: 1.7 }}>
+            Buildogram helps owners and construction partners compare supplier quotes, coordinate deliveries, track invoices, and store material records inside the Property Passport.
           </p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="#quote" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px' }}>Request Current Rate</Link>
-            <Link href="/cost-estimator" className="btn btn-outline" style={{ background: 'rgba(255,255,255,0.05)', color: 'white', borderColor: 'rgba(255,255,255,0.2)', padding: '16px 32px', fontSize: '16px' }}>Estimate Materials</Link>
+            <Link href="#quote" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px' }}>Request Material Support</Link>
+            <Link href="/contact" className="btn btn-outline" style={{ background: 'rgba(255,255,255,0.05)', color: 'white', borderColor: 'rgba(255,255,255,0.2)', padding: '16px 32px', fontSize: '16px' }}>Talk to Buildogram</Link>
           </div>
         </div>
       </section>
@@ -54,8 +54,8 @@ export default function MaterialsPage() {
       <section className="fullBleedSection" style={{ background: '#F9F9F9', padding: 'clamp(64px, 8vw, 112px) 0' }}>
         <div className="sectionInnerWide">
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', borderRadius: '999px', padding: '0.4rem 0.8rem', background: 'rgba(252, 110, 32, 0.1)', color: 'var(--primary)', border: '1px solid rgba(252, 110, 32, 0.2)', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Material Categories</span>
-            <h2 style={{ fontSize: 'clamp(32px, 4vw, 48px)', marginTop: '20px', fontFamily: '"Space Grotesk", sans-serif', color: 'var(--secondary)' }}>All construction materials. One request.</h2>
+            <span style={{ display: 'inline-flex', alignItems: 'center', borderRadius: '999px', padding: '0.4rem 0.8rem', background: 'rgba(252, 110, 32, 0.1)', color: 'var(--primary)', border: '1px solid rgba(252, 110, 32, 0.2)', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Material Quote Support</span>
+            <h2 style={{ fontSize: 'clamp(32px, 4vw, 48px)', marginTop: '20px', fontFamily: '"Space Grotesk", sans-serif', color: 'var(--secondary)' }}>All construction materials. One supplier network.</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
             {categories.map(c => (
@@ -75,8 +75,8 @@ export default function MaterialsPage() {
       <section className="fullBleedSection" style={{ background: 'white', padding: 'clamp(64px, 8vw, 112px) 0', borderTop: '1px solid var(--border)' }}>
         <div className="sectionInnerWide">
           <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', borderRadius: '999px', padding: '0.4rem 0.8rem', background: 'rgba(252, 110, 32, 0.1)', color: 'var(--primary)', border: '1px solid rgba(252, 110, 32, 0.2)', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Why Buildogram Materials</span>
-            <h2 style={{ fontSize: 'clamp(32px, 4vw, 48px)', marginTop: '20px', fontFamily: '"Space Grotesk", sans-serif', color: 'var(--secondary)' }}>Not just materials. Verified materials.</h2>
+            <span style={{ display: 'inline-flex', alignItems: 'center', borderRadius: '999px', padding: '0.4rem 0.8rem', background: 'rgba(252, 110, 32, 0.1)', color: 'var(--primary)', border: '1px solid rgba(252, 110, 32, 0.2)', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Why Material Sourcing Matters</span>
+            <h2 style={{ fontSize: 'clamp(32px, 4vw, 48px)', marginTop: '20px', fontFamily: '"Space Grotesk", sans-serif', color: 'var(--secondary)' }}>Transparent sourcing. Better accountability.</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
             {whyBuildogram.map(w => (
@@ -96,8 +96,8 @@ export default function MaterialsPage() {
       <section id="quote" className="fullBleedSection" style={{ background: 'var(--secondary)', padding: 'clamp(64px, 8vw, 112px) 0' }}>
         <div className="sectionInnerWide" style={{ maxWidth: '700px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <h2 style={{ color: 'white', fontSize: 'clamp(32px, 4vw, 48px)', marginBottom: '16px', fontFamily: '"Space Grotesk", sans-serif' }}>Request Material Quote</h2>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px' }}>Tell us what materials you need. We'll share competitive quotes within 24 hours.</p>
+            <h2 style={{ color: 'white', fontSize: 'clamp(32px, 4vw, 48px)', marginBottom: '16px', fontFamily: '"Space Grotesk", sans-serif' }}>Request Material Support</h2>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px' }}>Tell us what materials you need. We will route your request to our supplier network and share competitive market-aligned quotes.</p>
           </div>
           <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '24px', padding: '48px' }}>
             <MaterialLeadForm />
