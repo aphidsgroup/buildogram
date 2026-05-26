@@ -18,12 +18,12 @@ const categories = [
 ];
 
 const whyBuildogram = [
-  { icon: '💰', title: 'Competitive Quote Routing', desc: 'We compare rates across trusted suppliers and negotiate competitive prices for you.' },
-  { icon: '✅', title: 'Delivery Proof', desc: 'Delivery proof where available — brand, quantity and batch confirmed when possible.' },
-  { icon: '📄', title: 'Test Certificates', desc: 'Get test certificates for steel, cement and key structural materials.' },
-  { icon: '🛂', title: 'Passport Entry', desc: 'All materials auto-logged in your Property Passport for lifetime records.' },
-  { icon: '🔄', title: 'Supplier Comparison', desc: 'Compare quotes from multiple trusted suppliers.' },
-  { icon: '📦', title: 'One Request, Many Quotes', desc: 'One material request form — we handle supplier coordination for you.' },
+  { icon: '💰', title: 'Competitive Quote Routing', desc: 'Submit one request and we route it to our supplier network to help you find competitive quotes.' },
+  { icon: '📦', title: 'Delivery Record Where Available', desc: 'Delivery records where submitted — brand, quantity and batch noted when provided by supplier.' },
+  { icon: '📄', title: 'Test Certificates', desc: 'Request test certificates for steel, cement and key structural materials where available.' },
+  { icon: '🛂', title: 'Passport Entry', desc: 'Materials can be logged in your Property Passport for project records.' },
+  { icon: '🔄', title: 'Supplier Comparison', desc: 'Compare quotes from multiple suppliers in our network before committing.' },
+  { icon: '📋', title: 'One Request, Many Quotes', desc: 'One material request form — we handle supplier coordination and quote collection for you.' },
 ];
 
 export default function MaterialsPage() {

@@ -18,7 +18,7 @@ export default function Footer() {
               <span style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800, fontSize: '20px', color: 'white' }}>Buildogram</span>
             </Link>
             <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '14px', lineHeight: 1.7, maxWidth: '240px', marginBottom: '20px' }}>
-              Buildogram is a construction and property marketplace that connects property owners, construction professionals, material suppliers, property listings, and digital property records.
+              Buildogram connects construction services, supplier quote routing, reviewed partner profiles, project proof tracking, and property portal bridges across Tamil Nadu.
             </p>
             <div style={{ fontFamily: 'DM Serif Text, serif', fontStyle: 'italic', color: '#BBA07A', fontSize: '15px' }}>
               Showcase. Connect. Build.
