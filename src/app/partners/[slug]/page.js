@@ -1,10 +1,9 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import Link from 'next/link';
 import { fetchPartnerBySlug, fetchApprovedPartners } from '@/lib/partnerApi';
 import { submitEnquiry } from '@/lib/enquiryApi';
 import { BUDGET_RANGES } from '@/lib/leadStore';
-
 
 // ── helpers ──────────────────────────────────────────────────────────
 function toArr(v) {
@@ -38,7 +37,6 @@ function LeadForm({ partner }) {
     setMountTime(Date.now());
   }, []);
 
-
   const f = k => e => setForm(p => ({ ...p, [k]: e.target.value }));
 
   const handleSubmit = async e => {
@@ -69,7 +67,6 @@ function LeadForm({ partner }) {
       setSubmitting(false);
     }
   };
-
 
   if (submitted) {
     return (
@@ -172,7 +169,8 @@ function NotFoundView() {
 
 // ── Main Page ─────────────────────────────────────────────────────────
 export default function PartnerProfilePage({ params }) {
-  const { slug } = params;
+  const unwrappedParams = use(params);
+  const { slug } = unwrappedParams;
   const [partner, setPartner] = useState(null);
   const [related, setRelated] = useState([]);
   const [notFound, setNotFound] = useState(false);
