@@ -2,28 +2,22 @@ import './globals.css';
 import SiteLayoutClient from './SiteLayoutClient';
 
 export const metadata = {
-  title: 'Buildogram | The Construction & Property Marketplace',
-  description: 'Buildogram is a construction and property marketplace for property owners, builders, contractors, material suppliers, 360° property listings, BOQ clarity, Property Passport records, and maintenance support.',
-  keywords: ['construction marketplace', 'property marketplace', 'buildogram', 'chennai', 'property passport'],
+  title: 'Buildogram | Engineer-Led Home Construction & Property Ecosystem in Chennai',
+  description: 'Buildogram helps homeowners and plot owners plan, build, source materials, verify site progress, connect with trusted construction partners, and manage property records through an engineer-led ecosystem.',
+  keywords: ['engineer-led construction', 'construction companion', 'property ecosystem', 'buildogram', 'chennai', 'BOQ review', 'property passport', 'verified builders', 'material sourcing'],
   openGraph: {
-    title: 'Buildogram | The Construction & Property Marketplace',
-    description: 'Buildogram is a construction and property marketplace for property owners, builders, contractors, material suppliers, 360° property listings, BOQ clarity, Property Passport records, and maintenance support.',
+    title: 'Buildogram | Engineer-Led Home Construction & Property Ecosystem',
+    description: 'Buildogram helps homeowners plan, build, source materials, verify site progress, connect with trusted construction partners, and manage property records through an engineer-led ecosystem.',
     url: 'https://buildogram.in',
     siteName: 'Buildogram',
-    images: [
-      {
-        url: 'https://buildogram.in/og-image.jpg',
-        width: 1200,
-        height: 630,
-      },
-    ],
+    images: [{ url: 'https://buildogram.in/og-image.jpg', width: 1200, height: 630 }],
     locale: 'en_IN',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Buildogram | The Construction & Property Marketplace',
-    description: 'Buildogram is a construction and property marketplace for property owners, builders, contractors, material suppliers, 360° property listings, BOQ clarity, Property Passport records, and maintenance support.',
+    title: 'Buildogram | Engineer-Led Home Construction & Property Ecosystem',
+    description: 'Buildogram helps homeowners plan, build, source materials, verify site progress, connect with trusted partners, and manage property records.',
   },
   manifest: '/manifest.json',
 };
@@ -36,14 +30,13 @@ export const viewport = {
   userScalable: false,
 };
 
-
 const orgSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'Buildogram',
   url: 'https://buildogram.in',
   logo: 'https://buildogram.in/globe.svg',
-  description: 'Build your dream home in Chennai with PhD-grade structural engineering and 100% transparent BOQ pricing.',
+  description: 'Buildogram is an engineer-led construction companion and property ecosystem helping owners plan, build, source materials, track site progress, and maintain digital property records.',
 };
 
 export default function RootLayout({ children }) {
