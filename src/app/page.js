@@ -10,10 +10,10 @@ export default function Home() {
   const [loc, setLoc] = useState('Chennai, TN');
 
   const categories = [
-    { title: "Materials", desc: "Direct from verified manufacturers & distributors.", cta: "Request quotes" },
-    { title: "Builders", desc: "Verified builders with active project proofs.", cta: "Find builders" },
-    { title: "Contractors", desc: "Specialists in RCC, finishing, and MEP.", cta: "Hire contractors" },
-    { title: "Architects", desc: "Top-rated design and structural experts.", cta: "View portfolios" }
+    { title: "Materials", desc: "Compare quotes from supplier network — cement, steel, sand, tiles and more.", cta: "Request quotes" },
+    { title: "Builders", desc: "Reviewed builder profiles with submitted project credentials.", cta: "Find builders" },
+    { title: "Contractors", desc: "Specialists in RCC, finishing, and MEP — profile-reviewed.", cta: "Browse contractors" },
+    { title: "Architects", desc: "Design and structural professionals with reviewed portfolios.", cta: "View portfolios" }
   ];
 
   const partners = [
@@ -51,7 +51,7 @@ export default function Home() {
             <div className={styles.heroLeft}>
               <span className={styles.eyebrow}>The Construction Ecosystem</span>
               <h1>Build your vision.<br />We connect the rest.</h1>
-              <p>Find materials, verified professionals, project proof and property tours in one unified platform.</p>
+              <p>Find materials, reviewed professional profiles, project proof and property portal bridges in one construction platform.</p>
               
               <form className={styles.heroSearchPanel} onSubmit={handleHeroSearch}>
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: 'var(--text-muted)' }}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
@@ -103,7 +103,7 @@ export default function Home() {
           <div className={styles.blockHead}>
             <span className={styles.eyebrow}>Marketplace Discovery</span>
             <h2>Explore the network</h2>
-            <p>Access direct distributors and verified professionals for your construction lifecycle.</p>
+            <p>Access supplier quote routing and reviewed professional profiles across your construction lifecycle.</p>
           </div>
           <div className={styles.categoryGrid}>
             {categories.map((c, i) => (
@@ -121,16 +121,16 @@ export default function Home() {
       <section className={`fullBleedSection ${styles.sectionBand}`}>
         <div className="sectionInner">
           <div className={styles.blockHead}>
-            <span className={styles.eyebrow}>Verified Network</span>
-            <h2>Hire with confidence</h2>
-            <p>Every partner on Buildogram is verified for credentials, past projects, and ongoing quality.</p>
+            <span className={styles.eyebrow}>Partner Network</span>
+            <h2>Find the right professional</h2>
+            <p>Partners on Buildogram submit credentials, past project records, and relevant certifications for profile review. Verify directly before engaging.</p>
           </div>
           <div className={`${styles.cards} ${styles.four}`}>
             {partners.map((p, i) => (
               <div key={i} className={styles.partnerCard}>
                 <div className={styles.cardTop}>
                   <span>{p.type}</span>
-                  <strong>Verified</strong>
+                  <strong>Profile Reviewed</strong>
                 </div>
                 <h3>{p.name}</h3>
                 <span className={styles.proof}>🛡 {p.proof}</span>
@@ -151,11 +151,11 @@ export default function Home() {
         <div className="sectionInnerWide">
           <div className={styles.rateBoard}>
             <div className={styles.blockHead} style={{ marginBottom: 0 }}>
-              <span className={styles.eyebrow}>Direct Procurement</span>
-              <h2>Material Rate Advantage</h2>
-              <p>Skip the retail margin. Get direct network quotes from our verified distributors and manufacturers.</p>
+              <span className={styles.eyebrow}>Supplier Quote Routing</span>
+              <h2>Compare Supplier Quotes</h2>
+              <p>Reduce unnecessary retail-layer friction. Submit one request and compare quotes from our supplier network — cement, steel, sand, tiles and more.</p>
               <br/>
-              <Link href="/materials" className="btn btn-primary">Request Current Rates</Link>
+              <Link href="/materials" className="btn btn-primary">Request Material Quotes</Link>
             </div>
             <div className={styles.table}>
               {materials.map((m, i) => (
@@ -175,8 +175,8 @@ export default function Home() {
         <div className="sectionInner">
           <div className={styles.blockHead}>
             <span className={styles.eyebrow}>Project Proof</span>
-            <h2>Live site tracking</h2>
-            <p>See exactly how our builders are performing right now.</p>
+            <h2>Proof-led project tracking</h2>
+            <p>Partners using Buildogram OS submit daily logbooks, milestone photos, and material records — giving you visibility into project progress.</p>
           </div>
           <div className={`${styles.cards} ${styles.two}`}>
             {projects.map((p, i) => (
