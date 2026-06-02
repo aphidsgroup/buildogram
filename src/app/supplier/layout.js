@@ -14,7 +14,7 @@ const SUPPLIER_NAV = [
   { href: '/supplier/settings',    icon: '⚙️', label: 'Settings'         },
 ];
 
-const BUILT = ['/supplier/dashboard', '/supplier/requests', '/supplier/quotations'];
+const BUILT = ['/supplier/dashboard', '/supplier/requests', '/supplier/quotations', '/supplier/orders', '/supplier/products'];
 
 export default function SupplierLayout({ children }) {
   const pathname = usePathname();
@@ -75,7 +75,7 @@ export default function SupplierLayout({ children }) {
 
       <div className={styles.main} style={{ marginLeft: '260px', background: '#F8FAFC' }}>
         <header className={styles.topbar}>
-          <button className={styles.menuBtn} onClick={() => setSidebarOpen(true)}>☰</button>
+          <button aria-label="Open menu" className={styles.menuBtn} onClick={() => setSidebarOpen(true)}>☰</button>
           <div style={{ flex: 1, fontWeight: 600, fontSize: '15px' }}>
             {SUPPLIER_NAV.find(m => m.href === pathname)?.label || 'Supplier Portal'}
           </div>
@@ -89,9 +89,9 @@ export default function SupplierLayout({ children }) {
 
       {comingSoon && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.6)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', backdropFilter: 'blur(4px)' }}>
-          <div style={{ background: 'white', borderRadius: '20px', padding: '32px', maxWidth: '380px', width: '100%', textAlign: 'center' }}>
+          <div role="dialog" aria-modal="true" aria-labelledby="coming-soon-title" style={{ background: 'white', borderRadius: '20px', padding: '32px', maxWidth: '380px', width: '100%', textAlign: 'center' }}>
             <div style={{ fontSize: '40px', marginBottom: '12px' }}>🚧</div>
-            <h3 style={{ fontSize: '18px', fontWeight: 800, marginBottom: '10px' }}>{comingSoon}</h3>
+            <h3 id="coming-soon-title" style={{ fontSize: '18px', fontWeight: 800, marginBottom: '10px' }}>{comingSoon}</h3>
             <p style={{ fontSize: '14px', color: '#64748B', marginBottom: '20px' }}>This module is coming soon for the Supplier Portal.</p>
             <button onClick={() => setComingSoon(null)} style={{ background: '#0F172A', color: 'white', padding: '12px 24px', borderRadius: '10px', border: 'none', cursor: 'pointer', fontWeight: 700, width: '100%' }}>Got it</button>
           </div>
