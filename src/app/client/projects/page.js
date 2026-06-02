@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getCustomerProjects } from '@/lib/services/customerService';
 
 const STAGE_ORDER = ['Planning', 'Foundation', 'Structure', 'Brickwork', 'Roofing', 'Electrical & Plumbing', 'Plastering', 'Flooring', 'Painting', 'Finishing', 'Handover'];
 
@@ -45,8 +46,12 @@ export default function ClientProjectsList() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    setProjects(initClientProjects());
     fetch('/api/auth/me').then(r => r.json()).then(d => { if (d.user) setUser(d.user); }).catch(() => {});
+    // Load via service (API first, localStorage fallback)
+    getCustomerProjects().then(data => {
+      if (data?.length) setProjects(data);
+      else setProjects(initClientProjects());
+    }).catch(() => setProjects(initClientProjects()));
   }, []);
 
   return (

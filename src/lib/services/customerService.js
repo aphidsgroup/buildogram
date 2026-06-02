@@ -24,26 +24,38 @@ export async function getCustomerProjects(customerId) {
     if (data?.projects) projects = data.projects;
   }
   if (!projects.length) {
-    projects = (lsGet('bos_projects') || DEMO_PROJECTS).filter(p =>
-      p.clientId === customerId ||
-      ['shared_with_customer', 'shared_with_both'].includes(p.visibility)
-    );
+    const allStored = lsGet('bos_projects') || DEMO_PROJECTS;
+    projects = customerId
+      ? allStored.filter(p => p.clientId === customerId || ['shared_with_customer', 'shared_with_both'].includes(p.visibility))
+      : allStored; // no filter in demo mode
   }
   return projects.map(filterProjectForCustomer).filter(Boolean);
 }
 
-/** Get a single project safe for customer. */
+/** Get a single project safe for customer — returns {project, milestones, updates, documents, payments}. */
 export async function getCustomerProject(projectId) {
   let project = null;
+  let milestones = [];
+  let updates = [];
+  let documents = [];
+  let payments = [];
+
   if (!isDemoMode()) {
+    // Try API bundle first
     const data = await apiFetch(`/api/projects/${projectId}`);
-    if (data?.project) project = data.project;
+    if (data?.project) {
+      project = data.project;
+      milestones = (data.milestones || []).map(filterMilestoneForCustomer).filter(Boolean);
+      updates    = (data.updates    || []).map(filterSiteUpdateForCustomer).filter(Boolean);
+      documents  = (data.documents  || []).map(filterDocumentForCustomer).filter(Boolean);
+      payments   = (data.payments   || []).map(filterPaymentForCustomer).filter(Boolean);
+      return { project: filterProjectForCustomer(project), milestones, updates, documents, payments };
+    }
   }
-  if (!project) {
-    const all = lsGet('bos_projects') || DEMO_PROJECTS;
-    project = all.find(p => p.id === projectId) || null;
-  }
-  return filterProjectForCustomer(project);
+  // localStorage fallback
+  const all = lsGet('bos_projects') || DEMO_PROJECTS;
+  project = all.find(p => p.id === projectId) || null;
+  return project ? { project: filterProjectForCustomer(project), milestones, updates, documents, payments } : null;
 }
 
 /** Get customer-visible milestones. */

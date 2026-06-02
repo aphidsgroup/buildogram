@@ -1,6 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { notifyEvent } from '@/lib/services/notificationService';
+import { logActivity } from '@/lib/services/activityLogService';
 
 const DEMO_RFQS = [
   { id: 'RFQ001', project: 'Rajesh Kumar Villa – Velachery', partnerName: 'Sri Rajan Builders', material: 'UltraTech Cement OPC 53', qty: 200, unit: 'Bags', requiredDate: '2026-06-10', urgency: 'High', status: 'New', location: 'Velachery, Chennai', notes: 'Preferred delivery before 10 AM.' },
@@ -18,12 +20,39 @@ export default function SupplierRequestsPage() {
   const [quoteForm, setQuoteForm] = useState({ rate: '', tax: 18, deliveryCharge: '', deliveryDays: '', validUntil: '', notes: '' });
   const [toast, setToast] = useState('');
 
+  useEffect(() => {
+    // Load from API (ops material-requests assigned to this supplier)
+    fetch('/api/partner/material-requests').then(r => r.json()).then(d => {
+      if (d.success && d.requests?.length) {
+        const mapped = d.requests.map(r => ({
+          id: r.id, project: r.projectId || r.project || '', partnerName: r.partnerName || 'Partner',
+          material: r.materialName || r.material, qty: r.qty, unit: r.unit,
+          requiredDate: r.requiredDate, urgency: r.priority || 'Medium',
+          status: r.status === 'Requested' ? 'New' : r.status,
+          location: r.location || 'Chennai', notes: r.notes || ''
+        }));
+        if (mapped.length) setRfqs(mapped);
+      }
+    }).catch(() => {}); // keep DEMO_RFQS on failure
+  }, []);
+
   const filtered = rfqs.filter(r => filter === 'All' || r.status === filter);
   const f = (k) => (e) => setQuoteForm(p => ({ ...p, [k]: e.target.value }));
 
-  const submitQuote = () => {
+  const submitQuote = async () => {
     if (!quoteForm.rate) return alert('Rate per unit required');
     setRfqs(rfqs.map(r => r.id === quoteModal.id ? { ...r, status: 'Quoted' } : r));
+    // Submit via API
+    const payload = {
+      rfqId: quoteModal.id, material: quoteModal.material, qty: quoteModal.qty, unit: quoteModal.unit,
+      rate: Number(quoteForm.rate), tax: Number(quoteForm.tax), deliveryCharge: Number(quoteForm.deliveryCharge || 0),
+      deliveryDays: Number(quoteForm.deliveryDays || 0), validUntil: quoteForm.validUntil, notes: quoteForm.notes,
+      status: 'Submitted'
+    };
+    fetch('/api/material-quotes', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) }).catch(() => {});
+    // Notify
+    notifyEvent('quote_submitted', { material: quoteModal.material, rfqId: quoteModal.id }).catch(() => {});
+    logActivity({ type: 'quote', title: 'Quotation Submitted', detail: `${quoteModal.material} — ₹${Number(quoteForm.rate).toLocaleString('en-IN')}/${quoteModal.unit}`, actor: 'Supplier' }).catch(() => {});
     setToast(`✅ Quote submitted for ${quoteModal.material}`);
     setTimeout(() => setToast(''), 3000);
     setQuoteModal(null);

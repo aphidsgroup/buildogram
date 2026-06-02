@@ -3,6 +3,10 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { MetricCard, SectionHeader, StatusBadge } from '../_shared/components';
 import { DEMO_LEADS, DEMO_PROJECTS, DEMO_MATERIALS, DEMO_LOGBOOK } from '../_shared/demoData';
+import { getLeads } from '@/lib/services/leadService';
+import { getProjects } from '@/lib/services/projectService';
+import { getMaterialRequests } from '@/lib/services/materialRequestService';
+import { getOnboardingChecklist, completeOnboardingStep } from '@/lib/services/onboardingService';
 
 const ACTIVITY = [
   { icon: '🎯', text: 'New lead from Buildogram – Deepa Menon', time: '2 hours ago' },
@@ -23,23 +27,52 @@ export default function PartnerDashboard() {
   const [user, setUser] = useState(null);
   const [leads, setLeads] = useState(DEMO_LEADS);
   const [projects, setProjects] = useState(DEMO_PROJECTS);
+  const [materials, setMaterials] = useState(DEMO_MATERIALS);
   const [matches, setMatches] = useState([]);
+  const [checklist, setChecklist] = useState(null);
+  const [checklistDismissed, setChecklistDismissed] = useState(false);
 
   useEffect(() => {
-    fetch('/api/auth/me').then(r => r.json()).then(d => { if (d.user) setUser(d.user); });
-    const stored = typeof window !== 'undefined' && localStorage.getItem('bos_leads');
-    if (stored) setLeads(JSON.parse(stored));
-    const storedP = typeof window !== 'undefined' && localStorage.getItem('bos_projects');
-    if (storedP) setProjects(JSON.parse(storedP));
-    
+    fetch('/api/auth/me').then(r => r.json()).then(d => {
+      if (d.user) {
+        setUser(d.user);
+        // Load onboarding checklist
+        const cl = getOnboardingChecklist(d.user.id || 'demo');
+        setChecklist(cl);
+        const dismissed = localStorage.getItem('bos_checklist_dismissed');
+        if (dismissed) setChecklistDismissed(true);
+      }
+    });
+    // Load data via service layer (API first, localStorage fallback)
+    getLeads().then(data => { if (data?.length) setLeads(data); });
+    getProjects().then(data => { if (data?.length) setProjects(data); });
+    getMaterialRequests().then(data => { if (data?.length) setMaterials(data); });
     fetch('/api/partner-matches').then(r => r.json()).then(d => {
       if (d.data) setMatches(d.data);
     }).catch(e => console.error(e));
   }, []);
 
+  const dismissChecklist = () => {
+    setChecklistDismissed(true);
+    localStorage.setItem('bos_checklist_dismissed', '1');
+  };
+
   const activeProjects = projects.filter(p => p.status === 'Active').length;
-  const totalMaterials = DEMO_MATERIALS.length;
+  const totalMaterials = materials.length;
   const firstName = user?.name?.split(' ')[0] || 'Partner';
+
+  // Onboarding checklist items
+  const CHECKLIST_ITEMS = [
+    { key: 'profile_completed',  label: 'Complete business profile', href: '/partner/profile',   icon: '👤' },
+    { key: 'first_project',      label: 'Add first project',         href: '/partner/projects',  icon: '🏗️' },
+    { key: 'first_site_update',  label: 'Post a site update',        href: '/partner/site-logbook', icon: '📸' },
+    { key: 'first_material_req', label: 'Create material request',   href: '/partner/materials', icon: '🧱' },
+    { key: 'first_document',     label: 'Upload a document',         href: '/partner/documents', icon: '📄' },
+    { key: 'first_milestone',    label: 'Add a project milestone',   href: '/partner/projects',  icon: '✅' },
+    { key: 'boq_generated',      label: 'Generate a BOQ',            href: '/partner/boq-studio',icon: '💰' },
+  ];
+  const completedSteps = checklist ? CHECKLIST_ITEMS.filter(i => checklist[i.key]).length : 0;
+  const showChecklist = checklist && !checklistDismissed && completedSteps < CHECKLIST_ITEMS.length;
 
   return (
     <div>
@@ -59,9 +92,40 @@ export default function PartnerDashboard() {
         <MetricCard icon="💸" label="Pending Payments" value="₹12.5 L" sub="3 milestones due" color="#EF4444" onClick={() => window.location.href = '/partner/finance'} />
         <MetricCard icon="🚩" label="Open Issues" value="2" sub="1 high priority" color="#EF4444" onClick={() => window.location.href = '/partner/issues'} />
         <MetricCard icon="📓" label="Site Updates Today" value={DEMO_LOGBOOK.length} sub="Across all projects" color="#8B5CF6" onClick={() => window.location.href = '/partner/site-logbook'} />
-        <MetricCard icon="🧱" label="Material Requests" value={totalMaterials} sub={`${DEMO_MATERIALS.filter(m => m.status === 'Ordered').length} ordered`} color="#F59E0B" onClick={() => window.location.href = '/partner/materials'} />
+        <MetricCard icon="🧱" label="Material Requests" value={totalMaterials} sub={`${materials.filter(m => m.status === 'Approved' || m.status === 'approved').length} approved`} color="#F59E0B" onClick={() => window.location.href = '/partner/materials'} />
         <MetricCard icon="🏢" label="Profile Completion" value="75%" sub="Add more details" color="#0EA5E9" onClick={() => window.location.href = '/partner/profile'} />
       </div>
+
+      {/* ONBOARDING CHECKLIST BANNER */}
+      {showChecklist && (
+        <div style={{ marginBottom: '28px', background: 'linear-gradient(135deg, #FFF7ED, #FEF3C7)', border: '1px solid #FDE68A', borderRadius: '20px', padding: '24px 28px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px', gap: '12px' }}>
+            <div>
+              <div style={{ fontSize: '16px', fontWeight: 800, color: '#92400E', marginBottom: '4px' }}>
+                🚀 Get Started — {completedSteps}/{CHECKLIST_ITEMS.length} steps complete
+              </div>
+              <div style={{ fontSize: '13px', color: '#B45309' }}>Complete your Partner OS setup to unlock full capabilities.</div>
+            </div>
+            <button onClick={dismissChecklist} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#B45309', fontSize: '18px', flexShrink: 0 }} title="Dismiss">✕</button>
+          </div>
+          {/* Progress bar */}
+          <div style={{ background: '#FDE68A', borderRadius: '4px', height: '6px', marginBottom: '16px', overflow: 'hidden' }}>
+            <div style={{ width: `${Math.round((completedSteps / CHECKLIST_ITEMS.length) * 100)}%`, height: '100%', background: '#D97706', borderRadius: '4px', transition: 'width 0.4s' }} />
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '8px' }}>
+            {CHECKLIST_ITEMS.map(item => (
+              <Link key={item.key} href={item.href}
+                style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 14px', background: checklist[item.key] ? '#F0FDF4' : 'white', border: `1px solid ${checklist[item.key] ? '#86EFAC' : '#FDE68A'}`, borderRadius: '10px', textDecoration: 'none', transition: 'box-shadow 0.15s' }}
+                onMouseEnter={e => e.currentTarget.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)'}
+                onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}
+              >
+                <span style={{ fontSize: '18px' }}>{checklist[item.key] ? '✅' : item.icon}</span>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: checklist[item.key] ? '#15803D' : '#78350F', textDecoration: checklist[item.key] ? 'line-through' : 'none' }}>{item.label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* MIDDLE GRID */}
       <div className="dash-mid-grid" style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '20px', marginBottom: '32px' }}>
@@ -202,7 +266,7 @@ export default function PartnerDashboard() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
           {[
             { label: 'Private Projects', used: projects.filter(p => p.status !== 'Completed').length, max: 2, icon: '🏗️', color: '#6366F1' },
-            { label: 'Material Requests', used: DEMO_MATERIALS.length, max: 20, icon: '🧱', color: '#F59E0B' },
+            { label: 'Material Requests', used: materials.length, max: 20, icon: '🧱', color: '#F59E0B' },
             { label: 'Documents', used: 3, max: 25, icon: '📁', color: '#0EA5E9' },
             { label: 'Team Members', used: 1, max: 3, icon: '👷', color: '#10B981' },
           ].map(item => {
