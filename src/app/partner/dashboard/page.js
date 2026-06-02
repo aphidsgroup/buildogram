@@ -53,14 +53,14 @@ export default function PartnerDashboard() {
 
       {/* KPI CARDS */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginBottom: '32px' }}>
-        <MetricCard icon="🎯" label="Total Leads" value={leads.length} sub={`${leads.filter(l => l.status === 'New').length} new today`} onClick={(e) => { e.preventDefault(); alert('Lead CRM is being upgraded. Coming soon!'); }} />
-        <MetricCard icon="🏗️" label="Active Projects" value={activeProjects} sub={`${projects.length} total`} color="#10B981" onClick={(e) => { e.preventDefault(); alert('Project Control is being upgraded. Coming soon!'); }} />
-        <MetricCard icon="💰" label="Total BOQ Value" value="₹4.2 Cr" sub="Approved budgets" color="#6366F1" />
-        <MetricCard icon="💸" label="Pending Payments" value="₹12.5 L" sub="3 milestones due" color="#EF4444" />
-        <MetricCard icon="🚩" label="Open Issues" value="2" sub="1 high priority" color="#EF4444" />
-        <MetricCard icon="📓" label="Site Updates Today" value={DEMO_LOGBOOK.length} sub="Across all projects" color="#8B5CF6" onClick={(e) => { e.preventDefault(); alert('Site Logbook is being upgraded. Coming soon!'); }} />
-        <MetricCard icon="🧱" label="Material Requests" value={totalMaterials} sub={`${DEMO_MATERIALS.filter(m => m.status === 'Ordered').length} ordered`} color="#F59E0B" />
-        <MetricCard icon="🏢" label="Profile Completion" value="75%" sub="Add more details" color="#0EA5E9" onClick={(e) => { e.preventDefault(); alert('Profile Builder is being upgraded. Coming soon!'); }} />
+        <MetricCard icon="🎯" label="Total Leads" value={leads.length} sub={`${leads.filter(l => l.status === 'New').length} new`} onClick={() => window.location.href = '/partner/leads'} />
+        <MetricCard icon="🏗️" label="Active Projects" value={activeProjects} sub={`${projects.length} total`} color="#10B981" onClick={() => window.location.href = '/partner/projects'} />
+        <MetricCard icon="💰" label="Total BOQ Value" value="₹4.2 Cr" sub="Approved budgets" color="#6366F1" onClick={() => window.location.href = '/partner/boq-studio'} />
+        <MetricCard icon="💸" label="Pending Payments" value="₹12.5 L" sub="3 milestones due" color="#EF4444" onClick={() => window.location.href = '/partner/finance'} />
+        <MetricCard icon="🚩" label="Open Issues" value="2" sub="1 high priority" color="#EF4444" onClick={() => window.location.href = '/partner/issues'} />
+        <MetricCard icon="📓" label="Site Updates Today" value={DEMO_LOGBOOK.length} sub="Across all projects" color="#8B5CF6" onClick={() => window.location.href = '/partner/site-logbook'} />
+        <MetricCard icon="🧱" label="Material Requests" value={totalMaterials} sub={`${DEMO_MATERIALS.filter(m => m.status === 'Ordered').length} ordered`} color="#F59E0B" onClick={() => window.location.href = '/partner/materials'} />
+        <MetricCard icon="🏢" label="Profile Completion" value="75%" sub="Add more details" color="#0EA5E9" onClick={() => window.location.href = '/partner/profile'} />
       </div>
 
       {/* MIDDLE GRID */}
@@ -151,6 +151,44 @@ export default function PartnerDashboard() {
             <p style={{ fontSize: '13px', color: '#64748B', marginBottom: '16px' }}>Our media team wants to feature your recent site on Instagram Reels.</p>
             <button className="btn btn-outline btn-sm" onClick={() => alert('Partner Document Upload feature ready soon.')}>Request Showcase Collaboration</button>
           </div>
+        </div>
+      </div>
+
+      {/* FREE PLAN USAGE */}
+      <div className="card" style={{ padding: '28px', borderRadius: '24px', background: 'white', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', marginTop: '32px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>
+          <div>
+            <h2 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', marginBottom: '4px' }}>🆓 Free Partner OS Plan</h2>
+            <p style={{ fontSize: '13px', color: '#64748B' }}>You are using the free Buildogram Partner OS plan. Upgrade coming soon.</p>
+          </div>
+          <span style={{ background: 'rgba(252,110,32,0.1)', color: '#FC6E20', border: '1px solid rgba(252,110,32,0.3)', padding: '6px 14px', borderRadius: '999px', fontSize: '12px', fontWeight: 700 }}>FREE PLAN</span>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
+          {[
+            { label: 'Private Projects', used: projects.filter(p => p.status !== 'Completed').length, max: 2, icon: '🏗️', color: '#6366F1' },
+            { label: 'Material Requests', used: DEMO_MATERIALS.length, max: 20, icon: '🧱', color: '#F59E0B' },
+            { label: 'Documents', used: 3, max: 25, icon: '📁', color: '#0EA5E9' },
+            { label: 'Team Members', used: 1, max: 3, icon: '👷', color: '#10B981' },
+          ].map(item => {
+            const pct = Math.min(100, Math.round((item.used / item.max) * 100));
+            const warn = pct >= 80;
+            return (
+              <div key={item.label} style={{ padding: '14px 16px', background: '#F8FAFC', borderRadius: '12px', border: `1px solid ${warn ? '#FDE68A' : 'var(--border)'}` }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 600 }}>{item.icon} {item.label}</span>
+                  <span style={{ fontSize: '12px', color: warn ? '#D97706' : '#64748B', fontWeight: 700 }}>{item.used} / {item.max}</span>
+                </div>
+                <div style={{ background: '#E2E8F0', borderRadius: '4px', height: '6px', overflow: 'hidden' }}>
+                  <div style={{ width: `${pct}%`, height: '100%', background: warn ? '#F59E0B' : item.color, borderRadius: '4px', transition: 'width 0.4s' }} />
+                </div>
+                {warn && <div style={{ fontSize: '11px', color: '#D97706', marginTop: '4px', fontWeight: 600 }}>⚠️ Approaching limit</div>}
+              </div>
+            );
+          })}
+        </div>
+        <div style={{ marginTop: '16px', padding: '12px 16px', background: 'linear-gradient(135deg, #FFF7ED, #FED7AA)', borderRadius: '10px', fontSize: '13px', color: '#92400E', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+          <span>🚀 Unlock unlimited projects, team members & priority leads with Buildogram Pro.</span>
+          <button style={{ background: '#FC6E20', color: 'white', padding: '8px 16px', borderRadius: '8px', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '12px' }}>Upgrade Coming Soon</button>
         </div>
       </div>
 

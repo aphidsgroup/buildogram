@@ -132,7 +132,23 @@ export default function PartnerLayout({ children }) {
               key={idx} 
               href={item.href} 
               onClick={(e) => {
-                const builtRoutes = ['/partner/dashboard', '/partner/profile'];
+                const builtRoutes = [
+                  '/partner/dashboard',
+                  '/partner/profile',
+                  '/partner/leads',
+                  '/partner/projects',
+                  '/partner/materials',
+                  '/partner/documents',
+                  '/partner/site-logbook',
+                  '/partner/boq-studio',
+                  '/partner/reports',
+                  '/partner/ai-assistant',
+                  '/partner/issues',
+                  '/partner/finance',
+                  '/partner/crew',
+                  '/partner/pre-construction',
+                  '/partner/settings',
+                ];
                 if (!builtRoutes.includes(item.href)) {
                   e.preventDefault();
                   setComingSoonModule(item.label);
