@@ -7,6 +7,7 @@ import { getLeads } from '@/lib/services/leadService';
 import { getProjects } from '@/lib/services/projectService';
 import { getMaterialRequests } from '@/lib/services/materialRequestService';
 import { getOnboardingChecklist, completeOnboardingStep } from '@/lib/services/onboardingService';
+import PWAInstallPrompt from '@/components/PWAInstallPrompt';
 
 const ACTIVITY = [
   { icon: '🎯', text: 'New lead from Buildogram – Deepa Menon', time: '2 hours ago' },
@@ -79,10 +80,12 @@ export default function PartnerDashboard() {
       {/* GREETING */}
       <div style={{ marginBottom: '32px', background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)', padding: '40px', borderRadius: '24px', color: 'white', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
         <h1 style={{ fontSize: '32px', fontWeight: 800, marginBottom: '8px' }}>
-          Good day, {firstName}! 👋
+          Good day, {firstName}! ☀️
         </h1>
         <p style={{ color: '#94A3B8', fontSize: '16px' }}>Here is your Buildogram Partner OS overview.</p>
       </div>
+
+      <PWAInstallPrompt message="Install Buildogram Partner OS for faster site updates." />
 
       {/* KPI CARDS */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '16px', marginBottom: '32px' }}>

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { StatusBadge, SectionHeader, Modal, FormField, SearchBar, EmptyState, MetricCard } from '../_shared/components';
+import DataSourceBadge from '@/components/DataSourceBadge';
 import { DEMO_PROJECTS, PROJECT_STAGES } from '../_shared/demoData';
 import Link from 'next/link';
 import { notifyEvent } from '@/lib/services/notificationService';
@@ -30,6 +31,7 @@ function ProgressBar({ pct }) {
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState([]);
+  const [dataSource, setDataSource] = useState('loading');
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
   const [modalOpen, setModalOpen] = useState(false);
@@ -45,6 +47,7 @@ export default function ProjectsPage() {
       const data = await res.json();
       if (data.success) {
         setProjects(data.items || []);
+        setDataSource('api');
         localStorage.setItem('bos_projects', JSON.stringify(data.items || []));
       } else {
         throw new Error(data.message);
@@ -52,8 +55,13 @@ export default function ProjectsPage() {
     } catch (e) {
       console.error('API fetch failed, using fallback:', e);
       const stored = typeof window !== 'undefined' && localStorage.getItem('bos_projects');
-      if (stored) setProjects(JSON.parse(stored));
-      else setProjects(DEMO_PROJECTS);
+      if (stored) {
+        setProjects(JSON.parse(stored));
+        setDataSource('localStorage');
+      } else {
+        setProjects(DEMO_PROJECTS);
+        setDataSource('demo');
+      }
     } finally {
       setLoading(false);
     }
@@ -133,9 +141,12 @@ export default function ProjectsPage() {
 
   return (
     <div>
-      <SectionHeader icon="🏗️" title="Project Control Center" desc="Track progress, milestones, and timelines for all your projects"
-        action={<button className="btn btn-primary" onClick={openAdd}>+ Add Project</button>}
-      />
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <SectionHeader icon="🏗️" title="Project Control Center" desc="Track progress, milestones, and timelines across all your active sites."
+          action={<button className="btn btn-primary" onClick={openAdd}>+ Add Project</button>}
+        />
+        <DataSourceBadge source={dataSource} entity="Projects" userRole="ops_admin" />
+      </div>
 
       {/* METRICS */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px', marginBottom: '24px' }}>

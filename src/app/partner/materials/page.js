@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { SectionHeader, Modal, FormField, SearchBar, EmptyState, StatusBadge } from '../_shared/components';
+import DataSourceBadge from '@/components/DataSourceBadge';
 import { DEMO_MATERIALS, DEMO_PROJECTS, MATERIAL_STATUSES } from '../_shared/demoData';
 import { notifyEvent } from '@/lib/services/notificationService';
 import { logActivity } from '@/lib/services/activityLogService';
@@ -18,6 +19,7 @@ function PriorityBadge({ priority }) {
 
 export default function MaterialFlow() {
   const [items, setItems] = useState([]);
+  const [dataSource, setDataSource] = useState('loading');
   const [projects, setProjects] = useState(DEMO_PROJECTS);
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
@@ -47,13 +49,19 @@ export default function MaterialFlow() {
           bestRateRequest: r.bestRateRequest
         }));
         setItems(mapped);
+        setDataSource('api');
         localStorage.setItem('bos_materials', JSON.stringify(mapped));
       } else throw new Error(data.message);
     } catch (e) {
       console.error('API fetch failed, fallback', e);
       const stored = typeof window !== 'undefined' && localStorage.getItem('bos_materials');
-      if (stored) setItems(JSON.parse(stored));
-      else setItems(DEMO_MATERIALS);
+      if (stored) {
+        setItems(JSON.parse(stored));
+        setDataSource('localStorage');
+      } else {
+        setItems(DEMO_MATERIALS);
+        setDataSource('demo');
+      }
     } finally {
       setLoading(false);
     }
@@ -138,9 +146,12 @@ export default function MaterialFlow() {
 
   return (
     <div>
-      <SectionHeader icon="🧱" title="Material Flow" desc="Track material requests, approvals, and procurement status"
-        action={<button className="btn btn-primary" onClick={openAdd}>+ Add Request</button>}
-      />
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <SectionHeader icon="🧱" title="Material Flow" desc="Track material requests, approvals, and procurement status."
+          action={<button className="btn btn-primary" onClick={openAdd}>+ Add Request</button>}
+        />
+        <DataSourceBadge source={dataSource} entity="Materials" userRole="ops_admin" />
+      </div>
 
       {/* SUMMARY METRICS */}
       <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginBottom: '24px' }}>

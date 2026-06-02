@@ -398,3 +398,38 @@ MARKETPLACE UI STRUCTURAL CLASSES
     gap: 12px;
   }
 }
+
+/* Mobile QA Fixes - Phase G */
+.table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; width: 100%; }
+@media (max-width: 768px) {
+  .modal-content { max-height: 85vh; padding: 16px; overflow-y: auto; }
+  .tabs-container { scrollbar-width: none; }
+  .tabs-container::-webkit-scrollbar { display: none; }
+}
+/* PWA Safe Areas */
+body {
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Additional Mobile QA Fixes - Post-PWA Audit */
+@media (max-width: 768px) {
+  .modal-content { max-height: 90dvh !important; }
+  
+  /* Touch friendly buttons */
+  button, a.button-like { min-height: 44px; }
+  
+  /* Grid flex break safety */
+  .grid-child, .flex-child { min-width: 0; }
+  
+  /* Make sure inputs aren't squeezed */
+  input, select, textarea { font-size: 16px !important; /* Prevents iOS zoom */ }
+}
+
+@media (max-width: 900px) {
+  .dash-mid-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
