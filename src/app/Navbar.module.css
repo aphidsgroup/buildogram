@@ -6,6 +6,7 @@
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(18px);
   border-bottom: 1px solid var(--border);
+  padding-top: env(safe-area-inset-top);
 }
 .navInner {
   width: min(100%, 1500px);
@@ -103,6 +104,8 @@
   color: var(--secondary);
   font-size: 24px;
   cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
 }
 .mobileNav {
   display: none;
@@ -147,6 +150,9 @@
     font-size: 16px;
     padding: 10px 0;
     border-bottom: 1px solid var(--border);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
   }
   .mobileNav a:last-child {
     border-bottom: none;

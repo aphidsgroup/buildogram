@@ -72,7 +72,7 @@ export default function ClientLayout({ children }) {
       
       <div className={`${styles.main} has-bottom-nav`} style={{ background: '#F8FAFC' }}>
         <header className={styles.topbar} style={{ background: 'white', borderBottom: '1px solid #E2E8F0' }}>
-          <button className={styles.menuBtn} onClick={() => setSidebarOpen(true)}>☰</button>
+          <button aria-label="Open menu" className={styles.menuBtn} onClick={() => setSidebarOpen(true)}>☰</button>
           <div style={{ flex: 1, fontWeight: 700, fontSize: '18px', color: '#0F172A' }}>Client Dashboard</div>
           <button onClick={() => setComingSoonModule('Raise Issue')} style={{ background: 'linear-gradient(135deg, #FFB347, #FC6E20)', color: 'white', padding: '8px 16px', borderRadius: '8px', fontSize: '13px', fontWeight: 600, border: 'none', cursor: 'pointer' }}>🚨 Raise Issue</button>
         </header>
@@ -83,9 +83,9 @@ export default function ClientLayout({ children }) {
       {/* Coming Soon Modal */}
       {comingSoonModule && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(15,23,42,0.6)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', backdropFilter: 'blur(4px)' }}>
-          <div style={{ background: 'white', borderRadius: '24px', padding: '32px', maxWidth: '400px', width: '100%', textAlign: 'center', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
+          <div role="dialog" aria-modal="true" aria-labelledby="client-coming-soon-title" style={{ background: 'white', borderRadius: '24px', padding: '32px', maxWidth: '400px', width: '100%', textAlign: 'center', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.25)' }}>
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>🚧</div>
-            <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#0F172A', marginBottom: '12px' }}>{comingSoonModule} is Upgrading</h3>
+            <h3 id="client-coming-soon-title" style={{ fontSize: '20px', fontWeight: 800, color: '#0F172A', marginBottom: '12px' }}>{comingSoonModule} is Upgrading</h3>
             <p style={{ fontSize: '14px', color: '#64748B', lineHeight: '1.6', marginBottom: '24px' }}>
               We are currently transitioning this module to our new Engineer-Led Construction Companion platform. It will be back online soon with enhanced capabilities!
             </p>

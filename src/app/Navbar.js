@@ -71,7 +71,7 @@ export default function Navbar() {
           <Link href="/login" className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '14px' }}>Dashboard OS</Link>
         </div>
 
-        <button className={styles.menuBtn} onClick={() => setMenuOpen(!menuOpen)}>
+        <button aria-label="Toggle mobile menu" className={styles.menuBtn} onClick={() => setMenuOpen(!menuOpen)}>
           {menuOpen ? '✕' : '☰'}
         </button>
 
