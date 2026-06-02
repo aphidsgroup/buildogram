@@ -68,10 +68,15 @@ export default function OpsDashboard() {
 
   return (
     <div className="pb-20">
-      <div className="page-header flex-between mb-8" style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)', padding: '40px', borderRadius: '24px', color: 'white', boxShadow: '0 10px 30px rgba(0,0,0,0.1)' }}>
+      <div className="page-header flex-between mb-8" style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)', padding: '40px', borderRadius: '24px', color: 'white', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 style={{ fontSize: '32px', fontWeight: 800, marginBottom: '8px' }}>Founder Dashboard</h1>
           <p style={{ color: '#94A3B8', fontSize: '16px' }}>Comprehensive overview of revenue, operations, and ecosystem health.</p>
+        </div>
+        <div>
+          <Link href="/ops/pilot-launch" style={{ background: '#FC6E20', color: 'white', padding: '12px 24px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', display: 'inline-block' }}>
+            🚀 Open Pilot Launch Control
+          </Link>
         </div>
       </div>
 

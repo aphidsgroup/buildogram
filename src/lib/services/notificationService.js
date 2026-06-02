@@ -33,11 +33,20 @@ export async function createNotification(payload) {
     ...payload,
     id: genId('N'),
     read: false,
+    status: isDemoMode() ? 'skipped_demo' : 'pending',
     createdAt: new Date().toISOString(),
   };
+
   if (!isDemoMode()) {
-    apiFetch('/api/notifications', { method: 'POST', body: JSON.stringify(n) }).catch(() => {});
+    apiFetch('/api/notifications', { method: 'POST', body: JSON.stringify(n) })
+      .then(() => { n.status = 'sent'; })
+      .catch((e) => { 
+        n.status = 'failed';
+        n.error = e.message;
+        console.warn('[NotificationService] Delivery failed:', e);
+      });
   }
+
   const all = lsGet(LS_KEY) || [];
   lsSet(LS_KEY, [n, ...all].slice(0, 200));
   return n;

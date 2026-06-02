@@ -127,7 +127,15 @@ export default function OpsPartnersV2() {
   };
 
   const setApproval = async (id, slug, status) => {
-    await opsUpdatePartnerStatus(id || slug, { approvalStatus: status }).catch(() => {});
+    let rejectionReason = null;
+    if (status === 'Rejected') {
+      rejectionReason = prompt('Reason for rejection (optional but recommended):');
+      if (rejectionReason === null) return; // user cancelled
+    }
+    const update = { approvalStatus: status };
+    if (rejectionReason) update.rejectionReason = rejectionReason;
+    
+    await opsUpdatePartnerStatus(id || slug, update).catch(() => {});
     load();
   };
 

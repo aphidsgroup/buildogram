@@ -17,19 +17,23 @@ export async function PATCH(request, { params }) {
     if ('approvalStatus' in b) updates.approval_status = b.approvalStatus;
     if ('isActive' in b) updates.active = Boolean(b.isActive);
     if ('isFeatured' in b) updates.featured = Boolean(b.isFeatured);
+    if ('rejectionReason' in b) updates.rejection_reason = b.rejectionReason;
 
     if (Object.keys(updates).length === 0) return fail('No valid fields to update');
 
     // Build dynamic update
-    if ('approval_status' in updates && 'active' in updates && 'featured' in updates) {
-      await sql`UPDATE partners SET approval_status = ${updates.approval_status}, active = ${updates.active}, featured = ${updates.featured}, updated_at = NOW() WHERE id = ${id}`;
-    } else if ('approval_status' in updates) {
-      await sql`UPDATE partners SET approval_status = ${updates.approval_status}, updated_at = NOW() WHERE id = ${id}`;
-    } else if ('active' in updates) {
-      await sql`UPDATE partners SET active = ${updates.active}, updated_at = NOW() WHERE id = ${id}`;
-    } else if ('featured' in updates) {
-      await sql`UPDATE partners SET featured = ${updates.featured}, updated_at = NOW() WHERE id = ${id}`;
-    }
+    const fields = Object.keys(updates);
+    let query = 'UPDATE partners SET ';
+    const values = [];
+    fields.forEach((f, i) => {
+      query += `${f} = $${i + 1}`;
+      if (i < fields.length - 1) query += ', ';
+      values.push(updates[f]);
+    });
+    query += `, updated_at = NOW() WHERE id = $${fields.length + 1}`;
+    values.push(id);
+    
+    await sql.unsafe(query, values);
 
     // Auto-create user on approval
     if (updates.approval_status === 'Approved') {

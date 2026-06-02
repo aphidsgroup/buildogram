@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getUnreadCount, getNotifications, markAllRead } from '@/lib/services/notificationService';
+import PWAInstallPrompt from '@/components/PWAInstallPrompt';
 
 const DEMO_RFQS = [
   { id: 'RFQ001', project: 'Rajesh Kumar Villa', material: 'UltraTech Cement OPC 53', qty: 200, unit: 'Bags', requiredDate: '2026-06-10', urgency: 'High', status: 'New', location: 'Velachery, Chennai', partnerName: 'Sri Rajan Builders' },
@@ -56,6 +57,8 @@ export default function SupplierDashboard() {
           </button>
         </div>
       </div>
+
+      <PWAInstallPrompt message="Install Buildogram Supplier Portal to respond to RFQs quickly." />
 
       {/* KPIs */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px', marginBottom: '28px' }}>

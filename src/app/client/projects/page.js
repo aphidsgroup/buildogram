@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { getCustomerProjects } from '@/lib/services/customerService';
+import PWAInstallPrompt from '@/components/PWAInstallPrompt';
 
 const STAGE_ORDER = ['Planning', 'Foundation', 'Structure', 'Brickwork', 'Roofing', 'Electrical & Plumbing', 'Plastering', 'Flooring', 'Painting', 'Finishing', 'Handover'];
 
@@ -70,6 +71,8 @@ export default function ClientProjectsList() {
         </div>
       </div>
 
+      <PWAInstallPrompt message="Install Buildogram to track your project easily." />
+
       {/* Support Banner */}
       <div style={{ background: '#FFF7ED', border: '1px solid #FED7AA', borderRadius: '14px', padding: '14px 20px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
         <span style={{ fontSize: '20px' }}>🛡️</span>
@@ -92,7 +95,7 @@ export default function ClientProjectsList() {
           <a href="/contact" style={{ display: 'inline-block', marginTop: '16px', padding: '10px 24px', background: '#FC6E20', color: 'white', borderRadius: '10px', textDecoration: 'none', fontWeight: 700 }}>Contact Buildogram →</a>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
           {projects.map(p => {
             const stageIdx = STAGE_ORDER.indexOf(p.stage);
             const daysLeft = p.targetDate ? Math.ceil((new Date(p.targetDate) - new Date()) / (1000 * 60 * 60 * 24)) : null;

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { getCustomerProject } from '@/lib/services/customerService';
-import { filterMilestoneForCustomer, filterSiteUpdateForCustomer, filterDocumentForCustomer, filterPaymentForCustomer } from '@/lib/data/customerFilter';
+import { filterMilestoneForCustomer, filterSiteUpdateForCustomer, filterDocumentForCustomer, filterPaymentForCustomer, auditCustomerSafety } from '@/lib/data/customerFilter';
 
 /* ── Helpers ─────────────────────────────────────────────────────────── */
 const fmt = n => n ? '₹' + (n >= 10000000 ? (n / 10000000).toFixed(1) + 'Cr' : n >= 100000 ? (n / 100000).toFixed(1) + 'L' : Number(n).toLocaleString('en-IN')) : '—';
@@ -397,6 +397,7 @@ export default function ClientProjectDetail() {
     // Try customerService first (API + filter), fall back to localStorage demo
     getCustomerProject(id).then(bundle => {
       if (bundle?.project) {
+        auditCustomerSafety(bundle.project);
         setProject(bundle.project);
         setServiceData(bundle); // has .milestones, .updates, .documents, .payments
       } else {

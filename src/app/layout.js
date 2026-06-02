@@ -1,5 +1,6 @@
 import './globals.css';
 import SiteLayoutClient from './SiteLayoutClient';
+import PWARegister from '@/components/PWARegister';
 
 export const metadata = {
   title: 'Buildogram | Engineer-Led Home Construction & Property Ecosystem in Chennai',
@@ -27,15 +28,22 @@ export const metadata = {
     title: 'Buildogram | Engineer-Led Construction Companion',
     description: 'Engineer-led guidance for home construction in Chennai. Verified builders, BOQ reviews, material sourcing, and Property Passport.',
   },
-  manifest: '/manifest.json',
+  manifest: '/manifest.webmanifest',
+  applicationName: 'Buildogram',
+  appleWebApp: {
+    capable: true,
+    title: 'Buildogram',
+    statusBarStyle: 'default',
+  },
 };
 
 export const viewport = {
-  themeColor: '#0F172A',
+  themeColor: '#FC6E20',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  viewportFit: 'cover',
 };
 
 const orgSchema = {
@@ -51,9 +59,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="apple-touch-icon" href="/globe.svg" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
       </head>
       <body>
+        <PWARegister />
         <SiteLayoutClient>
           {children}
         </SiteLayoutClient>
