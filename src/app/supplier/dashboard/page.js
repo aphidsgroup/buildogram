@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { getUnreadCount, getNotifications, markAllRead } from '@/lib/services/notificationService';
 
 const DEMO_RFQS = [
   { id: 'RFQ001', project: 'Rajesh Kumar Villa', material: 'UltraTech Cement OPC 53', qty: 200, unit: 'Bags', requiredDate: '2026-06-10', urgency: 'High', status: 'New', location: 'Velachery, Chennai', partnerName: 'Sri Rajan Builders' },
@@ -19,20 +20,41 @@ const STATUS_COLORS  = { New: '#3B82F6', Quoted: '#8B5CF6', 'Under Review': '#F5
 
 export default function SupplierDashboard() {
   const [user, setUser] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0);
   const newRFQs = DEMO_RFQS.filter(r => r.status === 'New').length;
 
   useEffect(() => {
     fetch('/api/auth/me').then(r => r.json()).then(d => { if (d.user) setUser(d.user); });
+    setUnreadCount(getUnreadCount('supplier'));
+    const t = setInterval(() => setUnreadCount(getUnreadCount('supplier')), 30000);
+    return () => clearInterval(t);
   }, []);
 
   return (
     <div>
       {/* Welcome */}
       <div style={{ marginBottom: '28px', background: 'linear-gradient(135deg, #0F172A 0%, #064E3B 100%)', padding: '36px', borderRadius: '20px', color: 'white' }}>
-        <h1 style={{ fontSize: '28px', fontWeight: 800, marginBottom: '6px' }}>
-          Welcome back, {user?.name?.split(' ')[0] || 'Supplier'} 👋
-        </h1>
-        <p style={{ color: '#94A3B8', fontSize: '15px' }}>Here's your Buildogram Supplier Portal overview.</p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '12px' }}>
+          <div>
+            <h1 style={{ fontSize: '28px', fontWeight: 800, marginBottom: '6px' }}>
+              Welcome back, {user?.name?.split(' ')[0] || 'Supplier'} 👋
+            </h1>
+            <p style={{ color: '#94A3B8', fontSize: '15px' }}>Here's your Buildogram Supplier Portal overview.</p>
+          </div>
+          {/* Notification bell */}
+          <button
+            onClick={() => { markAllRead('supplier'); setUnreadCount(0); }}
+            style={{ position: 'relative', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '50%', width: '44px', height: '44px', fontSize: '20px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
+            title="Notifications"
+          >
+            🔔
+            {unreadCount > 0 && (
+              <span style={{ position: 'absolute', top: '-3px', right: '-3px', background: '#EF4444', color: 'white', borderRadius: '50%', fontSize: '10px', fontWeight: 800, minWidth: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 3px' }}>
+                {unreadCount > 9 ? '9+' : unreadCount}
+              </span>
+            )}
+          </button>
+        </div>
       </div>
 
       {/* KPIs */}

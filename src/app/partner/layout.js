@@ -1,8 +1,9 @@
 'use client';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import styles from '../ops/layout.module.css'; // Reusing Ops Layout CSS for consistency
+import { useState, useEffect, useRef } from 'react';
+import styles from '../ops/layout.module.css';
+import { getUnreadCount, getNotifications, markRead, markAllRead } from '@/lib/services/notificationService';
 
 // All Possible Modules in Partner OS
 const MODULES = {
@@ -88,6 +89,10 @@ export default function PartnerLayout({ children }) {
   const [category, setCategory] = useState('builder'); // default fallback
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [comingSoonModule, setComingSoonModule] = useState(null);
+  const [unreadCount, setUnreadCount] = useState(0);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const notifRef = useRef(null);
 
   useEffect(() => { 
     // Fetch user and profile to determine category
@@ -96,7 +101,6 @@ export default function PartnerLayout({ children }) {
     });
     fetch('/api/partner/profile').then(r => r.json()).then(p => {
       if (p.success && p.profile?.metadata?.category) {
-        // Map category string to our role keys
         const rawCat = p.profile.metadata.category.toLowerCase();
         if (rawCat.includes('architect')) setCategory('architect');
         else if (rawCat.includes('interior')) setCategory('interior');
@@ -108,6 +112,13 @@ export default function PartnerLayout({ children }) {
         else setCategory('builder');
       }
     });
+    // Load notification count
+    setUnreadCount(getUnreadCount('partner'));
+    const interval = setInterval(() => setUnreadCount(getUnreadCount('partner')), 30000);
+    // Close notif panel on outside click
+    const handleClick = (e) => { if (notifRef.current && !notifRef.current.contains(e.target)) setNotifOpen(false); };
+    document.addEventListener('mousedown', handleClick);
+    return () => { clearInterval(interval); document.removeEventListener('mousedown', handleClick); };
   }, []);
 
   const logout = async () => { await fetch('/api/auth/logout', { method: 'POST' }); router.push('/login'); };
@@ -193,7 +204,49 @@ export default function PartnerLayout({ children }) {
             {currentMenu.find(m => m.href === pathname)?.label || 'Partner OS'}
           </div>
           <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-            <button style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '50%', width: '36px', height: '36px', fontSize: '16px' }}>🔔</button>
+            {/* Notification Bell */}
+            <div ref={notifRef} style={{ position: 'relative' }}>
+              <button
+                onClick={() => {
+                  setNotifOpen(o => !o);
+                  if (!notifOpen) {
+                    getNotifications('partner').then(setNotifications);
+                  }
+                }}
+                style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '50%', width: '36px', height: '36px', fontSize: '16px', position: 'relative', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              >
+                🔔
+                {unreadCount > 0 && (
+                  <span style={{ position: 'absolute', top: '-4px', right: '-4px', background: '#EF4444', color: 'white', borderRadius: '50%', fontSize: '10px', fontWeight: 800, minWidth: '18px', height: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '0 3px', lineHeight: 1 }}>
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
+                )}
+              </button>
+              {notifOpen && (
+                <div style={{ position: 'absolute', right: 0, top: '44px', width: '320px', background: 'white', border: '1px solid var(--border)', borderRadius: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.12)', zIndex: 9999, overflow: 'hidden' }}>
+                  <div style={{ padding: '14px 16px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontWeight: 800, fontSize: '14px' }}>🔔 Notifications</span>
+                    <button onClick={() => { markAllRead('partner'); setUnreadCount(0); setNotifications(n => n.map(x => ({ ...x, read: true }))); }} style={{ fontSize: '11px', color: '#FC6E20', fontWeight: 700, background: 'none', border: 'none', cursor: 'pointer' }}>Mark all read</button>
+                  </div>
+                  <div style={{ maxHeight: '320px', overflowY: 'auto' }}>
+                    {notifications.length === 0 ? (
+                      <div style={{ padding: '24px', textAlign: 'center', color: '#94A3B8', fontSize: '13px' }}>No notifications</div>
+                    ) : notifications.slice(0, 10).map(n => (
+                      <div key={n.id} onClick={() => { markRead(n.id); setUnreadCount(c => Math.max(0, c - 1)); setNotifications(ns => ns.map(x => x.id === n.id ? { ...x, read: true } : x)); setNotifOpen(false); if (n.linkUrl) window.location.href = n.linkUrl; }}
+                        style={{ padding: '12px 16px', borderBottom: '1px solid #F1F5F9', cursor: 'pointer', background: n.read ? 'white' : '#FFF7ED', transition: 'background 0.15s' }}
+                      >
+                        <div style={{ fontWeight: n.read ? 500 : 700, fontSize: '13px', color: '#0F172A', marginBottom: '3px' }}>{n.title}</div>
+                        <div style={{ fontSize: '12px', color: '#64748B', lineHeight: 1.4 }}>{n.body}</div>
+                        <div style={{ fontSize: '10px', color: '#94A3B8', marginTop: '4px' }}>{new Date(n.createdAt).toLocaleString('en-IN', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ padding: '10px 16px', borderTop: '1px solid var(--border)', textAlign: 'center' }}>
+                    <Link href="/partner/notifications" onClick={() => setNotifOpen(false)} style={{ fontSize: '12px', color: '#FC6E20', fontWeight: 700, textDecoration: 'none' }}>View all notifications →</Link>
+                  </div>
+                </div>
+              )}
+            </div>
             <Link href="/partner/profile" style={{ background: 'var(--gradient-orange)', color: 'white', border: 'none', borderRadius: '50%', width: '36px', height: '36px', display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none', fontWeight: 600 }}>
               {user ? user.name[0] : 'P'}
             </Link>
