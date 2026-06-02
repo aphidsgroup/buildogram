@@ -71,3 +71,53 @@ export const DEMO_PROFILE = {
   certifications: '',
   brands: '',
 };
+
+// ─── NEW: Milestones ────────────────────────────────────────────────
+export const MILESTONE_STATUSES = ['not_started', 'in_progress', 'completed', 'delayed', 'on_hold'];
+export const DEFAULT_RESIDENTIAL_MILESTONES = [
+  'Site Visit', 'Soil Test', 'Design Finalization', 'Approval', 'Excavation',
+  'Foundation', 'Plinth', 'Columns', 'Roof Slab', 'Brickwork',
+  'Plumbing Rough-In', 'Electrical Rough-In', 'Plastering', 'Flooring',
+  'Painting', 'Fixtures', 'Final Inspection', 'Handover'
+];
+
+export const DEMO_MILESTONES = [
+  { id: 'MS001', projectId: 'P001', name: 'Foundation', plannedStart: '2026-04-01', plannedEnd: '2026-04-15', actualStart: '2026-04-01', actualEnd: '2026-04-18', status: 'completed', paymentPct: 20, notes: 'Completed with minor 3-day delay due to rain.', customerVisible: true },
+  { id: 'MS002', projectId: 'P001', name: 'Plinth', plannedStart: '2026-04-19', plannedEnd: '2026-04-30', actualStart: '2026-04-19', actualEnd: '2026-05-02', status: 'completed', paymentPct: 10, notes: '', customerVisible: true },
+  { id: 'MS003', projectId: 'P001', name: 'Columns & Roof Slab', plannedStart: '2026-05-03', plannedEnd: '2026-06-15', actualStart: '2026-05-03', actualEnd: null, status: 'in_progress', paymentPct: 25, notes: 'Ground floor columns done. First floor slab in progress.', customerVisible: true },
+  { id: 'MS004', projectId: 'P001', name: 'Brickwork', plannedStart: '2026-06-16', plannedEnd: '2026-07-31', actualStart: null, actualEnd: null, status: 'not_started', paymentPct: 15, notes: '', customerVisible: true },
+  { id: 'MS005', projectId: 'P002', name: 'Material Selection', plannedStart: '2026-05-01', plannedEnd: '2026-05-10', actualStart: '2026-05-01', actualEnd: '2026-05-09', status: 'completed', paymentPct: 30, notes: 'All tiles and fixtures selected.', customerVisible: true },
+  { id: 'MS006', projectId: 'P002', name: 'Flooring', plannedStart: '2026-05-10', plannedEnd: '2026-06-15', actualStart: '2026-05-11', actualEnd: null, status: 'in_progress', paymentPct: 40, notes: '', customerVisible: true },
+];
+
+// ─── NEW: Issues / Snag List ────────────────────────────────────────
+export const ISSUE_PRIORITIES = ['Low', 'Medium', 'High', 'Urgent'];
+export const ISSUE_STATUSES = ['Open', 'In Progress', 'Resolved', 'Closed'];
+
+export const DEMO_ISSUES = [
+  { id: 'IS001', projectId: 'P001', title: 'Concrete pump breakdown', description: 'Pump broke down mid-pour on 24th May. Lost 2 hours. Managed with manual labour.', raisedBy: 'Site Supervisor', priority: 'High', status: 'Resolved', dueDate: '2026-05-25', resolutionNote: 'Pump replaced. Work resumed by noon.', customerVisible: false, createdAt: '2026-05-24' },
+  { id: 'IS002', projectId: 'P001', title: 'Steel delivery delayed', description: 'Tata Tiscon 16mm delivery expected 30th May. Supplier delayed to 3rd June.', raisedBy: 'Partner', priority: 'High', status: 'Open', dueDate: '2026-06-03', resolutionNote: '', customerVisible: false, createdAt: '2026-05-28' },
+  { id: 'IS003', projectId: 'P002', title: 'Tile shade mismatch in bathroom', description: 'Batch 2 of tiles has slightly different shade. Client noticed it.', raisedBy: 'Client', priority: 'Medium', status: 'In Progress', dueDate: '2026-06-08', resolutionNote: '', customerVisible: true, createdAt: '2026-05-30' },
+];
+
+// ─── NEW: Payments ──────────────────────────────────────────────────
+export const PAYMENT_STATUSES = ['Pending', 'Partially Paid', 'Paid', 'Overdue', 'Cancelled'];
+
+export const DEMO_PAYMENTS = [
+  { id: 'PAY001', projectId: 'P001', milestone: 'Foundation', amount: 1500000, dueDate: '2026-04-20', paidDate: '2026-04-22', status: 'Paid', notes: 'Paid via bank transfer.' },
+  { id: 'PAY002', projectId: 'P001', milestone: 'Plinth', amount: 750000, dueDate: '2026-05-05', paidDate: '2026-05-08', status: 'Paid', notes: '' },
+  { id: 'PAY003', projectId: 'P001', milestone: 'Columns & Roof Slab', amount: 1875000, dueDate: '2026-06-20', paidDate: null, status: 'Pending', notes: 'Due after slab completion.' },
+  { id: 'PAY004', projectId: 'P002', milestone: 'Material Selection', amount: 450000, dueDate: '2026-05-12', paidDate: '2026-05-13', status: 'Paid', notes: '' },
+  { id: 'PAY005', projectId: 'P002', milestone: 'Flooring', amount: 600000, dueDate: '2026-06-18', paidDate: null, status: 'Pending', notes: '' },
+];
+
+// ─── NEW: Expenses ──────────────────────────────────────────────────
+export const EXPENSE_CATEGORIES = ['Labour', 'Material', 'Transport', 'Tools', 'Equipment', 'Site Expense', 'Miscellaneous'];
+
+export const DEMO_EXPENSES = [
+  { id: 'EXP001', projectId: 'P001', category: 'Labour', amount: 85000, date: '2026-05-24', paidTo: 'Kumar Construction Crew', notes: 'Weekly wages for 24 workers.' },
+  { id: 'EXP002', projectId: 'P001', category: 'Material', amount: 42000, date: '2026-05-23', paidTo: 'Sri Sai Cements', notes: '200 bags UltraTech OPC 53.' },
+  { id: 'EXP003', projectId: 'P001', category: 'Transport', amount: 8500, date: '2026-05-22', paidTo: 'Raja Lorry Service', notes: 'Steel delivery charges.' },
+  { id: 'EXP004', projectId: 'P002', category: 'Material', amount: 68000, date: '2026-05-20', paidTo: 'Tile World Anna Nagar', notes: 'Vitrified tiles 600 sqft.' },
+];
+

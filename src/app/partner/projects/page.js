@@ -9,6 +9,14 @@ const PROJECT_TYPES = ['Residential', 'Villa', 'Interior', 'Commercial', 'Renova
 
 function fmt(n) { return n >= 10000000 ? '₹' + (n / 10000000).toFixed(1) + 'Cr' : n >= 100000 ? '₹' + (n / 100000).toFixed(1) + 'L' : n ? '₹' + Number(n).toLocaleString('en-IN') : '—'; }
 
+function getHealth(p) {
+  if (p.status === 'Completed') return { label: 'Completed', color: '#6366F1' };
+  if (p.status === 'On Hold')   return { label: 'On Hold',   color: '#94A3B8' };
+  if (p.targetDate && new Date(p.targetDate) < new Date() && p.progress < 100) return { label: 'Delayed', color: '#EF4444' };
+  if (p.progress >= 75) return { label: 'Near Done', color: '#10B981' };
+  return { label: 'On Track', color: '#10B981' };
+}
+
 function ProgressBar({ pct }) {
   return (
     <div style={{ background: '#E2E8F0', borderRadius: '6px', height: '8px', overflow: 'hidden' }}>
@@ -22,7 +30,6 @@ export default function ProjectsPage() {
   const [search, setSearch] = useState('');
   const [filterStatus, setFilterStatus] = useState('All');
   const [modalOpen, setModalOpen] = useState(false);
-  const [detailProject, setDetailProject] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [form, setForm] = useState(BLANK);
 
@@ -101,8 +108,6 @@ export default function ProjectsPage() {
 
   const f = (k) => (e) => setForm(p => ({ ...p, [k]: e.target.value }));
 
-  const stageIdx = (stage) => PROJECT_STAGES.indexOf(stage);
-
   return (
     <div>
       <SectionHeader icon="🏗️" title="Project Control Center" desc="Track progress, milestones, and timelines for all your projects"
@@ -132,14 +137,19 @@ export default function ProjectsPage() {
         <EmptyState icon="🏗️" title="No projects found" desc="Create your first project or convert a won lead." action={<button className="btn btn-primary" onClick={openAdd}>+ Add Project</button>} />
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
-          {filtered.map(p => (
+          {filtered.map(p => {
+            const health = getHealth(p);
+            return (
             <div key={p.id} className="card" style={{ padding: '22px', borderRadius: '16px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div>
                   <div style={{ fontWeight: 700, fontSize: '15px', marginBottom: '4px' }}>{p.name}</div>
                   <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>👤 {p.client} &nbsp;|&nbsp; 📍 {p.location}</div>
                 </div>
-                <StatusBadge status={p.status} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'flex-end' }}>
+                  <StatusBadge status={p.status} />
+                  <span style={{ background: health.color + '18', color: health.color, border: `1px solid ${health.color}44`, padding: '2px 8px', borderRadius: '999px', fontSize: '11px', fontWeight: 700 }}>{health.label}</span>
+                </div>
               </div>
 
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -161,12 +171,13 @@ export default function ProjectsPage() {
               </div>
 
               <div style={{ display: 'flex', gap: '8px', marginTop: '4px' }}>
-                <button className="btn btn-outline" onClick={() => setDetailProject(p)} style={{ flex: 1, fontSize: '13px', padding: '8px' }}>View Details</button>
+                <Link href={`/partner/projects/${p.id}`} className="btn btn-outline" style={{ flex: 1, fontSize: '13px', padding: '8px', textAlign: 'center' }}>View Details →</Link>
                 <button onClick={() => openEdit(p)} style={{ background: 'none', border: '1px solid var(--border)', borderRadius: '8px', padding: '8px 12px', cursor: 'pointer', fontSize: '14px' }}>✏️</button>
                 <button onClick={() => deleteProject(p.id)} style={{ background: 'none', border: '1px solid #EF444433', borderRadius: '8px', padding: '8px 12px', cursor: 'pointer', fontSize: '14px' }}>🗑️</button>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
 
@@ -189,45 +200,6 @@ export default function ProjectsPage() {
             <FormField label="Current Stage"><select className="input" value={form.stage} onChange={f('stage')}>{PROJECT_STAGES.map(s => <option key={s}>{s}</option>)}</select></FormField>
           </div>
         </div>
-      </Modal>
-
-      {/* DETAIL MODAL */}
-      <Modal open={!!detailProject} onClose={() => setDetailProject(null)} title={detailProject?.name || 'Project Details'}
-        footer={<><button className="btn" onClick={() => { openEdit(detailProject); setDetailProject(null); }}>Edit Project</button><Link href="/partner/site-logbook" className="btn btn-primary">Add Site Log</Link></>}>
-        {detailProject && (
-          <div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '24px' }}>
-              {[['Client', detailProject.client], ['Location', detailProject.location], ['Type', detailProject.type], ['Budget', fmt(detailProject.budget)], ['Start Date', detailProject.startDate], ['Target Date', detailProject.targetDate || '—']].map(([k, v]) => (
-                <div key={k} style={{ background: '#F8FAFC', borderRadius: '10px', padding: '12px' }}>
-                  <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, marginBottom: '4px' }}>{k}</div>
-                  <div style={{ fontWeight: 600, fontSize: '14px' }}>{v}</div>
-                </div>
-              ))}
-            </div>
-
-            <div style={{ marginBottom: '8px', display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ fontWeight: 700 }}>Progress: {detailProject.progress}%</span>
-              <StatusBadge status={detailProject.status} />
-            </div>
-            <ProgressBar pct={detailProject.progress} />
-
-            <h3 style={{ margin: '24px 0 12px', fontSize: '15px', fontWeight: 700 }}>Milestone Tracker</h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              {PROJECT_STAGES.map((stage, idx) => {
-                const current = stageIdx(detailProject.stage);
-                const done = idx < current;
-                const active = idx === current;
-                return (
-                  <div key={stage} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '8px 12px', borderRadius: '8px', background: active ? 'rgba(252,110,32,0.06)' : 'transparent', border: active ? '1px solid rgba(252,110,32,0.2)' : '1px solid transparent' }}>
-                    <span style={{ fontSize: '16px', flexShrink: 0 }}>{done ? '✅' : active ? '🔶' : '⭕'}</span>
-                    <span style={{ fontSize: '14px', fontWeight: active ? 700 : 400, color: active ? '#FC6E20' : done ? 'var(--text-muted)' : 'var(--text)' }}>{stage}</span>
-                    {active && <span style={{ fontSize: '11px', background: '#FC6E2015', color: '#FC6E20', padding: '2px 8px', borderRadius: '99px', fontWeight: 700, marginLeft: 'auto' }}>CURRENT</span>}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
       </Modal>
     </div>
   );
