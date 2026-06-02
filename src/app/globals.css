@@ -314,3 +314,87 @@ MARKETPLACE UI STRUCTURAL CLASSES
   width: min(100%, 1500px);
   margin: 0 auto;
 }
+
+/* ── Phase D Mobile QA Fixes ─────────────────────────────────────────── */
+
+/* Partner sidebar overlay on mobile */
+@media (max-width: 768px) {
+  /* Ensure sidebar doesn't clip tab content when closed */
+  .partner-shell, .ops-shell, .client-shell {
+    overflow-x: hidden;
+  }
+
+  /* Tab bars — horizontal scroll without scrollbar visible */
+  .tab-scroll-row {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    flex-wrap: nowrap !important;
+    padding-bottom: 4px;
+  }
+  .tab-scroll-row::-webkit-scrollbar { display: none; }
+
+  /* Project [id] tab buttons — don't shrink on mobile */
+  .project-tab-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  /* Admin material-requests table — horizontal scroll container */
+  .admin-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 12px;
+  }
+
+  /* Supplier requests card wrapping */
+  .supplier-card-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Client project detail tab overflow */
+  .client-tab-row {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap !important;
+  }
+  .client-tab-row::-webkit-scrollbar { display: none; }
+
+  /* KPI grid on small screens */
+  .kpi-grid-auto {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Split detail panel — stack on mobile */
+  .detail-split {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Prevent modal overflow */
+  .modal-card {
+    max-height: 90vh !important;
+    margin: 0 12px !important;
+    width: calc(100% - 24px) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Extra small — single column KPI */
+  .kpi-grid-auto {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Partner type quick actions — 2 cols on very small */
+  .partner-type-actions {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* Reduce header padding */
+  .page-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px;
+  }
+}

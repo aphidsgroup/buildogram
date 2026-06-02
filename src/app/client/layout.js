@@ -7,14 +7,14 @@ import BottomNav from '@/components/BottomNav';
 
 const CLIENT_NAV = [
   { href: '/client/dashboard', icon: '🏠', label: 'My Dashboard' },
+  { href: '/client/projects', icon: '🏗️', label: 'My Projects' },
   { href: '/client/requests', icon: '📝', label: 'My Requests' },
-  { href: '/client/project', icon: '🏗️', label: 'My Project' },
+  { href: '/client/project', icon: '🔧', label: 'Project (Legacy)' },
   { href: '/client/passport', icon: '🛂', label: 'Property Passport' },
   { href: '/client/documents', icon: '📁', label: 'Documents' },
   { href: '/client/invoices', icon: '🧾', label: 'My Invoices' },
   { href: '/client/profile', icon: '👤', label: 'My Profile' },
   { href: '/client/notifications', icon: '🔔', label: 'Notifications' },
-  { href: '/client/issues', icon: '⚠️', label: 'Raise Issue' },
   { href: '/client/settings', icon: '⚙️', label: 'Settings' },
 ];
 
@@ -36,8 +36,13 @@ export default function ClientLayout({ children }) {
 
   const handleNavClick = (e, href, label) => {
     // Intercept unbuilt routes
-    const builtRoutes = ['/client/dashboard', '/client/profile', '/client/passport'];
-    if (!builtRoutes.includes(href)) {
+    const builtRoutes = [
+      '/client/dashboard', '/client/profile', '/client/passport',
+      '/client/projects', '/client/project',
+    ];
+    // Also allow dynamic sub-routes like /client/projects/P001
+    const isDynamic = ['/client/projects/'].some(prefix => href.startsWith(prefix));
+    if (!builtRoutes.includes(href) && !isDynamic) {
       e.preventDefault();
       setComingSoonModule(label);
     }
