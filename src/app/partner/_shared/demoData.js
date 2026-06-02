@@ -121,3 +121,15 @@ export const DEMO_EXPENSES = [
   { id: 'EXP004', projectId: 'P002', category: 'Material', amount: 68000, date: '2026-05-20', paidTo: 'Tile World Anna Nagar', notes: 'Vitrified tiles 600 sqft.' },
 ];
 
+export const DEMO_ACTIVITY_LOG = [
+  { id: 'ACT001', projectId: 'P001', type: 'milestone', icon: '✅', title: 'Milestone Completed', detail: 'Ground Floor Slab Cast completed on schedule.', actor: 'Site Engineer', timestamp: '2026-05-02T10:30:00Z' },
+  { id: 'ACT002', projectId: 'P001', type: 'site_update', icon: '📸', title: 'Site Update Posted', detail: 'Column concreting at G+1 level — all 12 columns done.', actor: 'Site Supervisor', timestamp: '2026-06-01T08:15:00Z' },
+  { id: 'ACT003', projectId: 'P001', type: 'material', icon: '🧱', title: 'Material Request Raised', detail: 'TMT Steel Fe500D — 8 MT requested for G+1 columns.', actor: 'Partner', timestamp: '2026-05-28T14:00:00Z' },
+  { id: 'ACT004', projectId: 'P001', type: 'material', icon: '🚚', title: 'Material Delivered', detail: 'OPC Cement 200 bags delivered and verified.', actor: 'System', timestamp: '2026-05-25T11:45:00Z' },
+  { id: 'ACT005', projectId: 'P001', type: 'finance', icon: '💰', title: 'Payment Received', detail: 'Foundation completion payment ₹1,12,5000 received.', actor: 'Ops', timestamp: '2026-03-22T09:00:00Z' },
+  { id: 'ACT006', projectId: 'P001', type: 'issue', icon: '⚠️', title: 'Issue Raised', detail: 'Window frame size clarification — awaiting customer confirmation.', actor: 'Partner', timestamp: '2026-05-15T16:30:00Z' },
+  { id: 'ACT007', projectId: 'P001', type: 'issue', icon: '✅', title: 'Issue Resolved', detail: 'Window frame size confirmed by customer as 4×4 ft.', actor: 'Ops', timestamp: '2026-05-18T10:00:00Z' },
+  { id: 'ACT008', projectId: 'P001', type: 'milestone', icon: '🔶', title: 'Milestone Started', detail: 'First Floor Structure milestone — TMT rebaring started.', actor: 'Site Engineer', timestamp: '2026-05-20T07:30:00Z' },
+  { id: 'ACT009', projectId: 'P002', type: 'site_update', icon: '📸', title: 'Site Update Posted', detail: 'Flooring tiles installation at bedroom 1 completed.', actor: 'Site Supervisor', timestamp: '2026-05-30T13:00:00Z' },
+  { id: 'ACT010', projectId: 'P001', type: 'document', icon: '📄', title: 'Document Uploaded', detail: 'Structural Drawing Set shared with client.', actor: 'Ops', timestamp: '2026-02-10T09:00:00Z' },
+];

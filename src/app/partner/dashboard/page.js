@@ -154,6 +154,42 @@ export default function PartnerDashboard() {
         </div>
       </div>
 
+      {/* PARTNER-TYPE CONTEXT WIDGET */}
+      {(() => {
+        const type = user?.partnerType || user?.partner_type || user?.partnerCategory || 'default';
+        const typeMap = {
+          builder:           { label: 'Builder', icon: '🏗️', color: '#6366F1', bg: '#EEF2FF', actions: [{ href: '/partner/projects', icon: '📋', text: 'View Projects' }, { href: '/partner/logbook', icon: '📓', text: 'Update Logbook' }, { href: '/partner/materials', icon: '🧱', text: 'Material Requests' }, { href: '/partner/issues', icon: '⚠️', text: 'Site Issues' }] },
+          contractor:        { label: 'Contractor', icon: '🔨', color: '#0EA5E9', bg: '#F0F9FF', actions: [{ href: '/partner/projects', icon: '📋', text: 'View Projects' }, { href: '/partner/materials', icon: '🧱', text: 'Material Requests' }, { href: '/partner/issues', icon: '⚠️', text: 'Raise Issues' }, { href: '/partner/finance', icon: '💰', text: 'Finance Overview' }] },
+          architect:         { label: 'Architect', icon: '📐', color: '#7C3AED', bg: '#F5F3FF', actions: [{ href: '/partner/leads', icon: '🎯', text: 'Design Inquiries' }, { href: '/partner/projects', icon: '📁', text: 'Project Files' }, { href: '/partner/documents', icon: '📄', text: 'Drawings & Docs' }, { href: '/partner/profile', icon: '🌐', text: 'Public Profile' }] },
+          civil_engineer:    { label: 'Civil Engineer', icon: '📏', color: '#0891B2', bg: '#ECFEFF', actions: [{ href: '/partner/projects', icon: '📋', text: 'Active Projects' }, { href: '/partner/logbook', icon: '📓', text: 'Site Logbook' }, { href: '/partner/materials', icon: '🧱', text: 'Material Orders' }, { href: '/partner/issues', icon: '⚠️', text: 'Site Issues' }] },
+          interior_designer: { label: 'Interior Designer', icon: '🎨', color: '#EC4899', bg: '#FDF2F8', actions: [{ href: '/partner/leads', icon: '🎯', text: 'Client Leads' }, { href: '/partner/projects', icon: '🏠', text: 'Design Projects' }, { href: '/partner/materials', icon: '🪑', text: 'Material Selection' }, { href: '/partner/profile', icon: '🌐', text: 'Portfolio' }] },
+          material_supplier: { label: 'Material Supplier', icon: '🚚', color: '#D97706', bg: '#FFFBEB', actions: [{ href: '/supplier/requests', icon: '📬', text: 'Open RFQs' }, { href: '/supplier/quotations', icon: '📊', text: 'My Quotations' }, { href: '/supplier/dashboard', icon: '📈', text: 'Supplier Dashboard' }, { href: '/partner/profile', icon: '🌐', text: 'My Profile' }] },
+          property_partner:  { label: 'Property Partner', icon: '🏘️', color: '#059669', bg: '#ECFDF5', actions: [{ href: '/partner/leads', icon: '🎯', text: 'Property Leads' }, { href: '/properties', icon: '🏠', text: 'Listings' }, { href: '/partner/finance', icon: '💰', text: 'Commission Tracker' }, { href: '/partner/profile', icon: '🌐', text: 'My Profile' }] },
+          default:           { label: 'Partner', icon: '🤝', color: '#FC6E20', bg: '#FFF7ED', actions: [{ href: '/partner/leads', icon: '🎯', text: 'My Leads' }, { href: '/partner/projects', icon: '📋', text: 'Projects' }, { href: '/partner/materials', icon: '🧱', text: 'Materials' }, { href: '/partner/finance', icon: '💰', text: 'Finance' }] },
+        };
+        const cfg = typeMap[type] || typeMap.default;
+        return (
+          <div style={{ padding: '24px 28px', borderRadius: '20px', background: cfg.bg, border: `1px solid ${cfg.color}22`, marginTop: '28px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
+              <div>
+                <div style={{ fontSize: '11px', fontWeight: 800, color: cfg.color, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>{cfg.icon} {cfg.label} Quick Actions</div>
+                <div style={{ fontSize: '13px', color: '#64748B' }}>Shortcuts tailored for your role as a {cfg.label}.</div>
+              </div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: '10px' }}>
+              {cfg.actions.map(a => (
+                <Link key={a.href} href={a.href} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 14px', background: 'white', borderRadius: '12px', border: `1px solid ${cfg.color}22`, textDecoration: 'none', fontWeight: 600, fontSize: '13px', color: '#0F172A', transition: 'box-shadow 0.15s' }}
+                  onMouseEnter={e => e.currentTarget.style.boxShadow = `0 4px 12px ${cfg.color}22`}
+                  onMouseLeave={e => e.currentTarget.style.boxShadow = 'none'}>
+                  <span style={{ fontSize: '18px', flexShrink: 0 }}>{a.icon}</span>
+                  <span>{a.text}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
+
       {/* FREE PLAN USAGE */}
       <div className="card" style={{ padding: '28px', borderRadius: '24px', background: 'white', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)', marginTop: '32px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', flexWrap: 'wrap', gap: '12px' }}>

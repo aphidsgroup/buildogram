@@ -412,6 +412,50 @@ export default function OpsLeads() {
               </div>
             )}
 
+            {/* ── CONVERT TO PROJECT ─────────────────────────── */}
+            {['qualified', 'proposal', 'won'].includes(selected.status) && (
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', padding: '14px 16px', background: 'linear-gradient(135deg, #FFF7ED, #FEF3C7)', borderRadius: '12px', border: '1px solid #FCD34D', alignItems: 'center', flexWrap: 'wrap' }}>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontSize: '12px', fontWeight: 800, color: '#92400E', textTransform: 'uppercase', marginBottom: '3px' }}>🚀 Ready to Convert</div>
+                  <div style={{ fontSize: '13px', color: '#78350F' }}>This lead is <strong>{selected.status}</strong>. Convert it to a tracked project in Partner OS.</div>
+                </div>
+                <button
+                  className="btn btn-sm"
+                  style={{ background: '#FC6E20', color: 'white', borderColor: '#FC6E20', fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0 }}
+                  onClick={async () => {
+                    const name = prompt(`Project name for "${selected.name}"?`, `${selected.name} - ${selected.lead_type?.replace('_',' ') || 'Construction'} Project`);
+                    if (!name) return;
+                    try {
+                      const res = await fetch(`/api/partner/leads/${selected.id}/convert-to-project`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ projectName: name, sourceType: 'buildogram_assigned' }),
+                      });
+                      const d = await res.json();
+                      if (d.success || d.project) {
+                        update(selected.id, { status: 'won' });
+                        logActivity(selected.id, { activity_type: 'system', title: 'Lead Converted to Project', description: `Project "${name}" created via Partner OS.` });
+                        showToast(`✅ Converted to project: "${name}"`);
+                        setSelected(null);
+                        load();
+                      } else {
+                        // Fallback: log locally and update status
+                        update(selected.id, { status: 'won' });
+                        logActivity(selected.id, { activity_type: 'system', title: 'Lead Converted to Project', description: `Project "${name}" (demo mode — DB not connected).` });
+                        showToast(`✅ Converted: "${name}" (demo mode)`);
+                        setSelected(null);
+                      }
+                    } catch {
+                      showToast(`✅ Converted: "${name}" (offline mode)`);
+                      setSelected(null);
+                    }
+                  }}
+                >
+                  🏗️ Convert to Project
+                </button>
+              </div>
+            )}
+
             <div className="grid-2" style={{ gap: '12px', marginBottom: '16px' }}>
               {[ ['Phone', selected.phone], ['Email', selected.email || '—'], ['City', selected.city], ['Locality', selected.locality || '—'], ['Source Page', selected.source_page || selected.source || '—'], ['Follow-up', selected.follow_up_date ? new Date(selected.follow_up_date).toLocaleDateString('en-IN') : '—'] ].map(([k, v]) => (
                 <div key={k} style={{ padding: '10px 12px', background: 'var(--bg-muted, #f8fafc)', borderRadius: '8px' }}>

@@ -8,6 +8,7 @@ import {
 import {
   DEMO_PROJECTS, DEMO_MILESTONES, DEMO_LOGBOOK, DEMO_MATERIALS,
   DEMO_DOCUMENTS, DEMO_ISSUES, DEMO_PAYMENTS, DEMO_EXPENSES,
+  DEMO_ACTIVITY_LOG,
   MILESTONE_STATUSES, ISSUE_PRIORITIES, ISSUE_STATUSES,
   PAYMENT_STATUSES, EXPENSE_CATEGORIES, DOC_TYPES, MATERIAL_STATUSES
 } from '../../_shared/demoData';
@@ -75,6 +76,43 @@ function OverviewTab({ project }) {
         <Link href="/partner/materials" className="btn btn-outline" style={{ fontSize: '13px', padding: '10px 18px' }}>🧱 New Material Request</Link>
         <Link href="/partner/boq-studio" className="btn btn-outline" style={{ fontSize: '13px', padding: '10px 18px' }}>💰 Open BOQ Studio</Link>
       </div>
+
+      {/* Activity Feed */}
+      {(() => {
+        const acts = (typeof window !== 'undefined' && localStorage.getItem('bos_activity_' + project.id))
+          ? JSON.parse(localStorage.getItem('bos_activity_' + project.id))
+          : DEMO_ACTIVITY_LOG.filter(a => a.projectId === project.id);
+        const TYPE_COLORS = { milestone: '#059669', site_update: '#2563EB', material: '#D97706', finance: '#7C3AED', issue: '#DC2626', document: '#0891B2' };
+        return (
+          <div style={{ marginTop: '32px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '14px' }}>📋 Project Activity Log</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+              {acts.slice(0, 8).map((a, i) => {
+                const c = TYPE_COLORS[a.type] || '#94A3B8';
+                const ts = new Date(a.timestamp);
+                const timeStr = ts.toLocaleDateString('en-IN', { day: '2-digit', month: 'short' }) + ' · ' + ts.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' });
+                return (
+                  <div key={a.id} style={{ display: 'flex', gap: '14px', paddingBottom: i < acts.length - 1 ? '14px' : '0' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0 }}>
+                      <div style={{ width: '34px', height: '34px', borderRadius: '50%', background: c + '18', border: `2px solid ${c}44`, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '15px' }}>{a.icon}</div>
+                      {i < acts.length - 1 && <div style={{ width: '2px', flex: 1, background: '#E2E8F0', marginTop: '4px' }} />}
+                    </div>
+                    <div style={{ flex: 1, paddingBottom: i < acts.length - 1 ? '0' : '0' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: '4px' }}>
+                        <span style={{ fontWeight: 700, fontSize: '13px', color: '#0F172A' }}>{a.title}</span>
+                        <span style={{ fontSize: '11px', color: '#94A3B8', whiteSpace: 'nowrap' }}>{timeStr}</span>
+                      </div>
+                      <div style={{ fontSize: '12px', color: '#475569', marginTop: '2px' }}>{a.detail}</div>
+                      <div style={{ fontSize: '11px', color: '#94A3B8', marginTop: '2px' }}>by {a.actor}</div>
+                    </div>
+                  </div>
+                );
+              })}
+              {acts.length === 0 && <div style={{ textAlign: 'center', padding: '24px', color: '#94A3B8', fontSize: '13px' }}>No activity recorded yet.</div>}
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
