@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import { StatusBadge, SectionHeader, Modal, FormField, SearchBar, EmptyState, MetricCard } from '../_shared/components';
 import { DEMO_PROJECTS, PROJECT_STAGES } from '../_shared/demoData';
 import Link from 'next/link';
+import { notifyEvent } from '@/lib/services/notificationService';
+import { logActivity } from '@/lib/services/activityLogService';
+import { checkPlanLimit } from '@/lib/auth/permissions';
 
 const BLANK = { name: '', client: '', location: '', type: 'Residential', startDate: '', targetDate: '', stage: 'Agreement', progress: 0, budget: 0, status: 'Planning' };
 const PROJECT_TYPES = ['Residential', 'Villa', 'Interior', 'Commercial', 'Renovation', 'Solar', 'Elevator', 'Waterproofing'];
@@ -67,6 +70,18 @@ export default function ProjectsPage() {
 
   const handleSubmit = async () => {
     if (!form.name) return alert('Project name is required');
+
+    // Plan limit check for new private projects
+    if (!editingId) {
+      const privateActive = projects.filter(p => p.status !== 'Completed' && p.sourceType !== 'buildogram_assigned').length;
+      const limitInfo = checkPlanLimit({ planType: 'free', usage: { privateProjects: privateActive } }, 'privateProjects');
+      if (!limitInfo.allowed) {
+        return alert(`Free plan limit: ${limitInfo.max} private projects. Contact Buildogram to upgrade.`);
+      }
+      if (limitInfo.pct >= 80) {
+        if (!confirm(`You are using ${limitInfo.used}/${limitInfo.max} project slots. Continue?`)) return;
+      }
+    }
     
     // Optimistic UI + fallback save
     let optimisticArr = [];
@@ -92,9 +107,17 @@ export default function ProjectsPage() {
       const data = await res.json();
       if (data.success) {
         fetchProjects(); // Reload to get true IDs
+        if (!editingId) {
+          notifyEvent('project_created', { projectName: form.name }).catch(() => {});
+          logActivity({ type: 'project', title: 'Project Created', detail: form.name, actor: 'Partner' }).catch(() => {});
+        }
+      } else if (!editingId) {
+        // Still notify even if API failed (localStorage saved)
+        notifyEvent('project_created', { projectName: form.name }).catch(() => {});
       }
     } catch(e) {
       console.error('API save failed', e);
+      if (!editingId) notifyEvent('project_created', { projectName: form.name }).catch(() => {});
     }
   };
 

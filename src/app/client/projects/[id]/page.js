@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { getCustomerProject } from '@/lib/services/customerService';
+import { filterMilestoneForCustomer, filterSiteUpdateForCustomer, filterDocumentForCustomer, filterPaymentForCustomer } from '@/lib/data/customerFilter';
 
 /* ── Helpers ─────────────────────────────────────────────────────────── */
 const fmt = n => n ? '₹' + (n >= 10000000 ? (n / 10000000).toFixed(1) + 'Cr' : n >= 100000 ? (n / 100000).toFixed(1) + 'L' : Number(n).toLocaleString('en-IN')) : '—';
@@ -142,8 +144,11 @@ function TabOverview({ project }) {
 }
 
 /* ── Tab: Timeline ─────────────────────────────────────────────────── */
-function TabTimeline({ projectId }) {
-  const milestones = DEMO_MILESTONES.filter(m => m.projectId === projectId && m.customerVisible);
+function TabTimeline({ projectId, rawMilestones }) {
+  const milestones = (rawMilestones || DEMO_MILESTONES)
+    .filter(m => m.projectId === projectId)
+    .map(filterMilestoneForCustomer)
+    .filter(Boolean);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
       <p style={{ margin: '0 0 8px', fontSize: '14px', color: '#64748B' }}>Key milestones tracked and updated by the Buildogram site team.</p>
@@ -171,8 +176,11 @@ function TabTimeline({ projectId }) {
 }
 
 /* ── Tab: Updates ──────────────────────────────────────────────────── */
-function TabUpdates({ projectId }) {
-  const updates = DEMO_UPDATES.filter(u => u.projectId === projectId && u.clientVisible);
+function TabUpdates({ projectId, rawUpdates }) {
+  const updates = (rawUpdates || DEMO_UPDATES)
+    .filter(u => u.projectId === projectId)
+    .map(filterSiteUpdateForCustomer)
+    .filter(Boolean);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <p style={{ margin: '0 0 4px', fontSize: '14px', color: '#64748B' }}>Site updates shared by the Buildogram team from your construction site.</p>
@@ -197,8 +205,11 @@ function TabUpdates({ projectId }) {
 }
 
 /* ── Tab: Documents ────────────────────────────────────────────────── */
-function TabDocuments({ projectId }) {
-  const docs = DEMO_DOCS.filter(d => d.projectId === projectId && d.customerVisible);
+function TabDocuments({ projectId, rawDocs }) {
+  const docs = (rawDocs || DEMO_DOCS)
+    .filter(d => d.projectId === projectId)
+    .map(filterDocumentForCustomer)
+    .filter(Boolean);
   const typeIcon = { plan: '🗺️', structural: '🏗️', report: '📊', default: '📄' };
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
@@ -226,8 +237,11 @@ function TabDocuments({ projectId }) {
 }
 
 /* ── Tab: Payments ─────────────────────────────────────────────────── */
-function TabPayments({ projectId }) {
-  const payments = DEMO_PAYMENTS.filter(p => p.projectId === projectId);
+function TabPayments({ projectId, rawPayments }) {
+  const payments = (rawPayments || DEMO_PAYMENTS)
+    .filter(p => p.projectId === projectId)
+    .map(filterPaymentForCustomer)
+    .filter(Boolean);
   const paid = payments.filter(p => p.status === 'paid').reduce((s, p) => s + p.amount, 0);
   const total = payments.reduce((s, p) => s + p.amount, 0);
   const paidPct = total > 0 ? Math.round((paid / total) * 100) : 0;
@@ -375,13 +389,23 @@ const TABS = [
 export default function ClientProjectDetail() {
   const { id } = useParams();
   const [project, setProject] = useState(null);
+  const [serviceData, setServiceData] = useState(null); // {milestones, updates, documents, payments}
   const [tab, setTab] = useState('overview');
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const p = loadProjectById(id);
-    setProject(p);
-    setLoading(false);
+    // Try customerService first (API + filter), fall back to localStorage demo
+    getCustomerProject(id).then(bundle => {
+      if (bundle?.project) {
+        setProject(bundle.project);
+        setServiceData(bundle); // has .milestones, .updates, .documents, .payments
+      } else {
+        // localStorage fallback
+        setProject(loadProjectById(id));
+      }
+    }).catch(() => {
+      setProject(loadProjectById(id));
+    }).finally(() => setLoading(false));
   }, [id]);
 
   if (loading) return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh', fontFamily: 'Inter, sans-serif', color: '#64748B' }}><div style={{ width: '32px', height: '32px', border: '3px solid #E2E8F0', borderTopColor: '#FC6E20', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /></div>;
@@ -414,10 +438,10 @@ export default function ClientProjectDetail() {
 
       {/* Tab Content */}
       {tab === 'overview'   && <TabOverview   project={project} />}
-      {tab === 'timeline'   && <TabTimeline   projectId={id} />}
-      {tab === 'updates'    && <TabUpdates    projectId={id} />}
-      {tab === 'documents'  && <TabDocuments  projectId={id} />}
-      {tab === 'payments'   && <TabPayments   projectId={id} />}
+      {tab === 'timeline'   && <TabTimeline   projectId={id} rawMilestones={serviceData?.milestones} />}
+      {tab === 'updates'    && <TabUpdates    projectId={id} rawUpdates={serviceData?.updates} />}
+      {tab === 'documents'  && <TabDocuments  projectId={id} rawDocs={serviceData?.documents} />}
+      {tab === 'payments'   && <TabPayments   projectId={id} rawPayments={serviceData?.payments} />}
       {tab === 'query'      && <TabQueryBox   projectId={id} />}
 
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>

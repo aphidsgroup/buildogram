@@ -2,6 +2,10 @@
 import { useState, useEffect } from 'react';
 import { StatusBadge, SectionHeader, Modal, FormField, SearchBar, EmptyState } from '../_shared/components';
 import { DEMO_ISSUES, DEMO_PROJECTS, ISSUE_PRIORITIES, ISSUE_STATUSES } from '../_shared/demoData';
+import { getProjects } from '@/lib/services/projectService';
+import { lsGet, lsSet, genId } from '@/lib/data/adapter';
+import { logActivity } from '@/lib/services/activityLogService';
+import { notifyEvent } from '@/lib/services/notificationService';
 
 const PRIORITY_COLORS = { Low: '#10B981', Medium: '#F59E0B', High: '#EF4444', Urgent: '#7C3AED' };
 const STATUS_COLORS   = { Open: '#EF4444', 'In Progress': '#3B82F6', Resolved: '#10B981', Closed: '#94A3B8' };
@@ -22,40 +26,69 @@ export default function IssuesPage() {
   const [form,    setForm]    = useState(BLANK);
 
   useEffect(() => {
-    // Load all issues across all projects from localStorage
-    const storedProjects = localStorage.getItem('bos_projects');
-    const allProjects = storedProjects ? JSON.parse(storedProjects) : DEMO_PROJECTS;
-    setProjects(allProjects);
-
-    let all = [];
-    allProjects.forEach(p => {
-      const stored = localStorage.getItem('bos_issues_' + p.id);
-      all = all.concat(stored ? JSON.parse(stored) : DEMO_ISSUES.filter(i => i.projectId === p.id));
+    // Load projects via service
+    getProjects().then(data => {
+      const allProjects = data?.length ? data : DEMO_PROJECTS;
+      setProjects(allProjects);
+      // Load issues: try API first, fall back to per-project localStorage
+      fetch('/api/issues').then(r => r.json()).then(d => {
+        if (d.success && d.issues?.length) {
+          setIssues(d.issues);
+          lsSet('bos_issues_all', d.issues);
+        } else {
+          // localStorage per-project fallback
+          let all = lsGet('bos_issues_all') || [];
+          if (!all.length) {
+            allProjects.forEach(p => {
+              const stored = lsGet('bos_issues_' + p.id);
+              all = all.concat(stored || DEMO_ISSUES.filter(i => i.projectId === p.id));
+            });
+          }
+          if (!all.length) all = DEMO_ISSUES;
+          setIssues(all);
+        }
+      }).catch(() => {
+        let all = lsGet('bos_issues_all') || DEMO_ISSUES;
+        setIssues(all);
+      });
     });
-    // Also include demo issues if no local data
-    if (all.length === 0) all = DEMO_ISSUES;
-    setIssues(all);
   }, []);
 
   const saveAll = (arr) => {
     setIssues(arr);
-    // Save back per project
+    lsSet('bos_issues_all', arr);
+    // Also save per-project for backwards compat
     const byProject = {};
     arr.forEach(i => {
       if (!byProject[i.projectId]) byProject[i.projectId] = [];
       byProject[i.projectId].push(i);
     });
     Object.entries(byProject).forEach(([pid, issues]) => {
-      localStorage.setItem('bos_issues_' + pid, JSON.stringify(issues));
+      lsSet('bos_issues_' + pid, issues);
     });
   };
 
   const openAdd  = ()  => { setForm(BLANK); setEditing(null); setModal(true); };
   const openEdit = (i) => { setForm({ ...i }); setEditing(i.id); setModal(true); };
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!form.title) return alert('Issue title required');
-    if (editing) saveAll(issues.map(i => i.id === editing ? { ...i, ...form } : i));
-    else saveAll([{ ...form, id: 'IS' + Date.now(), createdAt: new Date().toISOString().slice(0, 10) }, ...issues]);
+    const newId = genId('IS');
+    let updated;
+    if (editing) {
+      updated = issues.map(i => i.id === editing ? { ...i, ...form } : i);
+      saveAll(updated);
+      // Patch via API
+      fetch(`/api/issues/${editing}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) }).catch(() => {});
+    } else {
+      const newIssue = { ...form, id: newId, createdAt: new Date().toISOString().slice(0, 10) };
+      updated = [newIssue, ...issues];
+      saveAll(updated);
+      // Post via API
+      fetch('/api/issues', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(newIssue) }).catch(() => {});
+      // Log activity + notify
+      logActivity({ projectId: form.projectId, type: 'issue', title: 'Issue Raised', detail: form.title, actor: 'Partner' }).catch(() => {});
+      notifyEvent('issue_raised', { projectName: projects.find(p => p.id === form.projectId)?.name || '', title: form.title }).catch(() => {});
+    }
     setModal(false);
   };
   const f = (k) => (e) => setForm(p => ({ ...p, [k]: e.target.type === 'checkbox' ? e.target.checked : e.target.value }));

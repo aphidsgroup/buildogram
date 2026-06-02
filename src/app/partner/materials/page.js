@@ -2,6 +2,9 @@
 import { useState, useEffect } from 'react';
 import { SectionHeader, Modal, FormField, SearchBar, EmptyState, StatusBadge } from '../_shared/components';
 import { DEMO_MATERIALS, DEMO_PROJECTS, MATERIAL_STATUSES } from '../_shared/demoData';
+import { notifyEvent } from '@/lib/services/notificationService';
+import { logActivity } from '@/lib/services/activityLogService';
+import { checkPlanLimit } from '@/lib/auth/permissions';
 
 const UNITS = ['Bags', 'MT', 'm²', 'm³', 'Nos', 'RFT', 'Liter', 'kg', 'Sqft', 'Set'];
 const PRIORITIES = ['High', 'Medium', 'Low'];
@@ -70,7 +73,18 @@ export default function MaterialFlow() {
 
   const handleSubmit = async () => {
     if (!form.material) return alert('Material name is required');
-    
+
+    // Plan limit check for new requests
+    if (!editId) {
+      const limitInfo = checkPlanLimit({ planType: 'free', usage: { materialRequests: items.length } }, 'materialRequests');
+      if (!limitInfo.allowed) {
+        return alert(`You have reached your free plan limit of ${limitInfo.max} material requests. Contact Buildogram to increase your limit.`);
+      }
+      if (limitInfo.pct >= 80) {
+        console.info('[PlanLimit] Approaching material request limit:', limitInfo);
+      }
+    }
+
     let optArr = [];
     if (editId) optArr = items.map(i => i.id === editId ? { ...form, id: editId } : i);
     else optArr = [{ ...form, id: 'temp_' + Date.now().toString() }, ...items];
@@ -92,9 +106,20 @@ export default function MaterialFlow() {
         bestRateRequest: form.bestRateRequest
       };
       const res = await fetch(url, { method, headers: {'Content-Type':'application/json'}, body: JSON.stringify(payload) });
-      if ((await res.json()).success) fetchItems();
+      if ((await res.json()).success) {
+        fetchItems();
+        // Notify + log on new request
+        if (!editId) {
+          notifyEvent('material_request_created', { material: form.material }).catch(() => {});
+          logActivity({ projectId: form.project, type: 'material', title: 'Material Request Created', detail: `${form.material} — ${form.qty} ${form.unit}`, actor: 'Partner' }).catch(() => {});
+        }
+      }
     } catch(e) {
       console.error('API save fail', e);
+      // Still notify even if API failed (localStorage saved)
+      if (!editId) {
+        notifyEvent('material_request_created', { material: form.material }).catch(() => {});
+      }
     }
   };
 

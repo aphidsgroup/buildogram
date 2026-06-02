@@ -435,6 +435,7 @@ export default function OpsLeads() {
                       if (d.success || d.project) {
                         update(selected.id, { status: 'won' });
                         logActivity(selected.id, { activity_type: 'system', title: 'Lead Converted to Project', description: `Project "${name}" created via Partner OS.` });
+                        try { const { notifyEvent: ne } = await import('@/lib/services/notificationService'); ne('lead_converted', { leadName: selected.name, projectName: name }); } catch(_) {}
                         showToast(`✅ Converted to project: "${name}"`);
                         setSelected(null);
                         load();
@@ -448,6 +449,7 @@ export default function OpsLeads() {
                     } catch {
                       showToast(`✅ Converted: "${name}" (offline mode)`);
                       setSelected(null);
+
                     }
                   }}
                 >
