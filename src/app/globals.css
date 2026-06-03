@@ -296,25 +296,33 @@ MARKETPLACE UI STRUCTURAL CLASSES
 */
 .engineerLedPage {
   width: 100%;
-  overflow-x: hidden;
+  max-width: 100%;
+  overflow-x: clip;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
 
 .fullBleedSection {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .sectionInner {
   width: min(100%, 1440px);
   margin: 0 auto;
   padding-inline: clamp(16px, 5vw, 24px);
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .sectionInnerWide {
   width: min(100%, 1500px);
   margin: 0 auto;
   padding-inline: clamp(16px, 5vw, 24px);
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* ── Phase D Mobile QA Fixes ─────────────────────────────────────────── */
