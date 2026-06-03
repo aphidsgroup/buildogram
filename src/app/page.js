@@ -101,9 +101,9 @@ export default function Home() {
               </form>
 
               {/* Trust badges */}
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', marginTop: '8px' }}>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '16px' }}>
                 {['🎓 Engineer-led guidance', '✅ Verified construction partners', '🧱 Transparent material sourcing', '📸 Site progress tracking'].map(b => (
-                  <span key={b} style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', padding: '8px 14px', fontSize: '13px', color: 'rgba(255,255,255,0.85)', fontWeight: 600 }}>{b}</span>
+                  <span key={b} style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', padding: '6px 12px', fontSize: 'clamp(11px, 3.5vw, 13px)', color: 'rgba(255,255,255,0.85)', fontWeight: 600 }}>{b}</span>
                 ))}
               </div>
 

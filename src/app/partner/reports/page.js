@@ -44,27 +44,29 @@ function BOQSummaryReport() {
   return (
     <div>
       <p style={{ color: 'var(--text-muted)', marginBottom: '16px' }}>Category-wise cost breakdown from BOQ Builder.</p>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-        <thead><tr style={{ background: '#F8FAFC' }}>
-          <th style={{ padding: '10px', textAlign: 'left', fontWeight: 700 }}>Category</th>
-          <th style={{ padding: '10px', textAlign: 'right', fontWeight: 700 }}>Total Value</th>
-          <th style={{ padding: '10px', textAlign: 'right', fontWeight: 700 }}>% of Total</th>
-        </tr></thead>
-        <tbody>
-          {Object.entries(byCategory).map(([cat, val]) => (
-            <tr key={cat} style={{ borderBottom: '1px solid var(--border)' }}>
-              <td style={{ padding: '10px' }}>{cat}</td>
-              <td style={{ padding: '10px', textAlign: 'right', fontWeight: 600 }}>{fmtRs(val)}</td>
-              <td style={{ padding: '10px', textAlign: 'right', color: 'var(--text-muted)' }}>{grandTotal ? ((val / grandTotal) * 100).toFixed(1) + '%' : '0%'}</td>
+      <div className="table-wrapper">
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+          <thead><tr style={{ background: '#F8FAFC' }}>
+            <th style={{ padding: '10px', textAlign: 'left', fontWeight: 700 }}>Category</th>
+            <th style={{ padding: '10px', textAlign: 'right', fontWeight: 700 }}>Total Value</th>
+            <th style={{ padding: '10px', textAlign: 'right', fontWeight: 700 }}>% of Total</th>
+          </tr></thead>
+          <tbody>
+            {Object.entries(byCategory).map(([cat, val]) => (
+              <tr key={cat} style={{ borderBottom: '1px solid var(--border)' }}>
+                <td style={{ padding: '10px' }}>{cat}</td>
+                <td style={{ padding: '10px', textAlign: 'right', fontWeight: 600 }}>{fmtRs(val)}</td>
+                <td style={{ padding: '10px', textAlign: 'right', color: 'var(--text-muted)' }}>{grandTotal ? ((val / grandTotal) * 100).toFixed(1) + '%' : '0%'}</td>
+              </tr>
+            ))}
+            <tr style={{ background: 'rgba(252,110,32,0.05)', fontWeight: 800 }}>
+              <td style={{ padding: '10px' }}>Grand Total</td>
+              <td style={{ padding: '10px', textAlign: 'right', color: '#FC6E20' }}>{fmtRs(grandTotal)}</td>
+              <td style={{ padding: '10px', textAlign: 'right' }}>100%</td>
             </tr>
-          ))}
-          <tr style={{ background: 'rgba(252,110,32,0.05)', fontWeight: 800 }}>
-            <td style={{ padding: '10px' }}>Grand Total</td>
-            <td style={{ padding: '10px', textAlign: 'right', color: '#FC6E20' }}>{fmtRs(grandTotal)}</td>
-            <td style={{ padding: '10px', textAlign: 'right' }}>100%</td>
-          </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -83,22 +85,24 @@ function LeadPipelineReport() {
         <span style={{ color: '#10B981', fontWeight: 800, fontSize: '18px' }}>{total ? ((won / total) * 100).toFixed(0) : 0}%</span>
         <span style={{ color: 'var(--text-muted)', marginLeft: '8px' }}>({won} Won / {total} Total)</span>
       </div>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-        <thead><tr style={{ background: '#F8FAFC' }}>
-          <th style={{ padding: '10px', textAlign: 'left', fontWeight: 700 }}>Status</th>
-          <th style={{ padding: '10px', textAlign: 'right', fontWeight: 700 }}>Count</th>
-          <th style={{ padding: '10px', textAlign: 'right', fontWeight: 700 }}>Share</th>
-        </tr></thead>
-        <tbody>
-          {LEAD_STATUSES.map(s => (
-            <tr key={s} style={{ borderBottom: '1px solid var(--border)' }}>
-              <td style={{ padding: '10px' }}><StatusBadge status={s} /></td>
-              <td style={{ padding: '10px', textAlign: 'right', fontWeight: 600 }}>{byStat[s] || 0}</td>
-              <td style={{ padding: '10px', textAlign: 'right', color: 'var(--text-muted)' }}>{total ? (((byStat[s] || 0) / total) * 100).toFixed(0) + '%' : '0%'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="table-wrapper">
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+          <thead><tr style={{ background: '#F8FAFC' }}>
+            <th style={{ padding: '10px', textAlign: 'left', fontWeight: 700 }}>Status</th>
+            <th style={{ padding: '10px', textAlign: 'right', fontWeight: 700 }}>Count</th>
+            <th style={{ padding: '10px', textAlign: 'right', fontWeight: 700 }}>Share</th>
+          </tr></thead>
+          <tbody>
+            {LEAD_STATUSES.map(s => (
+              <tr key={s} style={{ borderBottom: '1px solid var(--border)' }}>
+                <td style={{ padding: '10px' }}><StatusBadge status={s} /></td>
+                <td style={{ padding: '10px', textAlign: 'right', fontWeight: 600 }}>{byStat[s] || 0}</td>
+                <td style={{ padding: '10px', textAlign: 'right', color: 'var(--text-muted)' }}>{total ? (((byStat[s] || 0) / total) * 100).toFixed(0) + '%' : '0%'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -109,32 +113,34 @@ function ProjectStatusReport() {
   return (
     <div>
       <p style={{ color: 'var(--text-muted)', marginBottom: '16px' }}>Overview of all projects, stages, and progress.</p>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-        <thead><tr style={{ background: '#F8FAFC' }}>
-          {['Project', 'Client', 'Stage', 'Progress', 'Budget', 'Status'].map(h => (
-            <th key={h} style={{ padding: '10px', textAlign: 'left', fontWeight: 700, whiteSpace: 'nowrap' }}>{h}</th>
-          ))}
-        </tr></thead>
-        <tbody>
-          {projects.map(p => (
-            <tr key={p.id} style={{ borderBottom: '1px solid var(--border)' }}>
-              <td style={{ padding: '10px', fontWeight: 600, maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</td>
-              <td style={{ padding: '10px', color: 'var(--text-muted)' }}>{p.client}</td>
-              <td style={{ padding: '10px' }}>{p.stage}</td>
-              <td style={{ padding: '10px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <div style={{ background: '#E2E8F0', borderRadius: '4px', height: '6px', width: '80px', overflow: 'hidden' }}>
-                    <div style={{ width: `${p.progress}%`, height: '100%', background: '#FC6E20', borderRadius: '4px' }} />
+      <div className="table-wrapper">
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+          <thead><tr style={{ background: '#F8FAFC' }}>
+            {['Project', 'Client', 'Stage', 'Progress', 'Budget', 'Status'].map(h => (
+              <th key={h} style={{ padding: '10px', textAlign: 'left', fontWeight: 700, whiteSpace: 'nowrap' }}>{h}</th>
+            ))}
+          </tr></thead>
+          <tbody>
+            {projects.map(p => (
+              <tr key={p.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                <td style={{ padding: '10px', fontWeight: 600, maxWidth: '160px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</td>
+                <td style={{ padding: '10px', color: 'var(--text-muted)' }}>{p.client}</td>
+                <td style={{ padding: '10px' }}>{p.stage}</td>
+                <td style={{ padding: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ background: '#E2E8F0', borderRadius: '4px', height: '6px', width: '80px', overflow: 'hidden' }}>
+                      <div style={{ width: `${p.progress}%`, height: '100%', background: '#FC6E20', borderRadius: '4px' }} />
+                    </div>
+                    <span style={{ fontSize: '12px', fontWeight: 600 }}>{p.progress}%</span>
                   </div>
-                  <span style={{ fontSize: '12px', fontWeight: 600 }}>{p.progress}%</span>
-                </div>
-              </td>
-              <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>{fmtRs(p.budget)}</td>
-              <td style={{ padding: '10px' }}><StatusBadge status={p.status} /></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                </td>
+                <td style={{ padding: '10px', whiteSpace: 'nowrap' }}>{fmtRs(p.budget)}</td>
+                <td style={{ padding: '10px' }}><StatusBadge status={p.status} /></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -145,27 +151,29 @@ function MaterialReport() {
   return (
     <div>
       <p style={{ color: 'var(--text-muted)', marginBottom: '16px' }}>Material requests and delivery tracking summary.</p>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-        <thead><tr style={{ background: '#F8FAFC' }}>
-          {['Material', 'Qty', 'Unit', 'Priority', 'Status', 'Required By'].map(h => (
-            <th key={h} style={{ padding: '10px', textAlign: 'left', fontWeight: 700, whiteSpace: 'nowrap' }}>{h}</th>
-          ))}
-        </tr></thead>
-        <tbody>
-          {items.map(i => (
-            <tr key={i.id} style={{ borderBottom: '1px solid var(--border)' }}>
-              <td style={{ padding: '10px', fontWeight: 600 }}>{i.material}</td>
-              <td style={{ padding: '10px' }}>{i.qty}</td>
-              <td style={{ padding: '10px', color: 'var(--text-muted)' }}>{i.unit}</td>
-              <td style={{ padding: '10px' }}>
-                <span style={{ color: i.priority === 'High' ? '#EF4444' : i.priority === 'Medium' ? '#D97706' : '#10B981', fontWeight: 700 }}>{i.priority}</span>
-              </td>
-              <td style={{ padding: '10px' }}><StatusBadge status={i.status} /></td>
-              <td style={{ padding: '10px', color: 'var(--text-muted)' }}>{i.requiredDate || '—'}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <div className="table-wrapper">
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+          <thead><tr style={{ background: '#F8FAFC' }}>
+            {['Material', 'Qty', 'Unit', 'Priority', 'Status', 'Required By'].map(h => (
+              <th key={h} style={{ padding: '10px', textAlign: 'left', fontWeight: 700, whiteSpace: 'nowrap' }}>{h}</th>
+            ))}
+          </tr></thead>
+          <tbody>
+            {items.map(i => (
+              <tr key={i.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                <td style={{ padding: '10px', fontWeight: 600 }}>{i.material}</td>
+                <td style={{ padding: '10px' }}>{i.qty}</td>
+                <td style={{ padding: '10px', color: 'var(--text-muted)' }}>{i.unit}</td>
+                <td style={{ padding: '10px' }}>
+                  <span style={{ color: i.priority === 'High' ? '#EF4444' : i.priority === 'Medium' ? '#D97706' : '#10B981', fontWeight: 700 }}>{i.priority}</span>
+                </td>
+                <td style={{ padding: '10px' }}><StatusBadge status={i.status} /></td>
+                <td style={{ padding: '10px', color: 'var(--text-muted)' }}>{i.requiredDate || '—'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -176,29 +184,31 @@ function PLReport() {
   return (
     <div>
       <p style={{ color: 'var(--text-muted)', marginBottom: '16px' }}>Estimated P&L per project based on BOQ margin data.</p>
-      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
-        <thead><tr style={{ background: '#F8FAFC' }}>
-          {['Project', 'Budget', 'Est. Revenue', 'Est. Cost', 'Profit (12% Margin)'].map(h => (
-            <th key={h} style={{ padding: '10px', textAlign: 'left', fontWeight: 700 }}>{h}</th>
-          ))}
-        </tr></thead>
-        <tbody>
-          {projects.map(p => {
-            const rev = Number(p.budget) || 0;
-            const cost = rev * 0.88;
-            const profit = rev - cost;
-            return (
-              <tr key={p.id} style={{ borderBottom: '1px solid var(--border)' }}>
-                <td style={{ padding: '10px', fontWeight: 600, maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</td>
-                <td style={{ padding: '10px' }}>{fmtRs(rev)}</td>
-                <td style={{ padding: '10px' }}>{fmtRs(rev * 1.12)}</td>
-                <td style={{ padding: '10px' }}>{fmtRs(cost)}</td>
-                <td style={{ padding: '10px', fontWeight: 700, color: '#10B981' }}>{fmtRs(profit * 1.12)}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      <div className="table-wrapper">
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '14px' }}>
+          <thead><tr style={{ background: '#F8FAFC' }}>
+            {['Project', 'Budget', 'Est. Revenue', 'Est. Cost', 'Profit (12% Margin)'].map(h => (
+              <th key={h} style={{ padding: '10px', textAlign: 'left', fontWeight: 700 }}>{h}</th>
+            ))}
+          </tr></thead>
+          <tbody>
+            {projects.map(p => {
+              const rev = Number(p.budget) || 0;
+              const cost = rev * 0.88;
+              const profit = rev - cost;
+              return (
+                <tr key={p.id} style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td style={{ padding: '10px', fontWeight: 600, maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{p.name}</td>
+                  <td style={{ padding: '10px' }}>{fmtRs(rev)}</td>
+                  <td style={{ padding: '10px' }}>{fmtRs(rev * 1.12)}</td>
+                  <td style={{ padding: '10px' }}>{fmtRs(cost)}</td>
+                  <td style={{ padding: '10px', fontWeight: 700, color: '#10B981' }}>{fmtRs(profit * 1.12)}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
