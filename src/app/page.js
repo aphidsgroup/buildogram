@@ -85,14 +85,24 @@ export default function Home() {
       <section className={styles.homeHeroBg}>
         <div className="sectionInnerWide">
           <div className={styles.homeHero}>
-            <div className={styles.heroLeft}>
-              <span className={styles.eyebrow}>Engineer-Led Construction Companion</span>
-              <h1>Build Your Home<br />With Clarity &amp; Confidence.</h1>
-              <p>From BOQ review and contractor selection to material sourcing, site tracking, quality checks, and property records — Buildogram helps you build with clarity, control, and accountability.</p>
 
+            {/* LEFT: copy + search + CTAs */}
+            <div className={styles.heroLeft}>
+              <span className={styles.eyebrow}>Engineer-Led Construction Platform</span>
+              <h1>Build smarter with trusted construction partners.</h1>
+              <p>Find verified builders, contractors, architects, material suppliers, and project support — with transparent material sourcing and progress tracking from one platform.</p>
+
+              {/* CTAs */}
+              <div className={styles.heroCtas}>
+                <Link href="/contact?type=construction" className="btn btn-primary">Start Your Construction Journey</Link>
+                <Link href="/materials" className={styles.ctaSecondary}>Explore Material Support</Link>
+              </div>
+              <Link href="/partners/register" className={styles.ctaPartner}>Are you a contractor or supplier? Join as Partner →</Link>
+
+              {/* Search */}
               <form className={styles.heroSearchPanel} onSubmit={handleHeroSearch}>
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: 'var(--text-muted)' }}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search builders, architects, material support..." />
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: 'var(--text-muted)', flexShrink: 0 }}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search builders, contractors, architects, or materials" />
                 <select value={loc} onChange={e => setLoc(e.target.value)}>
                   <option value="Chennai, TN">Chennai, TN</option>
                   <option value="Coimbatore, TN">Coimbatore, TN</option>
@@ -100,39 +110,49 @@ export default function Home() {
                 <button type="submit" className="btn btn-primary">Search</button>
               </form>
 
-              {/* Trust badges */}
-              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '16px' }}>
-                {['🎓 Engineer-led guidance', '✅ Verified construction partners', '🧱 Transparent material sourcing', '📸 Site progress tracking'].map(b => (
-                  <span key={b} style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '10px', padding: '6px 12px', fontSize: 'clamp(11px, 3.5vw, 13px)', color: 'rgba(255,255,255,0.85)', fontWeight: 600 }}>{b}</span>
-                ))}
-              </div>
+              <p className={styles.trustLine}>For homeowners, builders, contractors, architects, and suppliers.</p>
+            </div>
 
-              <div className={styles.quick} style={{ marginTop: '28px' }}>
-                <Link href="/contact?type=construction">Start Your Construction Journey</Link>
-                <Link href="/materials">Material Support</Link>
-                <Link href="/contact?type=boq_audit">BOQ Review</Link>
+            {/* RIGHT: Buildogram flow panel */}
+            <div className={styles.heroFlow}>
+              <p className={styles.heroFlowLabel}>How Buildogram helps</p>
+              <div className={styles.heroFlowGrid}>
+                <div className={styles.flowCard}>
+                  <div className={styles.flowNum}>01</div>
+                  <div className={styles.flowCardBody}>
+                    <strong>Verified Partners</strong>
+                    <span>Builders, contractors, architects, and vendors</span>
+                  </div>
+                </div>
+                <div className={styles.flowCard}>
+                  <div className={styles.flowNum}>02</div>
+                  <div className={styles.flowCardBody}>
+                    <strong>Material Quotes</strong>
+                    <span>Cement, steel, sand, blocks, electrical, and more</span>
+                  </div>
+                </div>
+                <div className={styles.flowCard}>
+                  <div className={styles.flowNum}>03</div>
+                  <div className={styles.flowCardBody}>
+                    <strong>Project Updates</strong>
+                    <span>Photos, milestones, issues, and site progress</span>
+                  </div>
+                </div>
+                <div className={styles.flowCard}>
+                  <div className={styles.flowNum}>04</div>
+                  <div className={styles.flowCardBody}>
+                    <strong>Digital Records</strong>
+                    <span>Documents, invoices, and property history</span>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.flowFooter}>
+                <span>🎓 Engineer-led</span>
+                <span>✅ Verified partners</span>
+                <span>📊 Progress tracking</span>
               </div>
             </div>
 
-            {/* Hero visual — dashboard cards */}
-            <div className={styles.heroBoard}>
-              <div className={styles.metric}>
-                <span>BOQ Review</span>
-                <b>Scope Clarity</b>
-              </div>
-              <div className={styles.metric}>
-                <span>Material Quotes</span>
-                <b>Supplier Network</b>
-              </div>
-              <div className={styles.metric}>
-                <span>Site Progress</span>
-                <b>Photo Verified</b>
-              </div>
-              <div className={styles.metric}>
-                <span>Property Passport</span>
-                <b>Digital Records</b>
-              </div>
-            </div>
           </div>
         </div>
       </section>

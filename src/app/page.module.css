@@ -12,18 +12,20 @@
 
 .homeHero {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(400px, 0.85fr);
-  gap: 3.5rem;
-  align-items: center;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
 }
 
 .homeHero h1 {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(2.8rem, 4vw, 4.8rem);
-  line-height: 1.02;
-  letter-spacing: -0.05em;
-  margin: 1.2rem 0;
+  font-size: clamp(2.4rem, 3.6vw, 4rem);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+  margin: 1rem 0;
   color: white;
+  max-width: 100%;
+  text-wrap: balance;
 }
 
 .homeHero p, .blockHead p, .rateBoard p, .portalPanel p {
@@ -94,29 +96,122 @@
   font-size: 16px;
 }
 
-.heroBoard {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.2rem;
+/* CTA row */
+.heroCtas {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 1.5rem 0 0.75rem;
+  align-items: center;
 }
-.metric {
-  background: rgba(255,255,255,0.05);
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: white;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: none;
+  transition: background 0.2s;
+  min-height: 44px;
+}
+.ctaSecondary:hover { background: rgba(255,255,255,0.18); }
+.ctaPartner {
+  display: inline-block;
+  color: rgba(255,255,255,0.6);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s;
+}
+.ctaPartner:hover { color: rgba(255,255,255,0.9); }
+
+/* Trust line */
+.trustLine {
+  font-size: 13px !important;
+  color: rgba(255,255,255,0.5) !important;
+  margin-top: 12px !important;
+  line-height: 1.5 !important;
+  max-width: 100% !important;
+}
+
+/* Flow panel (right side) */
+.heroFlow {
+  background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 22px;
-  padding: 1.8rem;
-  min-height: 150px;
+  border-radius: 24px;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 1rem;
+  min-width: 0;
 }
-.metric span {
-  color: rgba(255,255,255,0.7);
-  font-size: 0.95rem;
+.heroFlowLabel {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.4);
+  margin: 0 0 0.25rem;
 }
-.metric b {
+.heroFlowGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.flowCard {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 16px;
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  transition: background 0.2s;
+}
+.flowCard:hover { background: rgba(255,255,255,0.1); }
+.flowNum {
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 2rem;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary-light);
+  letter-spacing: 0.06em;
+}
+.flowCardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.flowCardBody strong {
+  font-size: 14px;
+  font-weight: 700;
   color: white;
+  line-height: 1.2;
+}
+.flowCardBody span {
+  font-size: 12px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.4;
+  overflow-wrap: break-word;
+}
+.flowFooter {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 1rem;
+  margin-top: 0.25rem;
+}
+.flowFooter span {
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
 }
 
 .quick {
@@ -356,7 +451,8 @@
 .lead p { color: rgba(255,255,255,0.8); max-width: 60ch; }
 
 @media(max-width: 1024px) {
-  .homeHero { grid-template-columns: 1fr; gap: 3rem; }
+  .homeHero { grid-template-columns: 1fr; gap: 2.5rem; }
+  .heroFlowGrid { grid-template-columns: repeat(2, 1fr); }
   .categoryGrid { grid-template-columns: repeat(2, 1fr); }
   .cards.four, .cards.three { grid-template-columns: repeat(2, 1fr); }
   .rateBoard { grid-template-columns: 1fr; gap: 3rem; }
@@ -450,7 +546,15 @@
     overflow-wrap: break-word;
   }
 
-  .heroBoard { grid-template-columns: 1fr; }
+  .heroFlow {
+    padding: 1.5rem;
+    border-radius: 18px;
+  }
+  .heroFlowGrid { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .flowCard { padding: 0.9rem; }
+  .heroCtas { flex-direction: column; align-items: flex-start; }
+  .heroCtas .btn { width: 100%; text-align: center; justify-content: center; }
+  .ctaSecondary { width: 100%; text-align: center; justify-content: center; }
   .cards.four, .cards.three, .cards.two { grid-template-columns: 1fr; }
   .row { grid-template-columns: 1fr; text-align: center; justify-items: center; }
   .sectionBand { padding: 4rem 0; }
