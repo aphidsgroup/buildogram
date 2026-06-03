@@ -68,8 +68,9 @@ PHASE 7 UI OVERHAUL UTILITIES
 
 /* Touch Targets for inputs/buttons on mobile */
 @media (max-width: 768px) {
-  .input, .btn {
+  .input, .btn, button, select, input {
     min-height: 44px;
+    font-size: 16px !important;
   }
 }
 
@@ -302,17 +303,18 @@ MARKETPLACE UI STRUCTURAL CLASSES
 
 .fullBleedSection {
   width: 100%;
-  padding: 0 clamp(16px, 4vw, 40px);
 }
 
 .sectionInner {
   width: min(100%, 1440px);
   margin: 0 auto;
+  padding-inline: clamp(16px, 5vw, 24px);
 }
 
 .sectionInnerWide {
   width: min(100%, 1500px);
   margin: 0 auto;
+  padding-inline: clamp(16px, 5vw, 24px);
 }
 
 /* ── Phase D Mobile QA Fixes ─────────────────────────────────────────── */
@@ -431,5 +433,16 @@ body {
 @media (max-width: 900px) {
   .dash-mid-grid {
     grid-template-columns: 1fr !important;
+  }
+}
+
+/* Global Mobile Fixes */
+@media (max-width: 768px) {
+  .card, .panel, .stat-card {
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+  .grid-child, .flex-child {
+    min-width: 0;
   }
 }
