@@ -48,29 +48,34 @@ function generateFloor(floorNum, plotWidth, plotDepth, variant) {
 
 function makeGroundFloor(variant) {
   const baseRooms = [
-    room('parking', 'Car Porch', 'parking', 1, 1, 13, 15),
-    room('living', 'Living', 'living', 14, 1, 15, 15),
-    room('bed1', 'Bedroom', 'bedroom', 1, 16, 13, 13),
-    room('kitchen', 'Kitchen', 'kitchen', 14, 16, 9, 10),
-    room('dining', 'Dining', 'dining', 23, 16, 6, 10),
-    room('bath1', 'Common Bath', 'bathroom', 1, 29, 7, 8),
-    room('stair', 'Stair', 'stair', 8, 29, 6, 8),
+    room('parking', 'Portico', 'parking', 1, 1, 13, 15),
+    room('living', 'Front Hall', 'living', 14, 1, 15, 15),
+    room('bed1', 'Bed Room', 'bedroom', 1, 16, 13, 13),
+    room('kitchen', 'Kitchen Cum Dining', 'kitchen', 14, 16, 15, 10),
+    room('dining', 'Pooja', 'store', 23, 16, 6, 10),
+    room('bath1', 'Toilet', 'bathroom', 1, 29, 7, 8),
+    room('stair', 'Staircase', 'stair', 8, 29, 6, 8),
     room('utility', 'Utility', 'utility', 14, 26, 8, 11),
     room('toilet', 'Toilet', 'bathroom', 22, 26, 7, 6),
-    room('puja', 'Puja/Store', 'store', 22, 32, 7, 5)
+    room('puja', 'Pooja', 'store', 22, 32, 7, 5)
   ];
 
   if (variant === 'vastu') {
-    updateRoom(baseRooms, 'puja', { name: 'Puja', width: 7, height: 5 });
-    updateRoom(baseRooms, 'kitchen', { name: 'SE Kitchen' });
-    updateRoom(baseRooms, 'bed1', { name: 'SW Bedroom' });
+    updateRoom(baseRooms, 'puja', { name: 'Pooja' });
+    updateRoom(baseRooms, 'kitchen', { name: 'SE Kitchen Cum Dining' });
+    updateRoom(baseRooms, 'bed1', { name: 'SW Bed Room' });
+    updateRoom(baseRooms, 'parking', { name: 'Portico' });
+    updateRoom(baseRooms, 'living', { name: 'Front Hall' });
   }
 
   if (variant === 'compact') {
-    updateRoom(baseRooms, 'living', { width: 15, height: 16 });
-    updateRoom(baseRooms, 'bed1', { y: 17, height: 14 });
-    updateRoom(baseRooms, 'kitchen', { y: 17, height: 9 });
-    updateRoom(baseRooms, 'bath1', { y: 31, height: 6 });
+    updateRoom(baseRooms, 'living', { name: 'Front Hall', width: 15, height: 16 });
+    updateRoom(baseRooms, 'bed1', { name: 'Bed Room', y: 17, height: 14 });
+    updateRoom(baseRooms, 'kitchen', { name: 'Kitchen Cum Dining', y: 17, height: 9, width: 15 });
+    updateRoom(baseRooms, 'dining', { name: 'Pooja', y: 17, height: 9 });
+    updateRoom(baseRooms, 'bath1', { name: 'Toilet', y: 31, height: 6 });
+    updateRoom(baseRooms, 'parking', { name: 'Portico' });
+    updateRoom(baseRooms, 'stair', { name: 'Staircase' });
   }
 
   return {
@@ -127,14 +132,14 @@ function makeGroundFloor(variant) {
 
 function makeUpperFloor(variant) {
   const rooms = [
-    room('master', 'Master Bed', 'bedroom', 1, 1, 14, 14),
+    room('master', 'Master Bed Room', 'bedroom', 1, 1, 14, 14),
     room('dress', 'Dress', 'store', 15, 1, 5, 6),
-    room('bath2', 'Attached Bath', 'bathroom', 20, 1, 9, 6),
+    room('bath2', 'Attached Toilet', 'bathroom', 20, 1, 9, 6),
     room('family', 'Family Lounge', 'living', 1, 15, 15, 12),
-    room('bed2', 'Bedroom 2', 'bedroom', 16, 15, 13, 12),
+    room('bed2', 'Bed Room 2', 'bedroom', 16, 15, 13, 12),
     room('terrace', 'Open Terrace', 'balcony', 1, 27, 14, 10),
-    room('stair', 'Stair', 'stair', 15, 27, 7, 10),
-    room('bath3', 'Common Bath', 'bathroom', 22, 27, 7, 6)
+    room('stair', 'Staircase', 'stair', 15, 27, 7, 10),
+    room('bath3', 'Common Toilet', 'bathroom', 22, 27, 7, 6)
   ];
 
   if (variant === 'compact') {

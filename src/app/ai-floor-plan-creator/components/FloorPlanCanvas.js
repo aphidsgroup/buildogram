@@ -1,63 +1,68 @@
 'use client';
 /**
- * CAD-Style Floor Plan Canvas powered by react-konva
+ * CAD Floor Plan Canvas — Clean Black-and-White Indian CAD Style
  * 
- * Layers (bottom to top):
- * 1. GridLayer       - Background grid, plot boundary, setback lines
- * 2. RoomsLayer      - Room fills (monochrome) with wet-area hatch
- * 3. WallsLayer      - Exterior (thick) and interior (thin) walls
- * 4. OpeningsLayer   - Doors (leaf + swing arc) and windows (triple-line symbol)
- * 5. FurnitureLayer  - Fixtures and furniture CAD symbols
- * 6. AnnotationLayer - Room labels, dimension strings, north arrow, title block
- * 7. UILayer         - Selection highlight, hover state
+ * Renders ONLY:
+ *   • Plot boundary
+ *   • Walls (thick exterior, thin interior)
+ *   • Wall openings (doors + windows as gaps)
+ *   • Staircase as step lines
+ *   • Room name + measurement labels inside each room
+ *   • External dimension strings with tick marks
+ *   • North arrow + title block
+ * 
+ * Deliberately excluded from render:
+ *   • Furniture, beds, sofas, dining, cars
+ *   • Bathroom/kitchen fixtures
+ *   • Wet-area hatch fills
+ *   • Colored fills
+ *   • Icons / decorative elements
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import styles from '../studio/studio.module.css';
 
-// Pixel scale: how many canvas pixels per foot
-const PX_PER_FT = 14;
-const MARGIN = 80;
-const TITLE_WIDTH = 160;
+// Pixels per foot
+const PX = 14;
+const MARGIN = 80;          // space around plan for dimension lines
+const TITLE_W = 155;        // title block width on right
 
-// CAD Color palette - restrained monochrome with accent for selection
-const CAD = {
-  background: '#f5f5f0',       // Off-white drafting paper
-  grid: '#ddd8cc',             // Light grid lines
-  plotBoundary: '#2d3748',     // Dark plot boundary
-  setback: '#718096',          // Dashed setback line
-  exteriorWall: '#1a202c',     // Very dark exterior walls
-  interiorWall: '#4a5568',     // Medium interior partitions
-  roomFill: '#ffffff',         // White room fill
-  wetFill: '#e8f4fd',          // Light blue wet areas
-  parkingFill: '#f0fdf4',      // Light green parking
-  selectedFill: '#eff6ff',     // Light blue selection
-  selectedStroke: '#3b82f6',   // Blue selection border
-  doorSwing: '#94a3b8',        // Light gray door arcs
-  doorLeaf: '#334155',         // Dark door leaf
-  windowLine: '#60a5fa',       // Blue window markers
-  fixture: '#64748b',          // Gray fixture symbols
-  dimensionLine: '#4b5563',    // Dimension strings
-  labelText: '#1f2937',        // Room name text
-  labelSub: '#6b7280',         // Dimension text
-  gridLabel: '#9ca3af',        // Axis labels
-  titleText: '#1a202c',        // Title block text
-  northArrow: '#1a202c',       // North arrow
-  annotation: '#374151',       // General annotation
-};
+// ─── Formatting helpers ───────────────────────────────────────────────────────
 
-// Konva is only loaded client-side
-let Konva = null;
-let KonvaStage = null;
-let KonvaLayer = null;
-let KonvaRect = null;
-let KonvaLine = null;
-let KonvaText = null;
-let KonvaPath = null;
-let KonvaCircle = null;
-let KonvaArc = null;
-let KonvaGroup = null;
-let KonvaArrow = null;
+/** Format feet as  16'×11'  or  6'5"×5'3" */
+function fmtFt(val) {
+  const ft = Math.floor(val);
+  const inches = Math.round((val - ft) * 12);
+  if (inches === 0) return `${ft}'`;
+  return `${ft}'${inches}"`;
+}
+
+function fmtDim(w, h) {
+  return `${fmtFt(w)} X ${fmtFt(h)}`;
+}
+
+/** Capitalise like traditional CAD labels */
+function cadLabel(name) {
+  return (name || '').toUpperCase();
+}
+
+// ─── react-konva lazy loader ─────────────────────────────────────────────────
+let K = null; // { Stage, Layer, Rect, Line, Text, Path, Group, Arrow }
+
+async function loadKonva() {
+  if (K) return K;
+  await import('konva/lib/Core');
+  const rk = await import('react-konva');
+  K = {
+    Stage: rk.Stage, Layer: rk.Layer,
+    Rect: rk.Rect, Line: rk.Line, Text: rk.Text,
+    Path: rk.Path, Group: rk.Group, Arrow: rk.Arrow,
+    Circle: rk.Circle,
+  };
+  return K;
+}
+
+// ─── Main component ──────────────────────────────────────────────────────────
 
 export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }) {
   const containerRef = useRef(null);
@@ -66,613 +71,473 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
   const [stageSize, setStageSize] = useState({ width: 800, height: 600 });
   const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
   const [stageScale, setStageScale] = useState(1);
-  const [currentFloorIdx, setCurrentFloorIdx] = useState(0);
-  const [hoveredRoomId, setHoveredRoomId] = useState(null);
-  const [layerVisibility, setLayerVisibility] = useState({
-    grid: true,
-    rooms: true,
-    walls: true,
-    openings: true,
-    furniture: true,
-    annotations: true,
-    dimensions: true,
+  const [floorIdx, setFloorIdx] = useState(0);
+  const [layers, setLayers] = useState({
+    walls: true, openings: true, labels: true, dimensions: true, stairs: true,
   });
 
-  // Load Konva dynamically (SSR safe)
-  useEffect(() => {
-    import('konva/lib/Core').then(() => {
-      import('react-konva').then(mod => {
-        KonvaStage = mod.Stage;
-        KonvaLayer = mod.Layer;
-        KonvaRect = mod.Rect;
-        KonvaLine = mod.Line;
-        KonvaText = mod.Text;
-        KonvaPath = mod.Path;
-        KonvaCircle = mod.Circle;
-        KonvaArc = mod.Arc;
-        KonvaGroup = mod.Group;
-        KonvaArrow = mod.Arrow;
-        setKonvaLoaded(true);
-      });
-    });
-  }, []);
+  // Load Konva client-side only
+  useEffect(() => { loadKonva().then(() => setKonvaLoaded(true)); }, []);
 
-  // Observe container size
+  // Track container size
   useEffect(() => {
     if (!containerRef.current) return;
-    const obs = new ResizeObserver(entries => {
-      for (const entry of entries) {
-        setStageSize({
-          width: entry.contentRect.width || 800,
-          height: entry.contentRect.height || 600,
-        });
-      }
+    const obs = new ResizeObserver(e => {
+      const r = e[0].contentRect;
+      setStageSize({ width: r.width || 800, height: r.height || 600 });
     });
     obs.observe(containerRef.current);
     return () => obs.disconnect();
   }, []);
 
-  const handleWheel = useCallback((e) => {
+  // Mouse-wheel zoom centred on cursor
+  const onWheel = useCallback(e => {
     e.evt.preventDefault();
     const stage = stageRef.current;
     if (!stage) return;
-    const oldScale = stageScale;
-    const pointer = stage.getPointerPosition();
-    const scaleBy = 1.08;
-    const direction = e.evt.deltaY < 0 ? 1 : -1;
-    const newScale = direction > 0
-      ? Math.min(oldScale * scaleBy, 6)
-      : Math.max(oldScale / scaleBy, 0.2);
-
-    const mousePointTo = {
-      x: (pointer.x - stagePos.x) / oldScale,
-      y: (pointer.y - stagePos.y) / oldScale,
-    };
-    const newPos = {
-      x: pointer.x - mousePointTo.x * newScale,
-      y: pointer.y - mousePointTo.y * newScale,
-    };
+    const ptr = stage.getPointerPosition();
+    const factor = e.evt.deltaY < 0 ? 1.1 : 1 / 1.1;
+    const newScale = Math.min(8, Math.max(0.15, stageScale * factor));
+    setStagePos({
+      x: ptr.x - (ptr.x - stagePos.x) * (newScale / stageScale),
+      y: ptr.y - (ptr.y - stagePos.y) * (newScale / stageScale),
+    });
     setStageScale(newScale);
-    setStagePos(newPos);
   }, [stageScale, stagePos]);
 
-  const handleReset = () => {
-    setStageScale(1);
-    setStagePos({ x: 0, y: 0 });
-  };
-
-  const toggleLayer = (key) => {
-    setLayerVisibility(prev => ({ ...prev, [key]: !prev[key] }));
-  };
-
-  if (!planData || !planData.floors || planData.floors.length === 0) {
+  // ── Empty / loading states ────────────────────────────────────────────────
+  if (!planData || !planData.floors?.length) {
     return (
       <div className={styles.emptyState}>
-        <div style={{ fontSize: 48, marginBottom: 16 }}>📐</div>
+        <div style={{ fontSize: 48 }}>📐</div>
         <div>Generate a floor plan to begin</div>
       </div>
     );
   }
-
   if (!konvaLoaded) {
-    return (
-      <div className={styles.emptyState}>
-        <div style={{ fontSize: 14, color: '#6b7280' }}>Loading CAD canvas…</div>
-      </div>
-    );
+    return <div className={styles.emptyState}><span style={{ fontSize: 13, color: '#888' }}>Loading CAD canvas…</span></div>;
   }
 
-  const floor = planData.floors[currentFloorIdx] || planData.floors[0];
-  const plotWidth = Number(floor.width || planData.plotWidth || 30);
-  const plotDepth = Number(floor.depth || planData.plotDepth || 40);
-  const planW = plotWidth * PX_PER_FT;
-  const planH = plotDepth * PX_PER_FT;
-  const sheetW = planW + MARGIN * 2 + TITLE_WIDTH;
-  const sheetH = planH + MARGIN * 2 + 60;
+  const { Stage, Layer, Rect, Line, Text, Path, Group, Arrow, Circle } = K;
 
-  const toX = (ft) => MARGIN + Number(ft) * PX_PER_FT;
-  const toY = (ft) => MARGIN + Number(ft) * PX_PER_FT;
-  const toPx = (ft) => Number(ft) * PX_PER_FT;
+  const floor = planData.floors[floorIdx] || planData.floors[0];
+  const plotW = Number(floor.width || planData.plotWidth || 30);
+  const plotH = Number(floor.depth || planData.plotDepth || 40);
+  const planW = plotW * PX;
+  const planH = plotH * PX;
+
+  // Coordinate helpers
+  const tx = ft => MARGIN + Number(ft) * PX;
+  const ty = ft => MARGIN + Number(ft) * PX;
+  const px = ft => Number(ft) * PX;
 
   const rooms = floor.rooms || [];
   const walls = floor.walls || [];
   const doors = floor.doors || [];
   const windows = floor.windows || [];
-  const furniture = floor.furniture || [];
-  const roomById = (id) => rooms.find(r => r.id === id);
 
-  // Render functions using react-konva components
-  const renderGrid = () => {
-    if (!layerVisibility.grid) return null;
-    const gridEls = [];
-    const gridStep = PX_PER_FT * 5;
-
-    // Background
-    gridEls.push(
-      <KonvaRect key="bg" x={0} y={0} width={sheetW} height={sheetH} fill={CAD.background} />
-    );
-    gridEls.push(
-      <KonvaRect key="planbg" x={MARGIN} y={MARGIN} width={planW} height={planH} fill="#fefefe" />
-    );
-
-    // Grid lines
-    for (let x = 0; x <= planW; x += gridStep) {
-      gridEls.push(<KonvaLine key={`gx${x}`} points={[MARGIN + x, MARGIN, MARGIN + x, MARGIN + planH]} stroke={CAD.grid} strokeWidth={0.5} />);
-    }
-    for (let y = 0; y <= planH; y += gridStep) {
-      gridEls.push(<KonvaLine key={`gy${y}`} points={[MARGIN, MARGIN + y, MARGIN + planW, MARGIN + y]} stroke={CAD.grid} strokeWidth={0.5} />);
-    }
-
-    // Axis labels
-    for (let ft = 0; ft <= plotWidth; ft += 5) {
-      gridEls.push(<KonvaText key={`lx${ft}`} x={toX(ft) - 12} y={MARGIN - 22} text={`${ft}'`} fontSize={9} fill={CAD.gridLabel} fontFamily="monospace" />);
-    }
-    for (let ft = 0; ft <= plotDepth; ft += 5) {
-      gridEls.push(<KonvaText key={`ly${ft}`} x={MARGIN - 30} y={toY(ft) - 5} text={`${ft}'`} fontSize={9} fill={CAD.gridLabel} fontFamily="monospace" />);
-    }
-
-    // Plot boundary (thick)
-    gridEls.push(
-      <KonvaRect key="plotbnd" x={MARGIN} y={MARGIN} width={planW} height={planH}
-        stroke={CAD.plotBoundary} strokeWidth={2.5} fill="transparent" listening={false} />
-    );
-
-    // Setback (dashed, 1.5m = ~5ft)
-    const sb = 5 * PX_PER_FT;
-    gridEls.push(
-      <KonvaRect key="setback" x={MARGIN + sb} y={MARGIN + sb}
-        width={planW - sb * 2} height={planH - sb * 2}
-        stroke={CAD.setback} strokeWidth={0.8} dash={[6, 4]} fill="transparent" listening={false} />
-    );
-
-    return gridEls;
+  // ── CAD colours (strict BW) ───────────────────────────────────────────────
+  const C = {
+    bg: '#ffffff',
+    paper: '#ffffff',
+    plotBound: '#000000',
+    setback: '#888888',
+    extWall: '#000000',
+    intWall: '#000000',
+    opening: '#ffffff',   // gap colour
+    door: '#000000',
+    window: '#000000',
+    stair: '#000000',
+    roomFill: 'transparent',
+    selectedFill: 'rgba(0,0,0,0.04)',
+    label: '#000000',
+    dim: '#000000',
+    dimTick: '#000000',
+    title: '#000000',
+    grid: '#e8e8e8',
   };
 
-  const renderRooms = () => {
-    if (!layerVisibility.rooms) return null;
-    return rooms.map(room => {
-      const rx = toX(room.x || 0);
-      const ry = toY(room.y || 0);
-      const rw = toPx(room.width || 0);
-      const rh = toPx(room.height || 0);
-      const isSelected = selectedRoom?.id === room.id;
-      const isHovered = hoveredRoomId === room.id;
-      const isWet = ['bathroom', 'kitchen', 'utility'].includes(room.type);
-      const isParking = room.type === 'parking';
+  // ── Layer renderers ───────────────────────────────────────────────────────
 
-      let fill = CAD.roomFill;
-      if (isSelected) fill = CAD.selectedFill;
-      else if (isWet) fill = CAD.wetFill;
-      else if (isParking) fill = CAD.parkingFill;
-
-      return (
-        <KonvaGroup key={room.id}
-          onClick={() => onSelectRoom(isSelected ? null : room)}
-          onMouseEnter={() => setHoveredRoomId(room.id)}
-          onMouseLeave={() => setHoveredRoomId(null)}
-        >
-          <KonvaRect
-            x={rx} y={ry} width={rw} height={rh}
-            fill={fill}
-            stroke={isSelected ? CAD.selectedStroke : (isHovered ? '#94a3b8' : 'transparent')}
-            strokeWidth={isSelected ? 2 : 1}
-          />
-          {/* Wet area hatch lines */}
-          {isWet && Array.from({ length: Math.ceil((rw + rh) / 8) }, (_, i) => {
-            const offset = i * 8 - rh;
-            const x1 = rx + Math.max(0, offset);
-            const y1 = ry + Math.max(0, -offset);
-            const x2 = rx + Math.min(rw, rw + offset);
-            const y2 = ry + Math.min(rh, rh - offset);
-            if (x1 > rx + rw || y1 > ry + rh) return null;
-            return <KonvaLine key={i} points={[x1, y1, x2, y2]} stroke="#bfdbfe" strokeWidth={0.6} listening={false} />;
-          })}
-        </KonvaGroup>
-      );
-    });
-  };
-
-  const renderWalls = () => {
-    if (!layerVisibility.walls) return null;
-    return walls.map((wall, i) => {
-      const isExterior = wall.type === 'exterior';
-      return (
-        <KonvaLine
-          key={wall.id || i}
-          points={[toX(wall.x1), toY(wall.y1), toX(wall.x2), toY(wall.y2)]}
-          stroke={isExterior ? CAD.exteriorWall : CAD.interiorWall}
-          strokeWidth={isExterior ? 5 : 1.5}
-          lineCap="square"
-          lineJoin="miter"
-          listening={false}
-        />
-      );
-    });
-  };
-
-  const renderDoors = () => {
-    if (!layerVisibility.openings) return null;
-    return doors.map((door, i) => {
-      const x = toX(door.x || 0);
-      const y = toY(door.y || 0);
-      const w = toPx(door.width || 3);
-      const side = door.side || 'south';
-      const isHoriz = side === 'north' || side === 'south';
-      const dir = side === 'north' || side === 'west' ? -1 : 1;
-
-      // Gap (wall opening)
-      const gapPoints = isHoriz
-        ? [x, y, x + w, y]
-        : [x, y, x, y + w];
-      
-      // Door leaf
-      const leafPoints = isHoriz
-        ? [x, y, x, y + dir * w]
-        : [x, y, x + dir * w, y];
-
-      // Swing arc using path
-      const arcR = w;
-      const sweepFlag = (isHoriz && dir === 1) || (!isHoriz && dir === -1) ? 0 : 1;
-      const arcEndX = isHoriz ? x + w : x + dir * w;
-      const arcEndY = isHoriz ? y + dir * w : y + w;
-      const arcPath = `M ${leafPoints[2]} ${leafPoints[3]} A ${arcR} ${arcR} 0 0 ${sweepFlag} ${arcEndX} ${arcEndY}`;
-
-      return (
-        <KonvaGroup key={door.id || i} listening={false}>
-          {/* Opening gap - white over wall */}
-          <KonvaLine points={gapPoints} stroke="white" strokeWidth={7} lineCap="butt" />
-          {/* Door leaf */}
-          <KonvaLine points={leafPoints} stroke={CAD.doorLeaf} strokeWidth={1.5} />
-          {/* Swing arc */}
-          <KonvaPath data={arcPath} stroke={CAD.doorSwing} strokeWidth={1} fill="transparent" dash={[4, 2]} />
-        </KonvaGroup>
-      );
-    });
-  };
-
-  const renderWindows = () => {
-    if (!layerVisibility.openings) return null;
-    return windows.map((win, i) => {
-      const x = toX(win.x || 0);
-      const y = toY(win.y || 0);
-      const w = toPx(win.width || 4);
-      const side = win.side || 'north';
-      const isHoriz = side === 'north' || side === 'south';
-      const offset = 4; // thickness indicator
-
-      const endX = isHoriz ? x + w : x;
-      const endY = isHoriz ? y : y + w;
-
-      return (
-        <KonvaGroup key={win.id || i} listening={false}>
-          {/* Gap */}
-          <KonvaLine points={[x, y, endX, endY]} stroke="white" strokeWidth={8} lineCap="butt" />
-          {/* Triple-line window symbol */}
-          <KonvaLine points={[x, y, endX, endY]} stroke={CAD.windowLine} strokeWidth={1.2} />
-          <KonvaLine
-            points={isHoriz ? [x, y - offset, endX, endY - offset] : [x - offset, y, endX - offset, endY]}
-            stroke={CAD.windowLine} strokeWidth={0.8}
-          />
-          <KonvaLine
-            points={isHoriz ? [x, y + offset, endX, endY + offset] : [x + offset, y, endX + offset, endY]}
-            stroke={CAD.windowLine} strokeWidth={0.8}
-          />
-        </KonvaGroup>
-      );
-    });
-  };
-
-  const renderFurniture = () => {
-    if (!layerVisibility.furniture) return null;
-    return furniture.map((item, i) => {
-      const x = toX(item.x || 0);
-      const y = toY(item.y || 0);
-      const w = toPx(item.width || 4);
-      const h = toPx(item.height || 3);
-      const type = item.type || roomById(item.roomId)?.type;
-
-      const baseProps = { stroke: CAD.fixture, strokeWidth: 0.8, fill: '#f8fafc', listening: false };
-
-      if (type === 'parking') return (
-        <KonvaGroup key={i} listening={false}>
-          <KonvaRect x={x} y={y} width={w} height={h} cornerRadius={6} {...baseProps} />
-          <KonvaLine points={[x + w * 0.15, y + h * 0.4, x + w * 0.85, y + h * 0.4]} {...baseProps} />
-          <KonvaCircle x={x + w * 0.22} y={y + h + 5} radius={4} {...baseProps} />
-          <KonvaCircle x={x + w * 0.78} y={y + h + 5} radius={4} {...baseProps} />
-        </KonvaGroup>
-      );
-
-      if (type === 'bedroom') return (
-        <KonvaGroup key={i} listening={false}>
-          <KonvaRect x={x} y={y} width={w} height={h} {...baseProps} />
-          {/* Headboard */}
-          <KonvaRect x={x + 2} y={y + 2} width={w * 0.45} height={h * 0.28} {...baseProps} />
-          <KonvaRect x={x + w * 0.53} y={y + 2} width={w * 0.44} height={h * 0.28} {...baseProps} />
-          {/* Bed divider */}
-          <KonvaLine points={[x, y + h * 0.34, x + w, y + h * 0.34]} {...baseProps} />
-        </KonvaGroup>
-      );
-
-      if (type === 'kitchen' || type === 'utility') return (
-        <KonvaGroup key={i} listening={false}>
-          <KonvaRect x={x} y={y} width={w} height={Math.min(h, 20)} {...baseProps} />
-          {/* Sink */}
-          <KonvaRect x={x + 2} y={y + 2} width={Math.min(16, w - 4)} height={Math.min(h - 4, 16)} cornerRadius={3} {...baseProps} />
-          {/* Hob circles */}
-          <KonvaCircle x={x + w * 0.65} y={y + 7} radius={5} {...baseProps} />
-          <KonvaCircle x={x + w * 0.82} y={y + 7} radius={4} {...baseProps} />
-        </KonvaGroup>
-      );
-
-      if (type === 'bathroom') return (
-        <KonvaGroup key={i} listening={false}>
-          {/* Bathtub / basin */}
-          <KonvaRect x={x} y={y} width={w * 0.48} height={h * 0.55} cornerRadius={6} {...baseProps} />
-          {/* Toilet */}
-          <KonvaGroup listening={false}>
-            <KonvaRect x={x + w * 0.55} y={y + h * 0.5} width={w * 0.38} height={h * 0.42} cornerRadius={4} {...baseProps} />
-            <KonvaRect x={x + w * 0.58} y={y + h * 0.5} width={w * 0.32} height={h * 0.14} {...baseProps} />
-          </KonvaGroup>
-          {/* Washbasin */}
-          <KonvaCircle x={x + w * 0.74} y={y + h * 0.22} radius={Math.min(w, h) * 0.14} {...baseProps} />
-        </KonvaGroup>
-      );
-
-      if (type === 'stair') return (
-        <KonvaGroup key={i} listening={false}>
-          {Array.from({ length: 8 }, (_, step) => (
-            <KonvaLine key={step} points={[x, y + step * (h / 8), x + w, y + step * (h / 8)]} {...baseProps} />
-          ))}
-          {/* Direction arrow */}
-          <KonvaArrow points={[x + 6, y + h - 10, x + w - 6, y + 10]} stroke={CAD.fixture} strokeWidth={1} fill={CAD.fixture} pointerLength={6} pointerWidth={5} />
-        </KonvaGroup>
-      );
-
-      if (type === 'living') return (
-        <KonvaGroup key={i} listening={false}>
-          {/* Sofa L-shape */}
-          <KonvaRect x={x} y={y} width={w} height={h * 0.4} cornerRadius={4} {...baseProps} />
-          <KonvaRect x={x} y={y} width={w * 0.25} height={h} cornerRadius={4} {...baseProps} />
-        </KonvaGroup>
-      );
-
-      if (type === 'dining') return (
-        <KonvaGroup key={i} listening={false}>
-          <KonvaRect x={x + w * 0.1} y={y + h * 0.1} width={w * 0.8} height={h * 0.8} cornerRadius={2} {...baseProps} />
-          {/* Chair marks */}
-          <KonvaLine points={[x + w * 0.3, y, x + w * 0.3, y - 6]} {...baseProps} />
-          <KonvaLine points={[x + w * 0.7, y, x + w * 0.7, y - 6]} {...baseProps} />
-          <KonvaLine points={[x + w * 0.3, y + h, x + w * 0.3, y + h + 6]} {...baseProps} />
-          <KonvaLine points={[x + w * 0.7, y + h, x + w * 0.7, y + h + 6]} {...baseProps} />
-        </KonvaGroup>
-      );
-
-      // Fallback: simple box
-      return (
-        <KonvaGroup key={i} listening={false}>
-          <KonvaRect x={x} y={y} width={w} height={h} cornerRadius={4} {...baseProps} />
-          <KonvaLine points={[x + 4, y + h / 2, x + w - 4, y + h / 2]} {...baseProps} />
-        </KonvaGroup>
-      );
-    });
-  };
-
-  const renderAnnotations = () => {
-    if (!layerVisibility.annotations) return null;
+  /** Light reference grid (5' squares) */
+  function renderGrid() {
     const els = [];
+    els.push(<Rect key="bg" x={0} y={0} width={MARGIN * 2 + planW + TITLE_W + 60} height={MARGIN * 2 + planH + 60} fill={C.bg} />);
+    for (let f = 0; f <= plotW; f += 5)
+      els.push(<Line key={`gx${f}`} points={[tx(f), MARGIN, tx(f), MARGIN + planH]} stroke={C.grid} strokeWidth={0.5} listening={false} />);
+    for (let f = 0; f <= plotH; f += 5)
+      els.push(<Line key={`gy${f}`} points={[MARGIN, ty(f), MARGIN + planW, ty(f)]} stroke={C.grid} strokeWidth={0.5} listening={false} />);
+    return els;
+  }
 
-    // Room labels
-    rooms.forEach(room => {
-      const rx = toX(room.x || 0);
-      const ry = toY(room.y || 0);
-      const rw = toPx(room.width || 0);
-      const rh = toPx(room.height || 0);
-      if (rw < 20 || rh < 20) return;
+  /** Room fills — white, or very subtle tint when selected */
+  function renderRooms() {
+    return rooms.map(room => {
+      const isSelected = selectedRoom?.id === room.id;
+      return (
+        <Rect
+          key={room.id}
+          x={tx(room.x)} y={ty(room.y)}
+          width={px(room.width)} height={px(room.height)}
+          fill={isSelected ? C.selectedFill : C.roomFill}
+          stroke="transparent"
+          onClick={() => onSelectRoom(isSelected ? null : room)}
+          onTap={() => onSelectRoom(isSelected ? null : room)}
+          style={{ cursor: 'pointer' }}
+        />
+      );
+    });
+  }
 
-      const cx = rx + rw / 2;
-      const cy = ry + rh / 2;
-
-      els.push(
-        <KonvaText key={`rlbl-${room.id}`}
-          x={rx + 4} y={cy - 14} width={rw - 8}
-          text={room.name}
-          fontSize={Math.max(8, Math.min(11, rw / 8))}
-          fill={CAD.labelText}
-          fontFamily="'Arial', sans-serif"
-          fontStyle="bold"
-          align="center"
+  /** Walls — thick exterior (6px), thin interior (2px) */
+  function renderWalls() {
+    if (!layers.walls) return null;
+    return walls.map((w, i) => {
+      const ext = w.type === 'exterior';
+      return (
+        <Line
+          key={w.id || i}
+          points={[tx(w.x1), ty(w.y1), tx(w.x2), ty(w.y2)]}
+          stroke={C.extWall}
+          strokeWidth={ext ? 6 : 2}
+          lineCap="square" lineJoin="miter"
           listening={false}
         />
       );
+    });
+  }
 
-      // Dimension sub-label
-      if (layerVisibility.dimensions && rw > 40 && rh > 30) {
-        const dimLabel = `${Math.round(room.width || 0)}'×${Math.round(room.height || 0)}'`;
-        els.push(
-          <KonvaText key={`rdim-${room.id}`}
-            x={rx + 4} y={cy + 2} width={rw - 8}
-            text={dimLabel}
-            fontSize={Math.max(7, Math.min(9, rw / 10))}
-            fill={CAD.labelSub}
-            fontFamily="monospace"
-            align="center"
-            listening={false}
+  /** Plot boundary (dashed, outside walls) */
+  function renderBoundary() {
+    return (
+      <Rect
+        x={MARGIN} y={MARGIN}
+        width={planW} height={planH}
+        stroke={C.plotBound}
+        strokeWidth={1.5}
+        dash={[6, 4]}
+        fill="transparent"
+        listening={false}
+      />
+    );
+  }
+
+  /** Doors — white gap + simple leaf line, no swing arc decoration */
+  function renderDoors() {
+    if (!layers.openings) return null;
+    return doors.map((door, i) => {
+      const x = tx(door.x), y = ty(door.y);
+      const w = px(door.width || 3);
+      const side = door.side || 'south';
+      const horiz = side === 'north' || side === 'south';
+      const gapPts = horiz ? [x, y, x + w, y] : [x, y, x, y + w];
+      return (
+        <Group key={door.id || `d${i}`} listening={false}>
+          {/* Clear the wall */}
+          <Line points={gapPts} stroke={C.opening} strokeWidth={8} lineCap="butt" />
+          {/* Door line (thin) */}
+          <Line points={gapPts} stroke={C.door} strokeWidth={1} />
+        </Group>
+      );
+    });
+  }
+
+  /** Windows — white gap + double tick marks (classic CAD window symbol) */
+  function renderWindows() {
+    if (!layers.openings) return null;
+    return windows.map((win, i) => {
+      const x = tx(win.x), y = ty(win.y);
+      const w = px(win.width || 4);
+      const side = win.side || 'north';
+      const horiz = side === 'north' || side === 'south';
+      const endX = horiz ? x + w : x;
+      const endY = horiz ? y : y + w;
+      const t = 4; // tick depth
+      return (
+        <Group key={win.id || `w${i}`} listening={false}>
+          <Line points={[x, y, endX, endY]} stroke={C.opening} strokeWidth={9} lineCap="butt" />
+          {/* Three lines = traditional window symbol */}
+          <Line points={[x, y, endX, endY]} stroke={C.window} strokeWidth={0.8} />
+          <Line
+            points={horiz ? [x, y - t, endX, endY - t] : [x - t, y, endX - t, endY]}
+            stroke={C.window} strokeWidth={0.8}
           />
+          <Line
+            points={horiz ? [x, y + t, endX, endY + t] : [x + t, y, endX + t, endY]}
+            stroke={C.window} strokeWidth={0.8}
+          />
+        </Group>
+      );
+    });
+  }
+
+  /** Staircase — simple horizontal step lines with direction arrow */
+  function renderStairs() {
+    if (!layers.stairs) return null;
+    return rooms
+      .filter(r => r.type === 'stair')
+      .map(r => {
+        const rx = tx(r.x), ry = ty(r.y);
+        const rw = px(r.width), rh = px(r.height);
+        const steps = Math.max(6, Math.round(rh / (PX * 0.9)));
+        const stepH = rh / steps;
+        const lines = [];
+        for (let s = 0; s <= steps; s++) {
+          lines.push(
+            <Line key={s} points={[rx, ry + s * stepH, rx + rw, ry + s * stepH]}
+              stroke={C.stair} strokeWidth={s === 0 || s === steps ? 1.5 : 0.8} listening={false} />
+          );
+        }
+        lines.push(
+          <Arrow key="arr" points={[rx + rw / 2, ry + rh - 8, rx + rw / 2, ry + 8]}
+            stroke={C.stair} strokeWidth={1} fill={C.stair}
+            pointerLength={6} pointerWidth={5} listening={false} />
         );
+        return <Group key={r.id}>{lines}</Group>;
+      });
+  }
+
+  /** Room labels — CAD uppercase name + dimension string */
+  function renderLabels() {
+    if (!layers.labels) return null;
+    return rooms
+      .filter(r => r.type !== 'stair') // stair uses step lines instead
+      .map(r => {
+        const rx = tx(r.x), ry = ty(r.y);
+        const rw = px(r.width), rh = px(r.height);
+        if (rw < 24 || rh < 18) return null;
+
+        const name = cadLabel(r.name);
+        const dim = fmtDim(r.width, r.height);
+        const cx = rx + rw / 2;
+        const cy = ry + rh / 2;
+        const fontSize = Math.max(7, Math.min(10, rw / 9));
+        const subSize = Math.max(6, Math.min(9, rw / 11));
+
+        return (
+          <Group key={`lbl-${r.id}`} listening={false}>
+            <Text
+              x={rx + 3} y={cy - fontSize - 2}
+              width={rw - 6}
+              text={name}
+              fontSize={fontSize}
+              fontFamily="Arial, sans-serif"
+              fontStyle="bold"
+              fill={C.label}
+              align="center"
+            />
+            {layers.dimensions && rw > 36 && rh > 24 && (
+              <Text
+                x={rx + 3} y={cy + 3}
+                width={rw - 6}
+                text={dim}
+                fontSize={subSize}
+                fontFamily="Arial, sans-serif"
+                fill={C.label}
+                align="center"
+              />
+            )}
+          </Group>
+        );
+      });
+  }
+
+  /** External dimension strings with tick marks — around the plan */
+  function renderDimensions() {
+    if (!layers.dimensions) return null;
+    const els = [];
+    const OFF = 30; // offset from plan edge
+    const TICK = 6;
+
+    // Helper: draw a dimension line segment with label
+    function dimLine(x1, y1, x2, y2, label, rotate = false) {
+      const mx = (x1 + x2) / 2;
+      const my = (y1 + y2) / 2;
+      els.push(
+        <Group key={`dm-${x1}-${y1}-${x2}-${y2}`} listening={false}>
+          <Line points={[x1, y1, x2, y2]} stroke={C.dim} strokeWidth={0.8} />
+          {/* Ticks at ends */}
+          <Line points={rotate
+            ? [x1 - TICK, y1, x1 + TICK, y1]
+            : [x1, y1 - TICK, x1, y1 + TICK]}
+            stroke={C.dimTick} strokeWidth={0.8} />
+          <Line points={rotate
+            ? [x2 - TICK, y2, x2 + TICK, y2]
+            : [x2, y2 - TICK, x2, y2 + TICK]}
+            stroke={C.dimTick} strokeWidth={0.8} />
+          <Text
+            x={rotate ? mx - 4 : mx - 14}
+            y={rotate ? my - 16 : my + 4}
+            text={label}
+            fontSize={8}
+            fontFamily="Arial, sans-serif"
+            fontStyle="bold"
+            fill={C.dim}
+            rotation={rotate ? -90 : 0}
+          />
+        </Group>
+      );
+    }
+
+    // Overall width (top)
+    dimLine(MARGIN, MARGIN - OFF, MARGIN + planW, MARGIN - OFF, `${fmtFt(plotW)}`);
+    // Overall depth (left)
+    dimLine(MARGIN - OFF, MARGIN, MARGIN - OFF, MARGIN + planH, `${fmtFt(plotH)}`, true);
+
+    // Per-room horizontal dimension ticks along top edge (rooms on y=0 boundary)
+    const topRooms = rooms
+      .filter(r => Number(r.y) <= 1)
+      .sort((a, b) => Number(a.x) - Number(b.x));
+    let curX = MARGIN;
+    topRooms.forEach(r => {
+      const rw = px(r.width);
+      const endX = tx(r.x) + rw;
+      if (endX > curX + 4) {
+        dimLine(curX, MARGIN - 16, endX, MARGIN - 16, fmtFt(r.width));
+        curX = endX;
       }
     });
 
-    // Overall dimension strings
-    if (layerVisibility.dimensions) {
-      // Horizontal dimension
-      const hy = MARGIN - 32;
-      els.push(<KonvaLine key="dim-h" points={[MARGIN, hy, MARGIN + planW, hy]} stroke={CAD.dimensionLine} strokeWidth={0.8} listening={false} />);
-      els.push(<KonvaLine key="dim-h-l" points={[MARGIN, hy - 5, MARGIN, hy + 5]} stroke={CAD.dimensionLine} strokeWidth={0.8} listening={false} />);
-      els.push(<KonvaLine key="dim-h-r" points={[MARGIN + planW, hy - 5, MARGIN + planW, hy + 5]} stroke={CAD.dimensionLine} strokeWidth={0.8} listening={false} />);
-      els.push(<KonvaText key="dim-h-txt" x={MARGIN + planW / 2 - 24} y={hy - 16} text={`${plotWidth}'`} fontSize={10} fill={CAD.dimensionLine} fontFamily="monospace" fontStyle="bold" listening={false} />);
-
-      // Vertical dimension
-      const vx = MARGIN - 44;
-      els.push(<KonvaLine key="dim-v" points={[vx, MARGIN, vx, MARGIN + planH]} stroke={CAD.dimensionLine} strokeWidth={0.8} listening={false} />);
-      els.push(<KonvaLine key="dim-v-t" points={[vx - 5, MARGIN, vx + 5, MARGIN]} stroke={CAD.dimensionLine} strokeWidth={0.8} listening={false} />);
-      els.push(<KonvaLine key="dim-v-b" points={[vx - 5, MARGIN + planH, vx + 5, MARGIN + planH]} stroke={CAD.dimensionLine} strokeWidth={0.8} listening={false} />);
-      els.push(
-        <KonvaText key="dim-v-txt"
-          x={vx - 14} y={MARGIN + planH / 2 + 18}
-          text={`${plotDepth}'`}
-          fontSize={10} fill={CAD.dimensionLine}
-          fontFamily="monospace" fontStyle="bold"
-          rotation={-90}
-          listening={false}
-        />
-      );
-    }
-
-    // North Arrow
-    const nx = MARGIN + planW + TITLE_WIDTH / 2 + 12;
-    const ny = MARGIN + 20;
-    els.push(
-      <KonvaGroup key="north-arrow" listening={false}>
-        <KonvaArrow
-          points={[nx, ny + 36, nx, ny]}
-          stroke={CAD.northArrow} strokeWidth={1.5}
-          fill={CAD.northArrow}
-          pointerLength={8} pointerWidth={7}
-        />
-        <KonvaLine points={[nx, ny + 36, nx, ny]} stroke="#ffffff" strokeWidth={1} dash={[4, 4]} listening={false} />
-        <KonvaText x={nx - 6} y={ny + 40} text="N" fontSize={11} fill={CAD.northArrow} fontFamily="Arial" fontStyle="bold" listening={false} />
-      </KonvaGroup>
-    );
-
-    // Title Block
-    const tbX = MARGIN + planW + 10;
-    const tbY = MARGIN + 70;
-    const tbW = TITLE_WIDTH - 20;
-    const area = planData.summary?.builtUpArea || Math.round(plotWidth * plotDepth * 0.8);
-
-    els.push(
-      <KonvaGroup key="title-block" listening={false}>
-        <KonvaRect x={tbX} y={tbY} width={tbW} height={160} stroke={CAD.titleText} strokeWidth={1} fill="#fefefe" />
-        <KonvaRect x={tbX} y={tbY} width={tbW} height={24} fill="#1a202c" />
-        <KonvaText x={tbX + 4} y={tbY + 7} text="BUILDOGRAM" fontSize={10} fill="white" fontFamily="Arial" fontStyle="bold" />
-        <KonvaLine points={[tbX, tbY + 24, tbX + tbW, tbY + 24]} stroke={CAD.titleText} strokeWidth={0.5} />
-        <KonvaText x={tbX + 4} y={tbY + 32} text="AI Concept Plan" fontSize={8} fill={CAD.titleText} fontFamily="Arial" />
-        <KonvaLine points={[tbX, tbY + 48, tbX + tbW, tbY + 48]} stroke={CAD.titleText} strokeWidth={0.5} />
-        <KonvaText x={tbX + 4} y={tbY + 54} text={`Option: ${planData.name || 'Layout'}`} fontSize={8} fill={CAD.titleText} fontFamily="Arial" />
-        <KonvaText x={tbX + 4} y={tbY + 70} text={`Plot: ${plotWidth}'×${plotDepth}'`} fontSize={8} fill={CAD.titleText} fontFamily="Arial" />
-        <KonvaText x={tbX + 4} y={tbY + 86} text={`Floor: ${floor.floorNumber || 1} of ${planData.floors.length}`} fontSize={8} fill={CAD.titleText} fontFamily="Arial" />
-        <KonvaText x={tbX + 4} y={tbY + 102} text={`Built-up: ${area} sqft`} fontSize={8} fill={CAD.titleText} fontFamily="Arial" />
-        <KonvaLine points={[tbX, tbY + 116, tbX + tbW, tbY + 116]} stroke={CAD.titleText} strokeWidth={0.5} />
-        <KonvaText x={tbX + 4} y={tbY + 122} text="⚠ Concept Only" fontSize={7} fill="#dc2626" fontFamily="Arial" />
-        <KonvaText x={tbX + 4} y={tbY + 135} text="Not for construction" fontSize={7} fill="#dc2626" fontFamily="Arial" />
-        <KonvaText x={tbX + 4} y={tbY + 147} text="or legal approval." fontSize={7} fill="#dc2626" fontFamily="Arial" />
-      </KonvaGroup>
-    );
+    // Per-room vertical ticks along left edge
+    const leftRooms = rooms
+      .filter(r => Number(r.x) <= 1)
+      .sort((a, b) => Number(a.y) - Number(b.y));
+    let curY = MARGIN;
+    leftRooms.forEach(r => {
+      const rh = px(r.height);
+      const endY = ty(r.y) + rh;
+      if (endY > curY + 4) {
+        dimLine(MARGIN - 16, curY, MARGIN - 16, endY, fmtFt(r.height), true);
+        curY = endY;
+      }
+    });
 
     return els;
-  };
+  }
 
+  /** North arrow */
+  function renderNorth() {
+    const nx = MARGIN + planW + TITLE_W / 2 + 20;
+    const ny = MARGIN + 18;
+    return (
+      <Group key="north" listening={false}>
+        <Arrow points={[nx, ny + 36, nx, ny]} stroke="#000" strokeWidth={1.5} fill="#000" pointerLength={8} pointerWidth={7} />
+        <Text x={nx - 5} y={ny + 44} text="N" fontSize={11} fontStyle="bold" fontFamily="Arial" fill="#000" />
+      </Group>
+    );
+  }
+
+  /** Title block — Buildogram CAD style */
+  function renderTitleBlock() {
+    const tbX = MARGIN + planW + 10;
+    const tbY = MARGIN + 70;
+    const tbW = TITLE_W - 15;
+    const area = planData.summary?.builtUpArea || Math.round(plotW * plotH * 0.8);
+    return (
+      <Group key="title" listening={false}>
+        <Rect x={tbX} y={tbY} width={tbW} height={170} stroke="#000" strokeWidth={1} fill="#fff" />
+        {/* Header bar */}
+        <Rect x={tbX} y={tbY} width={tbW} height={22} fill="#000" />
+        <Text x={tbX + 4} y={tbY + 6} text="BUILDOGRAM" fontSize={10} fill="#fff" fontStyle="bold" fontFamily="Arial" />
+        <Line points={[tbX, tbY + 22, tbX + tbW, tbY + 22]} stroke="#000" strokeWidth={0.5} />
+        <Text x={tbX + 4} y={tbY + 28} text="CONCEPT FLOOR PLAN" fontSize={7.5} fill="#000" fontFamily="Arial" />
+        <Line points={[tbX, tbY + 44, tbX + tbW, tbY + 44]} stroke="#000" strokeWidth={0.5} />
+        <Text x={tbX + 4} y={tbY + 50} text={`Option: ${planData.name || 'Layout'}`} fontSize={8} fill="#000" fontFamily="Arial" />
+        <Text x={tbX + 4} y={tbY + 66} text={`Plot: ${fmtFt(plotW)} X ${fmtFt(plotH)}`} fontSize={8} fill="#000" fontFamily="Arial" />
+        <Text x={tbX + 4} y={tbY + 82} text={`Floor: ${floor.floorNumber || 1} of ${planData.floors.length}`} fontSize={8} fill="#000" fontFamily="Arial" />
+        <Text x={tbX + 4} y={tbY + 98} text={`Built-up: ${area} sqft`} fontSize={8} fill="#000" fontFamily="Arial" />
+        <Line points={[tbX, tbY + 114, tbX + tbW, tbY + 114]} stroke="#000" strokeWidth={0.5} />
+        <Text x={tbX + 4} y={tbY + 120} text="⚠ Concept Only" fontSize={7} fill="#cc0000" fontFamily="Arial" />
+        <Text x={tbX + 4} y={tbY + 132} text="Not for construction" fontSize={7} fill="#cc0000" fontFamily="Arial" />
+        <Text x={tbX + 4} y={tbY + 144} text="or legal approval." fontSize={7} fill="#cc0000" fontFamily="Arial" />
+      </Group>
+    );
+  }
+
+  // ── Floor tabs ───────────────────────────────────────────────────────────
+  const floorTabLabels = ['Ground', 'First', 'Second', 'Third', 'Fourth'];
   const floorTabs = planData.floors.map((f, i) => (
-    <button
-      key={i}
-      onClick={() => setCurrentFloorIdx(i)}
-      style={{
-        padding: '4px 12px',
-        fontSize: 11,
-        background: i === currentFloorIdx ? '#1e293b' : '#f1f5f9',
-        color: i === currentFloorIdx ? 'white' : '#475569',
-        border: '1px solid #cbd5e1',
-        borderRadius: 4,
-        cursor: 'pointer',
-        marginRight: 4,
-      }}
-    >
-      {f.floorNumber === 1 ? 'Ground' : f.floorNumber === 2 ? 'First' : `Floor ${f.floorNumber}`}
+    <button key={i} onClick={() => setFloorIdx(i)} style={{
+      padding: '3px 10px', fontSize: 11,
+      background: i === floorIdx ? '#000' : '#f0f0f0',
+      color: i === floorIdx ? '#fff' : '#333',
+      border: '1px solid #ccc', borderRadius: 3,
+      cursor: 'pointer', marginRight: 4,
+    }}>
+      {floorTabLabels[f.floorNumber - 1] || `Floor ${f.floorNumber}`}
     </button>
   ));
 
+  // ── Layer toggle buttons ─────────────────────────────────────────────────
   const LAYER_BTNS = [
-    { key: 'grid', label: 'Grid' },
-    { key: 'rooms', label: 'Rooms' },
-    { key: 'walls', label: 'Walls' },
-    { key: 'openings', label: 'Openings' },
-    { key: 'furniture', label: 'Furniture' },
-    { key: 'annotations', label: 'Labels' },
-    { key: 'dimensions', label: 'Dims' },
+    { k: 'walls', lbl: 'Walls' }, { k: 'openings', lbl: 'Openings' },
+    { k: 'stairs', lbl: 'Stairs' }, { k: 'labels', lbl: 'Labels' },
+    { k: 'dimensions', lbl: 'Dims' },
   ];
 
   return (
-    <div className={styles.canvasContainer} ref={containerRef} style={{ background: '#e2e8f0', flexDirection: 'column' }}>
-      {/* Top toolbar */}
+    <div className={styles.canvasContainer} ref={containerRef}>
+
+      {/* ── Toolbar ──────────────────────────────────────────────────────── */}
       <div style={{
-        display: 'flex', alignItems: 'center', gap: 8, padding: '6px 12px',
-        background: '#1e293b', color: 'white', fontSize: 11, flexShrink: 0, flexWrap: 'wrap',
+        display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6,
+        padding: '5px 12px', background: '#1a1a1a', flexShrink: 0,
       }}>
-        {/* Floor tabs */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginRight: 8 }}>
-          {floorTabs}
-        </div>
-
-        <div style={{ width: 1, height: 20, background: '#475569' }} />
-
-        {/* Layer toggles */}
+        <span style={{ color: '#aaa', fontSize: 10, marginRight: 4 }}>FLOOR</span>
+        {floorTabs}
+        <div style={{ width: 1, height: 18, background: '#444' }} />
+        <span style={{ color: '#aaa', fontSize: 10, marginRight: 2 }}>LAYERS</span>
         {LAYER_BTNS.map(b => (
-          <button key={b.key}
-            onClick={() => toggleLayer(b.key)}
-            style={{
-              padding: '2px 8px', fontSize: 10,
-              background: layerVisibility[b.key] ? '#3b82f6' : '#374151',
-              color: 'white', border: 'none', borderRadius: 3, cursor: 'pointer',
-            }}
-          >
-            {b.label}
-          </button>
+          <button key={b.k} onClick={() => setLayers(l => ({ ...l, [b.k]: !l[b.k] }))} style={{
+            padding: '2px 8px', fontSize: 10,
+            background: layers[b.k] ? '#fff' : '#444',
+            color: layers[b.k] ? '#000' : '#aaa',
+            border: '1px solid #555', borderRadius: 3, cursor: 'pointer',
+          }}>{b.lbl}</button>
         ))}
-
-        <div style={{ width: 1, height: 20, background: '#475569' }} />
-
-        {/* Zoom controls */}
-        <button onClick={() => setStageScale(s => Math.min(s * 1.2, 6))}
-          style={{ padding: '2px 8px', background: '#374151', color: 'white', border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 14 }}>+</button>
-        <span style={{ fontSize: 10, minWidth: 36, textAlign: 'center' }}>{Math.round(stageScale * 100)}%</span>
-        <button onClick={() => setStageScale(s => Math.max(s / 1.2, 0.2))}
-          style={{ padding: '2px 8px', background: '#374151', color: 'white', border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 14 }}>−</button>
-        <button onClick={handleReset}
-          style={{ padding: '2px 8px', background: '#374151', color: 'white', border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 10 }}>Fit</button>
+        <div style={{ width: 1, height: 18, background: '#444' }} />
+        <button onClick={() => setStageScale(s => Math.min(s * 1.2, 8))}
+          style={{ padding: '2px 8px', background: '#333', color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 13 }}>+</button>
+        <span style={{ fontSize: 10, color: '#ccc', minWidth: 34, textAlign: 'center' }}>{Math.round(stageScale * 100)}%</span>
+        <button onClick={() => setStageScale(s => Math.max(s / 1.2, 0.15))}
+          style={{ padding: '2px 8px', background: '#333', color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 13 }}>−</button>
+        <button onClick={() => { setStageScale(1); setStagePos({ x: 0, y: 0 }); }}
+          style={{ padding: '2px 8px', background: '#333', color: '#ccc', border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 10 }}>Fit</button>
       </div>
 
-      {/* Canvas */}
-      <div style={{ flex: 1, overflow: 'hidden', cursor: 'grab' }}>
-        <KonvaStage
+      {/* ── Konva Stage ─────────────────────────────────────────────────── */}
+      <div style={{ flex: 1, overflow: 'hidden', background: '#d4d4d4' }}>
+        <Stage
           ref={stageRef}
           width={stageSize.width}
-          height={stageSize.height - 36}
-          scaleX={stageScale}
-          scaleY={stageScale}
-          x={stagePos.x}
-          y={stagePos.y}
-          onWheel={handleWheel}
+          height={Math.max(100, stageSize.height - 36)}
+          scaleX={stageScale} scaleY={stageScale}
+          x={stagePos.x} y={stagePos.y}
+          onWheel={onWheel}
           draggable
           onDragEnd={e => setStagePos({ x: e.target.x(), y: e.target.y() })}
         >
-          <KonvaLayer>
-            {renderGrid()}
-          </KonvaLayer>
-          <KonvaLayer>
-            {renderRooms()}
-          </KonvaLayer>
-          <KonvaLayer>
-            {renderWalls()}
-            {renderDoors()}
-            {renderWindows()}
-          </KonvaLayer>
-          <KonvaLayer>
-            {renderFurniture()}
-          </KonvaLayer>
-          <KonvaLayer>
-            {renderAnnotations()}
-          </KonvaLayer>
-        </KonvaStage>
+          {/* Layer 1: White background + grid */}
+          <Layer>{renderGrid()}</Layer>
+
+          {/* Layer 2: Room fills (white / subtle selection) */}
+          <Layer>{renderRooms()}</Layer>
+
+          {/* Layer 3: Walls */}
+          <Layer>{renderWalls()}{renderBoundary()}</Layer>
+
+          {/* Layer 4: Openings (doors, windows) */}
+          <Layer>{renderDoors()}{renderWindows()}</Layer>
+
+          {/* Layer 5: Stairs */}
+          <Layer>{renderStairs()}</Layer>
+
+          {/* Layer 6: Labels & dimensions */}
+          <Layer>{renderLabels()}{renderDimensions()}</Layer>
+
+          {/* Layer 7: Annotations — north arrow, title block */}
+          <Layer>{renderNorth()}{renderTitleBlock()}</Layer>
+        </Stage>
       </div>
     </div>
   );
