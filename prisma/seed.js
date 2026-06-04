@@ -7,43 +7,43 @@ async function main() {
   const passwordHash = await bcrypt.hash('password123', 10);
 
   // Seed Users
-  const admin = await prisma.user.upsert({
+  const admin = await prisma.users.upsert({
     where: { email: 'admin@buildogram.in' },
     update: {},
     create: {
       email: 'admin@buildogram.in',
       name: 'Demo Admin',
       role: 'ops_admin',
-      passwordHash
+      password_hash: passwordHash
     }
   });
 
-  const partner = await prisma.user.upsert({
+  const partner = await prisma.users.upsert({
     where: { email: 'partner@buildogram.in' },
     update: {},
     create: {
       email: 'partner@buildogram.in',
       name: 'Demo Partner',
       role: 'partner_contractor',
-      passwordHash
+      password_hash: passwordHash
     }
   });
 
-  const client = await prisma.user.upsert({
+  const client = await prisma.users.upsert({
     where: { email: 'client@buildogram.in' },
     update: {},
     create: {
       email: 'client@buildogram.in',
       name: 'Demo Client',
       role: 'client',
-      passwordHash
+      password_hash: passwordHash
     }
   });
 
   console.log('Seeded Users:', { admin: admin.email, partner: partner.email, client: client.email });
 
   // Seed Leads
-  const l1 = await prisma.lead.create({
+  const l1 = await prisma.leads.create({
     data: {
       leadType: 'construction',
       name: 'Rajesh Kumar',
@@ -57,7 +57,7 @@ async function main() {
     }
   });
 
-  const l2 = await prisma.lead.create({
+  const l2 = await prisma.leads.create({
     data: {
       leadType: 'boq_audit',
       name: 'Sneha',
@@ -72,7 +72,7 @@ async function main() {
     }
   });
 
-  const l3 = await prisma.lead.create({
+  const l3 = await prisma.leads.create({
     data: {
       leadType: 'material_quote',
       name: 'Ramesh Builders',

@@ -1,0 +1,370 @@
+[
+  {
+    "name": "01-homepage",
+    "url": "/",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 28,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\01-homepage.png",
+    "issues": [
+      "⚠️ 28 tap targets < 44px",
+      "⚠️ 9 text elements < 12px"
+    ]
+  },
+  {
+    "name": "02-login",
+    "url": "/login",
+    "status": "⚠️",
+    "hasMobileNav": false,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 1,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\02-login.png",
+    "issues": [
+      "⚠️ 1 tap targets < 44px"
+    ]
+  },
+  {
+    "name": "03-how-it-works",
+    "url": "/how-it-works",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 27,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\03-how-it-works.png",
+    "issues": [
+      "⚠️ 27 tap targets < 44px"
+    ]
+  },
+  {
+    "name": "04-services",
+    "url": "/services",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 27,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\04-services.png",
+    "issues": [
+      "⚠️ 27 tap targets < 44px"
+    ]
+  },
+  {
+    "name": "05-cost-estimator",
+    "url": "/cost-estimator",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 27,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\05-cost-estimator.png",
+    "issues": [
+      "⚠️ 27 tap targets < 44px"
+    ]
+  },
+  {
+    "name": "06-boq-audit",
+    "url": "/boq-audit",
+    "status": "🚨",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 29,
+    "tablesWithoutScroll": 1,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\06-boq-audit.png",
+    "issues": [
+      "⚠️ 29 tap targets < 44px",
+      "⚠️ 3 text elements < 12px",
+      "⚠️ 1 tables without horizontal scroll"
+    ]
+  },
+  {
+    "name": "07-plan-review",
+    "url": "/plan-review",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 27,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\07-plan-review.png",
+    "issues": [
+      "⚠️ 27 tap targets < 44px"
+    ]
+  },
+  {
+    "name": "08-partners",
+    "url": "/partners",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 27,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\08-partners.png",
+    "issues": [
+      "⚠️ 27 tap targets < 44px",
+      "⚠️ 2 text elements < 12px"
+    ]
+  },
+  {
+    "name": "09-contact",
+    "url": "/contact",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 29,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\09-contact.png",
+    "issues": [
+      "⚠️ 29 tap targets < 44px"
+    ]
+  },
+  {
+    "name": "10-faqs",
+    "url": "/faqs",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 27,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\10-faqs.png",
+    "issues": [
+      "⚠️ 27 tap targets < 44px"
+    ]
+  },
+  {
+    "name": "11-blog",
+    "url": "/blog",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 27,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\11-blog.png",
+    "issues": [
+      "⚠️ 27 tap targets < 44px"
+    ]
+  },
+  {
+    "name": "12-properties",
+    "url": "/properties",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 27,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\12-properties.png",
+    "issues": [
+      "⚠️ 27 tap targets < 44px",
+      "⚠️ 2 elements wider than viewport"
+    ]
+  },
+  {
+    "name": "13-build",
+    "url": "/build",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 27,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\13-build.png",
+    "issues": [
+      "⚠️ 27 tap targets < 44px",
+      "⚠️ 2 text elements < 12px"
+    ]
+  },
+  {
+    "name": "14-ops-dashboard",
+    "url": "/ops/dashboard",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 2,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\14-ops-dashboard.png",
+    "issues": [
+      "⚠️ 2 tap targets < 44px",
+      "⚠️ 125 elements wider than viewport"
+    ]
+  },
+  {
+    "name": "15-ops-leads",
+    "url": "/ops/leads",
+    "status": "🚨",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 2,
+    "tablesWithoutScroll": 1,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\15-ops-leads.png",
+    "issues": [
+      "⚠️ 2 tap targets < 44px",
+      "⚠️ 23 elements wider than viewport",
+      "⚠️ 1 tables without horizontal scroll"
+    ]
+  },
+  {
+    "name": "16-ops-pipeline",
+    "url": "/ops/pipeline",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 2,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\16-ops-pipeline.png",
+    "issues": [
+      "⚠️ 2 tap targets < 44px",
+      "⚠️ 9 elements wider than viewport"
+    ]
+  },
+  {
+    "name": "17-ops-partners",
+    "url": "/ops/partners",
+    "status": "⚠️",
+    "hasMobileNav": false,
+    "hasViewportMeta": false,
+    "horizontalOverflow": false,
+    "smallTapTargets": 0,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\17-ops-partners.png",
+    "issues": [
+      "🚨 Missing viewport meta tag"
+    ]
+  },
+  {
+    "name": "18-ops-projects",
+    "url": "/ops/projects",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 2,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\18-ops-projects.png",
+    "issues": [
+      "⚠️ 2 tap targets < 44px",
+      "⚠️ 26 elements wider than viewport"
+    ]
+  },
+  {
+    "name": "19-ops-users",
+    "url": "/ops/users",
+    "status": "🚨",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 2,
+    "tablesWithoutScroll": 1,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\19-ops-users.png",
+    "issues": [
+      "⚠️ 2 tap targets < 44px",
+      "⚠️ 24 elements wider than viewport",
+      "⚠️ 1 tables without horizontal scroll"
+    ]
+  },
+  {
+    "name": "20-ops-reports",
+    "url": "/ops/reports",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 2,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\20-ops-reports.png",
+    "issues": [
+      "⚠️ 2 tap targets < 44px"
+    ]
+  },
+  {
+    "name": "21-ops-revenue",
+    "url": "/ops/revenue",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 2,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\21-ops-revenue.png",
+    "issues": [
+      "⚠️ 2 tap targets < 44px",
+      "⚠️ 20 elements wider than viewport"
+    ]
+  },
+  {
+    "name": "22-partner-dashboard",
+    "url": "/partner/dashboard",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 2,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\22-partner-dashboard.png",
+    "issues": [
+      "⚠️ 2 tap targets < 44px",
+      "⚠️ 125 elements wider than viewport"
+    ]
+  },
+  {
+    "name": "23-partner-leads",
+    "url": "/partner/leads",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 2,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\23-partner-leads.png",
+    "issues": [
+      "⚠️ 2 tap targets < 44px",
+      "⚠️ 125 elements wider than viewport"
+    ]
+  },
+  {
+    "name": "24-client-dashboard",
+    "url": "/client/dashboard",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 2,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\24-client-dashboard.png",
+    "issues": [
+      "⚠️ 2 tap targets < 44px",
+      "⚠️ 125 elements wider than viewport"
+    ]
+  },
+  {
+    "name": "25-supplier-dashboard",
+    "url": "/supplier/dashboard",
+    "status": "⚠️",
+    "hasMobileNav": true,
+    "hasViewportMeta": true,
+    "horizontalOverflow": false,
+    "smallTapTargets": 33,
+    "tablesWithoutScroll": 0,
+    "screenshot": "C:\\Users\\Kawinfinite PC 32\\Downloads\\Buildogram\\buildogram-app\\scripts\\mobile-audit-screenshots\\25-supplier-dashboard.png",
+    "issues": [
+      "⚠️ 33 tap targets < 44px",
+      "⚠️ 1 text elements < 12px"
+    ]
+  }
+]

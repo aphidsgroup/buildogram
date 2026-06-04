@@ -38,8 +38,11 @@ export default function ClientLayout({ children }) {
     // Intercept unbuilt routes
     const builtRoutes = [
       '/client/dashboard', '/client/profile', '/client/passport',
-      '/client/projects', '/client/project',
+      '/client/projects', '/client/project', '/client/invoices',
+      '/client/maintenance', '/client/notifications', '/client/requests',
+      '/client/settings',
     ];
+
     // Also allow dynamic sub-routes like /client/projects/P001
     const isDynamic = ['/client/projects/'].some(prefix => href.startsWith(prefix));
     if (!builtRoutes.includes(href) && !isDynamic) {

@@ -28,8 +28,8 @@ export async function POST(req) {
   }
 
   try {
-    const user = await prisma.user.findUnique({ where: { email } });
-    if (!user || user.status !== 'active' || !(await bcrypt.compare(password, user.passwordHash)))
+    const user = await prisma.users.findUnique({ where: { email } });
+    if (!user || !user.is_active || !(await bcrypt.compare(password, user.password_hash)))
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
       
     const token = await signToken({ id: user.id, name: user.name, email: user.email, role: user.role });

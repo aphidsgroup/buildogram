@@ -73,7 +73,7 @@ export default function SupplierLayout({ children }) {
 
       {sidebarOpen && <div className={styles.overlay} onClick={() => setSidebarOpen(false)} style={{ zIndex: 90 }} />}
 
-      <div className={styles.main} style={{ marginLeft: '260px', background: '#F8FAFC' }}>
+      <div className={styles.main} style={{ background: '#F8FAFC' }}>
         <header className={styles.topbar}>
           <button aria-label="Open menu" className={styles.menuBtn} onClick={() => setSidebarOpen(true)}>☰</button>
           <div style={{ flex: 1, fontWeight: 600, fontSize: '15px' }}>
@@ -99,7 +99,6 @@ export default function SupplierLayout({ children }) {
       )}
 
       <style dangerouslySetInnerHTML={{__html: `
-        @media(max-width:900px){ .${styles.main}{ margin-left:0!important; } }
         .${styles.navItem}:hover { background: rgba(255,255,255,0.05); color: white !important; }
         .${styles.navItem}.${styles.active} { background: rgba(16,185,129,0.1)!important; color:#10B981!important; border-left:3px solid #10B981; border-radius:0 10px 10px 0; }
       `}} />

@@ -260,6 +260,19 @@
   color: var(--secondary);
 }
 
+/* Two-column split sections (Ecosystem, Partner B2B) */
+.splitGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+.splitGridCards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
 .categoryGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -457,13 +470,16 @@
   .cards.four, .cards.three { grid-template-columns: repeat(2, 1fr); }
   .rateBoard { grid-template-columns: 1fr; gap: 3rem; }
   .portalPanel { grid-template-columns: 1fr; }
+  /* Stack the two-column sections on tablet */
+  .splitGrid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .splitGridCards { grid-template-columns: 1fr 1fr; }
 }
 
 @media(max-width: 768px) {
   .homeHeroBg { padding: 2rem 0; }
   .homeHero h1 {
-    font-size: clamp(34px, 10vw, 46px);
-    line-height: 1.05;
+    font-size: clamp(28px, 8vw, 40px);
+    line-height: 1.1;
     letter-spacing: -0.02em;
     max-width: 100%;
     overflow-wrap: normal;
@@ -474,9 +490,8 @@
     max-width: 100%;
   }
   .heroLeft p {
-    font-size: clamp(16px, 4vw, 20px);
-    line-height: 1.6;
-    letter-spacing: 0.02em;
+    font-size: 15px;
+    line-height: 1.65;
     max-width: 100%;
     overflow-wrap: break-word;
     min-width: 0;
@@ -484,20 +499,21 @@
   .eyebrow {
     white-space: normal;
     overflow-wrap: anywhere;
-    font-size: clamp(10px, 2.8vw, 12px);
+    font-size: 10px;
     letter-spacing: 0.08em;
     line-height: 1.35;
-    padding-inline: 12px;
+    padding: 6px 12px;
     text-align: center;
   }
   .heroSearchPanel {
     width: 100%;
     max-width: 100%;
     margin-inline: 0;
-    padding: 18px;
+    padding: 14px;
     box-sizing: border-box;
-    border-radius: 24px;
+    border-radius: 20px;
     grid-template-columns: 1fr;
+    gap: 0.5rem;
   }
   .heroSearchPanel input {
     width: 100%;
@@ -508,12 +524,10 @@
     white-space: nowrap;
     overflow: hidden;
   }
-  .heroSearchPanel select { border-left: none; border-top: 1px solid var(--border); padding: 1rem 0 0 0; margin-top: 0.5rem; }
-  .heroSearchPanel button { width: 100%; margin-top: 0.5rem; }
+  .heroSearchPanel select { border-left: none; border-top: 1px solid var(--border); padding: 0.75rem 0 0 0; margin-top: 0.25rem; }
+  .heroSearchPanel button { width: 100%; margin-top: 0.25rem; }
   
-  .quick {
-    gap: 10px;
-  }
+  .quick { gap: 10px; }
   .quick button, .quick a {
     max-width: 100%;
     min-width: 0;
@@ -523,40 +537,75 @@
     line-height: 1.3;
   }
 
+  /* ── Headings: tighter on mobile ── */
   .blockHead h2, .rateBoard h2, .portalPanel h2, .lead h2 {
-    font-size: clamp(36px, 10vw, 52px);
-    line-height: 1.08;
+    font-size: clamp(24px, 7vw, 34px);
+    line-height: 1.15;
     letter-spacing: -0.02em;
     max-width: 100%;
     text-wrap: balance;
   }
 
+  /* ── Section padding reduced ── */
+  .sectionBand { padding: 3rem 0; }
+
+  /* ── Ecosystem & Partner B2B: stack on mobile ── */
+  .splitGrid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+  .splitGridCards {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px !important;
+  }
+
+  /* ── blockHead margin smaller on mobile ── */
+  .blockHead { margin-bottom: 1.5rem; }
+
   .categoryGrid button, .categoryGrid a {
     width: 100%;
     max-width: 100%;
-    padding: clamp(24px, 7vw, 40px);
+    padding: clamp(20px, 6vw, 36px);
     min-width: 0;
     box-sizing: border-box;
   }
   .categoryGrid b {
-    font-size: clamp(34px, 10vw, 52px);
+    font-size: clamp(28px, 8vw, 42px);
     line-height: 1.05;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.01em;
     max-width: 100%;
     overflow-wrap: break-word;
   }
 
-  .heroFlow {
-    padding: 1.5rem;
-    border-radius: 18px;
-  }
-  .heroFlowGrid { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .flowCard { padding: 0.9rem; }
-  .heroCtas { flex-direction: column; align-items: flex-start; }
+  .heroFlow { padding: 1.25rem; border-radius: 16px; }
+  .heroFlowGrid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .flowCard { padding: 0.8rem; }
+  .flowCardBody strong { font-size: 13px; }
+  .flowCardBody span { font-size: 11px; }
+
+  .heroCtas { flex-direction: column; align-items: stretch; gap: 10px; }
   .heroCtas .btn { width: 100%; text-align: center; justify-content: center; }
   .ctaSecondary { width: 100%; text-align: center; justify-content: center; }
+
   .cards.four, .cards.three, .cards.two { grid-template-columns: 1fr; }
   .row { grid-template-columns: 1fr; text-align: center; justify-items: center; }
-  .sectionBand { padding: 4rem 0; }
-  .portalCard { padding: 2rem; align-items: center; text-align: center; min-width: 0; max-width: 100%; box-sizing: border-box; }
+
+  .portalPanel { grid-template-columns: 1fr; }
+  .portalCard { padding: 1.75rem; min-width: 0; max-width: 100%; box-sizing: border-box; }
+  .tour { width: 100px; height: 100px; font-size: 16px; margin-bottom: 1.25rem; }
+
+  .rateBoard { grid-template-columns: 1fr; gap: 2rem; }
+
+  .lead { padding: 3rem 1.25rem; }
+}
+
+@media(max-width: 480px) {
+  .splitGridCards {
+    grid-template-columns: 1fr !important;
+  }
+  .heroFlowGrid { grid-template-columns: 1fr; gap: 8px; }
+  .blockHead h2, .rateBoard h2, .portalPanel h2, .lead h2 {
+    font-size: clamp(22px, 6.5vw, 30px);
+  }
+  .sectionBand { padding: 2.5rem 0; }
 }

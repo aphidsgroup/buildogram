@@ -714,6 +714,35 @@ export default function ProjectDetailPage() {
         @media(max-width:700px){
           .hide-mobile { display: none; }
         }
+        /* ── All modal form grids → 1 column on mobile ── */
+        @media(max-width:580px){
+          /* Targets all gridTemplateColumns: '1fr 1fr' inside modals in this page */
+          [style*="gridTemplateColumns: '1fr 1fr'"] {
+            grid-template-columns: 1fr !important;
+          }
+          /* gridColumn span resets in collapsed grids */
+          [style*="gridColumn: '1/-1'"],
+          [style*='gridColumn: "1/-1"'] {
+            grid-column: auto !important;
+          }
+          /* Tab bar: scrollable on narrow phones */
+          .project-tabs {
+            overflow-x: auto !important;
+            -webkit-overflow-scrolling: touch;
+            flex-wrap: nowrap !important;
+            padding-bottom: 2px;
+          }
+          .project-tabs button {
+            white-space: nowrap;
+            flex-shrink: 0;
+          }
+          /* Project header: stack on mobile */
+          .project-header-row {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 12px !important;
+          }
+        }
       `}} />
     </div>
   );

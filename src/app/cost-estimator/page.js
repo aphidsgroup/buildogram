@@ -180,6 +180,11 @@ export default function CostEstimator() {
             grid-template-columns: 1fr !important;
           }
           .responsive-grid {
+            grid-template-columns: 1fr 1fr !important;
+          }
+        }
+        @media (max-width: 580px) {
+          .responsive-grid {
             grid-template-columns: 1fr !important;
           }
         }

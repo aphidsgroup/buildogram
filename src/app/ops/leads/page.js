@@ -354,7 +354,7 @@ export default function OpsLeads() {
       </div>
 
       <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-        <div className="w-full overflow-x-auto">
+        <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', width: '100%' }}>
           <table className="table" style={{ width: '100%', minWidth: '800px' }}>
             <thead>
               <tr><th>Name</th><th>Phone</th><th>Type</th><th>City</th><th>Message / Details</th><th>Source</th><th>Status</th><th>Date</th><th></th></tr>

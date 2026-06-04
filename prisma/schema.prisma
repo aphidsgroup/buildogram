@@ -1,292 +1,1118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model accounting_ledger {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  transaction_date DateTime? @default(now()) @db.Timestamptz(6)
+  reference_type   String
+  reference_id     String?   @db.Uuid
+  account_name     String
+  debit            Decimal?  @default(0) @db.Decimal
+  credit           Decimal?  @default(0) @db.Decimal
+  description      String?
+  created_by       String?   @db.Uuid
+  created_at       DateTime? @default(now()) @db.Timestamptz(6)
+  users            users?    @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([account_name], map: "idx_accounting_ledger_account_name")
+  @@index([transaction_date(sort: Desc)], map: "idx_accounting_ledger_date")
+  @@index([reference_type, reference_id], map: "idx_accounting_ledger_reference")
 }
 
-model User {
-  id           String   @id @default(uuid())
-  name         String
-  email        String   @unique
-  phone        String?
-  passwordHash String
-  role         String   @default("client") // client, partner, ops, admin
-  status       String   @default("active") // active, pending, disabled
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  clientRequests ClientRequest[]
-  partnerProfile PartnerProfile?
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model ai_requests {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  module_name           String
+  related_lead_id       String?   @db.Uuid
+  related_user_id       String?   @db.Uuid
+  input_json            Json      @default("{}")
+  output_json           Json      @default("{}")
+  prompt_version        String?   @default("1.0")
+  risk_level            String?   @default("low")
+  human_review_required Boolean?  @default(false)
+  status                String?   @default("draft")
+  created_at            DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime? @default(now()) @db.Timestamptz(6)
+  leads                 leads?    @relation(fields: [related_lead_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users                 users?    @relation(fields: [related_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model Lead {
-  id               String   @id @default(uuid())
-  leadType         String
-  name             String
-  phone            String?
-  email            String?
-  location         String?
-  priority         String   @default("Medium")
-  status           String   @default("New")
-  pipelineStage    String   @default("New")
-  source           String?
-  sourcePage       String?
-  sourceCta        String?
-  utmSource        String?
-  utmMedium        String?
-  utmCampaign      String?
-  utmContent       String?
-  referrer         String?
-  deviceType       String?
-  assignedTo       String?
-  nextFollowUpDate DateTime?
-  formData         String?  // JSON stringified
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-
-  activityLog      ActivityLog[]
-  notes            LeadNote[]
-  followUps        FollowUp[]
-  clientRequests   ClientRequest[]
-  partnerOpportunities PartnerOpportunity[]
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model amc_contracts {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id String?   @db.Uuid
+  client_id  String?   @db.Uuid
+  plan       String?
+  start_date DateTime? @db.Date
+  end_date   DateTime? @db.Date
+  annual_fee Decimal?  @db.Decimal
+  status     String?   @default("active")
+  services   Json?     @default("[]")
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  users      users?    @relation(fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projects   projects? @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model ActivityLog {
-  id          String   @id @default(uuid())
-  leadId      String
-  action      String   // Using 'action' instead of 'activityType' to match ops logic
-  note        String?  // Description
-  user        String   @default("System") // createdBy
-  timestamp   DateTime @default(now()) // createdAt
-
-  lead        Lead     @relation(fields: [leadId], references: [id])
-}
-
-model LeadNote {
-  id        String   @id @default(uuid())
-  leadId    String
-  note      String
-  createdBy String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  lead      Lead     @relation(fields: [leadId], references: [id])
-}
-
-model FollowUp {
-  id           String   @id @default(uuid())
-  leadId       String
-  followUpDate DateTime
-  note         String?
-  status       String   @default("pending") // pending, completed, overdue
-  completedAt  DateTime?
-  createdBy    String
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  lead         Lead     @relation(fields: [leadId], references: [id])
-}
-
-model PartnerProfile {
-  id                   String   @id @default(uuid())
-  userId               String   @unique
-  companyName          String
-  partnerType          String
-  serviceAreas         String?
-  yearsExperience      Int?
-  portfolioLink        String?
-  verificationStatus   String   @default("pending")
-  interestedInShowcase Boolean  @default(false)
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
-
-  user                 User     @relation(fields: [userId], references: [id])
-  opportunities        PartnerOpportunity[]
-}
-
-model ClientRequest {
-  id          String   @id @default(uuid())
-  userId      String
-  leadId      String
-  requestType String
-  title       String
-  status      String   @default("pending")
-  summary     String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  user        User     @relation(fields: [userId], references: [id])
-  lead        Lead     @relation(fields: [leadId], references: [id])
-}
-
-model PartnerOpportunity {
-  id              String   @id @default(uuid())
-  partnerId       String
-  leadId          String
-  opportunityType String
+model blog_posts {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title           String
-  status          String   @default("new")
-  summary         String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-
-  partner         PartnerProfile @relation(fields: [partnerId], references: [id])
-  lead            Lead           @relation(fields: [leadId], references: [id])
+  slug            String    @unique
+  excerpt         String?
+  content         String
+  cover_image_url String?
+  author_id       String?   @db.Uuid
+  tags            String[]  @default([])
+  is_published    Boolean?  @default(false)
+  published_at    DateTime? @db.Timestamptz(6)
+  created_at      DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime? @default(now()) @db.Timestamptz(6)
+  users           users?    @relation(fields: [author_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model ProjectRequirement {
-  id                String   @id @default(uuid())
-  leadId            String
-  clientId          String?
-  requirementType   String   // construction, boq_review, material, property, partner
-  projectTitle      String?
-  projectLocation   String?
-  plotSize          String?
-  builtUpArea       String?
-  floors            String?
-  budgetRange       String?
-  expectedStartDate String?
-  drawingsAvailable Boolean  @default(false)
-  boqAvailable      Boolean  @default(false)
-  scopeSummary      String?
-  currentStage      String?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+model boq_items {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id  String?   @db.Uuid
+  category    String
+  activity    String
+  unit        String
+  quantity    Decimal   @default(0) @db.Decimal
+  rate        Decimal   @default(0) @db.Decimal
+  amount      Decimal?  @default(dbgenerated("(quantity * rate)")) @db.Decimal
+  spec_level  String?
+  version_no  Int?      @default(1)
+  is_approved Boolean?  @default(false)
+  notes       String?
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  projects    projects? @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
-model BoqReview {
-  id               String   @id @default(uuid())
-  leadId           String
-  requirementId    String?
-  reviewStatus     String   @default("pending") // pending, documents_requested, under_review, completed, shared
-  drawingStatus    String?
-  boqStatus        String?
-  builtUpArea      String?
-  projectType      String?
-  reviewNotes      String?
-  riskItems        String?
-  missingItems     String?
-  costObservation  String?
-  engineerSummary  String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-}
-
-model MaterialQuoteRequest {
-  id                         String   @id @default(uuid())
-  leadId                     String
-  requirementId              String?
-  materialCategory           String?
-  materialItems              String?  // JSON
-  projectLocation            String?
-  deliveryTimeline           String?
-  invoiceRequired            Boolean  @default(false)
-  deliveryProofRequired      Boolean  @default(false)
-  supplierComparisonRequired Boolean  @default(false)
-  quoteStatus                String   @default("requested") // requested, collecting_quotes, quote_prepared, shared, accepted, rejected
-  createdAt                  DateTime @default(now())
-  updatedAt                  DateTime @updatedAt
-}
-
-model SupplierQuote {
-  id                     String   @id @default(uuid())
-  materialQuoteRequestId String
-  supplierName           String
-  supplierContact        String?
-  materialItem           String?
-  specification          String?
-  quantity               String?
-  unit                   String?
-  rate                   Float?
-  totalAmount            Float?
-  deliveryTerms          String?
-  validityDate           DateTime?
-  notes                  String?
-  createdAt              DateTime @default(now())
-  updatedAt              DateTime @updatedAt
-}
-
-model PartnerMatch {
-  id             String   @id @default(uuid())
-  leadId         String
-  requirementId  String?
-  partnerId      String
-  partnerType    String?
-  matchStatus    String   @default("shortlisted") // shortlisted, contacted, interested, not_available, assigned, rejected
-  reasonForMatch String?
-  estimatedValue String?
-  notes          String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-}
-
-model Proposal {
-  id                 String   @id @default(uuid())
-  leadId             String
-  requirementId      String?
-  proposalType       String   // construction, boq_review, material_quote, partner_matching, property_support
-  title              String
-  summary            String?
-  scopeOfWork        String?
-  estimatedValue     String?
-  timeline           String?
-  paymentTerms       String?
-  exclusions         String?
-  termsAndConditions String?
-  proposalStatus     String   @default("draft") // draft, internal_review, shared, accepted, rejected, revised
-  createdBy          String?
-  sharedAt           DateTime?
-  acceptedAt         DateTime?
-  rejectedAt         DateTime?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-}
-
-model ProposalLineItem {
-  id          String   @id @default(uuid())
-  proposalId  String
-  itemName    String
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model change_orders {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id  String?   @db.Uuid
+  title       String
   description String?
-  quantity    String?
-  unit        String?
-  rate        Float?
-  amount      Float?
-  category    String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  amount      Decimal   @db.Decimal
+  status      String?   @default("pending")
+  created_by  String?   @db.Uuid
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+  users       users?    @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projects    projects? @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
-model DocumentAsset {
-  id               String   @id @default(uuid())
-  leadId           String?
-  requirementId    String?
-  proposalId       String?
-  uploadedByUserId String?
-  documentType     String   // drawing, boq, estimate, invoice, site_photo, delivery_proof, proposal_pdf, material_quote, supplier_quote, partner_portfolio, verification_document, other
-  fileName         String
-  originalName     String?
-  mimeType         String?
-  fileSize         Int?
-  fileUrl          String
-  storageKey       String?
-  status           String   @default("uploaded") // requested, uploaded, reviewed, rejected, archived
-  visibility       String   @default("ops_only") // ops_only, client_visible, partner_visible, public
-  notes            String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model contractors {
+  id                  String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id             String?               @db.Uuid
+  company_name        String?
+  gst_number          String?
+  license_number      String?
+  specializations     String[]              @default([])
+  city                String?               @default("Chennai")
+  rating              Decimal?              @default(0) @db.Decimal
+  total_projects      Int?                  @default(0)
+  status              String?               @default("pending")
+  documents           Json?                 @default("[]")
+  created_at          DateTime?             @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime?             @default(now()) @db.Timestamptz(6)
+  users               users?                @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  project_contractors project_contractors[]
 }
 
-model SystemAuditLog {
-  id         String   @id @default(uuid())
-  userId     String?
-  action     String
-  entityType String
-  entityId   String
-  metadata   String?  // JSON stringified
-  ipAddress  String?
-  userAgent  String?
-  createdAt  DateTime @default(now())
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model cost_config {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  city              String
+  spec_level        String
+  rate_per_sqft_min Decimal   @db.Decimal
+  rate_per_sqft_max Decimal   @db.Decimal
+  structure_pct     Decimal?  @default(50) @db.Decimal
+  finishes_pct      Decimal?  @default(35) @db.Decimal
+  others_pct        Decimal?  @default(15) @db.Decimal
+  created_at        DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model documents {
+  id                                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id                          String?   @db.Uuid
+  name                                String
+  type                                String
+  file_url                            String
+  public_id                           String?
+  uploaded_by                         String?   @db.Uuid
+  version                             Int?      @default(1)
+  is_shared_with_client               Boolean?  @default(false)
+  created_at                          DateTime? @default(now()) @db.Timestamptz(6)
+  requires_consent                    Boolean?  @default(false)
+  consent_status                      String?   @default("pending")
+  consented_at                        DateTime? @db.Timestamptz(6)
+  consented_by                        String?   @db.Uuid
+  users_documents_consented_byTousers users?    @relation("documents_consented_byTousers", fields: [consented_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projects                            projects? @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users_documents_uploaded_byTousers  users?    @relation("documents_uploaded_byTousers", fields: [uploaded_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model invoice_records {
+  id                String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  invoice_number    String           @unique
+  revenue_record_id String?          @db.Uuid
+  source_type       String?
+  source_id         String?          @db.Uuid
+  customer_name     String
+  customer_phone    String?
+  customer_email    String?
+  billing_address   String?
+  invoice_category  String
+  subtotal          Decimal?         @default(0) @db.Decimal
+  tax_amount        Decimal?         @default(0) @db.Decimal
+  discount_amount   Decimal?         @default(0) @db.Decimal
+  total_amount      Decimal?         @default(0) @db.Decimal
+  amount_paid       Decimal?         @default(0) @db.Decimal
+  amount_due        Decimal?         @default(0) @db.Decimal
+  status            String?          @default("draft")
+  issue_date        DateTime?        @default(dbgenerated("CURRENT_DATE")) @db.Date
+  due_date          DateTime?        @db.Date
+  payment_mode      String?
+  notes             String?
+  metadata          Json?
+  created_by        String?          @db.Uuid
+  created_at        DateTime?        @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime?        @default(now()) @db.Timestamptz(6)
+  cgst              Decimal?         @default(0) @db.Decimal
+  sgst              Decimal?         @default(0) @db.Decimal
+  igst              Decimal?         @default(0) @db.Decimal
+  hsn_sac_code      String?
+  gst_rate          Decimal?         @default(18) @db.Decimal
+  users             users?           @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  revenue_records   revenue_records? @relation(fields: [revenue_record_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  payment_orders    payment_orders[]
+
+  @@index([source_id], map: "idx_invoice_records_source_id")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model issues {
+  id                              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id                      String?   @db.Uuid
+  raised_by                       String?   @db.Uuid
+  assigned_to                     String?   @db.Uuid
+  title                           String
+  description                     String?
+  priority                        String?   @default("medium")
+  status                          String?   @default("open")
+  photos                          Json?     @default("[]")
+  resolved_at                     DateTime? @db.Timestamptz(6)
+  created_at                      DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at                      DateTime? @default(now()) @db.Timestamptz(6)
+  users_issues_assigned_toTousers users?    @relation("issues_assigned_toTousers", fields: [assigned_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projects                        projects? @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users_issues_raised_byTousers   users?    @relation("issues_raised_byTousers", fields: [raised_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model lead_activities {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lead_id       String    @db.Uuid
+  activity_type String    @db.VarChar(50)
+  title         String?
+  description   String?
+  created_by    String?   @db.Uuid
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  follow_up_at  DateTime? @db.Timestamptz(6)
+  metadata      Json?     @default("{}")
+  users         users?    @relation(fields: [created_by], references: [id], onUpdate: NoAction)
+  leads         leads     @relation(fields: [lead_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([created_at(sort: Desc)], map: "idx_lead_activities_created")
+  @@index([follow_up_at], map: "idx_lead_activities_follow_up_at")
+  @@index([lead_id], map: "idx_lead_activities_lead")
+  @@index([lead_id], map: "idx_lead_activities_lead_id")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model leads {
+  id                                           String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                         String
+  phone                                        String
+  email                                        String?
+  city                                         String               @default("Chennai")
+  locality                                     String?
+  plot_area_sqft                               Decimal?             @db.Decimal
+  floors                                       String?
+  spec_level                                   String?
+  rough_budget                                 Decimal?             @db.Decimal
+  estimated_cost_min                           Decimal?             @db.Decimal
+  estimated_cost_max                           Decimal?             @db.Decimal
+  source                                       String?              @default("website")
+  status                                       String?              @default("new")
+  assigned_to                                  String?              @db.Uuid
+  notes                                        String?
+  created_at                                   DateTime?            @default(now()) @db.Timestamptz(6)
+  updated_at                                   DateTime?            @default(now()) @db.Timestamptz(6)
+  lead_type                                    String?              @default("construction")
+  message                                      String?
+  source_page                                  String?
+  metadata                                     Json?                @default("{}")
+  follow_up_date                               DateTime?            @db.Date
+  lost_reason                                  String?
+  property_id                                  String?              @db.Uuid
+  converted_at                                 DateTime?            @db.Timestamptz(6)
+  assigned_partner_id                          String?              @db.Uuid
+  partner_id                                   String?              @db.Uuid
+  priority                                     String?              @default("Medium")
+  spam_status                                  String?              @default("Not Spam")
+  internal_notes                               String?
+  partner_notes                                String?
+  requirement                                  String?
+  category                                     String?
+  ai_requests                                  ai_requests[]
+  lead_activities                              lead_activities[]
+  partners_leads_assigned_partner_idTopartners partners?            @relation("leads_assigned_partner_idTopartners", fields: [assigned_partner_id], references: [id], onUpdate: NoAction)
+  users                                        users?               @relation(fields: [assigned_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  partners_leads_partner_idTopartners          partners?            @relation("leads_partner_idTopartners", fields: [partner_id], references: [id], onUpdate: NoAction)
+  properties                                   properties?          @relation(fields: [property_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  notification_queue                           notification_queue[]
+  projects                                     projects[]
+
+  @@index([assigned_partner_id], map: "idx_leads_assigned_partner")
+  @@index([follow_up_date], map: "idx_leads_follow_up")
+  @@index([lead_type], map: "idx_leads_lead_type")
+  @@index([metadata], map: "idx_leads_metadata_gin", type: Gin)
+  @@index([partner_id], map: "idx_leads_partner")
+  @@index([priority], map: "idx_leads_priority")
+  @@index([spam_status], map: "idx_leads_spam_status")
+}
+
+model materials {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String
+  category   String
+  unit       String
+  rate       Decimal   @db.Decimal
+  supplier   String?
+  brand      String?
+  image_url  String?
+  is_active  Boolean?  @default(true)
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model milestones {
+  id                  String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id          String?           @db.Uuid
+  name                String
+  description         String?
+  order_no            Int
+  planned_date        DateTime?         @db.Date
+  actual_date         DateTime?         @db.Date
+  completion_pct      Decimal?          @default(0) @db.Decimal
+  payment_trigger_pct Decimal?          @default(0) @db.Decimal
+  payment_amount      Decimal?          @default(0) @db.Decimal
+  status              String?           @default("pending")
+  created_at          DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime?         @default(now()) @db.Timestamptz(6)
+  projects            projects?         @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  payments            payments[]
+  progress_logs       progress_logs[]
+  purchase_orders     purchase_orders[]
+  qc_submissions      qc_submissions[]
+  qc_templates        qc_templates[]
+}
+
+model notification_queue {
+  id                                          String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  event_type                                  String
+  target_type                                 String
+  target_id                                   String?             @db.Uuid
+  lead_id                                     String?             @db.Uuid
+  user_id                                     String?             @db.Uuid
+  template_id                                 String?             @db.Uuid
+  channel                                     String?             @default("whatsapp")
+  recipient_phone                             String?
+  recipient_name                              String?
+  rendered_message                            String
+  status                                      String?             @default("pending_review")
+  rule_id                                     String?             @db.Uuid
+  requires_manual_review                      Boolean?            @default(true)
+  preference_check_result                     Json?
+  quiet_hours_check_result                    Json?
+  provider_response                           Json?
+  error_message                               String?
+  created_by                                  String?             @db.Uuid
+  approved_by                                 String?             @db.Uuid
+  sent_by                                     String?             @db.Uuid
+  created_at                                  DateTime?           @default(now()) @db.Timestamptz(6)
+  approved_at                                 DateTime?           @db.Timestamptz(6)
+  sent_at                                     DateTime?           @db.Timestamptz(6)
+  updated_at                                  DateTime?           @default(now()) @db.Timestamptz(6)
+  users_notification_queue_approved_byTousers users?              @relation("notification_queue_approved_byTousers", fields: [approved_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_notification_queue_created_byTousers  users?              @relation("notification_queue_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  leads                                       leads?              @relation(fields: [lead_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  notification_rules                          notification_rules? @relation(fields: [rule_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_notification_queue_sent_byTousers     users?              @relation("notification_queue_sent_byTousers", fields: [sent_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  whatsapp_templates                          whatsapp_templates? @relation(fields: [template_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_notification_queue_user_idTousers     users?              @relation("notification_queue_user_idTousers", fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model notification_rules {
+  id                       String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  rule_key                 String               @unique
+  rule_name                String
+  event_type               String
+  channel                  String               @default("whatsapp")
+  template_id              String?              @db.Uuid
+  target_audience          String
+  is_enabled               Boolean?             @default(false)
+  requires_manual_review   Boolean?             @default(true)
+  respect_quiet_hours      Boolean?             @default(true)
+  respect_user_preferences Boolean?             @default(true)
+  created_by               String?              @db.Uuid
+  created_at               DateTime?            @default(now()) @db.Timestamptz(6)
+  updated_at               DateTime?            @default(now()) @db.Timestamptz(6)
+  notification_queue       notification_queue[]
+  users                    users?               @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  whatsapp_templates       whatsapp_templates?  @relation(fields: [template_id], references: [id], onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model notification_settings {
+  id                            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  automation_mode               String?   @default("manual_approval")
+  whatsapp_enabled              Boolean?  @default(false)
+  email_enabled                 Boolean?  @default(false)
+  max_messages_per_hour         Int?      @default(100)
+  max_messages_per_user_per_day Int?      @default(5)
+  respect_quiet_hours           Boolean?  @default(true)
+  respect_user_preferences      Boolean?  @default(true)
+  created_at                    DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at                    DateTime? @default(now()) @db.Timestamptz(6)
+  metadata                      Json?
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model notifications {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String?   @db.Uuid
+  title      String
+  message    String
+  type       String?   @default("info")
+  is_read    Boolean?  @default(false)
+  link       String?
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  partner_id String?   @db.Uuid
+  partners   partners? @relation(fields: [partner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users      users?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([partner_id], map: "idx_notifications_partner")
+  @@index([user_id], map: "idx_notifications_user")
+}
+
+model partner_boq_items {
+  id              String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  boq_id          String       @db.Uuid
+  category        String?
+  item_name       String
+  quantity        Decimal?     @default(0) @db.Decimal
+  unit            String?      @default("sqft")
+  material_cost   Decimal?     @default(0) @db.Decimal
+  labour_cost     Decimal?     @default(0) @db.Decimal
+  equipment_cost  Decimal?     @default(0) @db.Decimal
+  wastage_percent Decimal?     @default(0) @db.Decimal
+  margin_percent  Decimal?     @default(0) @db.Decimal
+  gst_percent     Decimal?     @default(18) @db.Decimal
+  total_amount    Decimal?     @default(0) @db.Decimal
+  created_at      DateTime?    @default(now()) @db.Timestamptz(6)
+  partner_boqs    partner_boqs @relation(fields: [boq_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([boq_id], map: "idx_partner_boq_items_boq")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model partner_boqs {
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  partner_id          String              @db.Uuid
+  project_id          String?             @db.Uuid
+  title               String
+  package_type        String?             @default("standard")
+  total_internal_cost Decimal?            @default(0) @db.Decimal
+  total_client_quote  Decimal?            @default(0) @db.Decimal
+  estimated_profit    Decimal?            @default(0) @db.Decimal
+  status              String?             @default("Draft")
+  created_at          DateTime?           @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime?           @default(now()) @db.Timestamptz(6)
+  partner_boq_items   partner_boq_items[]
+  partners            partners            @relation(fields: [partner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  partner_projects    partner_projects?   @relation(fields: [project_id], references: [id], onUpdate: NoAction)
+
+  @@index([partner_id], map: "idx_partner_boqs_partner")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model partner_documents {
+  id               String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  partner_id       String            @db.Uuid
+  project_id       String?           @db.Uuid
+  document_name    String
+  document_type    String?
+  file_url         String?
+  status           String?           @default("Draft")
+  version          String?           @default("1.0")
+  uploaded_date    DateTime?         @default(dbgenerated("CURRENT_DATE")) @db.Date
+  created_at       DateTime?         @default(now()) @db.Timestamptz(6)
+  partners         partners          @relation(fields: [partner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  partner_projects partner_projects? @relation(fields: [project_id], references: [id], onUpdate: NoAction)
+
+  @@index([partner_id], map: "idx_partner_documents_partner")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model partner_enquiries {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  partner_id     String?   @db.Uuid
+  partner_slug   String?
+  partner_name   String?
+  category       String?
+  customer_name  String
+  phone          String
+  email          String?
+  requirement    String?
+  location       String?
+  budget_range   String?
+  message        String?
+  source_page    String?   @default("partner_profile")
+  source_type    String?   @default("web")
+  status         String?   @default("New")
+  follow_up_date DateTime? @db.Date
+  notes          String?
+  created_at     DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime? @default(now()) @db.Timestamptz(6)
+  partners       partners? @relation(fields: [partner_id], references: [id], onUpdate: NoAction)
+
+  @@index([created_at(sort: Desc)], map: "idx_partner_enquiries_created")
+  @@index([partner_id], map: "idx_partner_enquiries_partner")
+  @@index([status], map: "idx_partner_enquiries_status")
+}
+
+model partner_gallery {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  partner_id String    @db.Uuid
+  url        String
+  alt        String?
+  caption    String?
+  sort_order Int?      @default(0)
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  partners   partners  @relation(fields: [partner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([partner_id], map: "idx_partner_gallery_partner")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model partner_material_requests {
+  id                  String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  partner_id          String            @db.Uuid
+  project_id          String?           @db.Uuid
+  material_name       String
+  quantity            Decimal?          @default(0) @db.Decimal
+  unit                String?           @default("Nos")
+  required_date       DateTime?         @db.Date
+  priority            String?           @default("Medium")
+  status              String?           @default("Requested")
+  vendor_quote_status String?           @default("Pending")
+  best_rate_request   Boolean?          @default(false)
+  notes               String?
+  created_at          DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime?         @default(now()) @db.Timestamptz(6)
+  partners            partners          @relation(fields: [partner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  partner_projects    partner_projects? @relation(fields: [project_id], references: [id], onUpdate: NoAction)
+
+  @@index([partner_id], map: "idx_partner_material_requests_partner")
+}
+
+model partner_portfolio {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  partner_id      String    @db.Uuid
+  title           String
+  location        String?
+  description     String?
+  image_url       String?
+  video_url       String?
+  completion_year Int?
+  created_at      DateTime? @default(now()) @db.Timestamptz(6)
+  partners        partners  @relation(fields: [partner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([partner_id], map: "idx_partner_portfolio_partner")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model partner_projects {
+  id                        String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  partner_id                String                      @db.Uuid
+  project_name              String
+  client_name               String?
+  location                  String?
+  project_type              String?
+  start_date                DateTime?                   @db.Date
+  target_completion         DateTime?                   @db.Date
+  current_stage             String?
+  progress_percent          Int?                        @default(0)
+  budget                    Decimal?                    @db.Decimal
+  status                    String?                     @default("Planning")
+  notes                     String?
+  created_at                DateTime?                   @default(now()) @db.Timestamptz(6)
+  updated_at                DateTime?                   @default(now()) @db.Timestamptz(6)
+  partner_boqs              partner_boqs[]
+  partner_documents         partner_documents[]
+  partner_material_requests partner_material_requests[]
+  partners                  partners                    @relation(fields: [partner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  partner_site_logs         partner_site_logs[]
+
+  @@index([partner_id], map: "idx_partner_projects_partner")
+}
+
+model partner_site_logs {
+  id                 String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  partner_id         String            @db.Uuid
+  project_id         String?           @db.Uuid
+  log_date           DateTime          @default(dbgenerated("CURRENT_DATE")) @db.Date
+  work_completed     String?
+  labour_count       Int?              @default(0)
+  materials_received String?
+  issues_faced       String?
+  tomorrow_plan      String?
+  photo_url          String?
+  video_url          String?
+  client_visible     Boolean?          @default(true)
+  created_at         DateTime?         @default(now()) @db.Timestamptz(6)
+  partners           partners          @relation(fields: [partner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  partner_projects   partner_projects? @relation(fields: [project_id], references: [id], onUpdate: NoAction)
+
+  @@index([log_date(sort: Desc)], map: "idx_partner_site_logs_date")
+  @@index([partner_id], map: "idx_partner_site_logs_partner")
+}
+
+model partner_videos {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  partner_id String    @db.Uuid
+  title      String?
+  url        String
+  video_type String?   @default("youtube")
+  sort_order Int?      @default(0)
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  partners   partners  @relation(fields: [partner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([partner_id], map: "idx_partner_videos_partner")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model partners {
+  id                                        String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug                                      String                      @unique
+  company_name                              String
+  category                                  String
+  short_description                         String?
+  full_description                          String?
+  logo_url                                  String?
+  cover_url                                 String?
+  location                                  String?
+  service_areas                             String?
+  years_experience                          Int?
+  contact_person                            String?
+  phone                                     String?
+  email                                     String?
+  whatsapp                                  String?
+  website                                   String?
+  services                                  String[]
+  specializations                           String[]
+  certifications                            String[]
+  brands_handled                            String[]
+  project_types                             String[]
+  approval_status                           String                      @default("Pending Review")
+  active                                    Boolean?                    @default(false)
+  featured                                  Boolean?                    @default(false)
+  profile_completion                        Int?                        @default(0)
+  created_at                                DateTime?                   @default(now()) @db.Timestamptz(6)
+  updated_at                                DateTime?                   @default(now()) @db.Timestamptz(6)
+  leads_leads_assigned_partner_idTopartners leads[]                     @relation("leads_assigned_partner_idTopartners")
+  leads_leads_partner_idTopartners          leads[]                     @relation("leads_partner_idTopartners")
+  notifications                             notifications[]
+  partner_boqs                              partner_boqs[]
+  partner_documents                         partner_documents[]
+  partner_enquiries                         partner_enquiries[]
+  partner_gallery                           partner_gallery[]
+  partner_material_requests                 partner_material_requests[]
+  partner_portfolio                         partner_portfolio[]
+  partner_projects                          partner_projects[]
+  partner_site_logs                         partner_site_logs[]
+  partner_videos                            partner_videos[]
+  users                                     users[]
+
+  @@index([approval_status], map: "idx_partners_approval")
+  @@index([category], map: "idx_partners_category")
+  @@index([featured], map: "idx_partners_featured")
+  @@index([slug], map: "idx_partners_slug")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model passport_documents {
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  property_id String?     @db.Uuid
+  section_key String
+  file_name   String
+  file_url    String
+  file_type   String?
+  file_size   Int?
+  visibility  String?     @default("ops_only")
+  uploaded_by String?     @db.Uuid
+  created_at  DateTime?   @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime?   @default(now()) @db.Timestamptz(6)
+  properties  properties? @relation(fields: [property_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users       users?      @relation(fields: [uploaded_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([property_id], map: "idx_passport_docs_property")
+  @@index([section_key], map: "idx_passport_docs_section")
+}
+
+model password_resets {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String?   @db.Uuid
+  token      String
+  expires_at DateTime  @db.Timestamptz(6)
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  used       Boolean?  @default(false)
+  users      users?    @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([token], map: "idx_password_resets_token")
+  @@index([user_id], map: "idx_password_resets_user_id")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model payment_orders {
+  id                                         String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  invoice_id                                 String?          @db.Uuid
+  revenue_record_id                          String?          @db.Uuid
+  client_user_id                             String?          @db.Uuid
+  provider                                   String
+  provider_order_id                          String
+  provider_payment_id                        String?
+  amount                                     Decimal          @db.Decimal
+  currency                                   String?          @default("INR")
+  status                                     String?          @default("created")
+  payment_link                               String?
+  gateway_response                           Json?
+  verified                                   Boolean?         @default(false)
+  created_by                                 String?          @db.Uuid
+  paid_at                                    DateTime?        @db.Timestamptz(6)
+  metadata                                   Json?
+  created_at                                 DateTime?        @default(now()) @db.Timestamptz(6)
+  updated_at                                 DateTime?        @default(now()) @db.Timestamptz(6)
+  users_payment_orders_client_user_idTousers users?           @relation("payment_orders_client_user_idTousers", fields: [client_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_payment_orders_created_byTousers     users?           @relation("payment_orders_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  invoice_records                            invoice_records? @relation(fields: [invoice_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model payments {
+  id                  String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id          String?     @db.Uuid
+  milestone_id        String?     @db.Uuid
+  client_id           String?     @db.Uuid
+  amount              Decimal     @db.Decimal
+  status              String?     @default("pending")
+  payment_method      String?
+  razorpay_order_id   String?
+  razorpay_payment_id String?
+  description         String?
+  paid_at             DateTime?   @db.Timestamptz(6)
+  created_at          DateTime?   @default(now()) @db.Timestamptz(6)
+  users               users?      @relation(fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  milestones          milestones? @relation(fields: [milestone_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projects            projects?   @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model portfolio_projects {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id   String?   @db.Uuid
+  title        String
+  description  String?
+  city         String?   @default("Chennai")
+  project_type String?
+  area_sqft    Decimal?  @db.Decimal
+  floors       String?
+  spec_level   String?
+  images       Json?     @default("[]")
+  is_published Boolean?  @default(false)
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  projects     projects? @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model progress_logs {
+  id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id    String?     @db.Uuid
+  milestone_id  String?     @db.Uuid
+  logged_by     String?     @db.Uuid
+  log_date      DateTime    @default(dbgenerated("CURRENT_DATE")) @db.Date
+  notes         String?
+  photos        Json?       @default("[]")
+  geo_lat       Decimal?    @db.Decimal
+  geo_lng       Decimal?    @db.Decimal
+  weather       String?
+  workers_count Int?        @default(0)
+  created_at    DateTime?   @default(now()) @db.Timestamptz(6)
+  users         users?      @relation(fields: [logged_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  milestones    milestones? @relation(fields: [milestone_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projects      projects?   @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model project_contractors {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id    String?      @db.Uuid
+  contractor_id String?      @db.Uuid
+  role          String?
+  assigned_at   DateTime?    @default(now()) @db.Timestamptz(6)
+  contractors   contractors? @relation(fields: [contractor_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projects      projects?    @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model projects {
+  id                                     String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lead_id                                String?               @db.Uuid
+  client_id                              String                @db.Uuid
+  pm_id                                  String?               @db.Uuid
+  site_engineer_id                       String?               @db.Uuid
+  name                                   String
+  address                                String?
+  city                                   String?               @default("Chennai")
+  locality                               String?
+  plot_area_sqft                         Decimal?              @db.Decimal
+  built_up_area_sqft                     Decimal?              @db.Decimal
+  floors                                 String?
+  spec_level                             String?
+  start_date                             DateTime?             @db.Date
+  expected_end_date                      DateTime?             @db.Date
+  actual_end_date                        DateTime?             @db.Date
+  status                                 String?               @default("design")
+  total_contract_value                   Decimal?              @db.Decimal
+  completion_pct                         Decimal?              @default(0) @db.Decimal
+  cover_image_url                        String?
+  notes                                  String?
+  created_at                             DateTime?             @default(now()) @db.Timestamptz(6)
+  updated_at                             DateTime?             @default(now()) @db.Timestamptz(6)
+  amc_contracts                          amc_contracts[]
+  boq_items                              boq_items[]
+  change_orders                          change_orders[]
+  documents                              documents[]
+  issues                                 issues[]
+  milestones                             milestones[]
+  payments                               payments[]
+  portfolio_projects                     portfolio_projects[]
+  progress_logs                          progress_logs[]
+  project_contractors                    project_contractors[]
+  users_projects_client_idTousers        users                 @relation("projects_client_idTousers", fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  leads                                  leads?                @relation(fields: [lead_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_projects_pm_idTousers            users?                @relation("projects_pm_idTousers", fields: [pm_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_projects_site_engineer_idTousers users?                @relation("projects_site_engineer_idTousers", fields: [site_engineer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  purchase_orders                        purchase_orders[]
+  qc_submissions                         qc_submissions[]
+  warranty_claims                        warranty_claims[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model properties {
+  id                      String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                   String
+  property_type           String               @default("home")
+  owner_name              String
+  owner_phone             String
+  owner_email             String?
+  address                 String?
+  locality                String?
+  city                    String?              @default("Chennai")
+  pincode                 String?
+  plot_area_sqft          Decimal?             @db.Decimal
+  built_up_area_sqft      Decimal?             @db.Decimal
+  floors                  String?
+  bedrooms                Int?
+  bathrooms               Int?
+  facing                  String?
+  project_id              String?              @db.Uuid
+  spec_level              String?
+  construction_year       Int?
+  handover_date           DateTime?            @db.Date
+  passport_status         String?              @default("pending")
+  passport_completeness   Int?                 @default(0)
+  has_legal_docs          Boolean?             @default(false)
+  has_drawings            Boolean?             @default(false)
+  has_boq                 Boolean?             @default(false)
+  has_materials           Boolean?             @default(false)
+  has_quality_checks      Boolean?             @default(false)
+  has_progress_media      Boolean?             @default(false)
+  has_warranty            Boolean?             @default(false)
+  has_maintenance_history Boolean?             @default(false)
+  listing_type            String?              @default("none")
+  listing_status          String?              @default("unlisted")
+  listing_price           Decimal?             @db.Decimal
+  listing_rent_monthly    Decimal?             @db.Decimal
+  cover_image_url         String?
+  images                  Json?                @default("[]")
+  assigned_to             String?              @db.Uuid
+  notes                   String?
+  tags                    String[]             @default([])
+  created_at              DateTime?            @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime?            @default(now()) @db.Timestamptz(6)
+  passport_sections_data  Json?                @default("{}")
+  owner_user_id           String?              @db.Uuid
+  leads                   leads[]
+  passport_documents      passport_documents[]
+  users                   users?               @relation(fields: [owner_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([city], map: "idx_properties_city")
+  @@index([listing_type], map: "idx_properties_listing_type")
+  @@index([owner_phone], map: "idx_properties_owner_phone")
+  @@index([owner_user_id], map: "idx_properties_owner_user_id")
+  @@index([passport_status], map: "idx_properties_passport_status")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model purchase_orders {
+  id                                       String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id                               String?     @db.Uuid
+  milestone_id                             String?     @db.Uuid
+  supplier_id                              String?     @db.Uuid
+  po_number                                String?     @unique
+  status                                   String?     @default("draft")
+  items                                    Json        @default("[]")
+  total_amount                             Decimal?    @default(0) @db.Decimal
+  expected_delivery                        DateTime?   @db.Date
+  actual_delivery                          DateTime?   @db.Date
+  notes                                    String?
+  created_by                               String?     @db.Uuid
+  created_at                               DateTime?   @default(now()) @db.Timestamptz(6)
+  updated_at                               DateTime?   @default(now()) @db.Timestamptz(6)
+  users_purchase_orders_created_byTousers  users?      @relation("purchase_orders_created_byTousers", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  milestones                               milestones? @relation(fields: [milestone_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projects                                 projects?   @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users_purchase_orders_supplier_idTousers users?      @relation("purchase_orders_supplier_idTousers", fields: [supplier_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model qc_submissions {
+  id                                       String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  template_id                              String?       @db.Uuid
+  project_id                               String?       @db.Uuid
+  milestone_id                             String?       @db.Uuid
+  submitted_by                             String?       @db.Uuid
+  submitted_at                             DateTime?     @default(now()) @db.Timestamptz(6)
+  results                                  Json          @default("[]")
+  overall_pass                             Boolean?      @default(false)
+  reviewed_by                              String?       @db.Uuid
+  reviewed_at                              DateTime?     @db.Timestamptz(6)
+  review_notes                             String?
+  milestones                               milestones?   @relation(fields: [milestone_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projects                                 projects?     @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users_qc_submissions_reviewed_byTousers  users?        @relation("qc_submissions_reviewed_byTousers", fields: [reviewed_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_qc_submissions_submitted_byTousers users?        @relation("qc_submissions_submitted_byTousers", fields: [submitted_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  qc_templates                             qc_templates? @relation(fields: [template_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model qc_templates {
+  id             String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  milestone_id   String?          @db.Uuid
+  name           String
+  items          Json             @default("[]")
+  created_at     DateTime?        @default(now()) @db.Timestamptz(6)
+  qc_submissions qc_submissions[]
+  milestones     milestones?      @relation(fields: [milestone_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model revenue_records {
+  id                  String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  source_type         String            @db.VarChar(50)
+  source_id           String?           @db.Uuid
+  revenue_category    String            @db.VarChar(50)
+  title               String?
+  customer_name       String?
+  amount_expected     Decimal?          @default(0) @db.Decimal(15, 2)
+  amount_received     Decimal?          @default(0) @db.Decimal(15, 2)
+  amount_pending      Decimal?          @default(0) @db.Decimal(15, 2)
+  commission_expected Decimal?          @default(0) @db.Decimal(15, 2)
+  commission_received Decimal?          @default(0) @db.Decimal(15, 2)
+  status              String            @default("expected") @db.VarChar(50)
+  payment_mode        String?           @db.VarChar(50)
+  received_date       DateTime?         @db.Timestamptz(6)
+  notes               String?
+  created_by          String?           @db.Uuid
+  created_at          DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime?         @default(now()) @db.Timestamptz(6)
+  metadata            Json?             @default("{}")
+  invoice_records     invoice_records[]
+  users               users?            @relation(fields: [created_by], references: [id], onUpdate: NoAction)
+
+  @@index([revenue_category], map: "idx_revenue_category")
+  @@index([source_type, source_id], map: "idx_revenue_source")
+  @@index([status], map: "idx_revenue_status")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model users {
+  id                                                       String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                                                     String
+  email                                                    String               @unique
+  phone                                                    String?              @unique
+  password_hash                                            String
+  role                                                     String
+  avatar_url                                               String?
+  is_active                                                Boolean?             @default(true)
+  created_at                                               DateTime?            @default(now()) @db.Timestamptz(6)
+  updated_at                                               DateTime?            @default(now()) @db.Timestamptz(6)
+  metadata                                                 Json?                @default("{}")
+  partner_id                                               String?              @db.Uuid
+  accounting_ledger                                        accounting_ledger[]
+  ai_requests                                              ai_requests[]
+  amc_contracts                                            amc_contracts[]
+  blog_posts                                               blog_posts[]
+  change_orders                                            change_orders[]
+  contractors                                              contractors[]
+  documents_documents_consented_byTousers                  documents[]          @relation("documents_consented_byTousers")
+  documents_documents_uploaded_byTousers                   documents[]          @relation("documents_uploaded_byTousers")
+  invoice_records                                          invoice_records[]
+  issues_issues_assigned_toTousers                         issues[]             @relation("issues_assigned_toTousers")
+  issues_issues_raised_byTousers                           issues[]             @relation("issues_raised_byTousers")
+  lead_activities                                          lead_activities[]
+  leads                                                    leads[]
+  notification_queue_notification_queue_approved_byTousers notification_queue[] @relation("notification_queue_approved_byTousers")
+  notification_queue_notification_queue_created_byTousers  notification_queue[] @relation("notification_queue_created_byTousers")
+  notification_queue_notification_queue_sent_byTousers     notification_queue[] @relation("notification_queue_sent_byTousers")
+  notification_queue_notification_queue_user_idTousers     notification_queue[] @relation("notification_queue_user_idTousers")
+  notification_rules                                       notification_rules[]
+  notifications                                            notifications[]
+  passport_documents                                       passport_documents[]
+  password_resets                                          password_resets[]
+  payment_orders_payment_orders_client_user_idTousers      payment_orders[]     @relation("payment_orders_client_user_idTousers")
+  payment_orders_payment_orders_created_byTousers          payment_orders[]     @relation("payment_orders_created_byTousers")
+  payments                                                 payments[]
+  progress_logs                                            progress_logs[]
+  projects_projects_client_idTousers                       projects[]           @relation("projects_client_idTousers")
+  projects_projects_pm_idTousers                           projects[]           @relation("projects_pm_idTousers")
+  projects_projects_site_engineer_idTousers                projects[]           @relation("projects_site_engineer_idTousers")
+  properties                                               properties[]
+  purchase_orders_purchase_orders_created_byTousers        purchase_orders[]    @relation("purchase_orders_created_byTousers")
+  purchase_orders_purchase_orders_supplier_idTousers       purchase_orders[]    @relation("purchase_orders_supplier_idTousers")
+  qc_submissions_qc_submissions_reviewed_byTousers         qc_submissions[]     @relation("qc_submissions_reviewed_byTousers")
+  qc_submissions_qc_submissions_submitted_byTousers        qc_submissions[]     @relation("qc_submissions_submitted_byTousers")
+  revenue_records                                          revenue_records[]
+  partners                                                 partners?            @relation(fields: [partner_id], references: [id], onUpdate: NoAction)
+  warranty_claims_warranty_claims_assigned_toTousers       warranty_claims[]    @relation("warranty_claims_assigned_toTousers")
+  warranty_claims_warranty_claims_client_idTousers         warranty_claims[]    @relation("warranty_claims_client_idTousers")
+
+  @@index([partner_id], map: "idx_users_partner_id")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model warranty_claims {
+  id                                       String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id                               String?   @db.Uuid
+  client_id                                String?   @db.Uuid
+  title                                    String
+  description                              String?
+  category                                 String?
+  photos                                   Json?     @default("[]")
+  status                                   String?   @default("open")
+  assigned_to                              String?   @db.Uuid
+  resolved_at                              DateTime? @db.Timestamptz(6)
+  created_at                               DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at                               DateTime? @default(now()) @db.Timestamptz(6)
+  users_warranty_claims_assigned_toTousers users?    @relation("warranty_claims_assigned_toTousers", fields: [assigned_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_warranty_claims_client_idTousers   users?    @relation("warranty_claims_client_idTousers", fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projects                                 projects? @relation(fields: [project_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model whatsapp_templates {
+  id                     String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  template_key           String               @unique @db.VarChar(100)
+  template_name          String               @db.VarChar(100)
+  category               String               @db.VarChar(50)
+  channel_type           String?              @default("both") @db.VarChar(20)
+  message_body           String
+  variables              Json?                @default("[]")
+  is_active              Boolean?             @default(true)
+  requires_meta_approval Boolean?             @default(false)
+  meta_template_name     String?              @db.VarChar(100)
+  created_by             String?              @db.Uuid
+  created_at             DateTime?            @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?            @default(now()) @db.Timestamptz(6)
+  notification_queue     notification_queue[]
+  notification_rules     notification_rules[]
+}
+
+model ai_floor_plan_projects {
+  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title               String
+  owner_user_id       String?  @db.Uuid
+  partner_id          String?  @db.Uuid
+  lead_id             String?  @db.Uuid
+  plot_width          Float
+  plot_depth          Float
+  unit                String   @default("feet")
+  facing              String?
+  building_type       String?
+  floors              Int      @default(1)
+  vastu_preference    String?
+  budget_range        String?
+  family_size         String?
+  parking             String?
+  special_spaces      String[] @default([])
+  style               String?
+  status              String   @default("draft")
+  selected_version_id String?  @db.Uuid
+  metadata            Json?    @default("{}")
+  created_at          DateTime @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime @default(now()) @db.Timestamptz(6)
+  versions            ai_floor_plan_versions[]
+  generations         ai_floor_plan_generations[]
+}
+
+model ai_floor_plan_versions {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id   String   @db.Uuid
+  version_name String
+  option_type  String?
+  plan_json    Json
+  summary_json Json?
+  created_by   String?  @db.Uuid
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  project      ai_floor_plan_projects @relation(fields: [project_id], references: [id], onDelete: Cascade)
+}
+
+model ai_floor_plan_generations {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id    String   @db.Uuid
+  prompt        String
+  parsed_input  Json?
+  output_json   Json?
+  status        String   @default("pending")
+  credits_used  Float?   @default(1.0)
+  error_message String?
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  completed_at  DateTime?
+  project       ai_floor_plan_projects @relation(fields: [project_id], references: [id], onDelete: Cascade)
+}
+
+model ai_floor_plan_credit_ledger {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id      String?  @db.Uuid
+  partner_id   String?  @db.Uuid
+  change       Float
+  reason       String
+  reference_id String?  @db.Uuid
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
 }
