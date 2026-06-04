@@ -30,6 +30,7 @@ const MODULES = {
   maintenance: { href: '/partner/maintenance', icon: '🔧', label: 'Maintenance & AMC' },
   reports: { href: '/partner/reports', icon: '📑', label: 'Smart MIS Reports' },
   aiAssistant: { href: '/partner/ai-assistant', icon: '🤖', label: 'AI Site Assistant' },
+  aiFloorPlan: { href: '/partner/ai-floor-plan-creator', icon: '📐', label: 'AI Floor Plan' },
   profile: { href: '/partner/profile', icon: '🏢', label: 'Public Profile' },
   settings: { href: '/partner/settings', icon: '⚙️', label: 'Settings' }
 };
@@ -41,13 +42,13 @@ const ROLE_MENUS = {
     MODULES.boq, MODULES.budget, MODULES.logbook, MODULES.progress, MODULES.materials,
     MODULES.procurement, MODULES.vendors, MODULES.crew, MODULES.equipment, MODULES.quality,
     MODULES.issues, MODULES.clientRoom, MODULES.documents, MODULES.finance, MODULES.invoices,
-    MODULES.maintenance, MODULES.reports, MODULES.aiAssistant, MODULES.profile, MODULES.settings
+    MODULES.maintenance, MODULES.reports, MODULES.aiFloorPlan, MODULES.aiAssistant, MODULES.profile, MODULES.settings
   ],
   architect: [
     MODULES.dashboard, MODULES.leads, 
     { ...MODULES.projects, label: 'Design Projects' }, MODULES.design, 
     MODULES.documents, { ...MODULES.boq, label: 'BOQ Estimation' }, 
-    MODULES.clientRoom, MODULES.reports, MODULES.aiAssistant, MODULES.profile, MODULES.settings
+    MODULES.clientRoom, MODULES.reports, MODULES.aiFloorPlan, MODULES.aiAssistant, MODULES.profile, MODULES.settings
   ],
   interior: [
     MODULES.dashboard, MODULES.leads, { ...MODULES.projects, label: 'Interior Projects' }, 
@@ -159,7 +160,19 @@ export default function PartnerLayout({ children }) {
                   '/partner/crew',
                   '/partner/pre-construction',
                   '/partner/settings',
+                  '/partner/budget',
+                  '/partner/design',
+                  '/partner/progress',
+                  '/partner/procurement',
+                  '/partner/vendors',
+                  '/partner/equipment',
+                  '/partner/quality',
+                  '/partner/client-room',
+                  '/partner/invoices',
+                  '/partner/maintenance',
+                  '/partner/ai-floor-plan-creator',
                 ];
+
                 if (!builtRoutes.includes(item.href)) {
                   e.preventDefault();
                   setComingSoonModule(item.label);
@@ -197,7 +210,7 @@ export default function PartnerLayout({ children }) {
 
       {sidebarOpen && <div className={styles.overlay} onClick={() => setSidebarOpen(false)} style={{ zIndex: 90 }} />}
 
-      <div className={styles.main} style={{ marginLeft: '280px', background: '#F8FAFC' }}>
+      <div className={styles.main} style={{ background: '#F8FAFC' }}>
         <header className={styles.topbar}>
           <button aria-label="Open menu" className={styles.menuBtn} onClick={() => setSidebarOpen(true)}>☰</button>
           <div style={{ flex: 1, fontWeight: 600, fontSize: '16px' }}>
@@ -276,9 +289,6 @@ export default function PartnerLayout({ children }) {
       
       {/* Dynamic CSS override for mobile layout sidebar width compensation */}
       <style dangerouslySetInnerHTML={{__html: `
-        @media (max-width: 900px) {
-          .${styles.main} { margin-left: 0 !important; }
-        }
         .${styles.navItem}:hover { background: rgba(255,255,255,0.05); color: white !important; }
         .${styles.navItem}.${styles.active} {
           background: rgba(252, 110, 32, 0.1) !important;

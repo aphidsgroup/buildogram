@@ -97,6 +97,13 @@
   flex-wrap: wrap;
   align-items: center;
 }
+/* Ensure all nav action buttons meet 44px tap target */
+.topActions a,
+.topActions button {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
 .menuBtn {
   display: none;
   background: none;

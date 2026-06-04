@@ -240,7 +240,7 @@ export default function Home() {
       {/* ── 5. ECOSYSTEM ── */}
       <section className={`fullBleedSection ${styles.sectionBand}`}>
         <div className="sectionInner">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
+          <div className={styles.splitGrid}>
             <div className={styles.blockHead} style={{ marginBottom: 0 }}>
               <span className={styles.eyebrow}>Connected Construction Ecosystem</span>
               <h2>One connected ecosystem for construction, materials, and property.</h2>
@@ -250,7 +250,7 @@ export default function Home() {
                 <Link href="/contact?type=construction" className="btn btn-outline">Talk to an Engineer</Link>
               </div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div className={styles.splitGridCards}>
               {ECOSYSTEM.map((e, i) => (
                 <div key={i} style={{ background: 'var(--bg-card2)', borderRadius: '14px', padding: '18px 16px', display: 'flex', alignItems: 'center', gap: '10px', border: '1px solid var(--border)' }}>
                   <span style={{ fontSize: '24px' }}>{e.icon}</span>
@@ -289,17 +289,15 @@ export default function Home() {
       {/* ── 7. PARTNER B2B SECTION ── */}
       <section className={`fullBleedSection ${styles.sectionBand}`}>
         <div className="sectionInner">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '4rem', alignItems: 'center' }}>
-            <div>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
-                {PARTNER_BENEFITS.map((b, i) => (
-                  <div key={i} style={{ background: 'var(--bg-card2)', borderRadius: '14px', padding: '20px', border: '1px solid var(--border)' }}>
-                    <div style={{ fontSize: '28px', marginBottom: '8px' }}>{b.icon}</div>
-                    <div style={{ fontWeight: 700, color: 'var(--secondary)', fontSize: '14px', marginBottom: '4px' }}>{b.title}</div>
-                    <div style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.5 }}>{b.desc}</div>
-                  </div>
-                ))}
-              </div>
+          <div className={styles.splitGrid}>
+            <div className={styles.splitGridCards}>
+              {PARTNER_BENEFITS.map((b, i) => (
+                <div key={i} style={{ background: 'var(--bg-card2)', borderRadius: '14px', padding: '20px', border: '1px solid var(--border)' }}>
+                  <div style={{ fontSize: '28px', marginBottom: '8px' }}>{b.icon}</div>
+                  <div style={{ fontWeight: 700, color: 'var(--secondary)', fontSize: '14px', marginBottom: '4px' }}>{b.title}</div>
+                  <div style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.5 }}>{b.desc}</div>
+                </div>
+              ))}
             </div>
             <div className={styles.blockHead} style={{ marginBottom: 0 }}>
               <span className={styles.eyebrow}>For Construction Professionals</span>

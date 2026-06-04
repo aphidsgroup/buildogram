@@ -57,7 +57,17 @@ export default function OpsLayout({ children }) {
                 key={href} 
                 href={href} 
                 onClick={(e) => {
-                  const builtRoutes = ['/ops/dashboard', '/ops/leads'];
+                  const builtRoutes = [
+                    '/ops/dashboard', '/ops/leads', '/ops/users', '/ops/partners',
+                    '/ops/projects', '/ops/properties', '/ops/payments', '/ops/invoices',
+                    '/ops/reports', '/ops/settings', '/ops/pipeline', '/ops/revenue',
+                    '/ops/accounting', '/ops/cost-config', '/ops/pilot-readiness',
+                    '/ops/pilot-launch', '/ops/launch-checklist', '/ops/system-status',
+                    '/ops/notification-settings', '/ops/notification-rules',
+                    '/ops/notification-queue', '/ops/whatsapp-templates',
+                    '/ops/blog', '/ops/help',
+                  ];
+
                   if (!builtRoutes.includes(href)) {
                     e.preventDefault();
                     setComingSoonModule(label);

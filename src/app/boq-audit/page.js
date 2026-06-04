@@ -94,7 +94,8 @@ export default function BOQAuditPage() {
             </p>
           </div>
           <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+            <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', width: '100%' }}>
+            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '400px' }}>
               <thead>
                 <tr style={{ background: '#292929' }}>
                   <th style={{ padding: '14px 20px', textAlign: 'left', color: 'rgba(255,255,255,0.7)', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Hidden Cost Item</th>
@@ -112,6 +113,7 @@ export default function BOQAuditPage() {
                 ))}
               </tbody>
             </table>
+            </div>
           </div>
           <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '14px', marginTop: '16px' }}>
             * Based on Buildogram's analysis of 100+ contractor quotes in Chennai & Tamil Nadu

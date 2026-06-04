@@ -113,7 +113,7 @@ export default function PartnerProfile() {
         )}
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '24px', alignItems: 'start' }}>
+      <div className="profile-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '24px', alignItems: 'start' }}>
 
         {/* LEFT: FORM */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -121,7 +121,7 @@ export default function PartnerProfile() {
           {/* SECTION 1 */}
           <div className="card" style={{ padding: '24px', borderRadius: '16px' }}>
             <h2 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>🏢 Company Details</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
+            <div className="form-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
               <FormField label="Company Name" required><input className="input" value={profile.companyName} onChange={f('companyName')} placeholder="Your company or firm name" /></FormField>
               <FormField label="Category">
                 <select className="input" value={profile.category} onChange={f('category')}>
@@ -148,7 +148,7 @@ export default function PartnerProfile() {
             <FormField label="Services Offered">
               <textarea className="input" rows={2} value={profile.services} onChange={f('services')} placeholder="e.g. Home Construction, Villa Construction, Renovation, Interior Design" style={{ resize: 'vertical' }} />
             </FormField>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
+            <div className="form-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
               <FormField label="Service Areas"><input className="input" value={profile.serviceAreas} onChange={f('serviceAreas')} placeholder="e.g. Chennai, Coimbatore, Madurai" /></FormField>
               <FormField label="Brands Handled"><input className="input" value={profile.brands} onChange={f('brands')} placeholder="e.g. Tata Steel, UltraTech, Jaquar" /></FormField>
             </div>
@@ -160,7 +160,7 @@ export default function PartnerProfile() {
           {/* SECTION 3 */}
           <div className="card" style={{ padding: '24px', borderRadius: '16px' }}>
             <h2 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>📞 Contact Details</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
+            <div className="form-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
               <FormField label="Contact Person Name"><input className="input" value={profile.contactPerson} onChange={f('contactPerson')} placeholder="Primary contact name" /></FormField>
               <FormField label="Phone Number"><input className="input" type="tel" value={profile.phone} onChange={f('phone')} placeholder="10-digit mobile number" /></FormField>
               <FormField label="Email Address"><input className="input" type="email" value={profile.email} onChange={f('email')} placeholder="business@email.com" /></FormField>
@@ -230,7 +230,16 @@ export default function PartnerProfile() {
         </div>
       </div>
 
-      <style dangerouslySetInnerHTML={{__html:`@media(max-width:900px){.profile-grid{grid-template-columns:1fr!important}}`}} />
+      <style dangerouslySetInnerHTML={{__html:`
+        @media(max-width:900px){
+          .profile-grid{grid-template-columns:1fr!important;}
+          .profile-grid > div:last-child { position: static !important; top: auto !important; }
+        }
+        @media(max-width:600px){
+          .form-grid-2{grid-template-columns:1fr!important;}
+          .form-grid-2 [style*="gridColumn"]{grid-column:auto!important;}
+        }
+      `}} />
     </div>
   );
 }

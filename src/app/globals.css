@@ -454,3 +454,378 @@ body {
     min-width: 0;
   }
 }
+
+/* 
+==================================================
+MOBILE UX AUDIT FIXES — June 2026
+Fixes: tap targets, table scroll, font size, overflow
+================================================== 
+*/
+
+/* ── Nav & Footer Tap Targets (min 44×44px) ── */
+@media (max-width: 768px) {
+  nav a,
+  footer a,
+  header a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+}
+
+/* ── Tables — always scrollable on mobile ── */
+.table-wrap,
+.table-wrapper,
+.tableWrap,
+[class*="tableWrap"],
+[class*="table-wrap"] {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  /* Make bare tables inside cards scroll */
+  .card table,
+  [class*="card"] table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    max-width: 100%;
+  }
+  th, td { white-space: nowrap; }
+}
+
+/* ── Minimum Font Size on Mobile ── */
+@media (max-width: 768px) {
+  small,
+  .text-xs,
+  caption,
+  figcaption {
+    font-size: 12px !important;
+  }
+}
+
+/* ── Viewport overflow prevention ── */
+html, body { max-width: 100vw; }
+img, video, iframe { max-width: 100%; height: auto; }
+
+/* ── Dashboard: prevent content overflow on mobile ── */
+@media (max-width: 900px) {
+  [class*="content"],
+  [class*="shell"] {
+    overflow-x: hidden;
+    min-width: 0;
+  }
+}
+
+/* ── Responsive KPI grids (inline-style grids) ── */
+@media (max-width: 600px) {
+  [style*="repeat(4,"] { grid-template-columns: repeat(2, 1fr) !important; }
+  [style*="repeat(4, "] { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/*
+==================================================
+GLOBAL RESPONSIVE GRID UTILITIES
+Fixes inline-style gridTemplateColumns across all pages
+==================================================
+*/
+
+/* Two-column grid that stacks on mobile — add className="col-2" */
+.col-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+/* Three-column grid that goes 2-col then 1-col */
+.col-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+/* Auto-fit grid — always responsive */
+.col-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+/* Dashboard form grids — 2 col that stack on mobile */
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 16px;
+}
+/* Modal internal grids */
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+/* Generic 2-col grid class */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .col-2 { grid-template-columns: 1fr !important; }
+  .col-3 { grid-template-columns: 1fr 1fr !important; }
+}
+@media (max-width: 480px) {
+  .col-2, .col-3 { grid-template-columns: 1fr !important; }
+}
+
+/* Responsive breakpoints for dashboard form/modal grids */
+@media (max-width: 600px) {
+  .form-grid-2 { grid-template-columns: 1fr !important; }
+  .modal-grid { grid-template-columns: 1fr !important; }
+  .grid-2 { grid-template-columns: 1fr !important; }
+  /* Remove gridColumn span in collapsed grids */
+  .form-grid-2 [style*="gridColumn"],
+  .modal-grid [style*="gridColumn"] {
+    grid-column: auto !important;
+  }
+}
+
+/* ── Attribute-selector overrides for inline grids ── */
+/* These catch all divs using style="display:grid;gridTemplateColumns:'1fr 1fr'" */
+@media (max-width: 768px) {
+  /* Split-panel sections (text + cards side by side) */
+  [style*="gridTemplateColumns: '1fr 1fr'"],
+  [style*="gridTemplateColumns: \"1fr 1fr\""],
+  [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* 3-col grids → 2-col on tablet */
+  [style*="gridTemplateColumns: 'repeat(3"],
+  [style*="grid-template-columns: repeat(3"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* All 2-col and 3-col → single column on very small */
+  [style*="gridTemplateColumns: '1fr 1fr'"],
+  [style*="grid-template-columns: 1fr 1fr"],
+  [style*="gridTemplateColumns: 'repeat(3"],
+  [style*="grid-template-columns: repeat(3"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Dashboard modal/panel grids on mobile ── */
+@media (max-width: 600px) {
+  /* Detail view 2-col grids in modals/panels */
+  .card [style*="gridTemplateColumns: '1fr 1fr'"],
+  .card [style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/*
+==================================================
+COMPREHENSIVE SITE-WIDE MOBILE FIXES
+Covers ALL remaining responsive issues
+==================================================
+*/
+
+/* ── 1. Section padding: all large inline padding shrinks on mobile ── */
+@media (max-width: 768px) {
+  /* Hero / dark hero sections */
+  [style*="padding: '60px 0"],
+  [style*="padding: '80px 0"],
+  [style*="padding: '72px 0"],
+  [style*="padding: '64px 0"],
+  [style*="padding: '56px 0"],
+  [style*="padding: '48px 0"] {
+    padding-top: 32px !important;
+    padding-bottom: 40px !important;
+  }
+
+  /* Card paddings on mobile */
+  [style*="padding: '40px'"],
+  [style*="padding: '48px'"] {
+    padding: 20px !important;
+  }
+
+  [style*="padding: '32px'"],
+  [style*="padding: '36px'"] {
+    padding: 16px !important;
+  }
+}
+
+/* ── 2. repeat(3) and repeat(4) grids → responsive ── */
+@media (max-width: 900px) {
+  /* 4-col → 2-col */
+  [style*="repeat(4, 1fr)"],
+  [style*="repeat(4,1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  /* 3-col → 2-col on tablet */
+  [style*="repeat(3, 1fr)"],
+  [style*="repeat(3,1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 480px) {
+  /* All fixed-count grids → single col on phones */
+  [style*="repeat(4, 1fr)"],
+  [style*="repeat(4,1fr)"],
+  [style*="repeat(3, 1fr)"],
+  [style*="repeat(3,1fr)"],
+  [style*="repeat(2, 1fr)"],
+  [style*="repeat(2,1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── 3. Wide gap grids: 4rem / 5rem gaps → tighter on mobile ── */
+@media (max-width: 768px) {
+  [style*="gap: '4rem'"],
+  [style*="gap: '5rem'"],
+  [style*="gap: '3rem'"] {
+    gap: 16px !important;
+  }
+  [style*="gap: '2rem'"],
+  [style*="gap: '2.5rem'"] {
+    gap: 12px !important;
+  }
+}
+
+/* ── 4. Flex rows without wrap — force wrap on mobile ── */
+@media (max-width: 768px) {
+  /* Any flex row that could overflow */
+  [style*="display: 'flex'"][style*="gap"],
+  [style*="display: flex"][style*="gap"] {
+    flex-wrap: wrap;
+  }
+  /* Specifically: stats bars and icon rows */
+  [style*="justifyContent: 'center'"][style*="gap: '48px'"],
+  [style*="justifyContent: 'center'"][style*="gap: '40px'"],
+  [style*="justifyContent: 'center'"][style*="gap: '32px'"] {
+    gap: 20px !important;
+    flex-wrap: wrap !important;
+  }
+}
+
+/* ── 5. Fixed-height elements that break mobile ── */
+@media (max-width: 768px) {
+  [style*="height: '500px'"],
+  [style*="height: '400px'"],
+  [style*="height: '300px'"] {
+    height: auto !important;
+    min-height: 200px;
+  }
+}
+
+/* ── 6. MaxWidth containers — allow full width on mobile ── */
+@media (max-width: 768px) {
+  [style*="maxWidth: '900px'"],
+  [style*="maxWidth: '820px'"],
+  [style*="maxWidth: '780px'"],
+  [style*="maxWidth: '760px'"],
+  [style*="maxWidth: '720px'"],
+  [style*="maxWidth: '700px'"],
+  [style*="maxWidth: '660px'"],
+  [style*="maxWidth: '640px'"] {
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
+
+/* ── 7. minmax() grid that has fixed min too large ── */
+@media (max-width: 768px) {
+  [style*="minmax(280px"],
+  [style*="minmax(300px"],
+  [style*="minmax(320px"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── 8. Hero/CTA inline font sizes — prevent overflow ── */
+@media (max-width: 768px) {
+  [style*="fontSize: '18px'"] {
+    font-size: 15px !important;
+  }
+  [style*="fontSize: '20px'"] {
+    font-size: 16px !important;
+  }
+}
+
+/* ── 9. Dashboard-specific: detail panels and split grids ── */
+@media (max-width: 768px) {
+  /* Partner project [id] split layout */
+  [style*="gridTemplateColumns: '1.2fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="gridTemplateColumns: '0.8fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*="gridTemplateColumns: '1.5fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  /* Stats bars in dashboards */
+  [style*="gridTemplateColumns: '2fr"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── 10. Section padding for hardcoded values ── */
+@media (max-width: 768px) {
+  [style*="padding: '64px 20px'"],
+  [style*="padding: '80px 24px'"],
+  [style*="padding: '60px 0 72px'"],
+  [style*="padding: '40px 0 80px'"],
+  [style*="padding: '80px 0 60px'"] {
+    padding: 32px 16px !important;
+  }
+  [style*="padding: '60px 0'"],
+  [style*="padding: '80px 0'"],
+  [style*="padding: '72px 0'"] {
+    padding: 32px 0 !important;
+  }
+  /* Inner container paddings */
+  [style*="padding: '80px 24px'"],
+  [style*="padding: '56px 24px'"] {
+    padding: 24px 16px !important;
+  }
+}
+
+/* ── 11. Dashboard topbar flex items — don't overflow ── */
+@media (max-width: 480px) {
+  /* Page headers in dashboards */
+  .page-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+  }
+  .page-header h1 {
+    font-size: 22px !important;
+  }
+  .page-header > div:last-child {
+    width: 100%;
+  }
+  .page-header .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── 12. Form grids in dashboards — stack on mobile ── */
+@media (max-width: 600px) {
+  .grid-2 { grid-template-columns: 1fr !important; }
+}
+
+/* ── 13. Operator section padding (from section style) ── */
+@media (max-width: 768px) {
+  .section { padding: 40px 0 !important; }
+  .container { padding-left: 16px !important; padding-right: 16px !important; }
+}
