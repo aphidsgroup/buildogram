@@ -54,11 +54,17 @@
 }
 
 .card {
-  background: white;
-  padding: 30px;
-  border-radius: 16px;
+  background: var(--bg-card);
+  padding: 32px;
+  border-radius: var(--radius-lg);
   border: 1px solid var(--border);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+  box-shadow: var(--shadow);
+  transition: all var(--duration-normal) var(--ease-out-expo);
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-premium);
+  border-color: rgba(252, 110, 32, 0.2);
 }
 
 .cardIcon {

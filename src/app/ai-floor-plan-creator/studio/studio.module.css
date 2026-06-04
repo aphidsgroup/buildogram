@@ -7,11 +7,13 @@
 
 .sidebar {
   width: 350px;
-  background: white;
+  background: var(--bg-card);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.02);
+  z-index: 10;
 }
 
 .sidebarHeader {
@@ -50,13 +52,16 @@
 }
 
 .topBar {
-  height: 60px;
-  background: white;
+  height: 64px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 24px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  z-index: 5;
 }
 
 .formGroup {
@@ -100,20 +105,25 @@
 }
 
 .optionCard {
-  border: 2px solid var(--border);
-  border-radius: 8px;
-  padding: 12px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--duration-normal) var(--ease-out-expo);
+  box-shadow: var(--shadow-sm);
 }
 
 .optionCard:hover {
-  border-color: #cbd5e1;
+  border-color: rgba(252, 110, 32, 0.3);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
 }
 
 .optionCard.selected {
   border-color: var(--primary);
-  background: rgba(252, 110, 32, 0.05);
+  background: rgba(252, 110, 32, 0.04);
+  box-shadow: 0 0 0 1px var(--primary);
 }
 
 .optionCard h4 {

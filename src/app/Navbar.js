@@ -1,24 +1,36 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
+import { AnimatePresence, motion } from 'motion/react';
 import styles from './Navbar.module.css';
 
 const NAV_LINKS = [
   { href: '/contact?type=construction', label: 'Talk to an Engineer' },
-  { href: '/materials', label: 'Materials' },
-  { href: '/partners/directory', label: 'Verified Partners' },
-  { href: '/property-passport', label: 'Property Passport' },
-  { href: '/properties', label: 'Property Portals' },
-  { href: '/partners/register', label: 'Become a Partner' },
-  { href: '/contact?type=general', label: 'Contact' },
+  { href: '/materials',                 label: 'Materials' },
+  { href: '/partners/directory',        label: 'Verified Partners' },
+  { href: '/property-passport',         label: 'Property Passport' },
+  { href: '/properties',                label: 'Property Portals' },
+  { href: '/partners/register',         label: 'Become a Partner' },
+  { href: '/contact?type=general',      label: 'Contact' },
 ];
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen]     = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [location, setLocation] = useState('Chennai, TN');
-  const router = useRouter();
+  const [location, setLocation]     = useState('Chennai, TN');
+  const [scrolled, setScrolled]     = useState(false);
+  const router   = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const handler = () => setScrolled(window.scrollY > 12);
+    window.addEventListener('scroll', handler, { passive: true });
+    return () => window.removeEventListener('scroll', handler);
+  }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => { setMenuOpen(false); }, [pathname]);
 
   const close = () => setMenuOpen(false);
 
@@ -41,60 +53,94 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={styles.topbar}>
+    <nav className={`${styles.topbar} ${scrolled ? styles.scrolled : ''}`}>
       <div className={styles.navInner}>
-        <Link href="/" className={styles.brand} onClick={close}>
-          <div className={styles.brandMark}><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          Buildogram
+
+        {/* Brand */}
+        <Link href="/" className={styles.brand} onClick={close} aria-label="Buildogram home">
+          <div className={styles.brandMark} aria-hidden="true">
+            <i/><i/><i/><i/><i/><i/><i/><i/><i/>
+          </div>
+          <span className={styles.brandName}>Buildogram</span>
         </Link>
 
-        <form className={`${styles.globalSearch} hide-mobile`} onSubmit={handleSearch}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: 'var(--text-muted)' }}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        {/* Desktop search */}
+        <form className={`${styles.globalSearch} hide-mobile`} onSubmit={handleSearch} role="search">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <input
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            placeholder="Search builders, materials, BOQ review, property passport..."
+            placeholder="Search builders, materials, BOQ review…"
+            aria-label="Search Buildogram"
           />
-          <select value={location} onChange={e => setLocation(e.target.value)}>
-            <option value="Chennai, TN">Chennai, TN</option>
-            <option value="Coimbatore, TN">Coimbatore, TN</option>
-            <option value="Madurai, TN">Madurai, TN</option>
-            <option value="Trichy, TN">Trichy, TN</option>
+          <select value={location} onChange={e => setLocation(e.target.value)} aria-label="Select location">
+            <option value="Chennai, TN">Chennai</option>
+            <option value="Coimbatore, TN">Coimbatore</option>
+            <option value="Madurai, TN">Madurai</option>
+            <option value="Trichy, TN">Trichy</option>
           </select>
         </form>
 
+        {/* Desktop nav */}
         <div className={`${styles.topActions} hide-mobile`}>
-          <Link href="/contact?type=construction" className="btn btn-ghost" style={{ padding: '8px 14px', fontSize: '13px', border: 'none' }}>Talk to an Engineer</Link>
-          <Link href="/materials" className="btn btn-ghost" style={{ padding: '8px 14px', fontSize: '13px', border: 'none' }}>Materials</Link>
-          <Link href="/partners/directory" className="btn btn-ghost" style={{ padding: '8px 14px', fontSize: '13px', border: 'none' }}>Verified Partners</Link>
-          <Link href="/properties" className="btn btn-ghost" style={{ padding: '8px 14px', fontSize: '13px', border: 'none', color: 'var(--text-muted)' }}>Property Portals</Link>
-          <Link href="/login" className="btn btn-primary" style={{ padding: '8px 16px', fontSize: '14px' }}>Dashboard OS</Link>
+          <Link href="/contact?type=construction" className={styles.navLink}>Talk to an Engineer</Link>
+          <Link href="/materials"          className={styles.navLink}>Materials</Link>
+          <Link href="/partners/directory" className={styles.navLink}>Verified Partners</Link>
+          <Link href="/login" className="btn btn-primary" style={{ padding: '8px 18px', fontSize: '14px' }}>Dashboard OS</Link>
         </div>
 
-        <button aria-label="Toggle mobile menu" className={styles.menuBtn} onClick={() => setMenuOpen(!menuOpen)}>
-          {menuOpen ? '✕' : '☰'}
+        {/* Mobile menu toggle */}
+        <button
+          aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={menuOpen}
+          aria-controls="mobile-nav"
+          className={`${styles.menuBtn} hide-desktop`}
+          onClick={() => setMenuOpen(v => !v)}
+        >
+          <span className={`${styles.burger} ${menuOpen ? styles.burgerOpen : ''}`} aria-hidden="true">
+            <span /><span /><span />
+          </span>
         </button>
+      </div>
 
+      {/* Mobile nav drawer */}
+      <AnimatePresence>
         {menuOpen && (
-          <div className={styles.mobileNav}>
-            <form className={styles.globalSearch} onSubmit={handleSearch}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: 'var(--text-muted)' }}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <motion.div
+            id="mobile-nav"
+            className={styles.mobileNav}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <form className={styles.mobileSearch} onSubmit={handleSearch} role="search">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
               <input
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Search builders, materials, BOQ review..."
+                placeholder="Search builders, materials, BOQ review…"
+                aria-label="Search"
               />
             </form>
-            {NAV_LINKS.map(l => (
-              <Link key={l.label + l.href} href={l.href} onClick={close}
-                style={l.label === 'Become a Partner' ? { fontWeight: 800, color: 'var(--primary)', borderBottom: 'none' } : {}}>
-                {l.label}
+            <div className={styles.mobileLinks}>
+              {NAV_LINKS.map(l => (
+                <Link
+                  key={l.href}
+                  href={l.href}
+                  onClick={close}
+                  className={`${styles.mobileLink} ${l.label === 'Become a Partner' ? styles.mobileLinkAccent : ''}`}
+                >
+                  {l.label}
+                </Link>
+              ))}
+              <Link href="/login" onClick={close} className={`${styles.mobileLink} ${styles.mobileLinkPrimary}`}>
+                Open Dashboard OS
               </Link>
-            ))}
-            <Link href="/login" onClick={close} style={{ fontWeight: 800, color: 'var(--primary)', borderBottom: 'none' }}>Open Dashboard OS</Link>
-          </div>
+            </div>
+          </motion.div>
         )}
-      </div>
+      </AnimatePresence>
     </nav>
   );
 }

@@ -28,6 +28,8 @@ const NBC_RULES = {
 const SQM_PER_SQFT = 0.0929;
 const M_PER_FT = 0.3048;
 
+import { checkBlockPlacements } from './blockPlacement';
+
 /**
  * Run all advisory checks on a floor plan
  * @param {Object} plan - The full plan JSON with floors, rooms, doors, windows
@@ -43,11 +45,15 @@ export function validateFloorPlan(plan) {
     const windows = floor.windows || [];
     const walls = floor.walls || [];
 
+    // --- Block Placement Checks ---
+    const blockWarnings = checkBlockPlacements(floor);
+    warnings.push(...blockWarnings);
+
     // --- Room size checks ---
     for (const room of rooms) {
-      const areaSqft = Number(room.width || 0) * Number(room.height || 0);
-      const areaSqm = areaSqft * SQM_PER_SQFT;
-      const widthM = Math.min(Number(room.width || 0), Number(room.height || 0)) * M_PER_FT;
+      const areaSqm = (Number(room.width || 0) / 1000) * (Number(room.height || 0) / 1000);
+      const areaSqft = areaSqm / SQM_PER_SQFT;
+      const widthM = Math.min(Number(room.width || 0), Number(room.height || 0)) / 1000;
 
       const minArea = NBC_RULES.minRoomArea[room.type];
       const minWidth = NBC_RULES.minRoomWidth[room.type];
@@ -90,7 +96,7 @@ export function validateFloorPlan(plan) {
       const minY = Math.min(...positions.map(p => p.y));
       const maxY = Math.max(...positions.map(p => p.y));
       const spread = Math.max(maxX - minX, maxY - minY);
-      const plotDim = Math.max(Number(floor.width || 30), Number(floor.depth || 40));
+      const plotDim = Math.max(Number(floor.width || 0), Number(floor.depth || 0));
       if (spread > plotDim * 0.65) {
         warnings.push({
           type: 'warning',
@@ -102,7 +108,7 @@ export function validateFloorPlan(plan) {
 
     // --- Door width checks ---
     for (const door of doors) {
-      const widthM = Number(door.width || 3) * M_PER_FT;
+      const widthM = Number(door.width || 0) / 1000;
       if (widthM < NBC_RULES.minDoorWidth) {
         warnings.push({
           type: 'warning',
@@ -127,11 +133,9 @@ export function validateFloorPlan(plan) {
     for (const room of rooms) {
       const x = Number(room.x || 0);
       const y = Number(room.y || 0);
-      const plotWidth = Number(floor.width || 30);
-      const plotDepth = Number(floor.depth || 40);
-      const minSetbackFt = NBC_RULES.minSetback.front / M_PER_FT;
+      const minSetbackMm = NBC_RULES.minSetback.front * 1000;
 
-      if (x < minSetbackFt || y < minSetbackFt) {
+      if (x < minSetbackMm || y < minSetbackMm) {
         warnings.push({
           type: 'warning',
           code: 'SETBACK_ADVISORY',

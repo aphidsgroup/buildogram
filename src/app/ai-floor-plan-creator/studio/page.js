@@ -130,6 +130,11 @@ export default function AIFloorPlanStudio() {
             planData={selectedPlan}
             selectedRoom={selectedRoom}
             onSelectRoom={setSelectedRoom}
+            onUpdatePlanData={(updatedPlan) => {
+              setVersions(prev => prev.map(v =>
+                v.id === selectedVersionId ? { ...v, plan_json: updatedPlan } : v
+              ));
+            }}
           />
         )}
       </main>

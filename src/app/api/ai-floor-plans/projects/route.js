@@ -35,6 +35,10 @@ export async function POST(req) {
     if (error) return error;
     
     const body = await req.json();
+    const requirements = body.roomRequirements || {};
+    const enabledSpecialSpaces = Object.entries(requirements)
+      .filter(([, value]) => value && typeof value === 'object' && value.enabled)
+      .map(([key]) => key);
 
     const newProject = await db.ai_floor_plan_projects.create({
       data: {
@@ -49,11 +53,22 @@ export async function POST(req) {
         floors: parseInt(body.floors) || 1,
         vastu_preference: body.vastuPreference,
         budget_range: body.budgetRange,
-        family_size: body.familySize,
-        parking: body.parking,
-        special_spaces: body.specialSpaces || [],
+        family_size: body.familySize != null ? String(body.familySize) : null,
+        parking: requirements.parking?.enabled ? String(requirements.parking.count || 1) : body.parking || null,
+        special_spaces: body.specialSpaces || enabledSpecialSpaces,
         style: body.style,
         status: 'draft',
+        metadata: {
+          locationPreset: body.locationPreset || null,
+          roadWidthFt: body.roadWidthFt || null,
+          cornerPlot: Boolean(body.cornerPlot),
+          setbackPreference: body.setbackPreference || 'standard',
+          rentalUnit: Boolean(body.rentalUnit),
+          elderlyFriendly: Boolean(body.elderlyFriendly),
+          roomSizePreference: body.roomSizePreference || 'standard',
+          layerPreference: body.layerPreference || 'cad_and_blocks',
+          roomRequirements: requirements,
+        },
       }
     });
 

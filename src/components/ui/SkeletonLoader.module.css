@@ -1,0 +1,75 @@
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e8e8e8 50%, #f0f0f0 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.header {
+  height: 20px;
+  width: 40%;
+  composes: shimmer;
+}
+.line {
+  height: 14px;
+  width: 100%;
+  composes: shimmer;
+}
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+/* Table */
+.tableRow td { padding: 14px 16px; }
+.cell {
+  height: 14px;
+  width: 80%;
+  composes: shimmer;
+}
+
+/* Stat */
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+.statCard {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.statIcon {
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  composes: shimmer;
+  margin-bottom: 4px;
+}
+.statVal {
+  height: 32px;
+  width: 50%;
+  composes: shimmer;
+}
+.statLbl {
+  height: 12px;
+  width: 70%;
+  composes: shimmer;
+}

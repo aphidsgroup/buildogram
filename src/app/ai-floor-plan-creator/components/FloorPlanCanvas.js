@@ -16,23 +16,23 @@
  *   • North arrow
  *   • Title block (BUILDOGRAM | GROUND FLOOR PLAN …)
  *
- * Deliberately NOT rendered:
- *   • Furniture, beds, sofas, cars, dining tables
- *   • Kitchen counters, bathroom fixtures
- *   • Coloured fills, hatch patterns, icons
+ * Optional Blocks Layer:
+ *   • CAD Blocks Mode (Interior / Services)
+ *   • Native vector blocks from blockLibrary
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import styles from '../studio/studio.module.css';
+import { getBlockDefinition } from '@/lib/ai-floor-plan/blockLibrary';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
-const PX      = 14;    // canvas pixels per foot
+const MM_TO_PX = 14 / 304.8; // 14 pixels per foot
 const MARGIN  = 90;    // gap around plan for dim-chain + labels
 const TITLE_W = 160;   // right-side title block width
 
 // ─── Formatting ───────────────────────────────────────────────────────────────
-function fmtFt(val) {
-  const v = Number(val) || 0;
+function fmtFt(mm) {
+  const v = (Number(mm) || 0) / 304.8;
   const ft = Math.floor(v);
   const inches = Math.round((v - ft) * 12);
   return inches === 0 ? `${ft}'` : `${ft}'${inches}"`;
@@ -47,23 +47,36 @@ async function loadKonva() {
   await import('konva/lib/Core');
   const rk = await import('react-konva');
   K = { Stage: rk.Stage, Layer: rk.Layer, Rect: rk.Rect, Line: rk.Line,
-        Text: rk.Text, Path: rk.Path, Group: rk.Group, Arrow: rk.Arrow };
+        Text: rk.Text, Path: rk.Path, Group: rk.Group, Arrow: rk.Arrow, Circle: rk.Circle, Transformer: rk.Transformer };
   return K;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }) {
+export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom, onUpdatePlanData }) {
   const containerRef = useRef(null);
   const toolbarRef   = useRef(null);
   const stageRef     = useRef(null);
+  const trRef        = useRef(null);
   const [ready,      setReady]      = useState(false);
   const [stageSize,  setStageSize]  = useState({ width: 900, height: 650 });
   const [stagePos,   setStagePos]   = useState({ x: 0, y: 0 });
   const [stageScale, setStageScale] = useState(1);
   const [floorIdx,   setFloorIdx]   = useState(0);
+  const [viewMode,   setViewMode]   = useState('CAD'); // CAD | INTERIOR | SERVICES
+  const [selectedBlockId, setSelectedBlockId] = useState(null);
+
   const [layers, setLayers] = useState({
-    walls: true, openings: true, stairs: true, labels: true, dimensions: true,
+    walls: true, openings: true, stairs: true, labels: true, dimensions: true, blocks: false
   });
+
+  // Automatically enable/disable blocks based on View Mode
+  useEffect(() => {
+    if (viewMode === 'CAD') {
+      setLayers(l => ({ ...l, blocks: false }));
+    } else {
+      setLayers(l => ({ ...l, blocks: true }));
+    }
+  }, [viewMode]);
 
   useEffect(() => { loadKonva().then(() => setReady(true)); }, []);
 
@@ -94,6 +107,59 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
     setStageScale(ns);
   }, [stageScale, stagePos]);
 
+  useEffect(() => {
+    if (selectedBlockId && trRef.current && stageRef.current) {
+      const node = stageRef.current.findOne('#' + selectedBlockId);
+      if (node) {
+        trRef.current.nodes([node]);
+        trRef.current.getLayer().batchDraw();
+      }
+    }
+  }, [selectedBlockId]);
+
+  // Handle block dragging
+  const handleBlockDragEnd = (e, bpId, floorNumber) => {
+    if (!onUpdatePlanData) return;
+    const node = e.target;
+    
+    const f = planData.floors.find(fl => fl.floorNumber === floorNumber);
+    const bp = f?.blockPlacements?.find(b => b.id === bpId);
+    if (!bp) return;
+
+    const def = getBlockDefinition(bp.blockId);
+    if (!def) return;
+
+    const curW = bp.widthMm || def.widthMm;
+            const curH = bp.heightMm || def.heightMm;
+            const cx = px(curW) / 2;
+    const cy = px(curH) / 2;
+
+    // node is positioned at block's center relative to the room group
+    const rawX = (node.x() - cx) / MM_TO_PX;
+    const rawY = (node.y() - cy) / MM_TO_PX;
+    
+    const SNAP = 50;
+    const newX = Math.round(rawX / SNAP) * SNAP;
+    const newY = Math.round(rawY / SNAP) * SNAP;
+
+    const newPlanData = { ...planData };
+    newPlanData.floors = newPlanData.floors.map(fl => {
+      if (fl.floorNumber !== floorNumber) return fl;
+      return {
+        ...fl,
+        blockPlacements: (fl.blockPlacements || []).map(b => {
+          if (b.id !== bpId) return b;
+          return { ...b, x: Math.max(0, newX), y: Math.max(0, newY) };
+        })
+      };
+    });
+    
+    // reset visual drag offset and let react render pass position it correctly
+    node.position({ x: newX * MM_TO_PX + cx, y: newY * MM_TO_PX + cy });
+    
+    onUpdatePlanData(newPlanData);
+  };
+
   // ── Guard: no data / not loaded ────────────────────────────────────────────
   if (!planData?.floors?.length) {
     return (
@@ -105,24 +171,25 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
   }
   if (!ready) return <div className={styles.emptyState}><span style={{ color: '#888', fontSize: 13 }}>Loading CAD canvas…</span></div>;
 
-  const { Stage, Layer, Rect, Line, Text, Group, Arrow } = K;
+  const { Stage, Layer, Rect, Line, Text, Group, Arrow, Circle, Transformer } = K;
 
   const floor  = planData.floors[floorIdx] || planData.floors[0];
-  const plotW  = Number(floor.width  || planData.plotWidth  || 30);
-  const plotH  = Number(floor.depth  || planData.plotDepth  || 40);
-  const planW  = plotW * PX;
-  const planH  = plotH * PX;
+  const plotW  = Number(floor.width  || planData.plotWidth  || 9144); // default 30ft in mm
+  const plotH  = Number(floor.depth  || planData.plotDepth  || 12192); // default 40ft in mm
+  const planW  = plotW * MM_TO_PX;
+  const planH  = plotH * MM_TO_PX;
   const sheetLabel = floor.floorLabel || (floor.floorNumber === 1 ? 'GROUND FLOOR PLAN' : floor.floorNumber === 2 ? 'FIRST FLOOR PLAN' : 'TERRACE FLOOR PLAN');
 
   // Coordinate helpers
-  const tx = ft => MARGIN + Number(ft) * PX;
-  const ty = ft => MARGIN + Number(ft) * PX;
-  const px = ft => Number(ft) * PX;
+  const tx = mm => MARGIN + Number(mm) * MM_TO_PX;
+  const ty = mm => MARGIN + Number(mm) * MM_TO_PX;
+  const px = mm => Number(mm) * MM_TO_PX;
 
   const rooms   = (floor.rooms   || []).filter(r => px(r.width) > 4 && px(r.height) > 4);
   const walls   = floor.walls   || [];
   const doors   = floor.doors   || [];
   const windows = floor.windows || [];
+  const blocks  = floor.blockPlacements || [];
 
   // ── CAD colour palette (strict B/W) ───────────────────────────────────────
   const BW = { wall: '#000', dim: '#222', grid: '#e0e0e0', gap: '#fff', label: '#000', title: '#000' };
@@ -134,10 +201,10 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
     const els = [
       <Rect key="planbg" x={MARGIN} y={MARGIN} width={planW} height={planH} fill="#ffffff" shadow={false} listening={false} />,
     ];
-    for (let f = 0; f <= plotW; f += 5)
-      els.push(<Line key={`gx${f}`} points={[tx(f), MARGIN, tx(f), MARGIN + planH]} stroke={BW.grid} strokeWidth={0.5} listening={false} />);
-    for (let f = 0; f <= plotH; f += 5)
-      els.push(<Line key={`gy${f}`} points={[MARGIN, ty(f), MARGIN + planW, ty(f)]} stroke={BW.grid} strokeWidth={0.5} listening={false} />);
+    for (let m = 0; m <= plotW; m += 1524)
+      els.push(<Line key={`gx${m}`} points={[tx(m), MARGIN, tx(m), MARGIN + planH]} stroke={BW.grid} strokeWidth={0.5} listening={false} />);
+    for (let m = 0; m <= plotH; m += 1524)
+      els.push(<Line key={`gy${m}`} points={[MARGIN, ty(m), MARGIN + planW, ty(m)]} stroke={BW.grid} strokeWidth={0.5} listening={false} />);
     return els;
   }
 
@@ -171,7 +238,7 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
       <Line key={w.id || i}
         points={[tx(w.x1), ty(w.y1), tx(w.x2), ty(w.y2)]}
         stroke={BW.wall}
-        strokeWidth={w.type === 'exterior' ? 7 : 2.5}
+        strokeWidth={px(w.thickness || (w.type === 'exterior' ? 230 : 115))}
         lineCap="square" lineJoin="miter"
         listening={false}
       />
@@ -183,8 +250,9 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
     if (!layers.openings) return null;
     return doors.map((d, i) => {
       const x  = tx(d.x), y = ty(d.y);
-      const w  = px(d.width || 3);
-      const horiz = (d.side || 'south') === 'north' || d.side === 'south';
+      const w  = px(d.width || 914);
+      const side = d.derivedSide || d.side || 'south';
+      const horiz = side === 'north' || side === 'south';
       const ex  = horiz ? x + w : x, ey = horiz ? y : y + w;
       const sym = d.symbol || 'D';
       const mx  = horiz ? x + w / 2 : x, my = horiz ? y : y + w / 2;
@@ -215,8 +283,9 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
     if (!layers.openings) return null;
     return windows.map((wn, i) => {
       const x    = tx(wn.x), y = ty(wn.y);
-      const w    = px(wn.width || 4);
-      const horiz = (wn.side || 'north') === 'north' || wn.side === 'south';
+      const w    = px(wn.width || 1219);
+      const side = wn.derivedSide || wn.side || 'north';
+      const horiz = side === 'north' || side === 'south';
       const ex   = horiz ? x + w : x, ey = horiz ? y : y + w;
       const t    = 4; // sill depth
       const sym  = wn.symbol || 'W';
@@ -254,7 +323,7 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
       .map(r => {
         const rx = tx(r.x), ry = ty(r.y);
         const rw = px(r.width), rh = px(r.height);
-        const treads = Math.max(6, Math.min(18, Math.round(rh / (PX * 0.85))));
+        const treads = Math.max(6, Math.min(18, Math.round(rh / px(250))));
         const th = rh / treads;
         const lines = [];
         for (let s = 0; s <= treads; s++) {
@@ -402,20 +471,123 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
     return els;
   }
 
+  function renderBlocks() {
+    if (!layers.blocks) return null;
+
+    const els = [];
+
+    rooms.forEach(room => {
+      const roomBlocks = blocks.filter(b => b.roomId === room.id);
+      if (roomBlocks.length === 0) return;
+
+      const rx = tx(room.x);
+      const ry = ty(room.y);
+
+      els.push(
+        <Group key={`rb-${room.id}`} x={rx} y={ry}>
+          {roomBlocks.map(bp => {
+            const def = getBlockDefinition(bp.blockId);
+            if (!def) return null;
+
+            if (viewMode === 'INTERIOR' && def.view !== 'interior') return null;
+            if (viewMode === 'SERVICES' && def.view !== 'services') return null;
+
+            const rot = bp.rotation || 0;
+            const bX = px(bp.x);
+            const bY = px(bp.y);
+            
+            const curW = bp.widthMm || def.widthMm;
+            const curH = bp.heightMm || def.heightMm;
+            const cx = px(curW) / 2;
+            const cy = px(curH) / 2;
+
+            return (
+              <Group 
+                key={bp.id} 
+                id={bp.id}
+                onClick={(e) => { e.cancelBubble = true; setSelectedBlockId(bp.id); }}
+                onTransformEnd={(e) => {
+                  const node = e.target;
+                  const scaleX = node.scaleX();
+                  const scaleY = node.scaleY();
+                  node.scaleX(1);
+                  node.scaleY(1);
+                  
+                  if (!onUpdatePlanData) return;
+                  const newW = Math.max(def.minWidthMm || 10, (px(def.widthMm) * scaleX) / MM_TO_PX);
+                  const newH = Math.max(def.minHeightMm || 10, (px(def.heightMm) * scaleY) / MM_TO_PX);
+                  
+                  const newPlanData = { ...planData };
+                  newPlanData.floors = newPlanData.floors.map(fl => {
+                    if (fl.floorNumber !== floor.floorNumber) return fl;
+                    return {
+                      ...fl,
+                      blockPlacements: (fl.blockPlacements || []).map(b => {
+                        if (b.id !== bp.id) return b;
+                        return { ...b, widthMm: newW, heightMm: newH };
+                      })
+                    };
+                  });
+                  onUpdatePlanData(newPlanData);
+                }} 
+                x={bX + cx} 
+                y={bY + cy} 
+                rotation={rot}
+                draggable
+                onDragEnd={(e) => handleBlockDragEnd(e, bp.id, floor.floorNumber)}
+                onMouseEnter={e => {
+                  const container = e.target.getStage().container();
+                  container.style.cursor = 'move';
+                }}
+                onMouseLeave={e => {
+                  const container = e.target.getStage().container();
+                  container.style.cursor = 'grab';
+                }}
+              >
+                <Group x={-cx} y={-cy}>
+                  {def.render.map((s, idx) => {
+                    const strokeW = 1;
+                    if (s.type === 'rect') {
+                      return <Rect key={idx} x={px(s.x)} y={px(s.y)} width={px(s.w)} height={px(s.h)} stroke="#333" strokeWidth={strokeW} cornerRadius={px(s.radius || 0)} fill="#fff" />;
+                    } else if (s.type === 'circle') {
+                      return <Circle key={idx} x={px(s.x)} y={px(s.y)} radius={px(s.r)} stroke="#333" strokeWidth={strokeW} fill="#fff" />;
+                    } else if (s.type === 'line') {
+                      return <Line key={idx} points={[px(s.x1), px(s.y1), px(s.x2), px(s.y2)]} stroke="#333" strokeWidth={strokeW} />;
+                    } else if (s.type === 'text') {
+                      return <Text key={idx} x={px(s.x)} y={px(s.y)} text={s.text} fontSize={px(s.fontSize || 0.6)} fontFamily="Arial" fill="#333" />;
+                    }
+                    return null;
+                  })}
+                </Group>
+              </Group>
+            );
+          })}
+        </Group>
+      );
+    });
+
+    if (selectedBlockId) {
+      els.push(<Transformer key="tr" ref={trRef} boundBoxFunc={(oldBox, newBox) => {
+        if (newBox.width < 10 || newBox.height < 10) return oldBox;
+        return newBox;
+      }} />);
+    }
+
+    return els;
+  }
+
   /** North arrow — simple compass with N */
   function renderNorth() {
     const nx = MARGIN + planW + TITLE_W / 2 + 12;
     const ny = MARGIN + 22;
     return (
       <Group key="north" listening={false}>
-        {/* Circle */}
         <Line points={
           Array.from({ length: 37 }, (_, i) => {
             const a = (i / 36) * Math.PI * 2;
             return [nx + Math.cos(a) * 14, ny + 20 + Math.sin(a) * 14];
           }).flat()
         } stroke="#000" strokeWidth={1} closed tension={0} />
-        {/* N arrow */}
         <Arrow points={[nx, ny + 34, nx, ny + 8]} stroke="#000" strokeWidth={1.5} fill="#000" pointerLength={7} pointerWidth={6} />
         <Text x={nx - 5} y={ny + 38} text="N" fontSize={11} fontFamily="Arial" fontStyle="bold" fill="#000" />
         <Text x={nx - 4} y={ny + 1}  text="S" fontSize={9} fontFamily="Arial" fill="#000" />
@@ -441,16 +613,13 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
 
     return (
       <Group key="titleblock" listening={false}>
-        {/* Outer box */}
         <Rect x={tbX} y={tbY} width={tbW} height={210} stroke="#000" strokeWidth={1} fill="#fff" />
-        {/* Header */}
         <Rect x={tbX} y={tbY} width={tbW} height={24} fill="#000" />
         <Text x={tbX + 4} y={tbY + 7} text="BUILDOGRAM" fontSize={10.5} fontFamily="Arial" fontStyle="bold" fill="#fff" />
-        {/* Floor label row */}
         <Rect x={tbX} y={tbY + 24} width={tbW} height={18} fill="#f5f5f5" />
         <Text x={tbX + 4} y={tbY + 29} text={sheetLabel} fontSize={8} fontFamily="Arial" fontStyle="bold" fill="#000" />
         <Line points={[tbX, tbY + 42, tbX + tbW, tbY + 42]} stroke="#000" strokeWidth={0.5} />
-        {/* Data rows */}
+        
         {row('Plot Size', `${fmtFt(plotW)} X ${fmtFt(plotH)}`, 48)}
         <Line points={[tbX, tbY + 72, tbX + tbW, tbY + 72]} stroke="#ccc" strokeWidth={0.5} />
         {row('Floor', `${floor.floorNumber || 1} of ${planData.floors.length}`, 76)}
@@ -459,7 +628,7 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
         <Line points={[tbX, tbY + 128, tbX + tbW, tbY + 128]} stroke="#ccc" strokeWidth={0.5} />
         {row('Option', planData.name || 'Layout', 132)}
         <Line points={[tbX, tbY + 156, tbX + tbW, tbY + 156]} stroke="#000" strokeWidth={0.5} />
-        {/* Disclaimer */}
+        
         <Text x={tbX + 4} y={tbY + 162} text="⚠ CONCEPT PLAN ONLY" fontSize={7} fontFamily="Arial" fontStyle="bold" fill="#c00" />
         <Text x={tbX + 4} y={tbY + 174} text="Not for construction or" fontSize={6.5} fontFamily="Arial" fill="#c00" />
         <Text x={tbX + 4} y={tbY + 184} text="municipality submission." fontSize={6.5} fontFamily="Arial" fill="#c00" />
@@ -473,7 +642,12 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
   const LAYER_BTNS = [
     { k: 'walls', l: 'Walls' }, { k: 'openings', l: 'Openings' },
     { k: 'stairs', l: 'Stairs' }, { k: 'labels', l: 'Labels' },
-    { k: 'dimensions', l: 'Dims' },
+    { k: 'dimensions', l: 'Dims' }, { k: 'blocks', l: 'Blocks' }
+  ];
+  const VIEW_MODES = [
+    { k: 'CAD', l: 'CAD Plan View' },
+    { k: 'INTERIOR', l: 'Interior Blocks' },
+    { k: 'SERVICES', l: 'Services' }
   ];
 
   const btnBase = { border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 10, padding: '2px 9px' };
@@ -489,6 +663,21 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
         display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6,
         padding: '5px 14px', background: '#1a1a1a', flexShrink: 0, userSelect: 'none',
       }}>
+        {/* View Modes */}
+        <span style={{ color: '#777', fontSize: 10, letterSpacing: 1 }}>VIEW</span>
+        <div style={{ display: 'flex', background: '#2d2d2d', borderRadius: 3, padding: 2 }}>
+          {VIEW_MODES.map(v => (
+            <button key={v.k} onClick={() => setViewMode(v.k)} style={{
+              ...btnBase, background: viewMode === v.k ? '#007aff' : 'transparent',
+              color: viewMode === v.k ? '#fff' : '#aaa'
+            }}>
+              {v.l}
+            </button>
+          ))}
+        </div>
+
+        <div style={{ width: 1, height: 20, background: '#444', margin: '0 4px' }} />
+
         {/* Floor tabs */}
         <span style={{ color: '#777', fontSize: 10, letterSpacing: 1 }}>FLOOR</span>
         {planData.floors.map((f, i) => (
@@ -554,10 +743,13 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
           {/* 5. Stair step lines */}
           <Layer>{renderStairs()}</Layer>
 
-          {/* 6. Room labels + dimension strings */}
+          {/* 6. Blocks */}
+          <Layer>{renderBlocks()}</Layer>
+
+          {/* 7. Room labels + dimension strings */}
           <Layer>{renderLabels()}{renderDimensions()}</Layer>
 
-          {/* 7. North arrow + title block */}
+          {/* 8. North arrow + title block */}
           <Layer>{renderNorth()}{renderTitleBlock()}</Layer>
         </Stage>
       </div>

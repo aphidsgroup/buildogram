@@ -1,6 +1,9 @@
 'use client';
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import AnimatedSection from '@/components/ui/AnimatedSection';
+import PremiumCard from '@/components/ui/PremiumCard';
+import styles from './contact.module.css';
 
 const INTENT_OPTIONS = [
   { value: 'construction', label: 'I want to build a home' },
@@ -80,10 +83,10 @@ function ContactForm() {
 
   if (status === 'Success') {
     return (
-      <div style={{ textAlign: 'center', padding: '40px 20px', background: 'rgba(34,197,94,0.05)', borderRadius: '16px', border: '1px solid rgba(34,197,94,0.1)' }}>
+      <div style={{ textAlign: 'center', padding: '48px 24px', background: 'rgba(16,185,129,0.05)', borderRadius: '16px', border: '1px solid rgba(16,185,129,0.2)' }}>
         <div style={{ fontSize: '48px', marginBottom: '16px' }}>✅</div>
-        <h2 style={{ fontSize: '24px', color: 'var(--primary-dark)', marginBottom: '12px' }}>Request Received</h2>
-        <p style={{ color: 'var(--text-muted)', marginBottom: '24px' }}>
+        <h2 style={{ fontSize: '24px', color: 'var(--secondary)', marginBottom: '12px', fontWeight: 800 }}>Request Received</h2>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '32px', lineHeight: 1.6 }}>
           Thank you, {submittedData?.name}. Your Buildogram request has been received.<br />
           Our engineering team will review your requirement and contact you shortly.
         </p>
@@ -93,138 +96,146 @@ function ContactForm() {
   }
 
   return (
-    <form onSubmit={submit} className="flex" style={{ flexDirection: 'column', gap: '20px' }}>
-      <div className="input-group">
-        <label>How can Buildogram help you?</label>
-        <select className="input" value={form.leadType} onChange={e => setForm({ ...form, leadType: e.target.value, formData: {} })}>
+    <form onSubmit={submit}>
+      <div className={styles.inputGroup}>
+        <label className={styles.inputLabel}>How can Buildogram help you?</label>
+        <select className={styles.inputField} value={form.leadType} onChange={e => setForm({ ...form, leadType: e.target.value, formData: {} })}>
           {INTENT_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
         </select>
       </div>
 
-      <div className="grid-2" style={{ gap: '16px' }}>
-        <div className="input-group">
-          <label>Your Name</label>
-          <input required className="input" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Your full name" />
+      <div className={styles.inputGrid}>
+        <div className={styles.inputGroup}>
+          <label className={styles.inputLabel}>Your Name</label>
+          <input required className={styles.inputField} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} placeholder="Your full name" />
         </div>
-        <div className="input-group">
-          <label>Phone Number</label>
-          <input required type="tel" className="input" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="10-digit mobile" />
+        <div className={styles.inputGroup}>
+          <label className={styles.inputLabel}>Phone Number</label>
+          <input required type="tel" className={styles.inputField} value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="10-digit mobile" />
         </div>
       </div>
 
-      <div className="input-group">
-        <label>Email Address</label>
-        <input type="email" className="input" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="Your email (Optional)" />
+      <div className={styles.inputGroup}>
+        <label className={styles.inputLabel}>Email Address</label>
+        <input type="email" className={styles.inputField} value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} placeholder="Your email (Optional)" />
       </div>
 
       {form.leadType === 'construction' && (
-        <div className="grid-2" style={{ gap: '16px', background: 'var(--bg)', padding: '16px', borderRadius: '12px' }}>
-          <div className="input-group">
-            <label>Project Location</label>
-            <input required className="input" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="e.g., OMR, Anna Nagar" />
-          </div>
-          <div className="input-group">
-            <label>Plot Size</label>
-            <input className="input" value={form.formData.plotSize || ''} onChange={e => handleExtraFieldChange('plotSize', e.target.value)} placeholder="e.g., 2400 sqft" />
-          </div>
-          <div className="input-group">
-            <label>Construction Type</label>
-            <select className="input" value={form.formData.constructionType || ''} onChange={e => handleExtraFieldChange('constructionType', e.target.value)}>
-              <option value="">Select Type</option>
-              <option value="Villa">Villa / Independent House</option>
-              <option value="Apartment">Apartment Complex</option>
-              <option value="Commercial">Commercial</option>
-            </select>
-          </div>
-          <div className="input-group">
-            <label>Approx Budget</label>
-            <input className="input" value={form.formData.budget || ''} onChange={e => handleExtraFieldChange('budget', e.target.value)} placeholder="e.g., 1.5 Cr" />
+        <div className={styles.conditionalBox}>
+          <div className={styles.inputGrid}>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Project Location</label>
+              <input required className={styles.inputField} value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="e.g., OMR, Anna Nagar" />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Plot Size</label>
+              <input className={styles.inputField} value={form.formData.plotSize || ''} onChange={e => handleExtraFieldChange('plotSize', e.target.value)} placeholder="e.g., 2400 sqft" />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Construction Type</label>
+              <select className={styles.inputField} value={form.formData.constructionType || ''} onChange={e => handleExtraFieldChange('constructionType', e.target.value)}>
+                <option value="">Select Type</option>
+                <option value="Villa">Villa / Independent House</option>
+                <option value="Apartment">Apartment Complex</option>
+                <option value="Commercial">Commercial</option>
+              </select>
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Approx Budget</label>
+              <input className={styles.inputField} value={form.formData.budget || ''} onChange={e => handleExtraFieldChange('budget', e.target.value)} placeholder="e.g., 1.5 Cr" />
+            </div>
           </div>
         </div>
       )}
 
       {form.leadType === 'material_quote' && (
-        <div className="grid-2" style={{ gap: '16px', background: 'var(--bg)', padding: '16px', borderRadius: '12px' }}>
-          <div className="input-group">
-            <label>Delivery Location</label>
-            <input required className="input" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="Delivery area" />
-          </div>
-          <div className="input-group">
-            <label>Material Required</label>
-            <input required className="input" value={form.formData.materialType || ''} onChange={e => handleExtraFieldChange('materialType', e.target.value)} placeholder="e.g., Cement, Steel, Sand" />
-          </div>
-          <div className="input-group">
-            <label>Quantity</label>
-            <input required className="input" value={form.formData.quantity || ''} onChange={e => handleExtraFieldChange('quantity', e.target.value)} placeholder="e.g., 100 bags, 5 tons" />
-          </div>
-          <div className="input-group">
-            <label>Delivery Timeline</label>
-            <select className="input" value={form.formData.timeline || ''} onChange={e => handleExtraFieldChange('timeline', e.target.value)}>
-              <option value="">Select Timeline</option>
-              <option value="Immediate">Immediate</option>
-              <option value="Next 7 Days">Next 7 Days</option>
-              <option value="Planning Phase">Planning Phase</option>
-            </select>
+        <div className={styles.conditionalBox}>
+          <div className={styles.inputGrid}>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Delivery Location</label>
+              <input required className={styles.inputField} value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="Delivery area" />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Material Required</label>
+              <input required className={styles.inputField} value={form.formData.materialType || ''} onChange={e => handleExtraFieldChange('materialType', e.target.value)} placeholder="e.g., Cement, Steel, Sand" />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Quantity</label>
+              <input required className={styles.inputField} value={form.formData.quantity || ''} onChange={e => handleExtraFieldChange('quantity', e.target.value)} placeholder="e.g., 100 bags, 5 tons" />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Delivery Timeline</label>
+              <select className={styles.inputField} value={form.formData.timeline || ''} onChange={e => handleExtraFieldChange('timeline', e.target.value)}>
+                <option value="">Select Timeline</option>
+                <option value="Immediate">Immediate</option>
+                <option value="Next 7 Days">Next 7 Days</option>
+                <option value="Planning Phase">Planning Phase</option>
+              </select>
+            </div>
           </div>
         </div>
       )}
 
       {form.leadType === 'partner_application' && (
-        <div className="grid-2" style={{ gap: '16px', background: 'var(--bg)', padding: '16px', borderRadius: '12px' }}>
-          <div className="input-group">
-            <label>Company Name</label>
-            <input required className="input" value={form.formData.companyName || ''} onChange={e => handleExtraFieldChange('companyName', e.target.value)} placeholder="Your business name" />
-          </div>
-          <div className="input-group">
-            <label>Partner Type</label>
-            <select className="input" value={form.formData.partnerType || ''} onChange={e => handleExtraFieldChange('partnerType', e.target.value)}>
-              <option value="">Select Type</option>
-              <option value="Builder/Contractor">Builder / Contractor</option>
-              <option value="Architect/Designer">Architect / Interior Designer</option>
-              <option value="Material Supplier">Material Supplier</option>
-            </select>
-          </div>
-          <div className="input-group">
-            <label>Service Area</label>
-            <input required className="input" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="e.g., Chennai" />
-          </div>
-          <div className="input-group">
-            <label>Years of Experience</label>
-            <input className="input" value={form.formData.experience || ''} onChange={e => handleExtraFieldChange('experience', e.target.value)} placeholder="e.g., 10 Years" />
+        <div className={styles.conditionalBox}>
+          <div className={styles.inputGrid}>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Company Name</label>
+              <input required className={styles.inputField} value={form.formData.companyName || ''} onChange={e => handleExtraFieldChange('companyName', e.target.value)} placeholder="Your business name" />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Partner Type</label>
+              <select className={styles.inputField} value={form.formData.partnerType || ''} onChange={e => handleExtraFieldChange('partnerType', e.target.value)}>
+                <option value="">Select Type</option>
+                <option value="Builder/Contractor">Builder / Contractor</option>
+                <option value="Architect/Designer">Architect / Interior Designer</option>
+                <option value="Material Supplier">Material Supplier</option>
+              </select>
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Service Area</label>
+              <input required className={styles.inputField} value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="e.g., Chennai" />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Years of Experience</label>
+              <input className={styles.inputField} value={form.formData.experience || ''} onChange={e => handleExtraFieldChange('experience', e.target.value)} placeholder="e.g., 10 Years" />
+            </div>
           </div>
         </div>
       )}
 
       {(form.leadType === 'property_support' || form.leadType === 'property_listing' || form.leadType === 'rental_listing') && (
-        <div className="grid-2" style={{ gap: '16px', background: 'var(--bg)', padding: '16px', borderRadius: '12px' }}>
-          <div className="input-group">
-            <label>Property Location</label>
-            <input required className="input" value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="e.g., Adyar" />
-          </div>
-          <div className="input-group">
-            <label>Property Type</label>
-            <select className="input" value={form.formData.propertyType || ''} onChange={e => handleExtraFieldChange('propertyType', e.target.value)}>
-              <option value="">Select Type</option>
-              <option value="Plot">Plot / Land</option>
-              <option value="Villa">Villa / House</option>
-              <option value="Apartment">Apartment</option>
-              <option value="Commercial">Commercial</option>
-            </select>
+        <div className={styles.conditionalBox}>
+          <div className={styles.inputGrid}>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Property Location</label>
+              <input required className={styles.inputField} value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="e.g., Adyar" />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Property Type</label>
+              <select className={styles.inputField} value={form.formData.propertyType || ''} onChange={e => handleExtraFieldChange('propertyType', e.target.value)}>
+                <option value="">Select Type</option>
+                <option value="Plot">Plot / Land</option>
+                <option value="Villa">Villa / House</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Commercial">Commercial</option>
+              </select>
+            </div>
           </div>
         </div>
       )}
 
-      <div className="input-group">
-        <label>Additional Notes</label>
-        <textarea className="input" value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} placeholder="Tell us more about your requirement..." />
+      <div className={styles.inputGroup}>
+        <label className={styles.inputLabel}>Additional Notes</label>
+        <textarea className={styles.inputField} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} placeholder="Tell us more about your requirement..." rows="4" />
       </div>
 
-      <button type="submit" className="btn btn-primary btn-lg mt-2" style={{ width: '100%', justifyContent: 'center' }}>
+      <button type="submit" className="btn btn-primary btn-lg" style={{ width: '100%', justifyContent: 'center', marginTop: '12px' }}>
         {status === 'Submitting...' ? 'Submitting...' : 'Submit to Buildogram'}
       </button>
       
       {status && status !== 'Submitting...' && status !== 'Success' && (
-        <div style={{ textAlign: 'center', color: 'var(--error)', fontSize: '14px' }}>{status}</div>
+        <div style={{ textAlign: 'center', color: 'var(--error)', fontSize: '14px', marginTop: '16px' }}>{status}</div>
       )}
     </form>
   );
@@ -232,70 +243,75 @@ function ContactForm() {
 
 export default function Contact() {
   return (
-    <>
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
-        <div className="container" style={{ position: 'relative' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Construction Companion</span>
-          </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>
-            Talk to Buildogram About Your Construction or Property Requirement
-          </h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7 }}>
-            Whether you are planning to build, source materials, verify a contractor, review a BOQ, showcase a project, or connect as a partner — Buildogram helps you take the next step with clarity.
-          </p>
+    <div className="engineerLedPage">
+      <section className={`fullBleedSection ${styles.hero}`}>
+        <div className={styles.heroGlow} aria-hidden="true" />
+        <div className="sectionInnerWide" style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
+          <AnimatedSection>
+            <span className={styles.eyebrow}>Construction Companion</span>
+            <h1 className={styles.heroH1} style={{ margin: '0 auto 24px' }}>
+              Talk to Buildogram About Your Construction or Property Requirement
+            </h1>
+            <p className={styles.heroSub}>
+              Whether you are planning to build, source materials, verify a contractor, review a BOQ, showcase a project, or connect as a partner — Buildogram helps you take the next step with clarity.
+            </p>
+          </AnimatedSection>
         </div>
       </section>
 
-      <div className="container" style={{ padding: '56px 24px' }}>
-        <div className="grid-2">
-          <div className="card">
-            <h2 style={{ fontSize: '24px', marginBottom: '24px', color: 'var(--primary-dark)' }}>Send a Message</h2>
-            <Suspense fallback={<div>Loading form...</div>}>
-              <ContactForm />
-            </Suspense>
-          </div>
+      <section className={`fullBleedSection ${styles.contentSection}`}>
+        <div className={`sectionInnerWide ${styles.grid}`}>
+          <AnimatedSection>
+            <div className={styles.formCard}>
+              <h2 className={styles.formTitle}>Send a Message</h2>
+              <Suspense fallback={<div>Loading form...</div>}>
+                <ContactForm />
+              </Suspense>
+            </div>
+          </AnimatedSection>
 
-          <div>
-            <div className="card mb-6">
-              <h3 style={{ fontSize: '20px', marginBottom: '16px', color: 'var(--primary-dark)' }}>Buildogram Headquarters</h3>
-              <p className="text-muted" style={{ lineHeight: '1.7' }}>
+          <AnimatedSection delay={0.2} className={styles.sidebar}>
+            <div className={styles.sideCard}>
+              <h3 className={styles.sideTitle}>Buildogram Headquarters</h3>
+              <p className={styles.sideText}>
                 No.35, 7th floor, Awfis Space, Centre Point 3,<br />
                 Poonamallee High Road, Manapakkam, Porur,<br />
                 Chennai — 600 089
               </p>
             </div>
 
-            <div className="card mb-6">
-              <h3 style={{ fontSize: '20px', marginBottom: '16px', color: 'var(--primary-dark)' }}>Contact Details</h3>
-              <p className="text-muted mb-4" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                📞 <a href="tel:+919360232456">+91 93602 32456</a>
+            <div className={styles.sideCard}>
+              <h3 className={styles.sideTitle}>Contact Details</h3>
+              <p className={styles.sideText} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                📞 <a href="tel:+919360232456" className={styles.sideLink}>+91 93602 32456</a>
               </p>
-              <p className="text-muted" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                ✉️ <a href="mailto:hello@buildogram.in">hello@buildogram.in</a>
+              <p className={styles.sideText} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                ✉️ <a href="mailto:hello@buildogram.in" className={styles.sideLink}>hello@buildogram.in</a>
               </p>
             </div>
 
-            <div className="card">
-              <h3 style={{ fontSize: '18px', marginBottom: '16px', color: 'var(--primary-dark)' }}>What Buildogram helps with</h3>
-              <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div className={styles.sideCard}>
+              <h3 className={styles.sideTitle}>What Buildogram helps with</h3>
+              <ul className={styles.helpList}>
                 {[
-                  '🏗️ Home construction guidance',
-                  '📋 BOQ & plan review',
-                  '🧱 Material sourcing support',
-                  '🤝 Verified partner connections',
-                  '📸 Site progress tracking',
-                  '🏠 Property Passport records',
-                  '🛡️ Partner registration',
-                ].map(item => (
-                  <li key={item} style={{ fontSize: '14px', color: 'var(--text-muted)', display: 'flex', gap: '6px' }}>{item}</li>
+                  { icon: '🏗️', text: 'Home construction guidance' },
+                  { icon: '📋', text: 'BOQ & plan review' },
+                  { icon: '🧱', text: 'Material sourcing support' },
+                  { icon: '🤝', text: 'Verified partner connections' },
+                  { icon: '📸', text: 'Site progress tracking' },
+                  { icon: '🏠', text: 'Property Passport records' },
+                  { icon: '🛡️', text: 'Partner registration' },
+                ].map((item, i) => (
+                  <li key={i} className={styles.helpItem}>
+                    <span className={styles.helpIcon}>{item.icon}</span>
+                    {item.text}
+                  </li>
                 ))}
               </ul>
             </div>
-          </div>
+          </AnimatedSection>
         </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 }
