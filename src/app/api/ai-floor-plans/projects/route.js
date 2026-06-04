@@ -6,7 +6,6 @@ export async function GET(req) {
   try {
     const { user, error } = requireAuth(req);
     if (error) return error;
-    const user = user;
 
     const projects = await db.ai_floor_plan_projects.findMany({
       where: {
@@ -34,7 +33,6 @@ export async function POST(req) {
   try {
     const { user, error } = requireAuth(req);
     if (error) return error;
-    const user = user;
     
     const body = await req.json();
 
