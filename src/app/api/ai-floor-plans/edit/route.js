@@ -33,7 +33,7 @@ export async function POST(req) {
     const newVersion = await db.ai_floor_plan_versions.create({
       data: {
         project_id: version.project_id,
-        version_name: \`\${version.version_name} (Edited)\`,
+        version_name: `${version.version_name} (Edited)`,
         option_type: version.option_type,
         plan_json: updatedPlanJson,
         summary_json: updatedPlanJson.summary || {},

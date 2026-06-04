@@ -10,7 +10,7 @@ export default function PlanOptionsPanel({ versions, selectedVersionId, onSelect
       {versions.map(v => (
         <div 
           key={v.id} 
-          className={\`\${styles.optionCard} \${v.id === selectedVersionId ? styles.selected : ''}\`}
+          className={`${styles.optionCard} ${v.id === selectedVersionId ? styles.selected : ''}`}
           onClick={() => onSelectVersion(v.id)}
         >
           <h4>{v.version_name}</h4>
