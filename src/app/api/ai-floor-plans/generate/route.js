@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { prisma as db } from '@/lib/storageProvider';
 import { requireAuth } from '@/lib/apiAuth';
 import { generateFloorPlans } from '@/lib/ai-floor-plan/generator';
 import { deductCredits } from '@/lib/ai-floor-plan/credits';
