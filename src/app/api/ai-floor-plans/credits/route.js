@@ -4,10 +4,10 @@ import { getCreditBalance } from '@/lib/ai-floor-plan/credits';
 
 export async function GET(req) {
   try {
-    const auth = await requireAuth(req);
-    if (!auth.success) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const { user, error } = requireAuth(req);
+    if (error) return error;
 
-    const balance = await getCreditBalance(auth.user.id, auth.user.partner_id);
+    const balance = await getCreditBalance(user.id, user.partner_id);
 
     return NextResponse.json({ balance });
   } catch (error) {

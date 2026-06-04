@@ -6,8 +6,8 @@ import { deductCredits } from '@/lib/ai-floor-plan/credits';
 
 export async function POST(req) {
   try {
-    const auth = await requireAuth(req);
-    if (!auth.success) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const { user, error } = requireAuth(req);
+    if (error) return error;
     
     const body = await req.json();
     const versionId = body.versionId;
@@ -21,7 +21,7 @@ export async function POST(req) {
     if (!version) return NextResponse.json({ error: 'Version not found' }, { status: 404 });
 
     // Deduct 0.25 credits
-    const creditRes = await deductCredits(auth.user.id, auth.user.partner_id, 0.25, 'Floor Plan Edit', version.project_id);
+    const creditRes = await deductCredits(user.id, user.partner_id, 0.25, 'Floor Plan Edit', version.project_id);
     if (!creditRes.success) {
       return NextResponse.json({ error: creditRes.error || 'Insufficient credits' }, { status: 402 });
     }
@@ -37,7 +37,7 @@ export async function POST(req) {
         option_type: version.option_type,
         plan_json: updatedPlanJson,
         summary_json: updatedPlanJson.summary || {},
-        created_by: auth.user.id
+        created_by: user.id
       }
     });
 

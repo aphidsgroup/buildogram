@@ -4,8 +4,8 @@ import { requireAuth } from '@/lib/apiAuth';
 
 export async function GET(req, { params }) {
   try {
-    const auth = await requireAuth(req);
-    if (!auth.success) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const { user, error } = requireAuth(req);
+    if (error) return error;
 
     const versions = await db.ai_floor_plan_versions.findMany({
       where: { project_id: params.id },
@@ -20,8 +20,8 @@ export async function GET(req, { params }) {
 
 export async function POST(req, { params }) {
   try {
-    const auth = await requireAuth(req);
-    if (!auth.success) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const { user, error } = requireAuth(req);
+    if (error) return error;
     
     const body = await req.json();
 

@@ -4,9 +4,8 @@ import { requireAuth } from '@/lib/apiAuth';
 
 export async function POST(req, { params }) {
   try {
-    const auth = await requireAuth(req);
-    if (!auth.success) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    const user = auth.user;
+    const { user, error } = requireAuth(req);
+    if (error) return error;
 
     const project = await db.ai_floor_plan_projects.findUnique({
       where: { id: params.id },
