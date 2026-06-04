@@ -1,5 +1,9 @@
 import Link from 'next/link';
 import MaterialLeadForm from './MaterialLeadForm';
+import AnimatedSection from '@/components/ui/AnimatedSection';
+import SectionHeader from '@/components/ui/SectionHeader';
+import PremiumCard from '@/components/ui/PremiumCard';
+import styles from './materials.module.css';
 
 export const metadata = {
   title: 'Construction Material Sourcing Support in Chennai | Buildogram',
@@ -28,80 +32,93 @@ const whyBuildogram = [
 
 export default function MaterialsPage() {
   return (
-    <div className="marketplacePage">
+    <div className="engineerLedPage">
       {/* ── Hero ── */}
-      <section className="fullBleedSection" style={{ background: 'var(--secondary)', color: 'white', padding: 'clamp(48px, 6vw, 88px) 0 clamp(56px, 7vw, 104px) 0', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
-        <div className="sectionInnerWide" style={{ position: 'relative', textAlign: 'center' }}>
-          <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Transparent Material Sourcing</span>
-          </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(38px, 5vw, 64px)', lineHeight: 1.1, marginBottom: '24px' }}>
-            Source Construction Materials<br />
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>With Rate Clarity &amp; Delivery Records.</span>
-          </h1>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', maxWidth: '640px', margin: '0 auto 40px', lineHeight: 1.7 }}>
-            Buildogram helps owners and construction partners compare supplier quotes, coordinate deliveries, track invoices, and store material records inside the Property Passport.
-          </p>
-          <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="#quote" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px' }}>Request Material Support</Link>
-            <Link href="/contact" className="btn btn-outline" style={{ background: 'rgba(255,255,255,0.05)', color: 'white', borderColor: 'rgba(255,255,255,0.2)', padding: '16px 32px', fontSize: '16px' }}>Talk to Buildogram</Link>
-          </div>
+      <section className={`fullBleedSection ${styles.hero}`}>
+        <div className={styles.heroGlow} aria-hidden="true" />
+        <div className="sectionInnerWide" style={{ position: 'relative', zIndex: 1 }}>
+          <AnimatedSection>
+            <span className={styles.eyebrow}>Transparent Material Sourcing</span>
+            <h1 className={styles.heroH1}>
+              Source Construction Materials<br />
+              <span>With Rate Clarity &amp; Delivery Records.</span>
+            </h1>
+            <p className={styles.heroSub}>
+              Buildogram helps owners and construction partners compare supplier quotes, coordinate deliveries, track invoices, and store material records inside the Property Passport.
+            </p>
+            <div className={styles.heroCtas}>
+              <Link href="#quote" className="btn btn-primary btn-lg">Request Material Support</Link>
+              <Link href="/contact" className={`btn btn-lg ${styles.heroOutline}`}>Talk to Buildogram</Link>
+            </div>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* ── Material Categories ── */}
-      <section className="fullBleedSection" style={{ background: '#F9F9F9', padding: 'clamp(64px, 8vw, 112px) 0' }}>
+      <section className={`fullBleedSection ${styles.categoriesSection}`}>
         <div className="sectionInnerWide">
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', borderRadius: '999px', padding: '0.4rem 0.8rem', background: 'rgba(252, 110, 32, 0.1)', color: 'var(--primary)', border: '1px solid rgba(252, 110, 32, 0.2)', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Material Quote Support</span>
-            <h2 style={{ fontSize: 'clamp(32px, 4vw, 48px)', marginTop: '20px', fontFamily: '"Space Grotesk", sans-serif', color: 'var(--secondary)' }}>All construction materials. One supplier network.</h2>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '24px' }}>
-            {categories.map(c => (
-              <Link key={c.name} href={c.href} style={{ textDecoration: 'none' }}>
-                <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '24px', padding: '32px 24px', textAlign: 'center', transition: 'all 0.2s', boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }} className="card-hover">
-                  <div style={{ fontSize: '48px', marginBottom: '16px' }}>{c.icon}</div>
-                  <h3 style={{ fontSize: '20px', marginBottom: '8px', color: '#292929', fontFamily: '"Space Grotesk", sans-serif' }}>{c.name}</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: 1.5 }}>{c.brands}</p>
-                </div>
-              </Link>
+          <AnimatedSection>
+            <SectionHeader
+              eyebrow="Material Quote Support"
+              title="All construction materials. One supplier network."
+            />
+          </AnimatedSection>
+          
+          <div className={styles.catGrid}>
+            {categories.map((c, i) => (
+              <AnimatedSection key={c.name} delay={i * 0.05}>
+                <Link href={c.href} className={styles.catCard}>
+                  <PremiumCard hoverEffect={true} className={styles.catCardInner}>
+                    <div className={styles.catIcon}>{c.icon}</div>
+                    <h3 className={styles.catTitle}>{c.name}</h3>
+                    <p className={styles.catDesc}>{c.brands}</p>
+                  </PremiumCard>
+                </Link>
+              </AnimatedSection>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── Why Buildogram ── */}
-      <section className="fullBleedSection" style={{ background: 'white', padding: 'clamp(64px, 8vw, 112px) 0', borderTop: '1px solid var(--border)' }}>
+      <section className={`fullBleedSection ${styles.whySection}`}>
         <div className="sectionInnerWide">
-          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
-            <span style={{ display: 'inline-flex', alignItems: 'center', borderRadius: '999px', padding: '0.4rem 0.8rem', background: 'rgba(252, 110, 32, 0.1)', color: 'var(--primary)', border: '1px solid rgba(252, 110, 32, 0.2)', fontSize: '0.8rem', fontWeight: 800, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Why Material Sourcing Matters</span>
-            <h2 style={{ fontSize: 'clamp(32px, 4vw, 48px)', marginTop: '20px', fontFamily: '"Space Grotesk", sans-serif', color: 'var(--secondary)' }}>Transparent sourcing. Better accountability.</h2>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '24px' }}>
-            {whyBuildogram.map(w => (
-              <div key={w.title} style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', padding: '32px', borderRadius: '24px', border: '1px solid var(--border)', background: 'var(--bg-card)' }}>
-                <div style={{ fontSize: '36px', flexShrink: 0 }}>{w.icon}</div>
-                <div>
-                  <h3 style={{ fontSize: '18px', marginBottom: '8px', color: 'var(--secondary)' }}>{w.title}</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '15px', lineHeight: 1.6 }}>{w.desc}</p>
+          <AnimatedSection>
+            <SectionHeader
+              eyebrow="Why Material Sourcing Matters"
+              title="Transparent sourcing. Better accountability."
+            />
+          </AnimatedSection>
+          
+          <div className={styles.whyGrid}>
+            {whyBuildogram.map((w, i) => (
+              <PremiumCard key={w.title} animated={true} delay={i * 0.05} hoverEffect={true}>
+                <div className={styles.whyCard}>
+                  <div className={styles.whyIcon}>{w.icon}</div>
+                  <div>
+                    <h3 className={styles.whyTitle}>{w.title}</h3>
+                    <p className={styles.whyDesc}>{w.desc}</p>
+                  </div>
                 </div>
-              </div>
+              </PremiumCard>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── CTA Form ── */}
-      <section id="quote" className="fullBleedSection" style={{ background: 'var(--secondary)', padding: 'clamp(64px, 8vw, 112px) 0' }}>
-        <div className="sectionInnerWide" style={{ maxWidth: '700px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <h2 style={{ color: 'white', fontSize: 'clamp(32px, 4vw, 48px)', marginBottom: '16px', fontFamily: '"Space Grotesk", sans-serif' }}>Request Material Support</h2>
-            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px' }}>Tell us what materials you need. We will route your request to our supplier network and share competitive market-aligned quotes.</p>
-          </div>
-          <div style={{ background: 'white', border: '1px solid var(--border)', borderRadius: '24px', padding: '48px' }}>
-            <MaterialLeadForm />
-          </div>
+      <section id="quote" className={`fullBleedSection ${styles.formSection}`}>
+        <div className={`sectionInnerWide ${styles.formWrapper}`}>
+          <AnimatedSection className={styles.formHeader}>
+            <h2 className={styles.formH2}>Request Material Support</h2>
+            <p className={styles.formP}>Tell us what materials you need. We will route your request to our supplier network and share competitive market-aligned quotes.</p>
+          </AnimatedSection>
+          
+          <AnimatedSection delay={0.2}>
+            <div className={styles.formCard}>
+              <MaterialLeadForm />
+            </div>
+          </AnimatedSection>
         </div>
       </section>
     </div>

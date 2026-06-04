@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import AnimatedSection from '@/components/ui/AnimatedSection';
 import styles from './page.module.css';
 
 export default function LoginPage() {
@@ -32,12 +33,17 @@ export default function LoginPage() {
   return (
     <div className={styles.page}>
       <div className={styles.bg} />
-      <div className={styles.card}>
-        <Link href="/" className={styles.logo}><span style={{ color: 'var(--primary)' }}>⬡</span> Buildogram</Link>
+      
+      <AnimatedSection className={styles.card}>
+        <Link href="/" className={styles.logo}>
+          <span style={{ color: 'var(--primary)' }}>⬡</span> Buildogram
+        </Link>
+        
         <div className={styles.tabs}>
           <button className={`${styles.tab} ${tab === 'login' ? styles.active : ''}`} onClick={() => setTab('login')}>Sign In</button>
           <button className={`${styles.tab} ${tab === 'register' ? styles.active : ''}`} onClick={() => setTab('register')}>Register</button>
         </div>
+        
         <form onSubmit={submit} className={styles.form}>
           {tab === 'register' && (
             <div className="input-group">
@@ -59,24 +65,37 @@ export default function LoginPage() {
             <label>Password</label>
             <input className="input" type="password" placeholder="••••••••" value={form.password} onChange={e => set('password', e.target.value)} required />
           </div>
+          
           {error && <div className={styles.error}>{error}</div>}
-          <button type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center' }} disabled={loading}>
+          
+          <button type="submit" className="btn btn-primary btn-lg" style={{ width: '100%', justifyContent: 'center', marginTop: '8px' }} disabled={loading}>
             {loading ? 'Please wait...' : tab === 'login' ? 'Sign In →' : 'Create Account →'}
           </button>
         </form>
-        <p className="text-muted text-sm text-center mt-4">
-          {tab === 'login' ? "Don't have an account? " : 'Already have an account? '}
-          <button onClick={() => setTab(tab === 'login' ? 'register' : 'login')} style={{ color: 'var(--primary)', background: 'none', textDecoration: 'underline', fontSize: '13px' }}>
-            {tab === 'login' ? 'Register' : 'Sign in'}
-          </button>
-        </p>
-        <div className={styles.demoBox}>
-          <p className="text-xs text-muted font-semibold mb-2">Demo Credentials (password: password123)</p>
-          <p className="text-xs text-muted">Admin: admin@buildogram.in</p>
-          <p className="text-xs text-muted">Partner: partner@buildogram.in</p>
-          <p className="text-xs text-muted">Client: client@buildogram.in</p>
+        
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '24px' }}>
+          <p className="text-muted" style={{ fontSize: '14px', margin: 0 }}>
+            {tab === 'login' ? "Don't have an account? " : 'Already have an account? '}
+            <button onClick={() => setTab(tab === 'login' ? 'register' : 'login')} style={{ color: 'var(--primary)', background: 'none', fontWeight: 600, fontSize: '14px', border: 'none', cursor: 'pointer', padding: 0 }}>
+              {tab === 'login' ? 'Register' : 'Sign in'}
+            </button>
+          </p>
+          {tab === 'login' && (
+            <Link href="/forgot-password" style={{ color: 'var(--text-muted)', fontSize: '13px', textDecoration: 'none' }}>
+              Forgot password?
+            </Link>
+          )}
         </div>
-      </div>
+        
+        <div className={styles.demoBox}>
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 700, marginBottom: '8px' }}>Demo Credentials (password: password123)</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Admin: admin@buildogram.in</p>
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Partner: partner@buildogram.in</p>
+            <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Client: client@buildogram.in</p>
+          </div>
+        </div>
+      </AnimatedSection>
     </div>
   );
 }

@@ -33,7 +33,18 @@ export async function POST(req) {
     });
 
     // Generate
-    const projectInput = { ...project, prompt: body.prompt };
+    const metadata = project.metadata && typeof project.metadata === 'object' ? project.metadata : {};
+    const projectInput = {
+      ...project,
+      ...metadata,
+      prompt: body.prompt,
+      plotWidth: project.plot_width,
+      plotDepth: project.plot_depth,
+      vastuPreference: project.vastu_preference,
+      roomRequirements: body.roomRequirements || metadata.roomRequirements || {},
+      roomSizePreference: body.roomSizePreference || metadata.roomSizePreference,
+      layerPreference: body.layerPreference || metadata.layerPreference,
+    };
     const plans = await generateFloorPlans(projectInput);
 
     // Save versions

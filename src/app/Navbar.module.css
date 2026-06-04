@@ -1,75 +1,86 @@
+/* ── Topbar ── */
 .topbar {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 200;
   width: 100%;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(18px);
-  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid transparent;
   padding-top: env(safe-area-inset-top);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+.scrolled {
+  border-bottom-color: var(--border);
+  box-shadow: 0 2px 24px rgba(0,0,0,0.06);
+}
+
 .navInner {
   width: min(100%, 1500px);
   margin: 0 auto;
-  height: 78px;
+  height: 68px;
   display: grid;
-  grid-template-columns: auto minmax(300px, 1fr) auto;
-  gap: 2rem;
+  grid-template-columns: auto minmax(260px, 1fr) auto;
+  gap: 24px;
   align-items: center;
-  padding: 0 clamp(1rem, 3vw, 2.5rem);
+  padding: 0 clamp(1rem, 3vw, 2rem);
 }
+
+/* ── Brand ── */
 .brand {
-  border: 0;
-  background: transparent;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 10px;
+  text-decoration: none;
   color: var(--secondary);
-  font-family: 'Space Grotesk', system-ui, sans-serif;
+  font-family: 'Space Grotesk', sans-serif;
   font-weight: 800;
-  font-size: 1.35rem;
+  font-size: 1.2rem;
+  flex-shrink: 0;
 }
 .brandMark {
-  width: 40px;
-  height: 40px;
-  border: 1px solid var(--secondary);
-  border-radius: 12px;
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--secondary);
+  border-radius: 10px;
   background: var(--bg-card);
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 3px;
-  padding: 6px;
-  box-shadow: 5px 5px 0 rgba(41, 41, 41, 0.1);
+  gap: 2.5px;
+  padding: 5px;
+  box-shadow: 4px 4px 0 rgba(41,41,41,0.08);
+  flex-shrink: 0;
 }
 .brandMark i {
   background: var(--secondary);
-  border-radius: 3px;
+  border-radius: 2px;
+  display: block;
 }
-.brandMark i:nth-child(2), .brandMark i:nth-child(5) {
-  background: var(--primary);
-}
-.brandMark i:nth-child(3) {
-  visibility: hidden;
-}
+.brandMark i:nth-child(2),
+.brandMark i:nth-child(5) { background: var(--primary); }
+.brandMark i:nth-child(3) { visibility: hidden; }
+.brandName { letter-spacing: -0.3px; }
+
+/* ── Desktop search ── */
 .globalSearch {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
-  gap: 0.7rem;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  padding: 0.65rem 1.2rem;
+  gap: 10px;
+  background: var(--bg-card2);
+  border: 1.5px solid var(--border);
+  border-radius: 100px;
+  padding: 0.55rem 1rem;
   color: var(--text-muted);
   width: 100%;
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto;
-  box-shadow: var(--shadow);
-  transition: all 0.2s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 .globalSearch:focus-within {
   border-color: var(--primary);
-  box-shadow: 0 4px 20px rgba(252, 110, 32, 0.1);
+  box-shadow: 0 0 0 3px rgba(252,110,32,0.1);
+  background: white;
 }
 .globalSearch input {
   border: 0;
@@ -77,8 +88,9 @@
   outline: none;
   min-width: 0;
   color: var(--text);
-  font-size: 15px;
+  font-size: 14px;
   width: 100%;
+  font-family: inherit;
 }
 .globalSearch select {
   border: none;
@@ -86,90 +98,149 @@
   outline: none;
   color: var(--secondary);
   font-weight: 600;
-  font-size: 14px;
-  padding-left: 0.8rem;
+  font-size: 13px;
+  padding-left: 10px;
   border-left: 1px solid var(--border);
   cursor: pointer;
+  font-family: inherit;
 }
+
+/* ── Desktop nav links ── */
 .topActions {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  gap: 4px;
   align-items: center;
+  flex-shrink: 0;
 }
-/* Ensure all nav action buttons meet 44px tap target */
-.topActions a,
-.topActions button {
-  min-height: 44px;
+.navLink {
   display: inline-flex;
   align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+  min-height: 40px;
+  white-space: nowrap;
 }
+.navLink:hover {
+  color: var(--secondary);
+  background: rgba(0,0,0,0.04);
+}
+
+/* ── Hamburger button ── */
 .menuBtn {
   display: none;
-  background: none;
-  border: none;
+  background: var(--bg-card2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
   color: var(--secondary);
-  font-size: 24px;
   cursor: pointer;
-  min-height: 44px;
-  min-width: 44px;
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+  flex-shrink: 0;
 }
+.menuBtn:hover { background: var(--border); }
+
+.burger {
+  display: flex;
+  flex-direction: column;
+  gap: 4.5px;
+  width: 18px;
+}
+.burger span {
+  display: block;
+  height: 2px;
+  background: currentColor;
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  transform-origin: center;
+}
+.burgerOpen span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+.burgerOpen span:nth-child(2) { opacity: 0; }
+.burgerOpen span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+/* ── Mobile nav drawer ── */
 .mobileNav {
-  display: none;
+  position: fixed;
+  z-index: 190;
+  left: 12px;
+  right: 12px;
+  top: calc(68px + env(safe-area-inset-top) + 8px);
+  background: rgba(255,255,255,0.98);
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  overflow: hidden;
 }
 
-@media(max-width: 1024px) {
-  .navInner {
-    grid-template-columns: auto 1fr auto;
-    gap: 1rem;
-  }
+.mobileSearch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--bg-card2);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 14px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+.mobileSearch input {
+  border: 0;
+  background: transparent;
+  outline: none;
+  min-width: 0;
+  color: var(--text);
+  font-size: 15px;
+  flex: 1;
+  font-family: inherit;
 }
 
-@media(max-width: 768px) {
-  .navInner {
-    grid-template-columns: 1fr auto;
-    height: auto;
-    padding: 1rem;
-  }
+.mobileLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.mobileLink {
+  display: flex;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  transition: background 0.12s, color 0.12s;
+  min-height: 48px;
+}
+.mobileLink:hover { background: var(--bg-card2); }
+.mobileLinkAccent { color: var(--primary); }
+.mobileLinkPrimary {
+  background: var(--gradient-orange);
+  color: white !important;
+  margin-top: 4px;
+  justify-content: center;
+}
+.mobileLinkPrimary:hover { opacity: 0.9; }
+
+/* ── Responsive breakpoints ── */
+@media (max-width: 1024px) {
+  .navInner { grid-template-columns: auto 1fr auto; gap: 16px; }
+}
+@media (max-width: 768px) {
+  .navInner { grid-template-columns: 1fr auto; height: 60px; }
   .globalSearch { display: none; }
-  .topActions { display: none; }
-  .menuBtn { display: block; }
-  .mobileNav {
-    position: fixed;
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    left: 10px;
-    right: 10px;
-    top: calc(76px + env(safe-area-inset-top));
-    background: rgba(255, 255, 255, 0.98);
-    border: 1px solid var(--border);
-    border-radius: 22px;
-    padding: 1rem;
-    box-shadow: var(--shadow-premium);
-    backdrop-filter: blur(18px);
-    gap: 16px;
-  }
-  .mobileNav a {
-    color: var(--text);
-    font-weight: 600;
-    text-decoration: none;
-    font-size: 16px;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-  }
-  .mobileNav a:last-child {
-    border-bottom: none;
-  }
-  .mobileNav .globalSearch {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    margin-bottom: 8px;
-  }
-  .mobileNav .globalSearch select {
-    display: none;
-  }
+  .topActions   { display: none; }
+  .menuBtn      { display: flex; }
 }

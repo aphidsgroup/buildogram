@@ -3,16 +3,14 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { roleCan } from '@/lib/permissions';
 import LeadDetailWorkspace from './LeadDetailWorkspace';
+import AnimatedSection from '@/components/ui/AnimatedSection';
+import Badge from '@/components/ui/Badge';
+import styles from './dashboard.module.css';
 
 const fmt = (value) => {
   if (value === null || value === undefined || value === "") return "₹0";
-
   const numberValue = Number(value);
-
-  if (Number.isNaN(numberValue)) {
-    return String(value);
-  }
-
+  if (Number.isNaN(numberValue)) return String(value);
   return new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
@@ -58,470 +56,489 @@ export default function OpsDashboard() {
     });
   }, []);
 
-  const stColor = { new: 'badge-blue', contacted: 'badge-yellow', qualified: 'badge-orange', proposal: 'badge-orange', won: 'badge-green', lost: 'badge-red', requested: 'badge-blue', pending: 'badge-yellow', verified: 'badge-green', published: 'badge-green', draft: 'badge-gray' };
+  const getBadgeVariant = (status) => {
+    const s = String(status).toLowerCase();
+    if (['new', 'requested'].includes(s)) return 'info';
+    if (['contacted', 'pending'].includes(s)) return 'warning';
+    if (['qualified', 'proposal'].includes(s)) return 'primary';
+    if (['won', 'verified', 'published'].includes(s)) return 'success';
+    if (['lost'].includes(s)) return 'danger';
+    return 'default';
+  };
+
+  const getPriorityVariant = (priority) => {
+    const p = String(priority).toLowerCase();
+    if (p === 'high') return 'danger';
+    if (p === 'medium') return 'warning';
+    return 'default';
+  };
 
   if (loading) return <div className="flex-center" style={{ height: '60vh' }}><div className="spinner" /></div>;
-  if (errorMsg) return <div className="text-center p-10 text-red-500 font-bold">{errorMsg}</div>;
-  if (!data) return <div className="text-center p-10 text-red-500">Failed to load dashboard. Ensure you have admin access.</div>;
+  if (errorMsg) return <div className="flex-center" style={{ height: '60vh' }}><div className="text-red-500 font-bold">{errorMsg}</div></div>;
+  if (!data) return <div className="flex-center" style={{ height: '60vh' }}><div className="text-red-500 font-bold">Failed to load dashboard. Ensure you have admin access.</div></div>;
 
   const { kpis, breakdowns, alerts, recent, followUps } = data;
 
   return (
-    <div className="pb-20">
-      <div className="page-header flex-between mb-8" style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)', padding: '40px', borderRadius: '24px', color: 'white', boxShadow: '0 10px 30px rgba(0,0,0,0.1)', flexWrap: 'wrap', gap: '16px' }}>
+    <div className={styles.page}>
+      
+      {/* ── BANNER ── */}
+      <AnimatedSection className={styles.banner}>
         <div>
-          <h1 style={{ fontSize: '32px', fontWeight: 800, marginBottom: '8px' }}>Founder Dashboard</h1>
-          <p style={{ color: '#94A3B8', fontSize: '16px' }}>Comprehensive overview of revenue, operations, and ecosystem health.</p>
+          <h1 className={styles.bannerTitle}>Founder Dashboard</h1>
+          <p className={styles.bannerSub}>Comprehensive overview of revenue, operations, and ecosystem health.</p>
         </div>
         <div>
-          <Link href="/ops/pilot-launch" style={{ background: '#FC6E20', color: 'white', padding: '12px 24px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', display: 'inline-block' }}>
+          <Link href="/ops/pilot-launch" className={styles.pilotBtn}>
             🚀 Open Pilot Launch Control
           </Link>
         </div>
-      </div>
+      </AnimatedSection>
 
       {/* ── ALERTS SECTION ── */}
       {(alerts.pendingPartners > 0 || alerts.urgentMaintenance > 0 || alerts.draftListings > 0 || alerts.overdueFollowUps > 0 || alerts.todayFollowUps > 0) && (
-        <div style={{ display: 'flex', gap: '16px', marginBottom: '24px', flexWrap: 'wrap' }}>
+        <AnimatedSection className={styles.alertsWrap} delay={0.05}>
           {alerts.overdueFollowUps > 0 && (
-            <div style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '24px' }}>⏰</span>
+            <div className={`${styles.alertBox} ${styles.alertRed}`}>
+              <span className={styles.alertIcon}>⏰</span>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 700, color: '#991b1b' }}>{alerts.overdueFollowUps} Overdue Follow-ups</div>
-                <div style={{ fontSize: '12px', color: '#dc2626', fontWeight: 600 }}>Action Required</div>
+                <div className={styles.alertTitle}>{alerts.overdueFollowUps} Overdue Follow-ups</div>
+                <div className={styles.alertAction}>Action Required</div>
               </div>
             </div>
           )}
           {alerts.todayFollowUps > 0 && (
-            <div style={{ background: '#fffbeb', border: '1px solid #fde68a', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '24px' }}>📅</span>
+            <div className={`${styles.alertBox} ${styles.alertYellow}`}>
+              <span className={styles.alertIcon}>📅</span>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 700, color: '#92400e' }}>{alerts.todayFollowUps} Follow-ups Due Today</div>
-                <div style={{ fontSize: '12px', color: '#d97706', fontWeight: 600 }}>Attention Required</div>
+                <div className={styles.alertTitle}>{alerts.todayFollowUps} Follow-ups Due Today</div>
+                <div className={styles.alertAction}>Attention Required</div>
               </div>
             </div>
           )}
           {alerts.urgentMaintenance > 0 && (
-            <div style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '24px' }}>🚨</span>
+            <div className={`${styles.alertBox} ${styles.alertRed}`}>
+              <span className={styles.alertIcon}>🚨</span>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 700, color: '#991b1b' }}>{alerts.urgentMaintenance} Urgent Maintenance</div>
-                <Link href="/ops/leads" style={{ fontSize: '12px', color: '#dc2626', fontWeight: 600 }}>Review Requests →</Link>
+                <div className={styles.alertTitle}>{alerts.urgentMaintenance} Urgent Maintenance</div>
+                <Link href="/ops/leads" className={styles.alertAction}>Review Requests →</Link>
               </div>
             </div>
           )}
           {alerts.pendingQueueApprovals > 0 && (
-            <div style={{ background: '#fffbeb', border: '1px solid #fde68a', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '24px' }}>⏳</span>
+            <div className={`${styles.alertBox} ${styles.alertYellow}`}>
+              <span className={styles.alertIcon}>⏳</span>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 700, color: '#92400e' }}>{alerts.pendingQueueApprovals} Pending Approvals</div>
-                <Link href="/ops/notification-queue" style={{ fontSize: '12px', color: '#d97706', fontWeight: 600 }}>Review WhatsApp Queue →</Link>
+                <div className={styles.alertTitle}>{alerts.pendingQueueApprovals} Pending Approvals</div>
+                <Link href="/ops/notification-queue" className={styles.alertAction}>Review WhatsApp Queue →</Link>
               </div>
             </div>
           )}
           {alerts.failedQueueMessages > 0 && (
-            <div style={{ background: '#fef2f2', border: '1px solid #fecaca', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '24px' }}>❌</span>
+            <div className={`${styles.alertBox} ${styles.alertRed}`}>
+              <span className={styles.alertIcon}>❌</span>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 700, color: '#991b1b' }}>{alerts.failedQueueMessages} Failed Messages</div>
-                <Link href="/ops/notification-queue" style={{ fontSize: '12px', color: '#dc2626', fontWeight: 600 }}>Retry Failed Messages →</Link>
+                <div className={styles.alertTitle}>{alerts.failedQueueMessages} Failed Messages</div>
+                <Link href="/ops/notification-queue" className={styles.alertAction}>Retry Failed Messages →</Link>
               </div>
             </div>
           )}
           {alerts.pendingPartners > 0 && (
-            <div style={{ background: '#fffbeb', border: '1px solid #fde68a', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '24px' }}>🤝</span>
+            <div className={`${styles.alertBox} ${styles.alertYellow}`}>
+              <span className={styles.alertIcon}>🤝</span>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 700, color: '#92400e' }}>{alerts.pendingPartners} Pending Partners</div>
-                <Link href="/ops/leads" style={{ fontSize: '12px', color: '#d97706', fontWeight: 600 }}>Verify Applications →</Link>
+                <div className={styles.alertTitle}>{alerts.pendingPartners} Pending Partners</div>
+                <Link href="/ops/leads" className={styles.alertAction}>Verify Applications →</Link>
               </div>
             </div>
           )}
           {alerts.draftListings > 0 && (
-            <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', padding: '12px 16px', borderRadius: '12px', flex: '1 1 250px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <span style={{ fontSize: '24px' }}>📝</span>
+            <div className={`${styles.alertBox} ${styles.alertGray}`}>
+              <span className={styles.alertIcon}>📝</span>
               <div>
-                <div style={{ fontSize: '14px', fontWeight: 700, color: '#475569' }}>{alerts.draftListings} Draft Listings</div>
-                <Link href="/ops/leads" style={{ fontSize: '12px', color: '#64748b', fontWeight: 600 }}>Publish Listings →</Link>
+                <div className={styles.alertTitle}>{alerts.draftListings} Draft Listings</div>
+                <Link href="/ops/leads" className={styles.alertAction}>Publish Listings →</Link>
               </div>
             </div>
           )}
-        </div>
+        </AnimatedSection>
       )}
 
       {/* ── CORE KPIs ── */}
-      <h2 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '16px', color: '#1e293b' }}>Core Metrics</h2>
-      <div className="grid-4 mb-8" style={{ gap: '16px' }}>
-        <div className="card" style={{ padding: '20px', border: '1px solid #e0e7ff', background: 'white' }}>
-            <div style={{ background: '#eff6ff', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>👥</div>
-            <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>{kpis.totalLeads}</div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total CRM Leads</div>
-            <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '8px', fontWeight: 500 }}>+{kpis.newLeadsMonth} this month</div>
-        </div>
-        <div className="card" style={{ padding: '20px', border: '1px solid #fae8ff', background: 'white' }}>
-            <div style={{ background: '#fdf4ff', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>🏠</div>
-            <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>{kpis.publishedListings}</div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Published Listings</div>
-            <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '8px', fontWeight: 500 }}>Public facing properties</div>
-        </div>
-        <div className="card" style={{ padding: '20px', border: '1px solid #fbcfe8', background: '#fdf2f8' }}>
-            <div style={{ background: '#fce7f3', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>📞</div>
-            <div style={{ fontSize: '24px', fontWeight: 800, color: '#831843', marginBottom: '4px' }}>{kpis.propertyInquiries}</div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: '#be185d', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Property Inquiries</div>
-            <div style={{ fontSize: '12px', color: '#9d174d', marginTop: '8px', fontWeight: 500 }}>From public listings</div>
-        </div>
-        <div className="card" style={{ padding: '20px', border: '1px solid #d1fae5', background: 'white' }}>
-            <div style={{ background: '#ecfdf5', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>🛂</div>
-            <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>{kpis.activePassports}</div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Active Passports</div>
-            <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '8px', fontWeight: 500 }}>{kpis.avgCompleteness}% avg completeness</div>
-        </div>
+      <div>
+        <h2 className={styles.sectionTitle}>Core Metrics</h2>
+        <AnimatedSection className={styles.metricsGrid} delay={0.1}>
+          <div className={styles.metricCard}>
+              <div className={styles.metricIcon} style={{ background: '#eff6ff' }}>👥</div>
+              <div className={styles.metricVal}>{kpis.totalLeads}</div>
+              <div className={styles.metricLabel}>Total CRM Leads</div>
+              <div className={styles.metricSub}>+{kpis.newLeadsMonth} this month</div>
+          </div>
+          <div className={styles.metricCard}>
+              <div className={styles.metricIcon} style={{ background: '#fdf4ff' }}>🏠</div>
+              <div className={styles.metricVal}>{kpis.publishedListings}</div>
+              <div className={styles.metricLabel}>Published Listings</div>
+              <div className={styles.metricSub}>Public facing properties</div>
+          </div>
+          <div className={styles.metricCard} style={{ background: '#fdf2f8', borderColor: '#fbcfe8' }}>
+              <div className={styles.metricIcon} style={{ background: '#fce7f3' }}>📞</div>
+              <div className={styles.metricVal} style={{ color: '#831843' }}>{kpis.propertyInquiries}</div>
+              <div className={styles.metricLabel} style={{ color: '#be185d' }}>Property Inquiries</div>
+              <div className={styles.metricSub} style={{ color: '#9d174d' }}>From public listings</div>
+          </div>
+          <div className={styles.metricCard}>
+              <div className={styles.metricIcon} style={{ background: '#ecfdf5' }}>🛂</div>
+              <div className={styles.metricVal}>{kpis.activePassports}</div>
+              <div className={styles.metricLabel}>Active Passports</div>
+              <div className={styles.metricSub}>{kpis.avgCompleteness}% avg completeness</div>
+          </div>
+        </AnimatedSection>
       </div>
 
       {/* ── CRM PIPELINE ── */}
-      <h2 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '16px', color: '#1e293b' }}>
-        CRM Pipeline
-      </h2>
-      
-      <div className="grid-4 mb-4" style={{ gap: '16px' }}>
-        <div className="card" style={{ padding: '16px', border: '1px solid #e2e8f0', background: 'white' }}>
-            <div style={{ fontSize: '20px', fontWeight: 800, color: '#0f172a' }}>{leads.length}</div>
-            <div style={{ fontSize: '11px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase' }}>Total Leads</div>
-        </div>
-        <div className="card" style={{ padding: '16px', border: '1px solid #dbeafe', background: '#eff6ff' }}>
-            <div style={{ fontSize: '20px', fontWeight: 800, color: '#1e40af' }}>{leads.filter(l => l.pipelineStage === 'New').length}</div>
-            <div style={{ fontSize: '11px', fontWeight: 700, color: '#1d4ed8', textTransform: 'uppercase' }}>New Leads</div>
-        </div>
-        <div className="card" style={{ padding: '16px', border: '1px solid #fecaca', background: '#fef2f2' }}>
-            <div style={{ fontSize: '20px', fontWeight: 800, color: '#991b1b' }}>{leads.filter(l => l.priority === 'High').length}</div>
-            <div style={{ fontSize: '11px', fontWeight: 700, color: '#b91c1c', textTransform: 'uppercase' }}>High Priority</div>
-        </div>
-        <div className="card" style={{ padding: '16px', border: '1px solid #fef08a', background: '#fefce8' }}>
-            <div style={{ fontSize: '20px', fontWeight: 800, color: '#854d0e' }}>
-              {leads.filter(l => l.nextFollowUpDate && new Date(l.nextFollowUpDate) < new Date()).length}
-            </div>
-            <div style={{ fontSize: '11px', fontWeight: 700, color: '#a16207', textTransform: 'uppercase' }}>Overdue Follow-ups</div>
-        </div>
-      </div>
+      <div>
+        <h2 className={styles.sectionTitle}>CRM Pipeline</h2>
+        
+        <AnimatedSection className={styles.metricsGrid} delay={0.15}>
+          <div className={styles.metricCard}>
+              <div className={styles.metricVal}>{leads.length}</div>
+              <div className={styles.metricLabel}>Total Leads</div>
+          </div>
+          <div className={styles.metricCard} style={{ background: '#eff6ff', borderColor: '#dbeafe' }}>
+              <div className={styles.metricVal} style={{ color: '#1e40af' }}>{leads.filter(l => l.pipelineStage === 'New').length}</div>
+              <div className={styles.metricLabel} style={{ color: '#1d4ed8' }}>New Leads</div>
+          </div>
+          <div className={styles.metricCard} style={{ background: '#fef2f2', borderColor: '#fecaca' }}>
+              <div className={styles.metricVal} style={{ color: '#991b1b' }}>{leads.filter(l => l.priority === 'High').length}</div>
+              <div className={styles.metricLabel} style={{ color: '#b91c1c' }}>High Priority</div>
+          </div>
+          <div className={styles.metricCard} style={{ background: '#fefce8', borderColor: '#fef08a' }}>
+              <div className={styles.metricVal} style={{ color: '#854d0e' }}>
+                {leads.filter(l => l.nextFollowUpDate && new Date(l.nextFollowUpDate) < new Date()).length}
+              </div>
+              <div className={styles.metricLabel} style={{ color: '#a16207' }}>Overdue Follow-ups</div>
+          </div>
+        </AnimatedSection>
 
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '16px' }}>
-        <select className="input" style={{ width: '200px' }} value={pipelineFilter} onChange={e => setPipelineFilter(e.target.value)}>
-          <option value="All">All Stages</option>
-          <option value="New">New</option>
-          <option value="Contacted">Contacted</option>
-          <option value="Qualified">Qualified</option>
-          <option value="Requirement Collected">Requirement Collected</option>
-          <option value="BOQ / Scope Review">BOQ / Scope Review</option>
-          <option value="Partner Matching">Partner Matching</option>
-          <option value="Material Quote Shared">Material Quote Shared</option>
-          <option value="Proposal Sent">Proposal Sent</option>
-          <option value="Follow-up">Follow-up</option>
-          <option value="Converted">Converted</option>
-          <option value="Lost">Lost</option>
-        </select>
-        <select className="input" style={{ width: '200px' }} value={typeFilter} onChange={e => setTypeFilter(e.target.value)}>
-          <option value="All">All Types</option>
-          <option value="construction">Construction</option>
-          <option value="boq_audit">BOQ Audit</option>
-          <option value="material_quote">Materials</option>
-          <option value="partner_application">Partner App</option>
-          <option value="property_listing">Property</option>
-        </select>
-      </div>
+        <AnimatedSection className={styles.filters} delay={0.2}>
+          <select className="input" style={{ width: '200px' }} value={pipelineFilter} onChange={e => setPipelineFilter(e.target.value)}>
+            <option value="All">All Stages</option>
+            <option value="New">New</option>
+            <option value="Contacted">Contacted</option>
+            <option value="Qualified">Qualified</option>
+            <option value="Requirement Collected">Requirement Collected</option>
+            <option value="BOQ / Scope Review">BOQ / Scope Review</option>
+            <option value="Partner Matching">Partner Matching</option>
+            <option value="Material Quote Shared">Material Quote Shared</option>
+            <option value="Proposal Sent">Proposal Sent</option>
+            <option value="Follow-up">Follow-up</option>
+            <option value="Converted">Converted</option>
+            <option value="Lost">Lost</option>
+          </select>
+          <select className="input" style={{ width: '200px' }} value={typeFilter} onChange={e => setTypeFilter(e.target.value)}>
+            <option value="All">All Types</option>
+            <option value="construction">Construction</option>
+            <option value="boq_audit">BOQ Audit</option>
+            <option value="material_quote">Materials</option>
+            <option value="partner_application">Partner App</option>
+            <option value="property_listing">Property</option>
+          </select>
+        </AnimatedSection>
 
-      <div className="card mb-8" style={{ padding: '0', overflowX: 'auto' }}>
-        <table style={{ minWidth: '900px', width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ background: '#f8fafc', borderBottom: '1px solid #e2e8f0' }}>
-              <th style={{ padding: '12px 20px', textAlign: 'left', fontSize: '12px', color: '#64748b' }}>Name</th>
-              <th style={{ padding: '12px 20px', textAlign: 'left', fontSize: '12px', color: '#64748b' }}>Type</th>
-              <th style={{ padding: '12px 20px', textAlign: 'left', fontSize: '12px', color: '#64748b' }}>Stage</th>
-              <th style={{ padding: '12px 20px', textAlign: 'left', fontSize: '12px', color: '#64748b' }}>Priority</th>
-              <th style={{ padding: '12px 20px', textAlign: 'left', fontSize: '12px', color: '#64748b' }}>Follow-up</th>
-              <th style={{ padding: '12px 20px', textAlign: 'right', fontSize: '12px', color: '#64748b' }}>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leads.filter(l => (pipelineFilter === 'All' || l.pipelineStage === pipelineFilter) && (typeFilter === 'All' || l.leadType === typeFilter)).length === 0 ? (
-              <tr><td colSpan="6" style={{ padding: '40px', textAlign: 'center', color: '#94a3b8' }}>No leads match the current filters.</td></tr>
-            ) : leads.filter(l => (pipelineFilter === 'All' || l.pipelineStage === pipelineFilter) && (typeFilter === 'All' || l.leadType === typeFilter)).map(l => (
-              <tr key={l.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
-                <td style={{ padding: '16px 20px' }}>
-                  <div style={{ fontWeight: 600, color: '#0f172a', fontSize: '14px' }}>{l.name}</div>
-                  <div style={{ fontSize: '12px', color: '#64748b' }}>{l.phone}</div>
-                </td>
-                <td style={{ padding: '16px 20px', fontSize: '13px', color: '#475569', textTransform: 'capitalize' }}>{l.leadType.replace('_', ' ')}</td>
-                <td style={{ padding: '16px 20px' }}>
-                  <span className={`badge ${l.pipelineStage === 'New' ? 'badge-blue' : l.pipelineStage === 'Converted' ? 'badge-green' : l.pipelineStage === 'Lost' ? 'badge-red' : 'badge-yellow'}`}>{l.pipelineStage}</span>
-                </td>
-                <td style={{ padding: '16px 20px' }}>
-                  <span className={`badge ${l.priority === 'High' ? 'badge-red' : l.priority === 'Medium' ? 'badge-yellow' : 'badge-gray'}`}>{l.priority}</span>
-                </td>
-                <td style={{ padding: '16px 20px', fontSize: '13px', color: '#475569' }}>
-                  {l.nextFollowUpDate ? new Date(l.nextFollowUpDate).toLocaleDateString('en-IN') : '—'}
-                </td>
-                <td style={{ padding: '16px 20px', textAlign: 'right' }}>
-                  <button onClick={() => setSelectedLead(l)} className="btn btn-outline btn-sm">Workspace</button>
-                </td>
+        <AnimatedSection className={styles.tableWrap} delay={0.25}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Stage</th>
+                <th>Priority</th>
+                <th>Follow-up</th>
+                <th className={styles.right}>Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {leads.filter(l => (pipelineFilter === 'All' || l.pipelineStage === pipelineFilter) && (typeFilter === 'All' || l.leadType === typeFilter)).length === 0 ? (
+                <tr><td colSpan="6" style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)' }}>No leads match the current filters.</td></tr>
+              ) : leads.filter(l => (pipelineFilter === 'All' || l.pipelineStage === pipelineFilter) && (typeFilter === 'All' || l.leadType === typeFilter)).map(l => (
+                <tr key={l.id}>
+                  <td>
+                    <div className={styles.leadName}>{l.name}</div>
+                    <div className={styles.leadPhone}>{l.phone}</div>
+                  </td>
+                  <td style={{ textTransform: 'capitalize' }}>{l.leadType.replace('_', ' ')}</td>
+                  <td>
+                    <Badge variant={getBadgeVariant(l.pipelineStage)}>{l.pipelineStage}</Badge>
+                  </td>
+                  <td>
+                    <Badge variant={getPriorityVariant(l.priority)}>{l.priority}</Badge>
+                  </td>
+                  <td>
+                    {l.nextFollowUpDate ? new Date(l.nextFollowUpDate).toLocaleDateString('en-IN') : '—'}
+                  </td>
+                  <td className={styles.right}>
+                    <button onClick={() => setSelectedLead(l)} className="btn btn-outline btn-sm">Workspace</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </AnimatedSection>
       </div>
 
-      <div className="grid-4 mb-8" style={{ gap: '16px' }}>
-        <div className="card" style={{ padding: '20px', border: '1px solid #e0e7ff', background: 'white' }}>
-            <div style={{ background: '#eff6ff', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>💬</div>
-            <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>{data?.queue?.sentThisMonth || 0}</div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Messages Sent</div>
-            <div style={{ fontSize: '12px', color: '#94a3b8', marginTop: '8px', fontWeight: 500 }}>Via Auto-Queue this month</div>
+      <AnimatedSection className={styles.metricsGrid} delay={0.3}>
+        <div className={styles.metricCard}>
+            <div className={styles.metricIcon} style={{ background: '#eff6ff' }}>💬</div>
+            <div className={styles.metricVal}>{data?.queue?.sentThisMonth || 0}</div>
+            <div className={styles.metricLabel}>Messages Sent</div>
+            <div className={styles.metricSub}>Via Auto-Queue this month</div>
         </div>
-        <div className="card" style={{ padding: '20px', border: '1px solid #fef08a', background: '#fefce8' }}>
-            <div style={{ background: '#fef08a', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>🤝</div>
-            <div style={{ fontSize: '24px', fontWeight: 800, color: '#854d0e', marginBottom: '4px' }}>{kpis.referredLeads}</div>
-            <div style={{ fontSize: '12px', fontWeight: 700, color: '#a16207', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Partner Referrals</div>
-            <div style={{ fontSize: '12px', color: '#ca8a04', marginTop: '8px', fontWeight: 500 }}>{kpis.convertedReferrals} Converted</div>
+        <div className={styles.metricCard} style={{ background: '#fefce8', borderColor: '#fef08a' }}>
+            <div className={styles.metricIcon} style={{ background: '#fef08a' }}>🤝</div>
+            <div className={styles.metricVal} style={{ color: '#854d0e' }}>{kpis.referredLeads}</div>
+            <div className={styles.metricLabel} style={{ color: '#a16207' }}>Partner Referrals</div>
+            <div className={styles.metricSub} style={{ color: '#ca8a04' }}>{kpis.convertedReferrals} Converted</div>
         </div>
         {user && roleCan(user.role, 'view_revenue') && (
           <>
-            <div className="card" style={{ padding: '20px', border: '1px solid #fed7aa', background: '#fff7ed' }}>
-                <div style={{ background: '#fed7aa', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>💰</div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: '#9a3412', marginBottom: '4px' }}>{fmt(kpis.referralExpected)}</div>
-                <div style={{ fontSize: '12px', fontWeight: 700, color: '#c2410c', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Exp. Referral Comm.</div>
+            <div className={styles.metricCard} style={{ background: '#fff7ed', borderColor: '#fed7aa' }}>
+                <div className={styles.metricIcon} style={{ background: '#fed7aa' }}>💰</div>
+                <div className={styles.metricVal} style={{ color: '#9a3412' }}>{fmt(kpis.referralExpected)}</div>
+                <div className={styles.metricLabel} style={{ color: '#c2410c' }}>Exp. Referral Comm.</div>
             </div>
-            <div className="card" style={{ padding: '20px', border: '1px solid #bbf7d0', background: '#f0fdf4' }}>
-                <div style={{ background: '#bbf7d0', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>💸</div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: '#166534', marginBottom: '4px' }}>{fmt(kpis.referralPaid)}</div>
-                <div style={{ fontSize: '12px', fontWeight: 700, color: '#15803d', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Paid Referral Comm.</div>
+            <div className={styles.metricCard} style={{ background: '#f0fdf4', borderColor: '#bbf7d0' }}>
+                <div className={styles.metricIcon} style={{ background: '#bbf7d0' }}>💸</div>
+                <div className={styles.metricVal} style={{ color: '#166534' }}>{fmt(kpis.referralPaid)}</div>
+                <div className={styles.metricLabel} style={{ color: '#15803d' }}>Paid Referral Comm.</div>
             </div>
           </>
         )}
-      </div>
+      </AnimatedSection>
 
       {user && roleCan(user.role, 'manage_invoices') && (
-        <>
-          <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Invoicing Health</h3>
-          <div className="grid-3 mb-8" style={{ gap: '16px' }}>
-            <div className="card" style={{ padding: '20px', border: '1px solid #e2e8f0', background: 'white' }}>
-                <div style={{ background: '#f1f5f9', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>🧾</div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>{fmt(data?.invoices?.total_invoiced)}</div>
-                <div style={{ fontSize: '12px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Total Invoiced</div>
+        <AnimatedSection delay={0.35}>
+          <h3 className={styles.sectionTitle}>Invoicing Health</h3>
+          <div className={styles.metricsGrid} style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+            <div className={styles.metricCard}>
+                <div className={styles.metricIcon} style={{ background: '#f1f5f9' }}>🧾</div>
+                <div className={styles.metricVal}>{fmt(data?.invoices?.total_invoiced)}</div>
+                <div className={styles.metricLabel}>Total Invoiced</div>
             </div>
-            <div className="card" style={{ padding: '20px', border: '1px solid #bbf7d0', background: '#f0fdf4' }}>
-                <div style={{ background: '#dcfce7', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>✅</div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: '#166534', marginBottom: '4px' }}>{fmt(data?.invoices?.total_paid)}</div>
-                <div style={{ fontSize: '12px', fontWeight: 700, color: '#15803d', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Invoices Paid</div>
+            <div className={styles.metricCard} style={{ background: '#f0fdf4', borderColor: '#bbf7d0' }}>
+                <div className={styles.metricIcon} style={{ background: '#dcfce7' }}>✅</div>
+                <div className={styles.metricVal} style={{ color: '#166534' }}>{fmt(data?.invoices?.total_paid)}</div>
+                <div className={styles.metricLabel} style={{ color: '#15803d' }}>Invoices Paid</div>
             </div>
-            <div className="card" style={{ padding: '20px', border: '1px solid #fecaca', background: '#fef2f2' }}>
-                <div style={{ background: '#fee2e2', width: '40px', height: '40px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '20px', marginBottom: '12px' }}>⏳</div>
-                <div style={{ fontSize: '24px', fontWeight: 800, color: '#991b1b', marginBottom: '4px' }}>{fmt(data?.invoices?.total_due)}</div>
-                <div style={{ fontSize: '12px', fontWeight: 700, color: '#b91c1c', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Invoices Due</div>
+            <div className={styles.metricCard} style={{ background: '#fef2f2', borderColor: '#fecaca' }}>
+                <div className={styles.metricIcon} style={{ background: '#fee2e2' }}>⏳</div>
+                <div className={styles.metricVal} style={{ color: '#991b1b' }}>{fmt(data?.invoices?.total_due)}</div>
+                <div className={styles.metricLabel} style={{ color: '#b91c1c' }}>Invoices Due</div>
             </div>
           </div>
-        </>
+        </AnimatedSection>
       )}
 
-      <div className="grid-2" style={{ gap: '24px', marginBottom: '32px' }}>
+      <AnimatedSection className={styles.breakdownGrid} delay={0.4}>
         {/* ── LEAD BREAKDOWN ── */}
-        <div className="card" style={{ background: 'white', padding: '24px' }}>
-          <h2 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '16px', color: '#1e293b', borderBottom: '1px solid #f1f5f9', paddingBottom: '12px' }}>Lead Distribution by Type</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div className={styles.breakdownCard}>
+          <h2 className={styles.breakdownTitle}>Lead Distribution by Type</h2>
+          <div>
             {breakdowns.leadTypes.map(lt => (
-              <div key={lt.lead_type} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '14px', fontWeight: 600, color: '#475569', textTransform: 'capitalize' }}>{lt.lead_type.replace('_', ' ')}</span>
-                <span style={{ fontSize: '14px', fontWeight: 800, color: '#0f172a', background: '#f1f5f9', padding: '4px 12px', borderRadius: '999px' }}>{lt.count}</span>
+              <div key={lt.lead_type} className={styles.breakdownItem}>
+                <span className={styles.breakdownLabel}>{lt.lead_type.replace('_', ' ')}</span>
+                <span className={styles.breakdownVal}>{lt.count}</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* ── PIPELINE BREAKDOWN ── */}
-        <div className="card" style={{ background: 'white', padding: '24px' }}>
-          <h2 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '16px', color: '#1e293b', borderBottom: '1px solid #f1f5f9', paddingBottom: '12px' }}>Pipeline Status</h2>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <div className={styles.breakdownCard}>
+          <h2 className={styles.breakdownTitle}>Pipeline Status</h2>
+          <div>
             {breakdowns.statuses.map(st => (
-              <div key={st.status} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <span style={{ fontSize: '14px', fontWeight: 600, color: '#475569', textTransform: 'capitalize' }}>{st.status.replace('_', ' ')}</span>
-                <span style={{ fontSize: '14px', fontWeight: 800, color: '#0f172a', background: '#f1f5f9', padding: '4px 12px', borderRadius: '999px' }}>{st.count}</span>
+              <div key={st.status} className={styles.breakdownItem}>
+                <span className={styles.breakdownLabel}>{st.status.replace('_', ' ')}</span>
+                <span className={styles.breakdownVal}>{st.count}</span>
               </div>
             ))}
           </div>
         </div>
-      </div>
+      </AnimatedSection>
 
       {/* ── FOLLOW-UPS & PENDING ACTIONS ── */}
-      <h2 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '16px', color: '#1e293b' }}>Follow-ups & Pending Actions</h2>
-      <div className="card" style={{ padding: '0', background: 'white', marginBottom: '32px', overflow: 'hidden' }}>
-        
-        {followUps && (followUps.overdue.length > 0 || followUps.today.length > 0 || followUps.upcoming.length > 0) ? (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            
-            {/* Overdue */}
-            {followUps.overdue.length > 0 && (
-              <div style={{ padding: '16px 20px', background: '#fef2f2', borderBottom: '1px solid #fecaca' }}>
-                <h3 style={{ fontSize: '12px', fontWeight: 800, color: '#991b1b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Overdue Action Required</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  {followUps.overdue.map(f => (
-                    <div key={f.activity_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'white', borderRadius: '8px', border: '1px solid #fca5a5' }}>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px' }}>
-                          <span style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>{f.lead_name}</span>
-                          <span className={`badge ${stColor[f.lead_status] || 'badge-gray'}`}>{f.lead_status}</span>
-                          <span style={{ fontSize: '10px', background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px', color: '#64748b', textTransform: 'uppercase' }}>{f.lead_type.replace('_', ' ')}</span>
+      <div>
+        <h2 className={styles.sectionTitle}>Follow-ups & Pending Actions</h2>
+        <AnimatedSection className={styles.fuCard} delay={0.45}>
+          {followUps && (followUps.overdue.length > 0 || followUps.today.length > 0 || followUps.upcoming.length > 0) ? (
+            <div>
+              {/* Overdue */}
+              {followUps.overdue.length > 0 && (
+                <div className={`${styles.fuSection} ${styles.red}`}>
+                  <h3 className={styles.fuTitle} style={{ color: '#991b1b' }}>Overdue Action Required</h3>
+                  <div>
+                    {followUps.overdue.map(f => (
+                      <div key={f.activity_id} className={styles.fuItem} style={{ borderColor: '#fca5a5' }}>
+                        <div>
+                          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px' }}>
+                            <span className={styles.fuLeadName}>{f.lead_name}</span>
+                            <Badge variant={getBadgeVariant(f.lead_status)}>{f.lead_status}</Badge>
+                            <span className={styles.fuTypeBadge}>{f.lead_type.replace('_', ' ')}</span>
+                          </div>
+                          <div className={styles.fuTaskTitle}>{f.title}</div>
+                          {f.description && <div className={styles.fuTaskDesc}>{f.description}</div>}
                         </div>
-                        <div style={{ fontSize: '13px', color: '#475569', fontWeight: 600 }}>{f.title}</div>
-                        {f.description && <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>{f.description}</div>}
-                      </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', flexShrink: 0, minWidth: '150px' }}>
-                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#dc2626' }}>{new Date(f.follow_up_at).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
-                        {f.lead_phone && <span style={{ fontSize: '12px', color: '#64748b' }}>📞 {f.lead_phone}</span>}
-                        {/* Note: In a future version, this can link directly to the modal using ?leadId= */}
-                        <Link href="/ops/leads" className="btn btn-ghost btn-sm" style={{ padding: '2px 8px', fontSize: '11px', color: '#2563eb' }}>Go to Leads →</Link>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Today */}
-            {followUps.today.length > 0 && (
-              <div style={{ padding: '16px 20px', background: '#fffbeb', borderBottom: '1px solid #fde68a' }}>
-                <h3 style={{ fontSize: '12px', fontWeight: 800, color: '#92400e', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Due Today</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  {followUps.today.map(f => (
-                    <div key={f.activity_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'white', borderRadius: '8px', border: '1px solid #fde68a' }}>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px' }}>
-                          <span style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>{f.lead_name}</span>
-                          <span className={`badge ${stColor[f.lead_status] || 'badge-gray'}`}>{f.lead_status}</span>
-                          <span style={{ fontSize: '10px', background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px', color: '#64748b', textTransform: 'uppercase' }}>{f.lead_type.replace('_', ' ')}</span>
+                        <div className={styles.fuMeta}>
+                          <span style={{ fontSize: '12px', fontWeight: 700, color: '#dc2626' }}>{new Date(f.follow_up_at).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                          {f.lead_phone && <span style={{ fontSize: '12px', color: '#64748b' }}>📞 {f.lead_phone}</span>}
+                          <Link href="/ops/leads" className="btn btn-ghost btn-sm" style={{ padding: '2px 8px', fontSize: '11px', color: '#2563eb' }}>Go to Leads →</Link>
                         </div>
-                        <div style={{ fontSize: '13px', color: '#475569', fontWeight: 600 }}>{f.title}</div>
-                        {f.description && <div style={{ fontSize: '12px', color: '#64748b', marginTop: '2px' }}>{f.description}</div>}
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', flexShrink: 0, minWidth: '150px' }}>
-                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#d97706' }}>{new Date(f.follow_up_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</span>
-                        {f.lead_phone && <span style={{ fontSize: '12px', color: '#64748b' }}>📞 {f.lead_phone}</span>}
-                        <Link href="/ops/leads" className="btn btn-ghost btn-sm" style={{ padding: '2px 8px', fontSize: '11px', color: '#2563eb' }}>Go to Leads →</Link>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {/* Upcoming Next 7 Days */}
-            {followUps.upcoming.length > 0 && (
-              <div style={{ padding: '16px 20px', background: '#f8fafc' }}>
-                <h3 style={{ fontSize: '12px', fontWeight: 800, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>Upcoming This Week</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  {followUps.upcoming.map(f => (
-                    <div key={f.activity_id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px', background: 'white', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px' }}>
-                          <span style={{ fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>{f.lead_name}</span>
-                          <span className={`badge ${stColor[f.lead_status] || 'badge-gray'}`}>{f.lead_status}</span>
-                          <span style={{ fontSize: '10px', background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px', color: '#64748b', textTransform: 'uppercase' }}>{f.lead_type.replace('_', ' ')}</span>
+              {/* Today */}
+              {followUps.today.length > 0 && (
+                <div className={`${styles.fuSection} ${styles.yellow}`}>
+                  <h3 className={styles.fuTitle} style={{ color: '#92400e' }}>Due Today</h3>
+                  <div>
+                    {followUps.today.map(f => (
+                      <div key={f.activity_id} className={styles.fuItem} style={{ borderColor: '#fde68a' }}>
+                        <div>
+                          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px' }}>
+                            <span className={styles.fuLeadName}>{f.lead_name}</span>
+                            <Badge variant={getBadgeVariant(f.lead_status)}>{f.lead_status}</Badge>
+                            <span className={styles.fuTypeBadge}>{f.lead_type.replace('_', ' ')}</span>
+                          </div>
+                          <div className={styles.fuTaskTitle}>{f.title}</div>
+                          {f.description && <div className={styles.fuTaskDesc}>{f.description}</div>}
                         </div>
-                        <div style={{ fontSize: '13px', color: '#475569', fontWeight: 600 }}>{f.title}</div>
+                        <div className={styles.fuMeta}>
+                          <span style={{ fontSize: '12px', fontWeight: 700, color: '#d97706' }}>{new Date(f.follow_up_at).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit' })}</span>
+                          {f.lead_phone && <span style={{ fontSize: '12px', color: '#64748b' }}>📞 {f.lead_phone}</span>}
+                          <Link href="/ops/leads" className="btn btn-ghost btn-sm" style={{ padding: '2px 8px', fontSize: '11px', color: '#2563eb' }}>Go to Leads →</Link>
+                        </div>
                       </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '8px', flexShrink: 0, minWidth: '150px' }}>
-                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#475569' }}>{new Date(f.follow_up_at).toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
-                        <Link href="/ops/leads" className="btn btn-ghost btn-sm" style={{ padding: '2px 8px', fontSize: '11px', color: '#2563eb' }}>Go to Leads →</Link>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
-          </div>
-        ) : (
-          <div className="text-center py-8">
-            <div style={{ fontSize: '32px', marginBottom: '8px', opacity: 0.5 }}>🌴</div>
-            <p className="text-muted text-sm">No follow-ups due right now.</p>
-          </div>
-        )}
+              {/* Upcoming Next 7 Days */}
+              {followUps.upcoming.length > 0 && (
+                <div className={`${styles.fuSection} ${styles.gray}`}>
+                  <h3 className={styles.fuTitle} style={{ color: '#475569' }}>Upcoming This Week</h3>
+                  <div>
+                    {followUps.upcoming.map(f => (
+                      <div key={f.activity_id} className={styles.fuItem} style={{ borderColor: '#e2e8f0' }}>
+                        <div>
+                          <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px' }}>
+                            <span className={styles.fuLeadName}>{f.lead_name}</span>
+                            <Badge variant={getBadgeVariant(f.lead_status)}>{f.lead_status}</Badge>
+                            <span className={styles.fuTypeBadge}>{f.lead_type.replace('_', ' ')}</span>
+                          </div>
+                          <div className={styles.fuTaskTitle}>{f.title}</div>
+                        </div>
+                        <div className={styles.fuMeta}>
+                          <span style={{ fontSize: '12px', fontWeight: 700, color: '#475569' }}>{new Date(f.follow_up_at).toLocaleDateString('en-IN', { weekday: 'short', month: 'short', day: 'numeric' })}</span>
+                          <Link href="/ops/leads" className="btn btn-ghost btn-sm" style={{ padding: '2px 8px', fontSize: '11px', color: '#2563eb' }}>Go to Leads →</Link>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <div style={{ fontSize: '32px', marginBottom: '8px', opacity: 0.5 }}>🌴</div>
+              <p className="text-muted text-sm">No follow-ups due right now.</p>
+            </div>
+          )}
+        </AnimatedSection>
       </div>
 
       {/* ── RECENT ACTIVITY TABS ── */}
-      <h2 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '16px', color: '#1e293b' }}>Recent Ecosystem Activity</h2>
-      
-      <div className="grid-2" style={{ gap: '24px' }}>
+      <div>
+        <h2 className={styles.sectionTitle}>Recent Ecosystem Activity</h2>
         
-        {/* Partners */}
-        <div className="card" style={{ background: 'white', padding: '0' }}>
-          <div style={{ padding: '20px', borderBottom: '1px solid #f1f5f9', background: '#f8fafc', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
-            <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#334155', margin: 0 }}>Recent Partner Applications</h3>
-          </div>
-          <div style={{ padding: '0 20px' }}>
-            {recent.partners.length === 0 ? <p className="text-muted text-sm py-4">No recent partners.</p> : recent.partners.map(p => (
-              <div key={p.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #f1f5f9' }}>
-                <div>
-                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>{p.name}</div>
-                  <div style={{ fontSize: '12px', color: '#64748b', textTransform: 'capitalize' }}>{p.category || 'General'}</div>
+        <AnimatedSection className={styles.breakdownGrid} delay={0.5}>
+          
+          {/* Partners */}
+          <div className={styles.actPanel}>
+            <div className={styles.actHeader} style={{ background: '#f8fafc' }}>
+              <h3 className={styles.actTitle} style={{ color: '#334155' }}>Recent Partner Applications</h3>
+            </div>
+            <div className={styles.actList}>
+              {recent.partners.length === 0 ? <p className="text-muted text-sm py-4">No recent partners.</p> : recent.partners.map(p => (
+                <div key={p.id} className={styles.actItem}>
+                  <div>
+                    <div className={styles.actName}>{p.name}</div>
+                    <div className={styles.actType}>{p.category || 'General'}</div>
+                  </div>
+                  <Badge variant={getBadgeVariant(p.v_status)}>{p.v_status || 'pending'}</Badge>
                 </div>
-                <span className={`badge ${stColor[p.v_status] || 'badge-gray'}`}>{p.v_status || 'pending'}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Materials */}
-        <div className="card" style={{ background: 'white', padding: '0' }}>
-          <div style={{ padding: '20px', borderBottom: '1px solid #f1f5f9', background: '#fff7ed', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
-            <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#9a3412', margin: 0 }}>Recent Material Quotes</h3>
-          </div>
-          <div style={{ padding: '0 20px' }}>
-            {recent.materials.length === 0 ? <p className="text-muted text-sm py-4">No recent quotes.</p> : recent.materials.map(m => (
-              <div key={m.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #f1f5f9' }}>
-                <div>
-                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>{m.name}</div>
-                  <div style={{ fontSize: '12px', color: '#64748b', textTransform: 'capitalize' }}>{m.category || 'Materials'}</div>
+          {/* Materials */}
+          <div className={styles.actPanel}>
+            <div className={styles.actHeader} style={{ background: '#fff7ed' }}>
+              <h3 className={styles.actTitle} style={{ color: '#9a3412' }}>Recent Material Quotes</h3>
+            </div>
+            <div className={styles.actList}>
+              {recent.materials.length === 0 ? <p className="text-muted text-sm py-4">No recent quotes.</p> : recent.materials.map(m => (
+                <div key={m.id} className={styles.actItem}>
+                  <div>
+                    <div className={styles.actName}>{m.name}</div>
+                    <div className={styles.actType}>{m.category || 'Materials'}</div>
+                  </div>
+                  <Badge variant={getBadgeVariant(m.status)}>{m.status}</Badge>
                 </div>
-                <span className={`badge ${stColor[m.status] || 'badge-gray'}`}>{m.status}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Listings */}
-        <div className="card" style={{ background: 'white', padding: '0' }}>
-          <div style={{ padding: '20px', borderBottom: '1px solid #f1f5f9', background: '#fdf4ff', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
-            <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#86198f', margin: 0 }}>Recent Property Listings</h3>
-          </div>
-          <div style={{ padding: '0 20px' }}>
-            {recent.listings.length === 0 ? <p className="text-muted text-sm py-4">No recent listings.</p> : recent.listings.map(l => (
-              <div key={l.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #f1f5f9' }}>
-                <div>
-                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>{l.name}</div>
-                  <div style={{ fontSize: '12px', color: '#64748b', textTransform: 'capitalize' }}>{l.type || 'Listing'}</div>
+          {/* Listings */}
+          <div className={styles.actPanel}>
+            <div className={styles.actHeader} style={{ background: '#fdf4ff' }}>
+              <h3 className={styles.actTitle} style={{ color: '#86198f' }}>Recent Property Listings</h3>
+            </div>
+            <div className={styles.actList}>
+              {recent.listings.length === 0 ? <p className="text-muted text-sm py-4">No recent listings.</p> : recent.listings.map(l => (
+                <div key={l.id} className={styles.actItem}>
+                  <div>
+                    <div className={styles.actName}>{l.name}</div>
+                    <div className={styles.actType}>{l.type || 'Listing'}</div>
+                  </div>
+                  <Badge variant={getBadgeVariant(l.p_status)}>{l.p_status || 'draft'}</Badge>
                 </div>
-                <span className={`badge ${stColor[l.p_status] || 'badge-gray'}`}>{l.p_status || 'draft'}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Maintenance */}
-        <div className="card" style={{ background: 'white', padding: '0' }}>
-          <div style={{ padding: '20px', borderBottom: '1px solid #f1f5f9', background: '#f0fdfa', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }}>
-            <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#115e59', margin: 0 }}>Recent Maintenance Requests</h3>
-          </div>
-          <div style={{ padding: '0 20px' }}>
-            {recent.maintenance.length === 0 ? <p className="text-muted text-sm py-4">No recent maintenance.</p> : recent.maintenance.map(m => (
-              <div key={m.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 0', borderBottom: '1px solid #f1f5f9' }}>
-                <div>
-                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#0f172a' }}>{m.name}</div>
-                  <div style={{ fontSize: '12px', color: '#64748b', textTransform: 'capitalize' }}>{m.category?.replace('_', ' ')}</div>
+          {/* Maintenance */}
+          <div className={styles.actPanel}>
+            <div className={styles.actHeader} style={{ background: '#f0fdfa' }}>
+              <h3 className={styles.actTitle} style={{ color: '#115e59' }}>Recent Maintenance Requests</h3>
+            </div>
+            <div className={styles.actList}>
+              {recent.maintenance.length === 0 ? <p className="text-muted text-sm py-4">No recent maintenance.</p> : recent.maintenance.map(m => (
+                <div key={m.id} className={styles.actItem}>
+                  <div>
+                    <div className={styles.actName}>{m.name}</div>
+                    <div className={styles.actType}>{m.category?.replace('_', ' ')}</div>
+                  </div>
+                  <Badge variant={getBadgeVariant(m.m_status)}>{m.m_status?.replace('_', ' ') || 'requested'}</Badge>
                 </div>
-                <span className={`badge ${stColor[m.m_status] || 'badge-gray'}`}>{m.m_status?.replace('_', ' ') || 'requested'}</span>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
 
+        </AnimatedSection>
       </div>
 
       {/* ── CRM WORKSPACE (DRAWER) ── */}

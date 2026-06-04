@@ -2,376 +2,294 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import AnimatedSection from '@/components/ui/AnimatedSection';
+import SectionHeader from '@/components/ui/SectionHeader';
+import PremiumCard from '@/components/ui/PremiumCard';
 import styles from './page.module.css';
 
+/* ─── Data ────────────────────────────────────────────────── */
 const PAIN_POINTS = [
   { icon: '📋', title: 'Contractor quotes are hard to verify', desc: 'Multiple quotes with no standard scope make cost comparison nearly impossible for most owners.' },
-  { icon: '📐', title: 'BOQ and drawings feel confusing', desc: 'Quantities, specifications, and line items in documents are difficult for non-engineers to interpret.' },
+  { icon: '📐', title: 'BOQ and drawings feel confusing', desc: 'Quantities, specifications, and line items are difficult for non-engineers to interpret.' },
   { icon: '🧱', title: 'Material rates and quality are unclear', desc: 'Owners often pay retail prices or receive incorrect grades without knowing the difference.' },
   { icon: '📸', title: 'Site updates are inconsistent', desc: 'Contractors give verbal progress updates with no documentation, photos, or milestone proof.' },
   { icon: '💸', title: 'Hidden charges and cost escalation', desc: 'Unplanned costs and scope changes create financial stress and distrust mid-project.' },
   { icon: '✅', title: 'Quality checks are missing', desc: 'Work quality is rarely documented, leaving owners with no records for disputes or future reference.' },
-  { icon: '🤝', title: 'Managing multiple parties is exhausting', desc: 'Coordinating architects, contractors, suppliers, and site teams separately creates gaps and confusion.' },
 ];
 
 const HOW_IT_WORKS = [
-  { step: '01', icon: '🗺️', title: 'Understand Your Requirement', desc: 'Plot size, location, budget, construction type, timeline, and expectations — clearly mapped before any execution begins.' },
-  { step: '02', icon: '📋', title: 'Review Plan, BOQ & Scope', desc: 'Buildogram helps review drawings, project scope, quantities, specifications, and cost structure for clarity before you commit.' },
-  { step: '03', icon: '🤝', title: 'Connect With Verified Partners', desc: 'Architects, builders, contractors, consultants, suppliers, and execution partners are matched based on your specific project needs.' },
-  { step: '04', icon: '🧱', title: 'Source Materials Transparently', desc: 'Cement, steel, sand, electrical, plumbing, waterproofing, solar and more — sourced through our trusted supplier network with rate comparison.' },
-  { step: '05', icon: '📊', title: 'Track, Verify & Store Records', desc: 'Site updates, work proof, delivery photos, invoices, quality notes, and project history are stored inside your Property Passport.' },
+  { step: '01', title: 'Understand Your Requirement', desc: 'Plot size, location, budget, construction type, timeline, and expectations — clearly mapped before any execution begins.' },
+  { step: '02', title: 'Review Plan, BOQ & Scope', desc: 'Buildogram helps review drawings, project scope, quantities, specifications, and cost structure for clarity before you commit.' },
+  { step: '03', title: 'Connect With Verified Partners', desc: 'Architects, builders, contractors, consultants, suppliers, and execution partners are matched based on your specific project needs.' },
+  { step: '04', title: 'Source Materials Transparently', desc: 'Cement, steel, sand, electrical, plumbing, waterproofing, solar and more — sourced through our trusted supplier network.' },
+  { step: '05', title: 'Track, Verify & Store Records', desc: 'Site updates, work proof, delivery photos, invoices, quality notes, and project history — stored inside your Property Passport.' },
 ];
 
 const SERVICES = [
-  { icon: '🏗️', title: 'Home Construction Guidance', desc: 'Engineer-led support from planning to execution — covering scope, specifications, contractor selection, and site coordination.', href: '/contact?type=construction' },
-  { icon: '📋', title: 'BOQ & Plan Review', desc: 'Review scope, quantities, specifications, drawings, and cost clarity before you sign any contractor agreement.', href: '/boq-audit' },
-  { icon: '🤝', title: 'Verified Partner Network', desc: 'Connect with trusted builders, contractors, architects, consultants, and suppliers through a reviewed and managed network.', href: '/partners/directory' },
-  { icon: '🧱', title: 'Material Sourcing Support', desc: 'Transparent support for cement, steel, sand, electrical, plumbing, tiles, paint, waterproofing, solar, and more.', href: '/materials' },
-  { icon: '📸', title: 'Site Progress Tracking', desc: 'Track milestones, photos, delivery proof, execution status, and project updates through your Buildogram partner dashboard.', href: '/projects' },
-  { icon: '🏠', title: 'Property Passport', desc: 'Maintain digital records of drawings, invoices, materials, vendors, project photos, quality notes, and future maintenance details.', href: '/property-passport' },
-];
-
-const ECOSYSTEM = [
-  { icon: '🏠', label: 'Homeowners & Plot Owners' },
-  { icon: '🏗️', label: 'Builders & Contractors' },
-  { icon: '📐', label: 'Architects & Consultants' },
-  { icon: '🧱', label: 'Material Suppliers' },
-  { icon: '⚙️', label: 'Site Service Providers' },
-  { icon: '🏢', label: 'Property Portals' },
-  { icon: '🔧', label: 'Maintenance Partners' },
-  { icon: '🎬', label: 'Project Showcase' },
+  { icon: '🏗️', title: 'Home Construction Guidance', desc: 'Engineer-led support from planning to execution — covering scope, specifications, contractor selection, and site coordination.', href: '/contact?type=construction', color: 'orange', bentoClass: 'bentoWide1' },
+  { icon: '📋', title: 'BOQ & Plan Review', desc: 'Review scope, quantities, specifications, drawings, and cost clarity before you sign any contractor agreement.', href: '/boq-audit', color: 'blue', bentoClass: 'bentoStandard' },
+  { icon: '🤝', title: 'Verified Partner Network', desc: 'Connect with trusted builders, contractors, architects, consultants, and suppliers through a reviewed network.', href: '/partners/directory', color: 'green', bentoClass: 'bentoStandard' },
+  { icon: '🧱', title: 'Material Sourcing', desc: 'Transparent support for cement, steel, sand, electrical, plumbing, tiles, paint, waterproofing, solar, and more.', href: '/materials', color: 'purple', bentoClass: 'bentoStandard' },
+  { icon: '📸', title: 'Site Tracking', desc: 'Track milestones, photos, delivery proof, execution status, and project updates through your Buildogram dashboard.', href: '/projects', color: 'teal', bentoClass: 'bentoStandard' },
+  { icon: '🏠', title: 'Property Passport', desc: 'Maintain digital records of drawings, invoices, materials, vendors, project photos, quality notes, and maintenance details.', href: '/property-passport', color: 'slate', bentoClass: 'bentoWide1' },
 ];
 
 const MATERIALS = [
   'Cement', 'TMT Steel', 'River Sand', 'M-Sand', 'Aggregates',
-  'Electrical', 'Plumbing', 'Tiles', 'Paint', 'Waterproofing', 'Solar',
+  'Electrical', 'Plumbing', 'Tiles', 'Paint', 'Waterproofing',
+  'Solar Panels', 'Concrete Blocks', 'Roofing Sheets', 'PVC Pipes',
 ];
 
 const TRUST = [
   { icon: '🎓', title: 'Engineer-led approach', desc: 'Every recommendation is backed by engineering principles, not just sales incentives.' },
   { icon: '✅', title: 'Verified partner network', desc: 'Partners submit credentials, project records, and service categories for profile review.' },
   { icon: '📋', title: 'BOQ and cost clarity', desc: 'Helping owners understand scope and quantities before signing any agreement.' },
-  { icon: '🧱', title: 'Transparent material support', desc: 'Competitive market-aligned quotes with supplier comparison — no hidden markups.' },
+  { icon: '🧱', title: 'Transparent material support', desc: 'Competitive market-aligned quotes with supplier comparison.' },
   { icon: '📸', title: 'Site progress visibility', desc: 'Milestone photos, delivery records, and daily logbooks tracked through the platform.' },
   { icon: '📁', title: 'Property Passport records', desc: 'All project documents, invoices, and records stored digitally for lifetime access.' },
-  { icon: '🤝', title: 'Not just leads — accountability', desc: 'Buildogram stays involved through the project journey, not just the initial match.' },
 ];
 
-const PARTNER_BENEFITS = [
-  { icon: '🛡️', title: 'Verified Profile', desc: 'Build trust with property owners through a reviewed, credible platform presence.' },
-  { icon: '🎬', title: 'Project Showcase', desc: 'Showcase completed work, site photos, and project proof to attract serious clients.' },
-  { icon: '📲', title: 'Reel Collaboration', desc: 'Collaborate on social media reels and project showcase content through Buildogram.' },
-  { icon: '🎯', title: 'Project Opportunities', desc: 'Receive relevant construction project enquiries matched to your specialisation.' },
-  { icon: '🧱', title: 'Material Network', desc: 'Access Buildogram\'s material sourcing network for better procurement coordination.' },
-  { icon: '🌐', title: 'Ecosystem Visibility', desc: 'Long-term visibility in an engineer-led construction platform built for owners and professionals.' },
-];
-
+/* ─── Component ───────────────────────────────────────────── */
 export default function Home() {
   const router = useRouter();
   const [query, setQuery] = useState('');
-  const [loc, setLoc] = useState('Chennai, TN');
+  const [loc, setLoc]     = useState('Chennai, TN');
 
   const handleHeroSearch = (e) => {
     e.preventDefault();
-    if (query) {
-      router.push(`/partners/directory?q=${encodeURIComponent(query)}&loc=${encodeURIComponent(loc)}`);
-    }
+    if (query) router.push(`/partners/directory?q=${encodeURIComponent(query)}&loc=${encodeURIComponent(loc)}`);
   };
 
+  const MATS_DOUBLED = [...MATERIALS, ...MATERIALS];
+
   return (
-    <main className="engineerLedPage">
+    <main className={styles.page}>
 
-      {/* ── 1. HERO ── */}
-      <section className={styles.homeHeroBg}>
-        <div className="sectionInnerWide">
-          <div className={styles.homeHero}>
-
-            {/* LEFT: copy + search + CTAs */}
-            <div className={styles.heroLeft}>
-              <span className={styles.eyebrow}>Engineer-Led Construction Platform</span>
-              <h1>Build smarter with trusted construction partners.</h1>
-              <p>Find verified builders, contractors, architects, material suppliers, and project support — with transparent material sourcing and progress tracking from one platform.</p>
-
-              {/* CTAs */}
-              <div className={styles.heroCtas}>
-                <Link href="/contact?type=construction" className="btn btn-primary">Start Your Construction Journey</Link>
-                <Link href="/materials" className={styles.ctaSecondary}>Explore Material Support</Link>
-              </div>
-              <Link href="/partners/register" className={styles.ctaPartner}>Are you a contractor or supplier? Join as Partner →</Link>
-
-              {/* Search */}
-              <form className={styles.heroSearchPanel} onSubmit={handleHeroSearch}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ color: 'var(--text-muted)', flexShrink: 0 }}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                <input value={query} onChange={e => setQuery(e.target.value)} placeholder="Search builders, contractors, architects, or materials" />
-                <select value={loc} onChange={e => setLoc(e.target.value)}>
-                  <option value="Chennai, TN">Chennai, TN</option>
-                  <option value="Coimbatore, TN">Coimbatore, TN</option>
-                </select>
-                <button type="submit" className="btn btn-primary">Search</button>
-              </form>
-
-              <p className={styles.trustLine}>For homeowners, builders, contractors, architects, and suppliers.</p>
-            </div>
-
-            {/* RIGHT: Buildogram flow panel */}
-            <div className={styles.heroFlow}>
-              <p className={styles.heroFlowLabel}>How Buildogram helps</p>
-              <div className={styles.heroFlowGrid}>
-                <div className={styles.flowCard}>
-                  <div className={styles.flowNum}>01</div>
-                  <div className={styles.flowCardBody}>
-                    <strong>Verified Partners</strong>
-                    <span>Builders, contractors, architects, and vendors</span>
-                  </div>
-                </div>
-                <div className={styles.flowCard}>
-                  <div className={styles.flowNum}>02</div>
-                  <div className={styles.flowCardBody}>
-                    <strong>Material Quotes</strong>
-                    <span>Cement, steel, sand, blocks, electrical, and more</span>
-                  </div>
-                </div>
-                <div className={styles.flowCard}>
-                  <div className={styles.flowNum}>03</div>
-                  <div className={styles.flowCardBody}>
-                    <strong>Project Updates</strong>
-                    <span>Photos, milestones, issues, and site progress</span>
-                  </div>
-                </div>
-                <div className={styles.flowCard}>
-                  <div className={styles.flowNum}>04</div>
-                  <div className={styles.flowCardBody}>
-                    <strong>Digital Records</strong>
-                    <span>Documents, invoices, and property history</span>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.flowFooter}>
-                <span>🎓 Engineer-led</span>
-                <span>✅ Verified partners</span>
-                <span>📊 Progress tracking</span>
-              </div>
-            </div>
-
-          </div>
+      {/* ── 1. HERO ──────────────────────────────────────── */}
+      <section className={styles.hero}>
+        <div className={styles.heroBg} aria-hidden="true">
+          <div className={styles.heroBgGlow} />
+          <div className="bg-grid-pattern" style={{ position: 'absolute', inset: 0, opacity: 0.6 }} />
         </div>
-      </section>
+        <div className={`sectionInnerWide ${styles.heroInner}`}>
 
-      {/* ── 2. PROBLEM SECTION ── */}
-      <section className={`fullBleedSection ${styles.sectionBand} ${styles.sectionBandAlt}`}>
-        <div className="sectionInner">
-          <div className={styles.blockHead}>
-            <span className={styles.eyebrow}>Why Owners Need a Construction Companion</span>
-            <h2>Building a home shouldn't feel risky or confusing.</h2>
-            <p>Most property owners face the same challenges when trying to build — without the right guidance and tools, mistakes are costly and difficult to reverse.</p>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
-            {PAIN_POINTS.map((p, i) => (
-              <div key={i} style={{ background: 'white', borderRadius: '18px', padding: '24px', border: '1px solid var(--border)', boxShadow: 'var(--shadow)', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                <div style={{ fontSize: '28px', flexShrink: 0 }}>{p.icon}</div>
-                <div>
-                  <div style={{ fontWeight: 700, color: 'var(--secondary)', fontSize: '15px', marginBottom: '6px' }}>{p.title}</div>
-                  <div style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6 }}>{p.desc}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ marginTop: '40px', background: 'var(--gradient-orange)', borderRadius: '18px', padding: '28px 32px', color: 'white', textAlign: 'center' }}>
-            <p style={{ fontSize: '17px', fontWeight: 600, color: 'white', maxWidth: '720px', margin: '0 auto' }}>
-              Buildogram brings engineering clarity, verified partners, material support, and progress visibility into one connected construction system.
+          {/* Left copy */}
+          <AnimatedSection className={styles.heroLeft}>
+            <span className={styles.eyebrow}>Engineer-Led Construction Platform</span>
+            <h1 className={styles.heroH1}>
+              Build smarter with<br />
+              <span className={styles.heroAccent}>trusted construction</span><br />
+              partners.
+            </h1>
+            <p className={styles.heroSub}>
+              Find verified builders, contractors, architects, material suppliers, and project support — with transparent material sourcing and progress tracking from one platform.
             </p>
-          </div>
-        </div>
-      </section>
 
-      {/* ── 3. HOW IT WORKS ── */}
-      <section className={`fullBleedSection ${styles.sectionBand}`}>
-        <div className="sectionInner">
-          <div className={styles.blockHead}>
-            <span className={styles.eyebrow}>The Construction Companion Process</span>
-            <h2>How Buildogram works as your construction companion.</h2>
-            <p>A structured, engineering-led approach from first conversation to project completion and property records.</p>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
-            {HOW_IT_WORKS.map((step, i) => (
-              <div key={i} style={{ display: 'grid', gridTemplateColumns: '80px 1fr', gap: '24px', alignItems: 'flex-start', padding: '28px 0', borderBottom: i < HOW_IT_WORKS.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '8px' }}>
-                  <div style={{ width: '56px', height: '56px', borderRadius: '16px', background: 'var(--gradient-orange)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'white', fontWeight: 800, fontSize: '15px' }}>{step.step}</div>
-                  {i < HOW_IT_WORKS.length - 1 && <div style={{ width: '2px', height: '32px', background: 'var(--border)' }} />}
-                </div>
-                <div style={{ paddingTop: '8px' }}>
-                  <div style={{ fontSize: '24px', marginBottom: '8px' }}>{step.icon}</div>
-                  <h3 style={{ fontSize: '20px', color: 'var(--secondary)', marginBottom: '8px' }}>{step.title}</h3>
-                  <p style={{ fontSize: '15px', color: 'var(--text-muted)', lineHeight: 1.65, margin: 0 }}>{step.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div style={{ marginTop: '40px', textAlign: 'center' }}>
-            <Link href="/contact?type=construction" className="btn btn-primary btn-lg">Start Your Construction Journey</Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 4. CORE SERVICES ── */}
-      <section className={`fullBleedSection ${styles.sectionBand} ${styles.sectionBandAlt}`}>
-        <div className="sectionInner">
-          <div className={styles.blockHead}>
-            <span className={styles.eyebrow}>Platform Services</span>
-            <h2>Everything you need to build and manage your property.</h2>
-            <p>One platform covering the entire construction lifecycle — from planning and material sourcing to site tracking and digital property records.</p>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
-            {SERVICES.map((s, i) => (
-              <Link key={i} href={s.href} style={{ textDecoration: 'none' }}>
-                <div style={{ background: 'white', borderRadius: '20px', padding: '28px', border: '1px solid var(--border)', boxShadow: 'var(--shadow)', height: '100%', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', gap: '12px' }}
-                  className="card-hover">
-                  <div style={{ fontSize: '36px' }}>{s.icon}</div>
-                  <h3 style={{ fontSize: '18px', color: 'var(--secondary)', margin: 0 }}>{s.title}</h3>
-                  <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.65, margin: 0, flex: 1 }}>{s.desc}</p>
-                  <span style={{ color: 'var(--primary)', fontWeight: 700, fontSize: '14px' }}>Learn more →</span>
-                </div>
+            <div className={styles.heroCtas}>
+              <Link href="/contact?type=construction" className="btn btn-primary btn-lg">
+                Start Your Construction Journey
               </Link>
+              <Link href="/materials" className={`btn btn-lg ${styles.heroOutline}`}>
+                Explore Material Support
+              </Link>
+            </div>
+
+            <Link href="/partners/register" className={styles.partnerCta}>
+              Are you a contractor or supplier?{' '}
+              <strong>Join as Partner →</strong>
+            </Link>
+
+            {/* Hero search */}
+            <form className={styles.searchBox} onSubmit={handleHeroSearch}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={styles.searchIcon}><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input
+                value={query}
+                onChange={e => setQuery(e.target.value)}
+                placeholder="Search builders, contractors, architects, or materials…"
+                className={styles.searchInput}
+              />
+              <select value={loc} onChange={e => setLoc(e.target.value)} className={styles.searchSelect}>
+                <option value="Chennai, TN">Chennai, TN</option>
+                <option value="Coimbatore, TN">Coimbatore, TN</option>
+              </select>
+              <button type="submit" className="btn btn-primary">Search</button>
+            </form>
+
+            <div className={styles.trustLine}>
+              <span>🎓 Engineer-led</span>
+              <span>·</span>
+              <span>✅ Verified partners</span>
+              <span>·</span>
+              <span>📊 Progress tracking</span>
+            </div>
+          </AnimatedSection>
+
+          {/* Right Visual Platform Preview */}
+          <AnimatedSection className={styles.heroRight} delay={0.2}>
+            <div className={styles.heroRightHeader}>
+              <div className={`${styles.browserDot} ${styles.red}`} />
+              <div className={`${styles.browserDot} ${styles.yellow}`} />
+              <div className={`${styles.browserDot} ${styles.green}`} />
+              <span style={{ fontSize: '12px', color: '#64748b', marginLeft: '12px', fontWeight: 600 }}>buildogram.com / dashboard</span>
+            </div>
+            <div className={styles.heroRightBody}>
+              <div className={styles.mockCard}>
+                <div className={styles.mockIcon}></div>
+                <div className={styles.mockLines}>
+                  <div className={`${styles.mockLine} ${styles.short}`}></div>
+                  <div className={`${styles.mockLine} ${styles.long}`}></div>
+                </div>
+                <span className="badge badge-green">Verified</span>
+              </div>
+              <div className={styles.mockCard}>
+                <div className={styles.mockIcon} style={{ background: 'rgba(59,130,246,0.1)' }}></div>
+                <div className={styles.mockLines}>
+                  <div className={`${styles.mockLine} ${styles.short}`}></div>
+                  <div className={`${styles.mockLine} ${styles.long}`}></div>
+                </div>
+                <span className="badge badge-blue">Quoted</span>
+              </div>
+              <div className={styles.mockCard} style={{ opacity: 0.6, transform: 'scale(0.95)' }}>
+                <div className={styles.mockIcon} style={{ background: 'rgba(100,116,139,0.1)' }}></div>
+                <div className={styles.mockLines}>
+                  <div className={`${styles.mockLine} ${styles.short}`}></div>
+                  <div className={`${styles.mockLine} ${styles.long}`}></div>
+                </div>
+              </div>
+            </div>
+          </AnimatedSection>
+
+        </div>
+      </section>
+
+      {/* ── 2. BENTO — Platform capabilities ───────────── */}
+      <section className={`fullBleedSection ${styles.bentoSection}`}>
+        <div className="sectionInner">
+          <AnimatedSection>
+            <SectionHeader
+              eyebrow="Platform Services"
+              title="Everything you need to build and manage your property."
+              description="One platform covering the entire construction lifecycle — from planning and material sourcing to site tracking and digital property records."
+            />
+          </AnimatedSection>
+          <div className={styles.bentoGrid}>
+            {SERVICES.map((s, i) => (
+              <PremiumCard 
+                key={i} 
+                className={`${styles.bentoCell} ${styles[s.bentoClass]}`} 
+                hoverEffect={true} 
+                animated={true} 
+                delay={i}
+              >
+                <div className={`${styles.bentoIcon} ${styles['bentoIcon_' + s.color]}`}>{s.icon}</div>
+                <h3 className={styles.bentoTitle}>{s.title}</h3>
+                <p className={styles.bentoDesc}>{s.desc}</p>
+                <Link href={s.href} className={styles.bentoLink}>Learn more →</Link>
+              </PremiumCard>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 5. ECOSYSTEM ── */}
-      <section className={`fullBleedSection ${styles.sectionBand}`}>
+      {/* ── 3. MARQUEE — Materials Sourcing ────────────── */}
+      <section className={`fullBleedSection ${styles.marqueeSection}`}>
         <div className="sectionInner">
-          <div className={styles.splitGrid}>
-            <div className={styles.blockHead} style={{ marginBottom: 0 }}>
-              <span className={styles.eyebrow}>Connected Construction Ecosystem</span>
-              <h2>One connected ecosystem for construction, materials, and property.</h2>
-              <p>Buildogram is not just a directory. It is a connected construction ecosystem where every partner, material quote, project update, and property record supports one goal — helping owners build and manage property with confidence.</p>
-              <div style={{ marginTop: '24px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                <Link href="/partners/directory" className="btn btn-primary">Explore Verified Partners</Link>
-                <Link href="/contact?type=construction" className="btn btn-outline">Talk to an Engineer</Link>
+          <AnimatedSection>
+            <SectionHeader
+              eyebrow="Supplier Quote Routing"
+              title="Transparent material sourcing with trusted supplier support."
+              description="Compare supplier quotes for cement, steel, sand, electrical, plumbing, and more. Buildogram routes your material request to our supplier network."
+            />
+          </AnimatedSection>
+        </div>
+        
+        <div className={styles.marqueeContainer}>
+          <div className={styles.marqueeTrack}>
+            {MATS_DOUBLED.map((m, i) => (
+              <div key={i} className={styles.marqueePill}>
+                <div className={styles.pillDot} />
+                {m}
               </div>
-            </div>
-            <div className={styles.splitGridCards}>
-              {ECOSYSTEM.map((e, i) => (
-                <div key={i} style={{ background: 'var(--bg-card2)', borderRadius: '14px', padding: '18px 16px', display: 'flex', alignItems: 'center', gap: '10px', border: '1px solid var(--border)' }}>
-                  <span style={{ fontSize: '24px' }}>{e.icon}</span>
-                  <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--secondary)' }}>{e.label}</span>
-                </div>
-              ))}
-            </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="sectionInner" style={{ marginTop: '32px' }}>
+          <div style={{ textAlign: 'center' }}>
+            <Link href="/materials" className="btn btn-primary btn-lg">Request Material Support</Link>
           </div>
         </div>
       </section>
 
-      {/* ── 6. MATERIAL ADVANTAGE ── */}
-      <section className={`fullBleedSection ${styles.sectionBand} ${styles.sectionBandAlt}`}>
-        <div className="sectionInnerWide">
-          <div className={styles.rateBoard}>
-            <div className={styles.blockHead} style={{ marginBottom: 0 }}>
-              <span className={styles.eyebrow}>Supplier Quote Routing</span>
-              <h2>Transparent material sourcing with trusted supplier support.</h2>
-              <p>Compare supplier quotes for cement, steel, sand, electrical, plumbing, and more. Buildogram routes your material request to our supplier network — reducing retail-layer friction and giving you rate transparency.</p>
-              <br />
-              <Link href="/materials" className="btn btn-primary">Request Material Support</Link>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {MATERIALS.map((m, i) => (
-                <div key={i} className={styles.row}>
-                  <b>{m}</b>
-                  <span>Supplier quote routing</span>
-                  <em style={{ color: 'var(--primary)', fontWeight: 700 }}>Request →</em>
+      {/* ── 4. HOW IT WORKS TIMELINE ────────────────────── */}
+      <section className={`fullBleedSection ${styles.altSection}`}>
+        <div className="sectionInner">
+          <AnimatedSection>
+            <SectionHeader
+              eyebrow="The Construction Companion Process"
+              title="How Buildogram works as your construction companion."
+              description="A structured, engineering-led approach from first conversation to project completion and property records."
+            />
+          </AnimatedSection>
+          
+          <div className={styles.timelineWrap}>
+            {HOW_IT_WORKS.map((step, i) => (
+              <AnimatedSection key={i} delay={i * 0.1} className={styles.timelineStep}>
+                <div className={styles.timelineMarker}>
+                  <div className={styles.timelineNum}>{step.step}</div>
+                  {i < HOW_IT_WORKS.length - 1 && <div className={styles.timelineConnector} />}
                 </div>
-              ))}
-            </div>
+                <div className={styles.timelineBody}>
+                  <h3 className={styles.timelineTitle}>{step.title}</h3>
+                  <p className={styles.timelineDesc}>{step.desc}</p>
+                </div>
+              </AnimatedSection>
+            ))}
           </div>
+          
+          <AnimatedSection delay={0.3} className="text-center" style={{ marginTop: '56px' }}>
+            <Link href="/contact?type=construction" className="btn btn-primary btn-lg">Start Your Construction Journey</Link>
+          </AnimatedSection>
         </div>
       </section>
 
-      {/* ── 7. PARTNER B2B SECTION ── */}
-      <section className={`fullBleedSection ${styles.sectionBand}`}>
+      {/* ── 5. TRUST / PROBLEM SECTION ──────────────────── */}
+      <section className="fullBleedSection" style={{ padding: '100px 0', background: 'white' }}>
         <div className="sectionInner">
-          <div className={styles.splitGrid}>
-            <div className={styles.splitGridCards}>
-              {PARTNER_BENEFITS.map((b, i) => (
-                <div key={i} style={{ background: 'var(--bg-card2)', borderRadius: '14px', padding: '20px', border: '1px solid var(--border)' }}>
-                  <div style={{ fontSize: '28px', marginBottom: '8px' }}>{b.icon}</div>
-                  <div style={{ fontWeight: 700, color: 'var(--secondary)', fontSize: '14px', marginBottom: '4px' }}>{b.title}</div>
-                  <div style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.5 }}>{b.desc}</div>
-                </div>
-              ))}
-            </div>
-            <div className={styles.blockHead} style={{ marginBottom: 0 }}>
-              <span className={styles.eyebrow}>For Construction Professionals</span>
-              <h2>For builders, contractors, architects, and suppliers.</h2>
-              <p>Buildogram helps serious construction professionals build visibility, trust, and project opportunities through verified profiles, project showcases, and ecosystem collaboration.</p>
-              <p style={{ marginTop: '12px' }}>Builders, architects, interior designers, suppliers, solar installers, waterproofing specialists, and elevator companies can apply to join the Buildogram partner network.</p>
-              <div style={{ marginTop: '28px', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                <Link href="/partners/register" className="btn btn-primary">Become a Buildogram Partner</Link>
-                <Link href="/partners/directory" className="btn btn-outline">View Partner Network</Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 8. TRUST SECTION ── */}
-      <section className={`fullBleedSection ${styles.sectionBand} ${styles.sectionBandAlt}`}>
-        <div className="sectionInner">
-          <div className={styles.blockHead}>
-            <span className={styles.eyebrow}>Why Owners Choose Buildogram</span>
-            <h2>An accountable partner between you and the construction ecosystem.</h2>
-            <p>Buildogram gives owners the confidence of having a knowledgeable construction layer between them and the entire execution ecosystem.</p>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
-            {TRUST.map((t, i) => (
-              <div key={i} style={{ background: 'white', borderRadius: '16px', padding: '24px', border: '1px solid var(--border)', boxShadow: 'var(--shadow)', display: 'flex', gap: '14px' }}>
-                <div style={{ fontSize: '28px', flexShrink: 0 }}>{t.icon}</div>
-                <div>
-                  <div style={{ fontWeight: 700, color: 'var(--secondary)', fontSize: '15px', marginBottom: '5px' }}>{t.title}</div>
-                  <div style={{ fontSize: '13px', color: 'var(--text-muted)', lineHeight: 1.6 }}>{t.desc}</div>
-                </div>
-              </div>
+          <AnimatedSection>
+            <SectionHeader
+              eyebrow="Why Owners Choose Buildogram"
+              title="Building a home shouldn't feel risky or confusing."
+              description="Most property owners face the same challenges when trying to build. Buildogram brings engineering clarity to eliminate these risks."
+            />
+          </AnimatedSection>
+          
+          <div className={styles.problemGrid}>
+            {PAIN_POINTS.map((p, i) => (
+              <PremiumCard key={i} animated={true} delay={i} hoverEffect={true}>
+                <div style={{ fontSize: '32px', marginBottom: '16px' }}>{p.icon}</div>
+                <h3 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--secondary)', marginBottom: '8px' }}>{p.title}</h3>
+                <p style={{ fontSize: '15px', color: 'var(--text-muted)', lineHeight: 1.6, margin: 0 }}>{p.desc}</p>
+            </PremiumCard>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── 9. PROPERTY PORTALS (secondary) ── */}
-      <section className={`fullBleedSection ${styles.sectionBand}`}>
+      {/* ── 6. FINAL CTA ────────────────────────────────── */}
+      <section className={styles.finalCta}>
         <div className="sectionInner">
-          <div className={styles.blockHead}>
-            <span className={styles.eyebrow}>Property Bridge</span>
-            <h2>Connected property portals for 360° property discovery.</h2>
-            <p>Buildogram connects with dedicated property portals to help users discover homes, plots, rentals, and commercial spaces through immersive 360° viewing. These portals support property discovery, while Buildogram supports construction, materials, project tracking, and long-term property records.</p>
-          </div>
-          <div className={styles.portalPanel}>
-            <div className={styles.portalCard}>
-              <div className={styles.tour}>360°<br />Virtual Tour</div>
-              <h3>RealPropRealty</h3>
-              <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '15px' }}>Premium real estate buying and selling platform with immersive 360° virtual tours — for discovering plots, villas, and commercial spaces.</p>
-              <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" className="btn btn-outline">Explore RealPropRealty ↗</a>
+          <AnimatedSection className={styles.ctaBox}>
+            <div className={styles.ctaGlow} aria-hidden="true" />
+            <span className={styles.ctaEyebrow}>Ready to build smarter?</span>
+            <h2 className={styles.ctaH2}>Planning to build, renovate, buy, or source materials?</h2>
+            <p className={styles.ctaP}>Start with Buildogram and get the right guidance, partners, materials, and property records from day one.</p>
+            <div className={styles.ctaActions}>
+              <Link href="/contact?type=construction" className="btn btn-primary btn-lg">Start Your Construction Journey</Link>
+              <Link href="/contact?type=construction" className={`btn btn-lg ${styles.ctaOutline}`}>Talk to an Engineer</Link>
+              <Link href="/partners/register" className={`btn btn-lg ${styles.ctaOutline}`}>Become a Partner</Link>
             </div>
-            <div className={styles.portalCard}>
-              <div className={styles.tour}>To-Let<br />Discovery</div>
-              <h3>ToLetBoard Chennai</h3>
-              <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '15px' }}>Verified rental properties and lease discovery across Chennai — residential, commercial, and temporary accommodation with direct owner access.</p>
-              <a href="https://toletboardchennai.in" target="_blank" rel="noopener noreferrer" className="btn btn-outline">Find Rentals ↗</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 10. FINAL CTA ── */}
-      <section className="fullBleedSection" style={{ padding: '6rem 1rem' }}>
-        <div className="sectionInner">
-          <div className={styles.lead}>
-            <h2>Planning to build, renovate, buy, or source materials?</h2>
-            <p>Start with Buildogram and get the right guidance, partners, materials, and property records from day one.</p>
-            <div className={styles.quick} style={{ justifyContent: 'center' }}>
-              <Link href="/contact?type=construction" className="btn" style={{ background: 'white', color: 'var(--secondary)' }}>Start Your Construction Journey</Link>
-              <Link href="/contact?type=construction" className="btn btn-outline-light">Talk to an Engineer</Link>
-              <Link href="/partners/register" className="btn btn-outline-light">Become a Partner</Link>
-            </div>
-          </div>
+          </AnimatedSection>
         </div>
       </section>
 

@@ -1,0 +1,196 @@
+.hero {
+  background: var(--gradient-dark);
+  color: white;
+  padding: 120px 0 100px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.heroGlow {
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 800px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(252, 110, 32, 0.15) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 163, 100, 0.15);
+  border: 1px solid rgba(252, 110, 32, 0.3);
+  color: var(--accent-soft);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.heroH1 {
+  font-size: clamp(38px, 6vw, 64px);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: 24px;
+  color: white;
+  letter-spacing: -1px;
+}
+
+.heroH1 span {
+  background: var(--gradient-orange-strong);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.heroSub {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.7);
+  max-width: 640px;
+  margin: 0 auto 40px;
+  line-height: 1.7;
+}
+
+.heroCtas {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.heroOutline {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: white !important;
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+.heroOutline:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* ── Categories ── */
+.categoriesSection {
+  background: var(--bg);
+  padding: 100px 0;
+}
+
+.catGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.catCard {
+  text-decoration: none;
+  display: block;
+  height: 100%;
+}
+.catCardInner {
+  text-align: center;
+}
+.catIcon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+.catTitle {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--secondary);
+  margin-bottom: 8px;
+}
+.catDesc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── Why Section ── */
+.whySection {
+  background: white;
+  padding: 100px 0;
+  border-top: 1px solid var(--border);
+}
+
+.whyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.whyCard {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.whyIcon {
+  font-size: 36px;
+  flex-shrink: 0;
+}
+.whyTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--secondary);
+  margin-bottom: 8px;
+}
+.whyDesc {
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── CTA Form ── */
+.formSection {
+  background: var(--gradient-dark);
+  padding: 100px 0;
+}
+
+.formWrapper {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.formHeader {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.formH2 {
+  color: white;
+  font-size: clamp(32px, 4vw, 48px);
+  margin-bottom: 16px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.formP {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.formCard {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 48px;
+  box-shadow: var(--shadow-premium);
+}
+
+@media (max-width: 768px) {
+  .hero { padding: 80px 0; }
+  .heroH1 { font-size: 32px; letter-spacing: -0.5px; }
+  .heroCtas { flex-direction: column; align-items: stretch; }
+  .heroCtas a { justify-content: center; }
+  
+  .categoriesSection, .whySection, .formSection { padding: 64px 0; }
+  .formCard { padding: 24px; border-radius: var(--radius); }
+}

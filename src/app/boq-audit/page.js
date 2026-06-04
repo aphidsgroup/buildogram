@@ -1,5 +1,9 @@
 import Link from 'next/link';
 import BOQAuditForm from './BOQAuditForm';
+import AnimatedSection from '@/components/ui/AnimatedSection';
+import SectionHeader from '@/components/ui/SectionHeader';
+import PremiumCard from '@/components/ui/PremiumCard';
+import styles from './boq.module.css';
 
 export const metadata = {
   title: 'BOQ Review and Contractor Quote Audit | Buildogram',
@@ -37,175 +41,189 @@ const PROCESS = [
 
 export default function BOQAuditPage() {
   return (
-    <>
+    <div className="engineerLedPage">
       {/* ── Hero ── */}
-      <section style={{ background: 'var(--secondary)', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 20%, rgba(252, 110, 32, 0.08) 0%, transparent 55%)' }} />
-        <div className="container" style={{ position: 'relative' }}>
-          {/* Breadcrumb */}
-          <div style={{ display: 'flex', gap: '8px', marginBottom: '20px', flexWrap: 'wrap', alignItems: 'center' }}>
-            <Link href="/build" style={{ color: 'rgba(255,255,255,0.5)', fontSize: '14px' }}>Build</Link>
-            <span style={{ color: 'rgba(255,255,255,0.3)' }}>›</span>
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '14px' }}>BOQ Audit</span>
-          </div>
-          <div style={{ maxWidth: '720px' }}>
-            {/* Alert pill */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(220,38,38,0.15)', border: '1px solid rgba(220,38,38,0.35)', borderRadius: '999px', padding: '6px 18px', marginBottom: '28px' }}>
-              <span style={{ fontSize: '14px' }}>⚠️</span>
-              <span style={{ color: '#fca5a5', fontSize: '13px', fontWeight: 700, letterSpacing: '0.05em' }}>MOST CONTRACTOR QUOTES HIDE ₹5–20 LAKHS IN EXTRAS</span>
+      <section className={`fullBleedSection ${styles.hero}`}>
+        <div className={styles.heroGlow} aria-hidden="true" />
+        <div className="sectionInnerWide">
+          
+          <AnimatedSection className={styles.heroInner}>
+            <div className={styles.breadcrumb}>
+              <Link href="/" className={styles.breadcrumbLink}>Build</Link>
+              <span className={styles.breadcrumbSep}>›</span>
+              <span className={styles.breadcrumbCurrent}>BOQ Audit</span>
             </div>
-            <h1 style={{ color: 'white', fontSize: 'clamp(32px, 5vw, 58px)', lineHeight: 1.08, marginBottom: '24px' }}>
+            
+            <div className={styles.alertPill}>
+              <span className={styles.alertPillIcon}>⚠️</span>
+              <span className={styles.alertPillText}>MOST CONTRACTOR QUOTES HIDE ₹5–20 LAKHS IN EXTRAS</span>
+            </div>
+            
+            <h1 className={styles.heroH1}>
               Get Your Contractor<br />
-              <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>Quote Audited.</span>
+              <span>Quote Audited.</span>
             </h1>
-            <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: '18px', lineHeight: 1.75, marginBottom: '40px' }}>
+            <p className={styles.heroSub}>
               Before you sign anything — let Buildogram engineers check every line item, rate and spec in your contractor's quote. We expose what's inflated, what's missing, and what's non-negotiable.
             </p>
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+            <div className={styles.heroCtas}>
               <Link href="#audit-form" className="btn btn-primary btn-lg">Get Free BOQ Audit</Link>
-              <Link href="/cost-estimator" className="btn btn-lg btn-outline-light">Calculate True Cost</Link>
+              <Link href="/cost-estimator" className={`btn btn-lg ${styles.heroOutline}`}>Calculate True Cost</Link>
             </div>
-          </div>
+          </AnimatedSection>
+
         </div>
       </section>
 
       {/* ── Stats bar ── */}
-      <section style={{ background: 'var(--gradient-orange)', padding: '26px 0' }}>
-        <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '48px', flexWrap: 'wrap' }}>
-          {[['₹5–20L', 'Avg hidden charges found'], ['8+', 'Audit categories'], ['48hrs', 'Report turnaround'], ['Free', 'Initial audit consult']].map(([n, l]) => (
-            <div key={l} style={{ textAlign: 'center' }}>
-              <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '24px', fontWeight: 800, color: '#292929' }}>{n}</div>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: '#292929', opacity: 0.7 }}>{l}</div>
-            </div>
-          ))}
+      <section className={`fullBleedSection ${styles.statsBar}`}>
+        <div className="sectionInnerWide">
+          <AnimatedSection className={styles.statsGrid}>
+            {[['₹5–20L', 'Avg hidden charges found'], ['8+', 'Audit categories'], ['48hrs', 'Report turnaround'], ['Free', 'Initial audit consult']].map(([n, l], i) => (
+              <div key={l} className={styles.statItem}>
+                <div className={styles.statNum}>{n}</div>
+                <div className={styles.statLabel}>{l}</div>
+              </div>
+            ))}
+          </AnimatedSection>
         </div>
       </section>
 
       {/* ── Hidden costs table ── */}
-      <section className="section" style={{ background: '#F9F9F9' }}>
-        <div className="container" style={{ maxWidth: '820px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-            <span className="tag">The Real Problem</span>
-            <h2 style={{ fontSize: 'clamp(26px, 4vw, 42px)', marginTop: '16px', marginBottom: '16px' }}>
-              Where contractors hide your money
-            </h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '17px', maxWidth: '560px', margin: '0 auto' }}>
-              These are the most common "extras" that appear after you sign a per-sq.ft contract.
-            </p>
-          </div>
-          <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-            <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', width: '100%' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '400px' }}>
-              <thead>
-                <tr style={{ background: '#292929' }}>
-                  <th style={{ padding: '14px 20px', textAlign: 'left', color: 'rgba(255,255,255,0.7)', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Hidden Cost Item</th>
-                  <th style={{ padding: '14px 20px', textAlign: 'right', background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Typical Impact</th>
-                </tr>
-              </thead>
-              <tbody>
-                {HIDDEN_COSTS.map((row, i) => (
-                  <tr key={row.item} style={{ borderBottom: i < HIDDEN_COSTS.length - 1 ? '1px solid var(--border)' : 'none', background: i % 2 === 0 ? 'white' : '#f9f9f9' }}>
-                    <td style={{ padding: '14px 20px', fontSize: '15px', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                      <span style={{ color: '#dc2626', fontWeight: 800 }}>×</span> {row.item}
-                    </td>
-                    <td style={{ padding: '14px 20px', textAlign: 'right', fontWeight: 800, color: '#dc2626', fontSize: '15px', fontFamily: 'Space Grotesk, sans-serif' }}>{row.typical}</td>
+      <section className={`fullBleedSection ${styles.tableSection}`}>
+        <div className="sectionInner" style={{ maxWidth: '820px' }}>
+          <AnimatedSection>
+            <SectionHeader
+              eyebrow="The Real Problem"
+              title="Where contractors hide your money"
+              description="These are the most common &quot;extras&quot; that appear after you sign a per-sq.ft contract."
+            />
+          </AnimatedSection>
+          
+          <AnimatedSection delay={0.2} className={styles.tableWrap}>
+            <div className={styles.tableContainer}>
+              <table className={styles.table}>
+                <thead>
+                  <tr>
+                    <th>Hidden Cost Item</th>
+                    <th>Typical Impact</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {HIDDEN_COSTS.map((row) => (
+                    <tr key={row.item}>
+                      <td>
+                        <span>×</span> {row.item}
+                      </td>
+                      <td>{row.typical}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          </div>
-          <p style={{ textAlign: 'center', color: 'var(--text-muted)', fontSize: '14px', marginTop: '16px' }}>
-            * Based on Buildogram's analysis of 100+ contractor quotes in Chennai & Tamil Nadu
-          </p>
+          </AnimatedSection>
+          
+          <AnimatedSection delay={0.3}>
+            <p className={styles.tableNote}>* Based on Buildogram's analysis of 100+ contractor quotes in Chennai & Tamil Nadu</p>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* ── What we audit ── */}
-      <section className="section" style={{ background: 'white' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <span className="tag">What We Check</span>
-            <h2 style={{ fontSize: 'clamp(26px, 4vw, 42px)', marginTop: '16px' }}>8 critical areas we audit in your quote</h2>
-          </div>
-          <div className="grid-2" style={{ gap: '24px', maxWidth: '900px', margin: '0 auto' }}>
-            {WHAT_WE_CHECK.map(item => (
-              <div key={item.title} style={{ display: 'flex', gap: '18px', padding: '24px', border: '1px solid var(--border)', borderRadius: '16px', background: '#f9f9f9' }}>
-                <div style={{ fontSize: '32px', flexShrink: 0 }}>{item.icon}</div>
-                <div>
-                  <h3 style={{ fontSize: '17px', marginBottom: '8px', color: '#292929' }}>{item.title}</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '14px', lineHeight: 1.65 }}>{item.desc}</p>
+      <section className={`fullBleedSection ${styles.auditSection}`}>
+        <div className="sectionInnerWide">
+          <AnimatedSection>
+            <SectionHeader
+              eyebrow="What We Check"
+              title="8 critical areas we audit in your quote"
+            />
+          </AnimatedSection>
+          
+          <div className={styles.auditGrid}>
+            {WHAT_WE_CHECK.map((item, i) => (
+              <PremiumCard key={item.title} animated={true} delay={i * 0.05} hoverEffect={true}>
+                <div className={styles.auditCard}>
+                  <div className={styles.auditIcon}>{item.icon}</div>
+                  <div>
+                    <h3 className={styles.auditTitle}>{item.title}</h3>
+                    <p className={styles.auditDesc}>{item.desc}</p>
+                  </div>
                 </div>
-              </div>
+              </PremiumCard>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── Process ── */}
-      <section className="section" style={{ background: '#F9F9F9' }}>
-        <div className="container" style={{ maxWidth: '720px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-            <span className="tag">How It Works</span>
-            <h2 style={{ fontSize: 'clamp(26px, 4vw, 42px)', marginTop: '16px' }}>4-step BOQ Audit process</h2>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <section className={`fullBleedSection ${styles.processSection}`}>
+        <div className="sectionInner">
+          <AnimatedSection>
+            <SectionHeader
+              eyebrow="How It Works"
+              title="4-step BOQ Audit process"
+            />
+          </AnimatedSection>
+          
+          <div className={styles.processList}>
             {PROCESS.map((s, i) => (
-              <div key={s.step} style={{ display: 'flex', gap: '28px', alignItems: 'flex-start', padding: '28px 0', borderBottom: i < PROCESS.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'var(--secondary)', background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 800, fontSize: '18px', flexShrink: 0 }}>
-                  {s.step}
+              <AnimatedSection key={s.step} delay={i * 0.1} className={styles.processItem}>
+                <div className={styles.processNum}>{s.step}</div>
+                <div className={styles.processBody}>
+                  <h3 className={styles.processTitle}>{s.title}</h3>
+                  <p className={styles.processDesc}>{s.desc}</p>
                 </div>
-                <div style={{ paddingTop: '8px' }}>
-                  <h3 style={{ fontSize: '18px', marginBottom: '6px' }}>{s.title}</h3>
-                  <p style={{ color: 'var(--text-muted)', fontSize: '15px', lineHeight: 1.65 }}>{s.desc}</p>
-                </div>
-              </div>
+              </AnimatedSection>
             ))}
           </div>
         </div>
       </section>
 
       {/* ── Proof pill ── */}
-      <section style={{ background: 'var(--secondary)', padding: '48px 0' }}>
-        <div className="container" style={{ textAlign: 'center' }}>
-          <div style={{ display: 'inline-flex', gap: '48px', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <section className={`fullBleedSection ${styles.proofBar}`}>
+        <div className="sectionInnerWide">
+          <AnimatedSection className={styles.proofGrid}>
             {[
               { icon: '🏗️', text: 'If we find <₹1L in savings — audit is free' },
               { icon: '📊', text: 'Detailed line-by-line audit report' },
               { icon: '🤝', text: 'Optional negotiation support included' },
               { icon: '⚡', text: '48-hour turnaround on first review' },
-            ].map(p => (
-              <div key={p.text} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span style={{ fontSize: '22px' }}>{p.icon}</span>
-                <span style={{ color: 'rgba(255,255,255,0.8)', fontSize: '15px', fontWeight: 600 }}>{p.text}</span>
+            ].map((p, i) => (
+              <div key={p.text} className={styles.proofItem}>
+                <span className={styles.proofIcon}>{p.icon}</span>
+                <span className={styles.proofText}>{p.text}</span>
               </div>
             ))}
-          </div>
+          </AnimatedSection>
         </div>
       </section>
 
       {/* ── CTA Form ── */}
-      <section id="audit-form" className="section" style={{ background: 'var(--secondary)' }}>
-        <div className="container" style={{ maxWidth: '660px' }}>
-          <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <h2 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 44px)', marginBottom: '16px' }}>
-              Request Your Free BOQ Audit
-            </h2>
-            <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '17px', lineHeight: 1.65 }}>
-              Share your contractor quote (even a verbal one). Our engineers will review it and identify every discrepancy before you sign.
-            </p>
-          </div>
-          <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', padding: '40px' }}>
+      <section id="audit-form" className={`fullBleedSection ${styles.formSection}`}>
+        <div className={`sectionInner ${styles.formWrap}`}>
+          <AnimatedSection>
+            <SectionHeader
+              title="Request Your Free BOQ Audit"
+              description="Share your contractor quote (even a verbal one). Our engineers will review it and identify every discrepancy before you sign."
+              titleColor="white"
+              descColor="rgba(255, 255, 255, 0.7)"
+            />
+          </AnimatedSection>
+          
+          <AnimatedSection delay={0.2} className={styles.formCard}>
             <BOQAuditForm />
-          </div>
-          <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '13px', marginTop: '16px' }}>
-            Or call us directly: <a href="tel:+919000000000" style={{ color: 'rgba(255,255,255,0.6)' }}>+91 90000 00000</a>
-          </p>
-          <div style={{ marginTop: '24px', padding: '16px', borderTop: '1px solid rgba(255,255,255,0.1)', textAlign: 'center', color: 'rgba(255,255,255,0.4)', fontSize: '12px', lineHeight: 1.5 }}>
-            <strong>Disclaimer:</strong> This BOQ review is advisory and based on provided documents. It is not engineering, legal, contractual, or construction certification.
-          </div>
+          </AnimatedSection>
+          
+          <AnimatedSection delay={0.3}>
+            <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: '15px', marginTop: '24px' }}>
+              Or call us directly: <a href="tel:+919000000000" style={{ color: 'rgba(255,255,255,0.8)', fontWeight: 'bold' }}>+91 90000 00000</a>
+            </p>
+            <div className={styles.disclaimer}>
+              <strong>Disclaimer:</strong> This BOQ review is advisory and based on provided documents. It is not engineering, legal, contractual, or construction certification.
+            </div>
+          </AnimatedSection>
         </div>
       </section>
-    </>
+    </div>
   );
 }
