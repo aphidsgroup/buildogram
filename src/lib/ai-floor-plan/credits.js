@@ -1,5 +1,5 @@
 // src/lib/ai-floor-plan/credits.js
-import db from '../db';
+import { prisma as db } from '../storageProvider';
 
 export async function getCreditBalance(userId, partnerId) {
   // If no DB connection or we just want a simple mock for now:

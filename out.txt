@@ -1,0 +1,2 @@
+ai_floor_plan_generations: object
+ai_floor_plan_versions: object

@@ -1,0 +1,3 @@
+ai_floor_plan_projects: object
+aiFloorPlanProjects: undefined
+projects: object
