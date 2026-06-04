@@ -10,7 +10,7 @@ export default function EngineerReviewCTA({ projectId, selectedVersionId, disabl
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch(\`/api/ai-floor-plans/projects/\${projectId}/request-review\`, {
+      const res = await fetch(`/api/ai-floor-plans/projects/${projectId}/request-review`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ selectedVersionId })

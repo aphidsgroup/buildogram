@@ -10,16 +10,16 @@ export function validateFloorPlan(planJson) {
     // Check boundary
     for (const room of floor.rooms) {
       if (room.x < 0 || room.y < 0) {
-        errors.push(\`Room \${room.name} has negative coordinates.\`);
+        errors.push(`Room ${room.name} has negative coordinates.`);
       }
       if (room.x + room.width > plotWidth) {
-        errors.push(\`Room \${room.name} exceeds plot width.\`);
+        errors.push(`Room ${room.name} exceeds plot width.`);
       }
       if (room.y + room.height > plotDepth) {
-        errors.push(\`Room \${room.name} exceeds plot depth.\`);
+        errors.push(`Room ${room.name} exceeds plot depth.`);
       }
       if (room.width <= 0 || room.height <= 0) {
-        errors.push(\`Room \${room.name} has invalid dimensions.\`);
+        errors.push(`Room ${room.name} has invalid dimensions.`);
       }
     }
     

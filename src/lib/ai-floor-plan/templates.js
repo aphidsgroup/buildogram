@@ -15,7 +15,7 @@ export function getMockTemplates(width, depth, floors = 1) {
       summary: {
         builtUpArea: Math.round(builtUpArea * floors),
         carpetArea: Math.round(builtUpArea * floors * 0.8),
-        estimatedConstructionCostRange: \`₹\${Math.round(builtUpArea * floors * 1800 / 100000)}L - ₹\${Math.round(builtUpArea * floors * 2200 / 100000)}L\`,
+        estimatedConstructionCostRange: `₹${Math.round(builtUpArea * floors * 1800 / 100000)}L - ₹${Math.round(builtUpArea * floors * 2200 / 100000)}L`,
         designNotes: [desc, "Ground floor includes parking if requested", "Internal circulation kept minimal to maximize room size"],
         warnings: [
           "This is a conceptual AI-generated plan.",
@@ -43,10 +43,10 @@ function generateFloor(floorNum, plotWidth, plotDepth, optionId) {
   
   if (floorNum === 1) {
     rooms = [
-      { id: "parking", name: "Parking", type: "parking", x: 1, y: 1, width: w/2 - 2, height: 16, area: Math.round((w/2 - 2)*16), unit: "feet", label: \`Parking \${Math.round(w/2 - 2)}'x16'\` },
-      { id: "living", name: "Living Room", type: "living", x: w/2 + 1, y: 1, width: w/2 - 2, height: 16, area: Math.round((w/2 - 2)*16), unit: "feet", label: \`Living \${Math.round(w/2 - 2)}'x16'\` },
-      { id: "kitchen", name: "Kitchen", type: "kitchen", x: w/2 + 1, y: 19, width: w/2 - 2, height: 10, area: Math.round((w/2 - 2)*10), unit: "feet", label: \`Kitchen \${Math.round(w/2 - 2)}'x10'\` },
-      { id: "bed1", name: "Bedroom", type: "bedroom", x: 1, y: 19, width: w/2 - 2, height: 12, area: Math.round((w/2 - 2)*12), unit: "feet", label: \`Bedroom \${Math.round(w/2 - 2)}'x12'\` },
+      { id: "parking", name: "Parking", type: "parking", x: 1, y: 1, width: w/2 - 2, height: 16, area: Math.round((w/2 - 2)*16), unit: "feet", label: `Parking ${Math.round(w/2 - 2)}'x16'` },
+      { id: "living", name: "Living Room", type: "living", x: w/2 + 1, y: 1, width: w/2 - 2, height: 16, area: Math.round((w/2 - 2)*16), unit: "feet", label: `Living ${Math.round(w/2 - 2)}'x16'` },
+      { id: "kitchen", name: "Kitchen", type: "kitchen", x: w/2 + 1, y: 19, width: w/2 - 2, height: 10, area: Math.round((w/2 - 2)*10), unit: "feet", label: `Kitchen ${Math.round(w/2 - 2)}'x10'` },
+      { id: "bed1", name: "Bedroom", type: "bedroom", x: 1, y: 19, width: w/2 - 2, height: 12, area: Math.round((w/2 - 2)*12), unit: "feet", label: `Bedroom ${Math.round(w/2 - 2)}'x12'` },
       { id: "bath1", name: "Common Bath", type: "bathroom", x: 1, y: 33, width: 8, height: 5, area: 40, unit: "feet", label: "Bath 8'x5'" }
     ];
     
@@ -63,10 +63,10 @@ function generateFloor(floorNum, plotWidth, plotDepth, optionId) {
   } else {
     // Upper floors
     rooms = [
-      { id: "master_bed", name: "Master Bedroom", type: "bedroom", x: 1, y: 1, width: w/2 - 2, height: 14, area: Math.round((w/2 - 2)*14), unit: "feet", label: \`Master Bed \${Math.round(w/2 - 2)}'x14'\` },
+      { id: "master_bed", name: "Master Bedroom", type: "bedroom", x: 1, y: 1, width: w/2 - 2, height: 14, area: Math.round((w/2 - 2)*14), unit: "feet", label: `Master Bed ${Math.round(w/2 - 2)}'x14'` },
       { id: "bath2", name: "Attached Bath", type: "bathroom", x: w/2 + 1, y: 1, width: 8, height: 6, area: 48, unit: "feet", label: "Bath 8'x6'" },
-      { id: "bed2", name: "Bedroom 2", type: "bedroom", x: 1, y: 17, width: w/2 - 2, height: 12, area: Math.round((w/2 - 2)*12), unit: "feet", label: \`Bedroom 2 \${Math.round(w/2 - 2)}'x12'\` },
-      { id: "balcony", name: "Balcony", type: "balcony", x: w/2 + 1, y: 17, width: w/2 - 2, height: 8, area: Math.round((w/2 - 2)*8), unit: "feet", label: \`Balcony \${Math.round(w/2 - 2)}'x8'\` },
+      { id: "bed2", name: "Bedroom 2", type: "bedroom", x: 1, y: 17, width: w/2 - 2, height: 12, area: Math.round((w/2 - 2)*12), unit: "feet", label: `Bedroom 2 ${Math.round(w/2 - 2)}'x12'` },
+      { id: "balcony", name: "Balcony", type: "balcony", x: w/2 + 1, y: 17, width: w/2 - 2, height: 8, area: Math.round((w/2 - 2)*8), unit: "feet", label: `Balcony ${Math.round(w/2 - 2)}'x8'` },
     ];
   }
   

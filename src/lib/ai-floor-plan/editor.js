@@ -10,12 +10,12 @@ export async function parseConversationalEdit(prompt, currentPlanJson) {
     return handleMockEdit(prompt, currentPlanJson);
   }
 
-  const aiPrompt = \`
+  const aiPrompt = `
     You are an AI floor plan editor. 
-    The user wants to edit their floor plan: "\${prompt}"
+    The user wants to edit their floor plan: "${prompt}"
     
     Current Plan:
-    \${JSON.stringify(currentPlanJson)}
+    ${JSON.stringify(currentPlanJson)}
     
     Return ONLY a JSON array of operations to apply.
     Supported actions: resize_room, move_room, add_room, remove_room, rename_room.
@@ -28,11 +28,11 @@ export async function parseConversationalEdit(prompt, currentPlanJson) {
         "params": { "widthDelta": 2, "heightDelta": 0 }
       }
     ]
-  \`;
+  `;
 
   try {
     const rawOutput = await generateCompletion("You output strictly JSON.", aiPrompt);
-    let parsed = JSON.parse(rawOutput.replace(/\`\`\`json/g, '').replace(/\`\`\`/g, '').trim());
+    let parsed = JSON.parse(rawOutput.replace(/```json/g, '').replace(/```/g, '').trim());
     return applyOperations(currentPlanJson, parsed);
   } catch (error) {
     console.error("AI Edit Error:", error);
@@ -53,7 +53,7 @@ function handleMockEdit(prompt, currentPlan) {
       if (bed) {
         bed.width += 2;
         bed.area = bed.width * bed.height;
-        bed.label = \`\${bed.name} \${bed.width}'x\${bed.height}'\`;
+        bed.label = `${bed.name} ${bed.width}'x${bed.height}'`;
         modified = true;
         break;
       }
@@ -64,7 +64,7 @@ function handleMockEdit(prompt, currentPlan) {
       if (bed && bed.width > 8) {
         bed.width -= 2;
         bed.area = bed.width * bed.height;
-        bed.label = \`\${bed.name} \${bed.width}'x\${bed.height}'\`;
+        bed.label = `${bed.name} ${bed.width}'x${bed.height}'`;
         modified = true;
         break;
       }
@@ -73,9 +73,9 @@ function handleMockEdit(prompt, currentPlan) {
 
   if (!modified) {
     // If we don't understand, just add a note
-    updatedPlan.summary.designNotes.push(\`Attempted to apply: "\${prompt}", but mock mode has limited understanding.\`);
+    updatedPlan.summary.designNotes.push(`Attempted to apply: "${prompt}", but mock mode has limited understanding.`);
   } else {
-    updatedPlan.summary.designNotes.push(\`Applied edit: "\${prompt}"\`);
+    updatedPlan.summary.designNotes.push(`Applied edit: "${prompt}"`);
   }
 
   return updatedPlan;
@@ -93,7 +93,7 @@ function applyOperations(plan, operations) {
           room.width += (op.params.widthDelta || 0);
           room.height += (op.params.heightDelta || 0);
           room.area = room.width * room.height;
-          room.label = \`\${room.name} \${room.width}'x\${room.height}'\`;
+          room.label = `${room.name} ${room.width}'x${room.height}'`;
         }
       }
       // Add other operations here as needed for MVP

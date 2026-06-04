@@ -28,9 +28,9 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
         width={svgWidth + padding * 2} 
         height={svgHeight + padding * 2}
         className={styles.svgCanvas}
-        style={{ transform: \`scale(\${zoom})\` }}
+        style={{ transform: `scale(${zoom})` }}
       >
-        <g transform={\`translate(\${padding}, \${padding})\`}>
+        <g transform={`translate(${padding}, ${padding})`}>
           {/* Plot Boundary */}
           <rect 
             x={0} 
@@ -55,7 +55,7 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
               <g 
                 key={room.id} 
                 onClick={() => onSelectRoom(room)}
-                className={\`\${styles.roomRect} \${isSelected ? styles.selected : ''}\`}
+                className={`${styles.roomRect} ${isSelected ? styles.selected : ''}`}
               >
                 <rect 
                   x={rx} 

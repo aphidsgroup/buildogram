@@ -32,7 +32,7 @@ export default function CreditBadge() {
   if (loading || credits === null) return null;
 
   return (
-    <div className={\`\${styles.badge} \${credits < 2 ? styles.low : ''}\`}>
+    <div className={`${styles.badge} ${credits < 2 ? styles.low : ''}`}>
       💎 {credits} Credits
     </div>
   );

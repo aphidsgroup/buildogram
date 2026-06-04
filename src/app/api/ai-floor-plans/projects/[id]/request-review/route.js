@@ -36,7 +36,7 @@ export async function POST(req, { params }) {
         rough_budget: project.budget_range ? parseFloat(project.budget_range.replace(/[^0-9.]/g, '')) * 100000 : null,
         metadata: {
           aiProjectId: project.id,
-          plotSize: \`\${project.plot_width}x\${project.plot_depth}\`,
+          plotSize: `${project.plot_width}x${project.plot_depth}`,
           facing: project.facing,
           buildingType: project.building_type,
           selectedVersionId: project.selected_version_id
