@@ -14,10 +14,10 @@ export async function generateFloorPlans(projectInput) {
   }
 
   const prompt = `
-    You are an expert architect and floor plan generator.
-    Generate 3 conceptual 2D floor plan options for a residential building in India based on the following requirements.
-    The output should be detailed enough to render like a professional CAD plan: wall hierarchy, openings, wet areas, fixtures, dimensions, and room labels.
-    
+    You are an expert architect specializing in Indian residential floor plans.
+    Generate 3 conceptual 2D floor plan options for a residential building based on the requirements below.
+    The output will be rendered as a clean black-and-white CAD drawing (no colors, no interior furniture icons).
+
     Requirements:
     Plot: ${input.plotWidth}x${input.plotDepth} ${input.unit} (${input.facing || 'Unknown'} facing)
     Building Type: ${input.buildingType || 'House'}
@@ -30,8 +30,12 @@ export async function generateFloorPlans(projectInput) {
     Style: ${input.style || 'Modern'}
     User Prompt: "${input.prompt || ''}"
 
-    Return the response STRICTLY as a JSON array of 3 plan objects. Do not include markdown formatting like a json block.
-    Each object must match this schema:
+    Use traditional Indian CAD plan room names such as:
+    - FRONT HALL, BED ROOM, MASTER BED ROOM, KITCHEN CUM DINING, KITCHEN, TOILET,
+      POOJA, PORTICO, STAIRCASE, ATTACHED TOILET, COMMON TOILET, UTILITY, TERRACE, OPEN TERRACE.
+
+    Return the response STRICTLY as a JSON array of 3 plan objects. Do not include markdown code fences.
+    Each object must match this schema exactly:
     {
       "id": "plan_opt_a",
       "name": "Balanced Layout",
@@ -43,7 +47,7 @@ export async function generateFloorPlans(projectInput) {
           "width": ${input.plotWidth},
           "depth": ${input.plotDepth},
           "rooms": [
-            { "id": "r1", "name": "Living", "type": "living", "x": 1, "y": 1, "width": 14, "height": 16, "area": 224, "unit": "feet", "label": "Living 14'x16'" }
+            { "id": "r1", "name": "Front Hall", "type": "living", "x": 1, "y": 1, "width": 14, "height": 16, "area": 224, "unit": "feet", "label": "Front Hall 14'x16'" }
           ],
           "walls": [
             { "id": "outer-n", "x1": 1, "y1": 1, "x2": 29, "y2": 1, "type": "exterior" },
@@ -55,27 +59,26 @@ export async function generateFloorPlans(projectInput) {
           "windows": [
             { "id": "living-window", "x": 18, "y": 1, "width": 5, "side": "north" }
           ],
-          "furniture": [
-            { "id": "sofa", "roomId": "r1", "type": "living", "x": 3, "y": 4, "width": 7, "height": 3 }
-          ]
+          "furniture": []
         }
       ],
       "summary": {
-        "builtUpArea": number,
-        "carpetArea": number,
-        "estimatedConstructionCostRange": "string",
+        "builtUpArea": 960,
+        "carpetArea": 749,
+        "estimatedConstructionCostRange": "Rs 17L - Rs 21L",
         "designNotes": ["string"],
         "warnings": ["string"]
       }
     }
 
     Rules:
-    1. Rooms, walls, doors, windows, and fixtures must fit within the ${input.plotWidth}x${input.plotDepth} grid.
-    2. Ensure basic circulation (doors/hallways conceptually).
-    3. Option A should be Balanced, Option B should be Vastu-optimized, Option C should be Space-maximized.
-    4. Provide realistic room sizes for Indian homes.
-    5. Use exterior walls for the outer building envelope and interior walls for partitions.
-    6. Include at least one main door, room doors, bedroom/living/kitchen windows, bathroom fixtures, kitchen counters, beds, seating, stair if relevant, and parking/car fixture if parking is requested.
+    1. All rooms, walls, doors, and windows must fit within the ${input.plotWidth}x${input.plotDepth} grid.
+    2. Start all rooms at x=1, y=1 (1-foot setback from plot edge).
+    3. Option A = Balanced, Option B = Vastu-optimized, Option C = Space-maximized.
+    4. Use realistic Indian room sizes (Living 14-18ft wide, Bedrooms 11-14ft, Toilets 5-7ft, Kitchen 9-12ft).
+    5. Mark outer envelope walls as type "exterior", partition walls as "interior".
+    6. Include main entry door, room doors, and windows in bedrooms/living/kitchen.
+    7. Leave furniture array empty — the renderer will not display furniture symbols.
   `;
 
   try {
