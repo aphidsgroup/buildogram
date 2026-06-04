@@ -66,6 +66,7 @@ async function loadKonva() {
 
 export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }) {
   const containerRef = useRef(null);
+  const toolbarRef = useRef(null);
   const stageRef = useRef(null);
   const [konvaLoaded, setKonvaLoaded] = useState(false);
   const [stageSize, setStageSize] = useState({ width: 800, height: 600 });
@@ -79,14 +80,21 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
   // Load Konva client-side only
   useEffect(() => { loadKonva().then(() => setKonvaLoaded(true)); }, []);
 
-  // Track container size
+  // Track container size — observe the whole container and subtract toolbar
   useEffect(() => {
     if (!containerRef.current) return;
-    const obs = new ResizeObserver(e => {
-      const r = e[0].contentRect;
-      setStageSize({ width: r.width || 800, height: r.height || 600 });
+    const obs = new ResizeObserver(() => {
+      const cRect = containerRef.current?.getBoundingClientRect();
+      const tRect = toolbarRef.current?.getBoundingClientRect();
+      if (!cRect) return;
+      const toolbarH = tRect?.height || 34;
+      setStageSize({
+        width: Math.max(200, cRect.width),
+        height: Math.max(100, cRect.height - toolbarH),
+      });
     });
     obs.observe(containerRef.current);
+    if (toolbarRef.current) obs.observe(toolbarRef.current);
     return () => obs.disconnect();
   }, []);
 
@@ -159,10 +167,14 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
 
   // ── Layer renderers ───────────────────────────────────────────────────────
 
-  /** Light reference grid (5' squares) */
+  /** Subtle dot-grid drawn on plan area only for reference */
   function renderGrid() {
     const els = [];
-    els.push(<Rect key="bg" x={0} y={0} width={MARGIN * 2 + planW + TITLE_W + 60} height={MARGIN * 2 + planH + 60} fill={C.bg} />);
+    // White fill only under the plan area itself (not a full sheet box)
+    els.push(
+      <Rect key="planbg" x={MARGIN} y={MARGIN} width={planW} height={planH} fill="#ffffff" listening={false} />
+    );
+    // Light grid lines inside plan area
     for (let f = 0; f <= plotW; f += 5)
       els.push(<Line key={`gx${f}`} points={[tx(f), MARGIN, tx(f), MARGIN + planH]} stroke={C.grid} strokeWidth={0.5} listening={false} />);
     for (let f = 0; f <= plotH; f += 5)
@@ -479,7 +491,7 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
     <div className={styles.canvasContainer} ref={containerRef}>
 
       {/* ── Toolbar ──────────────────────────────────────────────────────── */}
-      <div style={{
+      <div ref={toolbarRef} style={{
         display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6,
         padding: '5px 12px', background: '#1a1a1a', flexShrink: 0,
       }}>
@@ -505,19 +517,26 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
           style={{ padding: '2px 8px', background: '#333', color: '#ccc', border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 10 }}>Fit</button>
       </div>
 
-      {/* ── Konva Stage ─────────────────────────────────────────────────── */}
-      <div style={{ flex: 1, overflow: 'hidden', background: '#d4d4d4' }}>
+      {/* ── Infinite Canvas ──────────────────────────────────────────────── */}
+      {/* dot-grid CSS background gives the "infinite canvas" feel          */}
+      <div style={{
+        flex: 1, overflow: 'hidden', cursor: 'grab',
+        background: '#c8c8c8',
+        backgroundImage: 'radial-gradient(circle, #999 1px, transparent 1px)',
+        backgroundSize: '24px 24px',
+      }}>
         <Stage
           ref={stageRef}
           width={stageSize.width}
-          height={Math.max(100, stageSize.height - 36)}
+          height={stageSize.height}
           scaleX={stageScale} scaleY={stageScale}
           x={stagePos.x} y={stagePos.y}
           onWheel={onWheel}
           draggable
           onDragEnd={e => setStagePos({ x: e.target.x(), y: e.target.y() })}
+          style={{ cursor: 'inherit' }}
         >
-          {/* Layer 1: White background + grid */}
+          {/* Layer 1: Plan area white fill + light grid */}
           <Layer>{renderGrid()}</Layer>
 
           {/* Layer 2: Room fills (white / subtle selection) */}
