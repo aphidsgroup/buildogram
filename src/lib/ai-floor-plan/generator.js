@@ -28,7 +28,7 @@ export async function generateFloorPlans(projectInput) {
     Style: ${projectInput.style || 'Modern'}
     User Prompt: "${projectInput.prompt || ''}"
 
-    Return the response STRICTLY as a JSON array of 3 plan objects. Do not include markdown formatting like ```json.
+    Return the response STRICTLY as a JSON array of 3 plan objects. Do not include markdown formatting like a json block.
     Each object must match this schema:
     {
       "id": "plan_opt_a",
