@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/apiAuth';
+import { prisma as db } from '@/lib/storageProvider';
 import { getCreditBalance } from '@/lib/ai-floor-plan/credits';
 
 export async function GET(req) {
