@@ -14,50 +14,69 @@ export async function generateFloorPlans(projectInput) {
   }
 
   const prompt = `
-    You are an expert architect specializing in Indian residential floor plans.
-    Generate 3 conceptual 2D floor plan options for a residential building based on the requirements below.
-    The output will be rendered as a clean black-and-white CAD drawing (no colors, no interior furniture icons).
+    You are an expert architect producing Indian residential floor plans in Chennai / Tamil Nadu drafter style.
+    Generate 3 conceptual 2D floor plan options rendered as clean black-and-white CAD drawings.
+    No furniture, no fixture icons, no colours. Rooms contain only room name and room dimension.
 
     Requirements:
     Plot: ${input.plotWidth}x${input.plotDepth} ${input.unit} (${input.facing || 'Unknown'} facing)
     Building Type: ${input.buildingType || 'House'}
     Floors: ${input.floors || 1}
     Vastu: ${input.vastuPreference || 'Moderate'}
-    Budget Range: ${input.budgetRange || 'Standard'}
-    Family Size: ${input.familySize || 'Unknown'}
+    Budget: ${input.budgetRange || 'Standard'}
+    Family: ${input.familySize || 'Unknown'}
     Parking: ${input.parking || 'None'}
-    Special Spaces: ${(input.specialSpaces || []).join(', ')}
-    Style: ${input.style || 'Modern'}
-    User Prompt: "${input.prompt || ''}"
+    Special: ${(input.specialSpaces || []).join(', ')}
+    User note: "${input.prompt || ''}"
 
-    Use traditional Indian CAD plan room names such as:
-    - FRONT HALL, BED ROOM, MASTER BED ROOM, KITCHEN CUM DINING, KITCHEN, TOILET,
-      POOJA, PORTICO, STAIRCASE, ATTACHED TOILET, COMMON TOILET, UTILITY, TERRACE, OPEN TERRACE.
+    ROOM NAMES — use these exact Indian CAD labels (UPPERCASE):
+    PORTICO, FRONT HALL, LIVING ROOM, BED ROOM, MASTER BED ROOM, KITCHEN,
+    KITCHEN CUM DINING, TOILET, ATTACHED TOILET, COMMON TOILET, POOJA,
+    WARDROBE, SIT OUT, BALCONY, OPEN TERRACE, STAIRCASE, UTILITY, STORE.
 
-    Return the response STRICTLY as a JSON array of 3 plan objects. Do not include markdown code fences.
-    Each object must match this schema exactly:
+    DOOR SYMBOLS — include a "symbol" field on each door:
+    "MD" for main door, "D" for standard room door, "D1" / "D2" for smaller internal doors.
+
+    WINDOW SYMBOLS — include a "symbol" field on each window:
+    "W" for standard window, "V" for ventilator (small, usually toilets/utility),
+    "OP" for open archway / portico opening.
+
+    FLOOR LABELS:
+    floorNumber 1 → floorLabel: "GROUND FLOOR PLAN"
+    floorNumber 2 → floorLabel: "FIRST FLOOR PLAN"
+    floorNumber 3 → floorLabel: "TERRACE FLOOR PLAN"
+
+    Return STRICTLY a JSON array of 3 plan objects. No markdown fences. Schema:
     {
       "id": "plan_opt_a",
       "name": "Balanced Layout",
       "plotWidth": ${input.plotWidth},
       "plotDepth": ${input.plotDepth},
+      "sheetType": "FLOOR PLAN",
       "floors": [
         {
           "floorNumber": 1,
+          "floorLabel": "GROUND FLOOR PLAN",
           "width": ${input.plotWidth},
           "depth": ${input.plotDepth},
+          "roadLabel": "ROAD",
+          "setbacks": { "front": 5, "rear": 3, "left": 0, "right": 0 },
           "rooms": [
-            { "id": "r1", "name": "Front Hall", "type": "living", "x": 1, "y": 1, "width": 14, "height": 16, "area": 224, "unit": "feet", "label": "Front Hall 14'x16'" }
+            { "id": "r1", "name": "Front Hall", "type": "living", "x": 1, "y": 1, "width": 14, "height": 16, "area": 224, "unit": "feet" }
           ],
           "walls": [
-            { "id": "outer-n", "x1": 1, "y1": 1, "x2": 29, "y2": 1, "type": "exterior" },
+            { "id": "ext-n", "x1": 1, "y1": 1, "x2": ${input.plotWidth - 1}, "y2": 1, "type": "exterior" },
             { "id": "partition-1", "x1": 15, "y1": 1, "x2": 15, "y2": 25, "type": "interior" }
           ],
           "doors": [
-            { "id": "main-door", "x": 16, "y": 16, "width": 3.5, "side": "south", "swing": "in" }
+            { "id": "main-door", "symbol": "MD", "x": 14, "y": 16, "width": 3.5, "side": "north" },
+            { "id": "bed-door",  "symbol": "D",  "x": 5,  "y": 16, "width": 3,   "side": "north" },
+            { "id": "tlt-door",  "symbol": "D1", "x": 2,  "y": 28, "width": 2.5, "side": "north" }
           ],
           "windows": [
-            { "id": "living-window", "x": 18, "y": 1, "width": 5, "side": "north" }
+            { "id": "hall-w",  "symbol": "W",  "x": 18, "y": 1, "width": 5,   "side": "north" },
+            { "id": "tlt-vent","symbol": "V",  "x": 1,  "y": 31,"width": 2,   "side": "west" },
+            { "id": "porch-op","symbol": "OP", "x": 2,  "y": 1, "width": 6,   "side": "north" }
           ],
           "furniture": []
         }
@@ -71,14 +90,17 @@ export async function generateFloorPlans(projectInput) {
       }
     }
 
-    Rules:
-    1. All rooms, walls, doors, and windows must fit within the ${input.plotWidth}x${input.plotDepth} grid.
-    2. Start all rooms at x=1, y=1 (1-foot setback from plot edge).
-    3. Option A = Balanced, Option B = Vastu-optimized, Option C = Space-maximized.
-    4. Use realistic Indian room sizes (Living 14-18ft wide, Bedrooms 11-14ft, Toilets 5-7ft, Kitchen 9-12ft).
-    5. Mark outer envelope walls as type "exterior", partition walls as "interior".
-    6. Include main entry door, room doors, and windows in bedrooms/living/kitchen.
-    7. Leave furniture array empty — the renderer will not display furniture symbols.
+    Design rules:
+    1. All geometry must fit within ${input.plotWidth}x${input.plotDepth} feet.
+    2. Leave 1-ft margin at plot edge for wall thickness.
+    3. Option A = Balanced, B = Vastu-optimised (SE kitchen, SW master, NE pooja), C = Space-maximised.
+    4. Realistic Indian sizes: Living 14-18ft, Bedrooms 11-14ft, Toilets 5-7ft, Kitchen 9-13ft.
+    5. Mark outer envelope walls type "exterior", partitions "interior".
+    6. Every room with a door must have a door entry in the doors array with correct symbol.
+    7. Bedrooms, kitchen, and living rooms must each have at least one window (symbol "W").
+    8. Toilets/utility must have a ventilator (symbol "V").
+    9. Portico/sit-out should use "OP" for open side.
+    10. Leave furniture array empty — renderer ignores furniture for CAD view.
   `;
 
   try {

@@ -1,289 +1,252 @@
 'use client';
 /**
- * CAD Floor Plan Canvas — Clean Black-and-White Indian CAD Style
- * 
- * Renders ONLY:
- *   • Plot boundary
- *   • Walls (thick exterior, thin interior)
- *   • Wall openings (doors + windows as gaps)
- *   • Staircase as step lines
- *   • Room name + measurement labels inside each room
- *   • External dimension strings with tick marks
- *   • North arrow + title block
- * 
- * Deliberately excluded from render:
- *   • Furniture, beds, sofas, dining, cars
- *   • Bathroom/kitchen fixtures
- *   • Wet-area hatch fills
- *   • Colored fills
- *   • Icons / decorative elements
+ * CAD Floor Plan Canvas — Chennai / Tamil Nadu Drafter Style
+ *
+ * Renders (CAD plan view only):
+ *   • Infinite dot-grid canvas (pan + zoom)
+ *   • White plan sheet floating on grey background
+ *   • Plot boundary (thick dashed)
+ *   • Exterior walls (thick black) + Interior walls (thin black)
+ *   • Door openings: white gap + MD / D / D1 / D2 label
+ *   • Window openings: triple-line symbol + W / V / OP label
+ *   • Staircase: parallel step lines + UP / DN label
+ *   • Room name (bold uppercase) centered inside room
+ *   • Room dimension ( 16' X 11' ) below name
+ *   • External dimension chain with tick marks
+ *   • North arrow
+ *   • Title block (BUILDOGRAM | GROUND FLOOR PLAN …)
+ *
+ * Deliberately NOT rendered:
+ *   • Furniture, beds, sofas, cars, dining tables
+ *   • Kitchen counters, bathroom fixtures
+ *   • Coloured fills, hatch patterns, icons
  */
 
 import { useEffect, useRef, useState, useCallback } from 'react';
 import styles from '../studio/studio.module.css';
 
-// Pixels per foot
-const PX = 14;
-const MARGIN = 80;          // space around plan for dimension lines
-const TITLE_W = 155;        // title block width on right
+// ─── Constants ────────────────────────────────────────────────────────────────
+const PX      = 14;    // canvas pixels per foot
+const MARGIN  = 90;    // gap around plan for dim-chain + labels
+const TITLE_W = 160;   // right-side title block width
 
-// ─── Formatting helpers ───────────────────────────────────────────────────────
-
-/** Format feet as  16'×11'  or  6'5"×5'3" */
+// ─── Formatting ───────────────────────────────────────────────────────────────
 function fmtFt(val) {
-  const ft = Math.floor(val);
-  const inches = Math.round((val - ft) * 12);
-  if (inches === 0) return `${ft}'`;
-  return `${ft}'${inches}"`;
+  const v = Number(val) || 0;
+  const ft = Math.floor(v);
+  const inches = Math.round((v - ft) * 12);
+  return inches === 0 ? `${ft}'` : `${ft}'${inches}"`;
 }
+function fmtDim(w, h) { return `${fmtFt(w)} X ${fmtFt(h)}`; }
+function UP(s) { return (s || '').toUpperCase(); }
 
-function fmtDim(w, h) {
-  return `${fmtFt(w)} X ${fmtFt(h)}`;
-}
-
-/** Capitalise like traditional CAD labels */
-function cadLabel(name) {
-  return (name || '').toUpperCase();
-}
-
-// ─── react-konva lazy loader ─────────────────────────────────────────────────
-let K = null; // { Stage, Layer, Rect, Line, Text, Path, Group, Arrow }
-
+// ─── Konva lazy loader (SSR-safe) ─────────────────────────────────────────────
+let K = null;
 async function loadKonva() {
   if (K) return K;
   await import('konva/lib/Core');
   const rk = await import('react-konva');
-  K = {
-    Stage: rk.Stage, Layer: rk.Layer,
-    Rect: rk.Rect, Line: rk.Line, Text: rk.Text,
-    Path: rk.Path, Group: rk.Group, Arrow: rk.Arrow,
-    Circle: rk.Circle,
-  };
+  K = { Stage: rk.Stage, Layer: rk.Layer, Rect: rk.Rect, Line: rk.Line,
+        Text: rk.Text, Path: rk.Path, Group: rk.Group, Arrow: rk.Arrow };
   return K;
 }
 
-// ─── Main component ──────────────────────────────────────────────────────────
-
+// ─── Component ────────────────────────────────────────────────────────────────
 export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }) {
   const containerRef = useRef(null);
-  const toolbarRef = useRef(null);
-  const stageRef = useRef(null);
-  const [konvaLoaded, setKonvaLoaded] = useState(false);
-  const [stageSize, setStageSize] = useState({ width: 800, height: 600 });
-  const [stagePos, setStagePos] = useState({ x: 0, y: 0 });
+  const toolbarRef   = useRef(null);
+  const stageRef     = useRef(null);
+  const [ready,      setReady]      = useState(false);
+  const [stageSize,  setStageSize]  = useState({ width: 900, height: 650 });
+  const [stagePos,   setStagePos]   = useState({ x: 0, y: 0 });
   const [stageScale, setStageScale] = useState(1);
-  const [floorIdx, setFloorIdx] = useState(0);
+  const [floorIdx,   setFloorIdx]   = useState(0);
   const [layers, setLayers] = useState({
-    walls: true, openings: true, labels: true, dimensions: true, stairs: true,
+    walls: true, openings: true, stairs: true, labels: true, dimensions: true,
   });
 
-  // Load Konva client-side only
-  useEffect(() => { loadKonva().then(() => setKonvaLoaded(true)); }, []);
+  useEffect(() => { loadKonva().then(() => setReady(true)); }, []);
 
-  // Track container size — observe the whole container and subtract toolbar
+  // Resize observer — container minus toolbar
   useEffect(() => {
     if (!containerRef.current) return;
-    const obs = new ResizeObserver(() => {
-      const cRect = containerRef.current?.getBoundingClientRect();
-      const tRect = toolbarRef.current?.getBoundingClientRect();
-      if (!cRect) return;
-      const toolbarH = tRect?.height || 34;
-      setStageSize({
-        width: Math.max(200, cRect.width),
-        height: Math.max(100, cRect.height - toolbarH),
-      });
-    });
+    const measure = () => {
+      const c = containerRef.current?.getBoundingClientRect();
+      const t = toolbarRef.current?.getBoundingClientRect();
+      if (!c) return;
+      setStageSize({ width: Math.max(200, c.width), height: Math.max(100, c.height - (t?.height || 36)) });
+    };
+    const obs = new ResizeObserver(measure);
     obs.observe(containerRef.current);
     if (toolbarRef.current) obs.observe(toolbarRef.current);
     return () => obs.disconnect();
   }, []);
 
-  // Mouse-wheel zoom centred on cursor
+  // Wheel zoom centred on cursor
   const onWheel = useCallback(e => {
     e.evt.preventDefault();
     const stage = stageRef.current;
     if (!stage) return;
     const ptr = stage.getPointerPosition();
-    const factor = e.evt.deltaY < 0 ? 1.1 : 1 / 1.1;
-    const newScale = Math.min(8, Math.max(0.15, stageScale * factor));
-    setStagePos({
-      x: ptr.x - (ptr.x - stagePos.x) * (newScale / stageScale),
-      y: ptr.y - (ptr.y - stagePos.y) * (newScale / stageScale),
-    });
-    setStageScale(newScale);
+    const factor = e.evt.deltaY < 0 ? 1.12 : 1 / 1.12;
+    const ns = Math.min(8, Math.max(0.1, stageScale * factor));
+    setStagePos({ x: ptr.x - (ptr.x - stagePos.x) * (ns / stageScale), y: ptr.y - (ptr.y - stagePos.y) * (ns / stageScale) });
+    setStageScale(ns);
   }, [stageScale, stagePos]);
 
-  // ── Empty / loading states ────────────────────────────────────────────────
-  if (!planData || !planData.floors?.length) {
+  // ── Guard: no data / not loaded ────────────────────────────────────────────
+  if (!planData?.floors?.length) {
     return (
       <div className={styles.emptyState}>
-        <div style={{ fontSize: 48 }}>📐</div>
-        <div>Generate a floor plan to begin</div>
+        <div style={{ fontSize: 52 }}>📐</div>
+        <div style={{ fontSize: 14, marginTop: 8, color: '#555' }}>Generate a floor plan to begin</div>
       </div>
     );
   }
-  if (!konvaLoaded) {
-    return <div className={styles.emptyState}><span style={{ fontSize: 13, color: '#888' }}>Loading CAD canvas…</span></div>;
-  }
+  if (!ready) return <div className={styles.emptyState}><span style={{ color: '#888', fontSize: 13 }}>Loading CAD canvas…</span></div>;
 
-  const { Stage, Layer, Rect, Line, Text, Path, Group, Arrow, Circle } = K;
+  const { Stage, Layer, Rect, Line, Text, Group, Arrow } = K;
 
-  const floor = planData.floors[floorIdx] || planData.floors[0];
-  const plotW = Number(floor.width || planData.plotWidth || 30);
-  const plotH = Number(floor.depth || planData.plotDepth || 40);
-  const planW = plotW * PX;
-  const planH = plotH * PX;
+  const floor  = planData.floors[floorIdx] || planData.floors[0];
+  const plotW  = Number(floor.width  || planData.plotWidth  || 30);
+  const plotH  = Number(floor.depth  || planData.plotDepth  || 40);
+  const planW  = plotW * PX;
+  const planH  = plotH * PX;
+  const sheetLabel = floor.floorLabel || (floor.floorNumber === 1 ? 'GROUND FLOOR PLAN' : floor.floorNumber === 2 ? 'FIRST FLOOR PLAN' : 'TERRACE FLOOR PLAN');
 
   // Coordinate helpers
   const tx = ft => MARGIN + Number(ft) * PX;
   const ty = ft => MARGIN + Number(ft) * PX;
   const px = ft => Number(ft) * PX;
 
-  const rooms = floor.rooms || [];
-  const walls = floor.walls || [];
-  const doors = floor.doors || [];
+  const rooms   = (floor.rooms   || []).filter(r => px(r.width) > 4 && px(r.height) > 4);
+  const walls   = floor.walls   || [];
+  const doors   = floor.doors   || [];
   const windows = floor.windows || [];
 
-  // ── CAD colours (strict BW) ───────────────────────────────────────────────
-  const C = {
-    bg: '#ffffff',
-    paper: '#ffffff',
-    plotBound: '#000000',
-    setback: '#888888',
-    extWall: '#000000',
-    intWall: '#000000',
-    opening: '#ffffff',   // gap colour
-    door: '#000000',
-    window: '#000000',
-    stair: '#000000',
-    roomFill: 'transparent',
-    selectedFill: 'rgba(0,0,0,0.04)',
-    label: '#000000',
-    dim: '#000000',
-    dimTick: '#000000',
-    title: '#000000',
-    grid: '#e8e8e8',
-  };
+  // ── CAD colour palette (strict B/W) ───────────────────────────────────────
+  const BW = { wall: '#000', dim: '#222', grid: '#e0e0e0', gap: '#fff', label: '#000', title: '#000' };
 
-  // ── Layer renderers ───────────────────────────────────────────────────────
+  // ─── Layer renderers ───────────────────────────────────────────────────────
 
-  /** Subtle dot-grid drawn on plan area only for reference */
-  function renderGrid() {
-    const els = [];
-    // White fill only under the plan area itself (not a full sheet box)
-    els.push(
-      <Rect key="planbg" x={MARGIN} y={MARGIN} width={planW} height={planH} fill="#ffffff" listening={false} />
-    );
-    // Light grid lines inside plan area
+  /** White plan area fill + subtle reference grid */
+  function renderBackground() {
+    const els = [
+      <Rect key="planbg" x={MARGIN} y={MARGIN} width={planW} height={planH} fill="#ffffff" shadow={false} listening={false} />,
+    ];
     for (let f = 0; f <= plotW; f += 5)
-      els.push(<Line key={`gx${f}`} points={[tx(f), MARGIN, tx(f), MARGIN + planH]} stroke={C.grid} strokeWidth={0.5} listening={false} />);
+      els.push(<Line key={`gx${f}`} points={[tx(f), MARGIN, tx(f), MARGIN + planH]} stroke={BW.grid} strokeWidth={0.5} listening={false} />);
     for (let f = 0; f <= plotH; f += 5)
-      els.push(<Line key={`gy${f}`} points={[MARGIN, ty(f), MARGIN + planW, ty(f)]} stroke={C.grid} strokeWidth={0.5} listening={false} />);
+      els.push(<Line key={`gy${f}`} points={[MARGIN, ty(f), MARGIN + planW, ty(f)]} stroke={BW.grid} strokeWidth={0.5} listening={false} />);
     return els;
   }
 
-  /** Room fills — white, or very subtle tint when selected */
-  function renderRooms() {
-    return rooms.map(room => {
-      const isSelected = selectedRoom?.id === room.id;
-      return (
-        <Rect
-          key={room.id}
-          x={tx(room.x)} y={ty(room.y)}
-          width={px(room.width)} height={px(room.height)}
-          fill={isSelected ? C.selectedFill : C.roomFill}
-          stroke="transparent"
-          onClick={() => onSelectRoom(isSelected ? null : room)}
-          onTap={() => onSelectRoom(isSelected ? null : room)}
-          style={{ cursor: 'pointer' }}
-        />
-      );
-    });
+  /** Clickable room hit areas (transparent) */
+  function renderRoomHits() {
+    return rooms.map(r => (
+      <Rect key={`hit-${r.id}`}
+        x={tx(r.x)} y={ty(r.y)} width={px(r.width)} height={px(r.height)}
+        fill={selectedRoom?.id === r.id ? 'rgba(0,0,0,0.05)' : 'transparent'}
+        stroke={selectedRoom?.id === r.id ? '#333' : 'transparent'}
+        strokeWidth={1} dash={selectedRoom?.id === r.id ? [4, 3] : []}
+        onClick={() => onSelectRoom(selectedRoom?.id === r.id ? null : r)}
+        onTap={() => onSelectRoom(selectedRoom?.id === r.id ? null : r)}
+        style={{ cursor: 'pointer' }}
+      />
+    ));
   }
 
-  /** Walls — thick exterior (6px), thin interior (2px) */
-  function renderWalls() {
-    if (!layers.walls) return null;
-    return walls.map((w, i) => {
-      const ext = w.type === 'exterior';
-      return (
-        <Line
-          key={w.id || i}
-          points={[tx(w.x1), ty(w.y1), tx(w.x2), ty(w.y2)]}
-          stroke={C.extWall}
-          strokeWidth={ext ? 6 : 2}
-          lineCap="square" lineJoin="miter"
-          listening={false}
-        />
-      );
-    });
-  }
-
-  /** Plot boundary (dashed, outside walls) */
+  /** Plot boundary dashed outline */
   function renderBoundary() {
     return (
-      <Rect
-        x={MARGIN} y={MARGIN}
-        width={planW} height={planH}
-        stroke={C.plotBound}
-        strokeWidth={1.5}
-        dash={[6, 4]}
-        fill="transparent"
-        listening={false}
-      />
+      <Rect x={MARGIN} y={MARGIN} width={planW} height={planH}
+        stroke="#000" strokeWidth={2} dash={[8, 5]} fill="transparent" listening={false} />
     );
   }
 
-  /** Doors — white gap + simple leaf line, no swing arc decoration */
+  /** Walls */
+  function renderWalls() {
+    if (!layers.walls) return null;
+    return walls.map((w, i) => (
+      <Line key={w.id || i}
+        points={[tx(w.x1), ty(w.y1), tx(w.x2), ty(w.y2)]}
+        stroke={BW.wall}
+        strokeWidth={w.type === 'exterior' ? 7 : 2.5}
+        lineCap="square" lineJoin="miter"
+        listening={false}
+      />
+    ));
+  }
+
+  /** Doors — white gap + thin edge lines + label (MD / D / D1) */
   function renderDoors() {
     if (!layers.openings) return null;
-    return doors.map((door, i) => {
-      const x = tx(door.x), y = ty(door.y);
-      const w = px(door.width || 3);
-      const side = door.side || 'south';
-      const horiz = side === 'north' || side === 'south';
-      const gapPts = horiz ? [x, y, x + w, y] : [x, y, x, y + w];
+    return doors.map((d, i) => {
+      const x  = tx(d.x), y = ty(d.y);
+      const w  = px(d.width || 3);
+      const horiz = (d.side || 'south') === 'north' || d.side === 'south';
+      const ex  = horiz ? x + w : x, ey = horiz ? y : y + w;
+      const sym = d.symbol || 'D';
+      const mx  = horiz ? x + w / 2 : x, my = horiz ? y : y + w / 2;
+
       return (
-        <Group key={door.id || `d${i}`} listening={false}>
-          {/* Clear the wall */}
-          <Line points={gapPts} stroke={C.opening} strokeWidth={8} lineCap="butt" />
-          {/* Door line (thin) */}
-          <Line points={gapPts} stroke={C.door} strokeWidth={1} />
+        <Group key={d.id || `d${i}`} listening={false}>
+          {/* Clear gap */}
+          <Line points={[x, y, ex, ey]} stroke={BW.gap} strokeWidth={9} lineCap="butt" />
+          {/* Thin door line */}
+          <Line points={[x, y, ex, ey]} stroke={BW.wall} strokeWidth={1.2} />
+          {/* Symbol label */}
+          <Text
+            x={horiz ? mx - 12 : mx + 3}
+            y={horiz ? my - 16 : my - 6}
+            text={sym}
+            fontSize={7}
+            fontFamily="Arial"
+            fontStyle="bold"
+            fill="#000"
+          />
         </Group>
       );
     });
   }
 
-  /** Windows — white gap + double tick marks (classic CAD window symbol) */
+  /** Windows / Ventilators — white gap + triple-line mark + label */
   function renderWindows() {
     if (!layers.openings) return null;
-    return windows.map((win, i) => {
-      const x = tx(win.x), y = ty(win.y);
-      const w = px(win.width || 4);
-      const side = win.side || 'north';
-      const horiz = side === 'north' || side === 'south';
-      const endX = horiz ? x + w : x;
-      const endY = horiz ? y : y + w;
-      const t = 4; // tick depth
+    return windows.map((wn, i) => {
+      const x    = tx(wn.x), y = ty(wn.y);
+      const w    = px(wn.width || 4);
+      const horiz = (wn.side || 'north') === 'north' || wn.side === 'south';
+      const ex   = horiz ? x + w : x, ey = horiz ? y : y + w;
+      const t    = 4; // sill depth
+      const sym  = wn.symbol || 'W';
+      const mx   = horiz ? x + w / 2 : x, my = horiz ? y : y + w / 2;
+
       return (
-        <Group key={win.id || `w${i}`} listening={false}>
-          <Line points={[x, y, endX, endY]} stroke={C.opening} strokeWidth={9} lineCap="butt" />
-          {/* Three lines = traditional window symbol */}
-          <Line points={[x, y, endX, endY]} stroke={C.window} strokeWidth={0.8} />
-          <Line
-            points={horiz ? [x, y - t, endX, endY - t] : [x - t, y, endX - t, endY]}
-            stroke={C.window} strokeWidth={0.8}
-          />
-          <Line
-            points={horiz ? [x, y + t, endX, endY + t] : [x + t, y, endX + t, endY]}
-            stroke={C.window} strokeWidth={0.8}
+        <Group key={wn.id || `w${i}`} listening={false}>
+          {/* Clear wall */}
+          <Line points={[x, y, ex, ey]} stroke={BW.gap} strokeWidth={10} lineCap="butt" />
+          {/* Centre line */}
+          <Line points={[x, y, ex, ey]} stroke={BW.wall} strokeWidth={1} />
+          {/* Sill lines */}
+          <Line points={horiz ? [x, y - t, ex, ey - t] : [x - t, y, ex - t, ey]} stroke={BW.wall} strokeWidth={0.8} />
+          <Line points={horiz ? [x, y + t, ex, ey + t] : [x + t, y, ex + t, ey]} stroke={BW.wall} strokeWidth={0.8} />
+          {/* Symbol */}
+          <Text
+            x={horiz ? mx - 8 : mx + 5}
+            y={horiz ? my - 18 : my - 5}
+            text={sym}
+            fontSize={7}
+            fontFamily="Arial"
+            fontStyle="bold"
+            fill="#000"
           />
         </Group>
       );
     });
   }
 
-  /** Staircase — simple horizontal step lines with direction arrow */
+  /** Staircase — parallel tread lines + UP / DN text + arrow */
   function renderStairs() {
     if (!layers.stairs) return null;
     return rooms
@@ -291,61 +254,76 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
       .map(r => {
         const rx = tx(r.x), ry = ty(r.y);
         const rw = px(r.width), rh = px(r.height);
-        const steps = Math.max(6, Math.round(rh / (PX * 0.9)));
-        const stepH = rh / steps;
+        const treads = Math.max(6, Math.min(18, Math.round(rh / (PX * 0.85))));
+        const th = rh / treads;
         const lines = [];
-        for (let s = 0; s <= steps; s++) {
+        for (let s = 0; s <= treads; s++) {
           lines.push(
-            <Line key={s} points={[rx, ry + s * stepH, rx + rw, ry + s * stepH]}
-              stroke={C.stair} strokeWidth={s === 0 || s === steps ? 1.5 : 0.8} listening={false} />
+            <Line key={s}
+              points={[rx, ry + s * th, rx + rw, ry + s * th]}
+              stroke="#000"
+              strokeWidth={s === 0 || s === treads ? 2 : 0.8}
+              listening={false}
+            />
           );
         }
+        // UP arrow from bottom going up
         lines.push(
-          <Arrow key="arr" points={[rx + rw / 2, ry + rh - 8, rx + rw / 2, ry + 8]}
-            stroke={C.stair} strokeWidth={1} fill={C.stair}
-            pointerLength={6} pointerWidth={5} listening={false} />
+          <Arrow key="arr"
+            points={[rx + rw / 2, ry + rh - 6, rx + rw / 2, ry + 8]}
+            stroke="#000" strokeWidth={1} fill="#000"
+            pointerLength={7} pointerWidth={6} listening={false}
+          />
+        );
+        // UP label
+        lines.push(
+          <Text key="uplbl"
+            x={rx + rw / 2 - 8} y={ry + 2}
+            text="UP" fontSize={7} fontFamily="Arial" fontStyle="bold" fill="#000"
+            listening={false}
+          />
         );
         return <Group key={r.id}>{lines}</Group>;
       });
   }
 
-  /** Room labels — CAD uppercase name + dimension string */
+  /** Room labels: NAME (bold uppercase) + dimension string */
   function renderLabels() {
     if (!layers.labels) return null;
     return rooms
-      .filter(r => r.type !== 'stair') // stair uses step lines instead
+      .filter(r => r.type !== 'stair')
       .map(r => {
         const rx = tx(r.x), ry = ty(r.y);
         const rw = px(r.width), rh = px(r.height);
-        if (rw < 24 || rh < 18) return null;
+        if (rw < 22 || rh < 16) return null;
 
-        const name = cadLabel(r.name);
-        const dim = fmtDim(r.width, r.height);
-        const cx = rx + rw / 2;
-        const cy = ry + rh / 2;
-        const fontSize = Math.max(7, Math.min(10, rw / 9));
-        const subSize = Math.max(6, Math.min(9, rw / 11));
+        const name = UP(r.name);
+        const dim  = fmtDim(r.width, r.height);
+        const cy   = ry + rh / 2;
+        // Scale font so it fits the room width
+        const nameFontSize = Math.max(6.5, Math.min(10.5, rw / 8.5));
+        const dimFontSize  = Math.max(6,   Math.min(9,    rw / 10));
 
         return (
           <Group key={`lbl-${r.id}`} listening={false}>
             <Text
-              x={rx + 3} y={cy - fontSize - 2}
-              width={rw - 6}
+              x={rx + 4} y={cy - nameFontSize - 2}
+              width={rw - 8}
               text={name}
-              fontSize={fontSize}
-              fontFamily="Arial, sans-serif"
+              fontSize={nameFontSize}
+              fontFamily="Arial"
               fontStyle="bold"
-              fill={C.label}
+              fill={BW.label}
               align="center"
             />
-            {layers.dimensions && rw > 36 && rh > 24 && (
+            {layers.dimensions && rw > 34 && rh > 22 && (
               <Text
-                x={rx + 3} y={cy + 3}
-                width={rw - 6}
+                x={rx + 4} y={cy + 3}
+                width={rw - 8}
                 text={dim}
-                fontSize={subSize}
-                fontFamily="Arial, sans-serif"
-                fill={C.label}
+                fontSize={dimFontSize}
+                fontFamily="Arial"
+                fill={BW.label}
                 align="center"
               />
             )}
@@ -354,138 +332,154 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
       });
   }
 
-  /** External dimension strings with tick marks — around the plan */
+  /** External dimension chain — overall + per-room ticks */
   function renderDimensions() {
     if (!layers.dimensions) return null;
     const els = [];
-    const OFF = 30; // offset from plan edge
-    const TICK = 6;
+    const TICK = 7;
 
-    // Helper: draw a dimension line segment with label
-    function dimLine(x1, y1, x2, y2, label, rotate = false) {
-      const mx = (x1 + x2) / 2;
-      const my = (y1 + y2) / 2;
+    function dimSeg(x1, y1, x2, y2, label, vert = false) {
+      const mx = (x1 + x2) / 2, my = (y1 + y2) / 2;
+      const key = `ds-${x1}-${y1}-${x2}-${y2}`;
       els.push(
-        <Group key={`dm-${x1}-${y1}-${x2}-${y2}`} listening={false}>
-          <Line points={[x1, y1, x2, y2]} stroke={C.dim} strokeWidth={0.8} />
-          {/* Ticks at ends */}
-          <Line points={rotate
-            ? [x1 - TICK, y1, x1 + TICK, y1]
-            : [x1, y1 - TICK, x1, y1 + TICK]}
-            stroke={C.dimTick} strokeWidth={0.8} />
-          <Line points={rotate
-            ? [x2 - TICK, y2, x2 + TICK, y2]
-            : [x2, y2 - TICK, x2, y2 + TICK]}
-            stroke={C.dimTick} strokeWidth={0.8} />
+        <Group key={key} listening={false}>
+          <Line points={[x1, y1, x2, y2]} stroke={BW.dim} strokeWidth={0.8} />
+          <Line points={vert ? [x1 - TICK, y1, x1 + TICK, y1] : [x1, y1 - TICK, x1, y1 + TICK]} stroke={BW.dim} strokeWidth={0.8} />
+          <Line points={vert ? [x2 - TICK, y2, x2 + TICK, y2] : [x2, y2 - TICK, x2, y2 + TICK]} stroke={BW.dim} strokeWidth={0.8} />
           <Text
-            x={rotate ? mx - 4 : mx - 14}
-            y={rotate ? my - 16 : my + 4}
+            x={vert ? mx - 5 : mx - 16}
+            y={vert ? my - 18 : my + 4}
             text={label}
-            fontSize={8}
-            fontFamily="Arial, sans-serif"
+            fontSize={8.5}
+            fontFamily="Arial"
             fontStyle="bold"
-            fill={C.dim}
-            rotation={rotate ? -90 : 0}
+            fill={BW.dim}
+            rotation={vert ? -90 : 0}
           />
         </Group>
       );
     }
 
-    // Overall width (top)
-    dimLine(MARGIN, MARGIN - OFF, MARGIN + planW, MARGIN - OFF, `${fmtFt(plotW)}`);
-    // Overall depth (left)
-    dimLine(MARGIN - OFF, MARGIN, MARGIN - OFF, MARGIN + planH, `${fmtFt(plotH)}`, true);
+    // Overall width (top, two rows)
+    const topY1 = MARGIN - 28, topY2 = MARGIN - 46;
+    dimSeg(MARGIN, topY1, MARGIN + planW, topY1, fmtFt(plotW));
+    // Overall height (left, two rows)
+    const lftX1 = MARGIN - 30, lftX2 = MARGIN - 50;
+    dimSeg(lftX1, MARGIN, lftX1, MARGIN + planH, fmtFt(plotH), true);
 
-    // Per-room horizontal dimension ticks along top edge (rooms on y=0 boundary)
-    const topRooms = rooms
-      .filter(r => Number(r.y) <= 1)
-      .sort((a, b) => Number(a.x) - Number(b.x));
+    // Per-room width ticks along top
+    const topRooms = [...rooms].filter(r => Number(r.y) <= 2).sort((a, b) => Number(a.x) - Number(b.x));
     let curX = MARGIN;
     topRooms.forEach(r => {
-      const rw = px(r.width);
-      const endX = tx(r.x) + rw;
-      if (endX > curX + 4) {
-        dimLine(curX, MARGIN - 16, endX, MARGIN - 16, fmtFt(r.width));
-        curX = endX;
+      const rEnd = tx(r.x) + px(r.width);
+      if (rEnd > curX + 6) {
+        dimSeg(curX, topY2, rEnd, topY2, fmtFt(r.width));
+        curX = rEnd;
       }
     });
 
-    // Per-room vertical ticks along left edge
-    const leftRooms = rooms
-      .filter(r => Number(r.x) <= 1)
-      .sort((a, b) => Number(a.y) - Number(b.y));
+    // Per-room height ticks along left
+    const leftRooms = [...rooms].filter(r => Number(r.x) <= 2).sort((a, b) => Number(a.y) - Number(b.y));
     let curY = MARGIN;
     leftRooms.forEach(r => {
-      const rh = px(r.height);
-      const endY = ty(r.y) + rh;
-      if (endY > curY + 4) {
-        dimLine(MARGIN - 16, curY, MARGIN - 16, endY, fmtFt(r.height), true);
-        curY = endY;
+      const rEnd = ty(r.y) + px(r.height);
+      if (rEnd > curY + 6) {
+        dimSeg(lftX2, curY, lftX2, rEnd, fmtFt(r.height), true);
+        curY = rEnd;
       }
     });
+
+    // ROAD label at bottom
+    els.push(
+      <Text key="road"
+        x={MARGIN + planW / 2 - 20} y={MARGIN + planH + 10}
+        text={floor.roadLabel || 'ROAD'}
+        fontSize={9} fontFamily="Arial" fontStyle="bold" fill="#555"
+        listening={false}
+      />
+    );
 
     return els;
   }
 
-  /** North arrow */
+  /** North arrow — simple compass with N */
   function renderNorth() {
-    const nx = MARGIN + planW + TITLE_W / 2 + 20;
-    const ny = MARGIN + 18;
+    const nx = MARGIN + planW + TITLE_W / 2 + 12;
+    const ny = MARGIN + 22;
     return (
       <Group key="north" listening={false}>
-        <Arrow points={[nx, ny + 36, nx, ny]} stroke="#000" strokeWidth={1.5} fill="#000" pointerLength={8} pointerWidth={7} />
-        <Text x={nx - 5} y={ny + 44} text="N" fontSize={11} fontStyle="bold" fontFamily="Arial" fill="#000" />
+        {/* Circle */}
+        <Line points={
+          Array.from({ length: 37 }, (_, i) => {
+            const a = (i / 36) * Math.PI * 2;
+            return [nx + Math.cos(a) * 14, ny + 20 + Math.sin(a) * 14];
+          }).flat()
+        } stroke="#000" strokeWidth={1} closed tension={0} />
+        {/* N arrow */}
+        <Arrow points={[nx, ny + 34, nx, ny + 8]} stroke="#000" strokeWidth={1.5} fill="#000" pointerLength={7} pointerWidth={6} />
+        <Text x={nx - 5} y={ny + 38} text="N" fontSize={11} fontFamily="Arial" fontStyle="bold" fill="#000" />
+        <Text x={nx - 4} y={ny + 1}  text="S" fontSize={9} fontFamily="Arial" fill="#000" />
+        <Text x={nx - 20} y={ny + 17} text="W" fontSize={9} fontFamily="Arial" fill="#000" />
+        <Text x={nx + 13} y={ny + 17} text="E" fontSize={9} fontFamily="Arial" fill="#000" />
       </Group>
     );
   }
 
-  /** Title block — Buildogram CAD style */
+  /** Title block — right side panel */
   function renderTitleBlock() {
     const tbX = MARGIN + planW + 10;
-    const tbY = MARGIN + 70;
-    const tbW = TITLE_W - 15;
-    const area = planData.summary?.builtUpArea || Math.round(plotW * plotH * 0.8);
+    const tbY = MARGIN + 85;
+    const tbW = TITLE_W - 16;
+    const area = planData.summary?.builtUpArea || Math.round(plotW * plotH * 0.80);
+
+    const row = (label, value, y) => (
+      <Group key={`tb-${y}`} listening={false}>
+        <Text x={tbX + 4} y={tbY + y}      text={label} fontSize={7}   fontFamily="Arial" fontStyle="bold" fill="#000" />
+        <Text x={tbX + 4} y={tbY + y + 10} text={value} fontSize={7.5} fontFamily="Arial"                  fill="#000" />
+      </Group>
+    );
+
     return (
-      <Group key="title" listening={false}>
-        <Rect x={tbX} y={tbY} width={tbW} height={170} stroke="#000" strokeWidth={1} fill="#fff" />
-        {/* Header bar */}
-        <Rect x={tbX} y={tbY} width={tbW} height={22} fill="#000" />
-        <Text x={tbX + 4} y={tbY + 6} text="BUILDOGRAM" fontSize={10} fill="#fff" fontStyle="bold" fontFamily="Arial" />
-        <Line points={[tbX, tbY + 22, tbX + tbW, tbY + 22]} stroke="#000" strokeWidth={0.5} />
-        <Text x={tbX + 4} y={tbY + 28} text="CONCEPT FLOOR PLAN" fontSize={7.5} fill="#000" fontFamily="Arial" />
-        <Line points={[tbX, tbY + 44, tbX + tbW, tbY + 44]} stroke="#000" strokeWidth={0.5} />
-        <Text x={tbX + 4} y={tbY + 50} text={`Option: ${planData.name || 'Layout'}`} fontSize={8} fill="#000" fontFamily="Arial" />
-        <Text x={tbX + 4} y={tbY + 66} text={`Plot: ${fmtFt(plotW)} X ${fmtFt(plotH)}`} fontSize={8} fill="#000" fontFamily="Arial" />
-        <Text x={tbX + 4} y={tbY + 82} text={`Floor: ${floor.floorNumber || 1} of ${planData.floors.length}`} fontSize={8} fill="#000" fontFamily="Arial" />
-        <Text x={tbX + 4} y={tbY + 98} text={`Built-up: ${area} sqft`} fontSize={8} fill="#000" fontFamily="Arial" />
-        <Line points={[tbX, tbY + 114, tbX + tbW, tbY + 114]} stroke="#000" strokeWidth={0.5} />
-        <Text x={tbX + 4} y={tbY + 120} text="⚠ Concept Only" fontSize={7} fill="#cc0000" fontFamily="Arial" />
-        <Text x={tbX + 4} y={tbY + 132} text="Not for construction" fontSize={7} fill="#cc0000" fontFamily="Arial" />
-        <Text x={tbX + 4} y={tbY + 144} text="or legal approval." fontSize={7} fill="#cc0000" fontFamily="Arial" />
+      <Group key="titleblock" listening={false}>
+        {/* Outer box */}
+        <Rect x={tbX} y={tbY} width={tbW} height={210} stroke="#000" strokeWidth={1} fill="#fff" />
+        {/* Header */}
+        <Rect x={tbX} y={tbY} width={tbW} height={24} fill="#000" />
+        <Text x={tbX + 4} y={tbY + 7} text="BUILDOGRAM" fontSize={10.5} fontFamily="Arial" fontStyle="bold" fill="#fff" />
+        {/* Floor label row */}
+        <Rect x={tbX} y={tbY + 24} width={tbW} height={18} fill="#f5f5f5" />
+        <Text x={tbX + 4} y={tbY + 29} text={sheetLabel} fontSize={8} fontFamily="Arial" fontStyle="bold" fill="#000" />
+        <Line points={[tbX, tbY + 42, tbX + tbW, tbY + 42]} stroke="#000" strokeWidth={0.5} />
+        {/* Data rows */}
+        {row('Plot Size', `${fmtFt(plotW)} X ${fmtFt(plotH)}`, 48)}
+        <Line points={[tbX, tbY + 72, tbX + tbW, tbY + 72]} stroke="#ccc" strokeWidth={0.5} />
+        {row('Floor', `${floor.floorNumber || 1} of ${planData.floors.length}`, 76)}
+        <Line points={[tbX, tbY + 100, tbX + tbW, tbY + 100]} stroke="#ccc" strokeWidth={0.5} />
+        {row('Built-up Area', `${area} sqft`, 104)}
+        <Line points={[tbX, tbY + 128, tbX + tbW, tbY + 128]} stroke="#ccc" strokeWidth={0.5} />
+        {row('Option', planData.name || 'Layout', 132)}
+        <Line points={[tbX, tbY + 156, tbX + tbW, tbY + 156]} stroke="#000" strokeWidth={0.5} />
+        {/* Disclaimer */}
+        <Text x={tbX + 4} y={tbY + 162} text="⚠ CONCEPT PLAN ONLY" fontSize={7} fontFamily="Arial" fontStyle="bold" fill="#c00" />
+        <Text x={tbX + 4} y={tbY + 174} text="Not for construction or" fontSize={6.5} fontFamily="Arial" fill="#c00" />
+        <Text x={tbX + 4} y={tbY + 184} text="municipality submission." fontSize={6.5} fontFamily="Arial" fill="#c00" />
+        <Text x={tbX + 4} y={tbY + 198} text="Engineer review required." fontSize={6.5} fontFamily="Arial" fill="#c00" />
       </Group>
     );
   }
 
-  // ── Floor tabs ───────────────────────────────────────────────────────────
-  const floorTabLabels = ['Ground', 'First', 'Second', 'Third', 'Fourth'];
-  const floorTabs = planData.floors.map((f, i) => (
-    <button key={i} onClick={() => setFloorIdx(i)} style={{
-      padding: '3px 10px', fontSize: 11,
-      background: i === floorIdx ? '#000' : '#f0f0f0',
-      color: i === floorIdx ? '#fff' : '#333',
-      border: '1px solid #ccc', borderRadius: 3,
-      cursor: 'pointer', marginRight: 4,
-    }}>
-      {floorTabLabels[f.floorNumber - 1] || `Floor ${f.floorNumber}`}
-    </button>
-  ));
-
-  // ── Layer toggle buttons ─────────────────────────────────────────────────
+  // ── Toolbar data ──────────────────────────────────────────────────────────
+  const FLOOR_LABELS = { 1: 'Ground', 2: 'First', 3: 'Terrace', 4: 'Basement' };
   const LAYER_BTNS = [
-    { k: 'walls', lbl: 'Walls' }, { k: 'openings', lbl: 'Openings' },
-    { k: 'stairs', lbl: 'Stairs' }, { k: 'labels', lbl: 'Labels' },
-    { k: 'dimensions', lbl: 'Dims' },
+    { k: 'walls', l: 'Walls' }, { k: 'openings', l: 'Openings' },
+    { k: 'stairs', l: 'Stairs' }, { k: 'labels', l: 'Labels' },
+    { k: 'dimensions', l: 'Dims' },
   ];
+
+  const btnBase = { border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 10, padding: '2px 9px' };
+  const activeBtn = { ...btnBase, background: '#fff', color: '#000' };
+  const inactiveBtn = { ...btnBase, background: '#3a3a3a', color: '#999' };
+  const zoomBtn = { ...btnBase, background: '#2d2d2d', color: '#ddd', fontSize: 13 };
 
   return (
     <div className={styles.canvasContainer} ref={containerRef}>
@@ -493,68 +487,77 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom }
       {/* ── Toolbar ──────────────────────────────────────────────────────── */}
       <div ref={toolbarRef} style={{
         display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 6,
-        padding: '5px 12px', background: '#1a1a1a', flexShrink: 0,
+        padding: '5px 14px', background: '#1a1a1a', flexShrink: 0, userSelect: 'none',
       }}>
-        <span style={{ color: '#aaa', fontSize: 10, marginRight: 4 }}>FLOOR</span>
-        {floorTabs}
-        <div style={{ width: 1, height: 18, background: '#444' }} />
-        <span style={{ color: '#aaa', fontSize: 10, marginRight: 2 }}>LAYERS</span>
-        {LAYER_BTNS.map(b => (
-          <button key={b.k} onClick={() => setLayers(l => ({ ...l, [b.k]: !l[b.k] }))} style={{
-            padding: '2px 8px', fontSize: 10,
-            background: layers[b.k] ? '#fff' : '#444',
-            color: layers[b.k] ? '#000' : '#aaa',
+        {/* Floor tabs */}
+        <span style={{ color: '#777', fontSize: 10, letterSpacing: 1 }}>FLOOR</span>
+        {planData.floors.map((f, i) => (
+          <button key={i} onClick={() => setFloorIdx(i)} style={{
+            padding: '3px 11px', fontSize: 10.5,
+            background: i === floorIdx ? '#ffffff' : '#2d2d2d',
+            color: i === floorIdx ? '#000' : '#aaa',
             border: '1px solid #555', borderRadius: 3, cursor: 'pointer',
-          }}>{b.lbl}</button>
+          }}>
+            {FLOOR_LABELS[f.floorNumber] || `F${f.floorNumber}`}
+          </button>
         ))}
-        <div style={{ width: 1, height: 18, background: '#444' }} />
-        <button onClick={() => setStageScale(s => Math.min(s * 1.2, 8))}
-          style={{ padding: '2px 8px', background: '#333', color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 13 }}>+</button>
-        <span style={{ fontSize: 10, color: '#ccc', minWidth: 34, textAlign: 'center' }}>{Math.round(stageScale * 100)}%</span>
-        <button onClick={() => setStageScale(s => Math.max(s / 1.2, 0.15))}
-          style={{ padding: '2px 8px', background: '#333', color: '#fff', border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 13 }}>−</button>
+
+        <div style={{ width: 1, height: 20, background: '#444', margin: '0 4px' }} />
+
+        {/* Layer toggles */}
+        <span style={{ color: '#777', fontSize: 10, letterSpacing: 1 }}>LAYERS</span>
+        {LAYER_BTNS.map(b => (
+          <button key={b.k} onClick={() => setLayers(l => ({ ...l, [b.k]: !l[b.k] }))}
+            style={layers[b.k] ? activeBtn : inactiveBtn}
+          >{b.l}</button>
+        ))}
+
+        <div style={{ width: 1, height: 20, background: '#444', margin: '0 4px' }} />
+
+        {/* Zoom */}
+        <button onClick={() => setStageScale(s => Math.min(s * 1.2, 8))} style={zoomBtn}>+</button>
+        <span style={{ fontSize: 10, color: '#bbb', minWidth: 36, textAlign: 'center' }}>{Math.round(stageScale * 100)}%</span>
+        <button onClick={() => setStageScale(s => Math.max(s / 1.2, 0.1))} style={zoomBtn}>−</button>
         <button onClick={() => { setStageScale(1); setStagePos({ x: 0, y: 0 }); }}
-          style={{ padding: '2px 8px', background: '#333', color: '#ccc', border: 'none', borderRadius: 3, cursor: 'pointer', fontSize: 10 }}>Fit</button>
+          style={{ ...zoomBtn, fontSize: 10 }}>Fit</button>
       </div>
 
-      {/* ── Infinite Canvas ──────────────────────────────────────────────── */}
-      {/* dot-grid CSS background gives the "infinite canvas" feel          */}
+      {/* ── Infinite canvas with dot-grid background ──────────────────── */}
       <div style={{
         flex: 1, overflow: 'hidden', cursor: 'grab',
-        background: '#c8c8c8',
-        backgroundImage: 'radial-gradient(circle, #999 1px, transparent 1px)',
-        backgroundSize: '24px 24px',
+        background: '#c0c0c0',
+        backgroundImage: 'radial-gradient(circle, #8a8a8a 1px, transparent 1px)',
+        backgroundSize: '22px 22px',
       }}>
         <Stage
           ref={stageRef}
           width={stageSize.width}
           height={stageSize.height}
           scaleX={stageScale} scaleY={stageScale}
-          x={stagePos.x} y={stagePos.y}
+          x={stagePos.x}     y={stagePos.y}
           onWheel={onWheel}
           draggable
           onDragEnd={e => setStagePos({ x: e.target.x(), y: e.target.y() })}
-          style={{ cursor: 'inherit' }}
         >
-          {/* Layer 1: Plan area white fill + light grid */}
-          <Layer>{renderGrid()}</Layer>
+          {/* 1. White plan area + reference grid */}
+          <Layer>{renderBackground()}</Layer>
 
-          {/* Layer 2: Room fills (white / subtle selection) */}
-          <Layer>{renderRooms()}</Layer>
+          {/* 2. Transparent room hit areas */}
+          <Layer>{renderRoomHits()}</Layer>
 
-          {/* Layer 3: Walls */}
+          {/* 3. Walls */}
           <Layer>{renderWalls()}{renderBoundary()}</Layer>
 
-          {/* Layer 4: Openings (doors, windows) */}
+          {/* 4. Door + window openings */}
           <Layer>{renderDoors()}{renderWindows()}</Layer>
 
-          {/* Layer 5: Stairs */}
+          {/* 5. Stair step lines */}
           <Layer>{renderStairs()}</Layer>
 
-          {/* Layer 6: Labels & dimensions */}
+          {/* 6. Room labels + dimension strings */}
           <Layer>{renderLabels()}{renderDimensions()}</Layer>
 
-          {/* Layer 7: Annotations — north arrow, title block */}
+          {/* 7. North arrow + title block */}
           <Layer>{renderNorth()}{renderTitleBlock()}</Layer>
         </Stage>
       </div>
