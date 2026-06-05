@@ -106,22 +106,11 @@ function PartnerCard({ partner }) {
   );
 }
 
-export default function DirectoryClient() {
-  const [allPartners, setAllPartners] = useState([]);
+export default function DirectoryClient({ initialPartners = [] }) {
+  const [allPartners, setAllPartners] = useState(initialPartners);
   const [filter, setFilter] = useState('all');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    setLoading(true);
-    fetchApprovedPartners()
-      .then(partners => {
-        const sorted = [...partners].sort((a, b) => (b.isFeatured ? 1 : 0) - (a.isFeatured ? 1 : 0));
-        setAllPartners(sorted);
-      })
-      .catch(() => setError('Could not load partners. Showing cached data.'))
-      .finally(() => setLoading(false));
-  }, []);
+  const loading = false;
+  const error = '';
 
   const visible = filter === 'all' ? allPartners : allPartners.filter(p => p.category === filter);
 
@@ -180,21 +169,34 @@ export default function DirectoryClient() {
           ))}
         </div>
 
-        {/* Count */}
-        <div style={{ marginBottom: '24px', fontSize: '14px', color: '#64748B', fontWeight: 600 }}>
-          Showing <strong style={{ color: '#1E293B' }}>{visible.length}</strong> verified partner{visible.length !== 1 ? 's' : ''}
-          {filter !== 'all' && ` in ${filter}`}
+        {/* Section Title */}
+        <div style={{ marginBottom: '24px', textAlign: 'center' }}>
+          <h2 style={{ fontSize: '28px', fontWeight: 800, color: '#1E293B', marginBottom: '8px' }}>Verified Partner Listings</h2>
+          <p style={{ fontSize: '15px', color: '#64748B' }}>
+            Showing <strong style={{ color: '#1E293B' }}>{visible.length}</strong> verified partner{visible.length !== 1 ? 's' : ''}
+            {filter !== 'all' && ` in ${filter}`}
+          </p>
         </div>
 
         {/* Grid */}
         {visible.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '60px 20px' }}>
+          <div style={{
+            textAlign: 'center', padding: '60px 20px', background: 'white', borderRadius: '24px',
+            border: '1px solid #E2E8F0', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', maxWidth: '600px', margin: '0 auto'
+          }}>
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>🤝</div>
-            <h3 style={{ marginBottom: '8px' }}>No partners in this category yet</h3>
-            <p style={{ color: '#64748B' }}>Check back soon or browse all partners.</p>
-            <button onClick={() => setFilter('all')} style={{ marginTop: '16px', padding: '10px 24px', background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', border: 'none', borderRadius: '10px', cursor: 'pointer', fontWeight: 700, fontSize: '14px' }}>
-              View All Partners
-            </button>
+            <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#1E293B', marginBottom: '12px' }}>Verified Partners Are Being Onboarded</h3>
+            <p style={{ color: '#64748B', lineHeight: 1.6, marginBottom: '24px' }}>
+              We are currently reviewing and onboarding trusted builders, architects, and suppliers in this category. Quality takes time, and we only list partners who meet our engineering standards.
+            </p>
+            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
+              <button onClick={() => setFilter('all')} style={{ padding: '12px 24px', background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', border: 'none', borderRadius: '12px', cursor: 'pointer', fontWeight: 700, fontSize: '14px' }}>
+                View All Categories
+              </button>
+              <Link href="/partners/register" style={{ padding: '12px 24px', background: 'transparent', color: '#FC6E20', border: '1.5px solid #FC6E20', borderRadius: '12px', cursor: 'pointer', fontWeight: 700, fontSize: '14px', textDecoration: 'none' }}>
+                Apply as a Partner
+              </Link>
+            </div>
           </div>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>

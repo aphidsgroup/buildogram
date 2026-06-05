@@ -5,6 +5,8 @@ import SectionHeader from '@/components/ui/SectionHeader';
 import PremiumCard from '@/components/ui/PremiumCard';
 import styles from './materials.module.css';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata = {
   title: 'Construction Material Sourcing Support in Chennai | Buildogram',
   description: 'Compare construction material quotes, coordinate deliveries, track invoices, and store material records with Buildogram\'s transparent material sourcing support.',

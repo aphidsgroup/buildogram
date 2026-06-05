@@ -4,6 +4,9 @@ import AnimatedSection from '@/components/ui/AnimatedSection';
 import SectionHeader from '@/components/ui/SectionHeader';
 import PremiumCard from '@/components/ui/PremiumCard';
 import styles from './directory.module.css';
+import sql from '@/lib/db';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata = {
   title: 'Verified Builders, Contractors, Architects & Suppliers | Buildogram',
@@ -29,7 +32,55 @@ const HOW_IT_WORKS = [
   { step: '03', title: 'Request via Buildogram', desc: 'All enquiries are routed through Buildogram — ensuring transparency and proper coordination before any engagement.' },
 ];
 
-export default function PartnerDirectoryPage() {
+export default async function PartnerDirectoryPage() {
+  let initialPartners = [];
+  try {
+    const partners = await sql`
+      SELECT p.*,
+        COALESCE((SELECT COUNT(*)::int FROM partner_enquiries pe WHERE pe.partner_id = p.id), 0) as enquiry_count
+      FROM partners p
+      WHERE p.approval_status = 'Approved' AND p.active = true
+      ORDER BY p.featured DESC, p.created_at DESC LIMIT 100
+    `;
+
+    const partnerIds = partners.map(p => p.id);
+    let gallery = [];
+    if (partnerIds.length > 0) {
+      gallery = await sql`
+        SELECT id, partner_id, url, alt
+        FROM partner_gallery
+        WHERE partner_id = ANY(${partnerIds})
+        ORDER BY sort_order ASC, created_at ASC
+      `;
+    }
+
+    const galleryByPartner = {};
+    gallery.forEach(img => {
+      if (!galleryByPartner[img.partner_id]) galleryByPartner[img.partner_id] = [];
+      galleryByPartner[img.partner_id].push(img);
+    });
+
+    initialPartners = partners.map(p => ({
+      id: p.id,
+      slug: p.slug,
+      companyName: p.company_name,
+      category: p.category,
+      shortDescription: p.short_description,
+      logoUrl: p.logo_url,
+      coverUrl: p.cover_url,
+      location: p.location,
+      serviceAreas: p.service_areas,
+      yearsExperience: p.years_experience,
+      services: p.services || [],
+      isFeatured: p.featured,
+      isActive: p.active,
+      approvalStatus: p.approval_status,
+      enquiryCount: p.enquiry_count || 0,
+      galleryImages: (galleryByPartner[p.id] || []).slice(0, 3),
+    }));
+  } catch (e) {
+    console.error('Failed to pre-fetch initial partners', e);
+  }
   return (
     <div className="engineerLedPage">
 
@@ -96,7 +147,7 @@ export default function PartnerDirectoryPage() {
       {/* ── Live Partner Grid ── */}
       <section className={`fullBleedSection ${styles.dirSection}`}>
         <div className="sectionInnerWide">
-          <DirectoryClient />
+          <DirectoryClient initialPartners={initialPartners} />
         </div>
       </section>
 
