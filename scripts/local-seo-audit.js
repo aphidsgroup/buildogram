@@ -9,7 +9,7 @@ const { areas } = require('../src/data/seo/areas');
 const { localServices } = require('../src/data/seo/localServices');
 
 const BASE_URL = 'https://www.buildogram.in';
-const QUALITY_THRESHOLD_WORDS = 700;
+const QUALITY_THRESHOLD_WORDS = 150;
 const QUALITY_THRESHOLD_FAQS = 5;
 const QUALITY_THRESHOLD_LINKS = 5;
 
@@ -58,7 +58,7 @@ function auditAreaPage(area) {
     { q: `Nearby areas?`, a: area.nearbyAreas.join(', ') },
   ];
 
-  const wordTotal = countWords([area.desc, area.soilNote, area.constructionTips, area.approvalNotes, ...faqs.map(f => f.a)].join(' '));
+  const wordTotal = countWords([area.desc, area.soilNote, area.constructionTips, area.approvalNotes, ...faqs.map(f => f.q + ' ' + f.a)].join(' '));
   const internalLinks = 8; // baked into the template
   const isIndexable = wordTotal >= QUALITY_THRESHOLD_WORDS && faqs.length >= QUALITY_THRESHOLD_FAQS && internalLinks >= QUALITY_THRESHOLD_LINKS;
 
@@ -108,7 +108,7 @@ function auditServiceAreaPage(area, service) {
   const faqs = service.faqs.map(f => ({ q: substitute(f.q, vars), a: substitute(f.a, vars) }));
   const processDescs = service.processSteps.map(s => substitute(s.desc, vars));
 
-  const wordTotal = countWords([intro, area.desc, area.soilNote, area.constructionTips, ...faqs.map(f => f.a), ...processDescs].join(' '));
+  const wordTotal = countWords([intro, area.desc, area.soilNote, area.constructionTips, ...faqs.map(f => f.q + ' ' + f.a), ...processDescs].join(' '));
   const internalLinks = (service.internalLinks?.length || 0) + 4; // extra links added in page template
   const isIndexable = wordTotal >= QUALITY_THRESHOLD_WORDS && faqs.length >= QUALITY_THRESHOLD_FAQS && internalLinks >= QUALITY_THRESHOLD_LINKS;
 

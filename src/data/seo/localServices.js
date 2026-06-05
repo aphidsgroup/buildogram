@@ -267,6 +267,10 @@ export const localServices = [
         q: 'What is the turnaround time for a plan review?',
         a: 'Standard plan review takes 3–5 working days. We provide a detailed written report with annotated drawings highlighting concerns and recommendations.',
       },
+      {
+        q: 'Will a plan review help me save money on construction in {area}?',
+        a: 'Yes, absolutely. By identifying structural over-design (like unnecessarily large columns or excessive steel) and suggesting value engineering alternatives, our engineers typically identify savings that far exceed the cost of the review itself.',
+      },
     ],
     internalLinks: [
       { text: 'AI Floor Plan Creator', href: '/ai-floor-plan-creator' },
@@ -308,6 +312,10 @@ export const localServices = [
         q: 'How can I avoid adulterated or substandard materials in {area}?',
         a: 'Ask for material test certificates (IS compliance, lab test reports). Buildogram\'s supplier network is verified for material quality compliance. We recommend third-party material testing for any large-volume purchase of cement, steel, or concrete.',
       },
+      {
+        q: 'Does Buildogram help with bulk material procurement for large projects in {area}?',
+        a: 'Yes. For multi-unit residential or commercial projects in {area}, we can negotiate direct-from-factory rates for cement and steel, bypassing retail margins entirely. Contact our procurement team with your BOQ.',
+      },
     ],
     internalLinks: [
       { text: 'Construction Materials Marketplace', href: '/materials' },
@@ -346,6 +354,14 @@ export const localServices = [
         q: 'Is {area} suitable for commercial construction?',
         a: '{area} is {region}, making it {commercialSuitability}. Verify commercial zoning permission for your specific plot before purchase — not all residential-zone plots permit commercial construction.',
       },
+      {
+        q: 'How long does a typical commercial building take to construct in {area}?',
+        a: 'A standard low-rise commercial building (G+3) typically takes 12-18 months. The timeline depends heavily on basement excavation complexity, approval delays, and MEP integration requirements.',
+      },
+      {
+        q: 'Can Buildogram audit MEP (Mechanical, Electrical, Plumbing) designs?',
+        a: 'Yes. Commercial buildings require complex MEP designs. Our specialized engineers audit MEP plans and BOQs to ensure sufficient capacity, compliance with fire safety norms, and optimal energy efficiency.',
+      },
     ],
     internalLinks: [
       { text: 'BOQ Audit', href: '/boq-audit' },
@@ -383,6 +399,14 @@ export const localServices = [
         q: 'How do I avoid renovation fraud in {area}?',
         a: 'Common red flags: no written scope of work, cash-only requests, unusually low quotes, no material specification, and requests for large advance. Buildogram\'s contractor verification and scope review process protects against these risks.',
       },
+      {
+        q: 'Is it cheaper to demolish and rebuild or renovate an old house in {area}?',
+        a: 'If the structural integrity is compromised or if you need to significantly alter the floor plan, rebuilding is often more cost-effective long-term. If the structure is sound and you only need cosmetic updates, renovation is much cheaper. Our engineers can perform a structural assessment to advise you.',
+      },
+      {
+        q: 'How can I ensure my renovation contractor finishes on time?',
+        a: 'Include clear milestone timelines in your contract with penalties for unjustified delays. Buildogram\'s site supervision service helps keep the project on track by holding the contractor accountable to the agreed schedule.',
+      },
     ],
     internalLinks: [
       { text: 'Renovation Contractor Directory', href: '/partners/directory' },
@@ -419,6 +443,14 @@ export const localServices = [
       {
         q: 'Can I get a fixed price guarantee for my {area} project?',
         a: 'A genuinely fixed price requires a fully defined scope with no scope gaps. Buildogram helps you create a watertight scope of work and BOQ — the foundation of any valid fixed-price agreement.',
+      },
+      {
+        q: 'Who is responsible for building approvals in a turnkey contract?',
+        a: 'Typically, the turnkey contractor handles the liaison work for CMDA or GCC approvals, but you (the owner) remain legally responsible. Ensure the contract clearly states who bears the cost of the approval fees.',
+      },
+      {
+        q: 'Can I supply my own finishing materials in a turnkey contract?',
+        a: 'Yes, this is called a "semi-turnkey" or "labour + basic materials" contract. You can exclude items like tiles, sanitaryware, and electrical fixtures from the BOQ and procure them yourself to ensure quality and control costs.',
       },
     ],
     internalLinks: [
