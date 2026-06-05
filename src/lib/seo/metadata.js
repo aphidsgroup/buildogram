@@ -15,8 +15,11 @@ export function generateSEOMetadata({
   description,
   path = '/',
   noIndex = false,
+  noindex = false,
   ogImage = '/og-image.jpg',
 }) {
+  // Support both noIndex and noindex spellings
+  const shouldNoindex = noIndex || noindex;
   const url = `${SITE_URL}${path === '/' ? '' : path}`;
 
   return {
@@ -46,11 +49,11 @@ export function generateSEOMetadata({
       description,
     },
     robots: {
-      index: !noIndex,
-      follow: !noIndex,
+      index: !shouldNoindex,
+      follow: !shouldNoindex,
       googleBot: {
-        index: !noIndex,
-        follow: !noIndex,
+        index: !shouldNoindex,
+        follow: !shouldNoindex,
         'max-video-preview': -1,
         'max-image-preview': 'large',
         'max-snippet': -1,

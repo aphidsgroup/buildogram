@@ -5,6 +5,9 @@ import { faqCategories } from '@/data/seo/faqs';
 import { comparisons } from '@/data/seo/comparisons';
 import { localities } from '@/data/seo/localities';
 import { materials } from '@/data/seo/materials';
+import { areas } from '@/data/seo/areas';
+import { localServices } from '@/data/seo/localServices';
+import { generateAreaPage, generateServiceAreaPage } from '@/lib/seo/localPageGenerator';
 
 export default function sitemap() {
   const baseUrl = 'https://www.buildogram.in';
@@ -93,7 +96,7 @@ export default function sitemap() {
     changeFrequency: 'monthly',
   }));
 
-  // Dynamic: localities
+  // Dynamic: localities (legacy — kept for URL continuity)
   const localityRoutes = localities.map((l) => ({
     url: `${baseUrl}/locations/chennai/${l.slug}`,
     priority: 0.85,
@@ -107,6 +110,33 @@ export default function sitemap() {
     changeFrequency: 'monthly',
   }));
 
+  // Dynamic: quality-gated area pages
+  const areaRoutes = areas
+    .map(a => {
+      const page = generateAreaPage(a.slug);
+      if (!page || !page.isIndexable) return null;
+      return {
+        url: `${baseUrl}/locations/chennai/${a.slug}`,
+        priority: 0.9,
+        changeFrequency: 'monthly',
+      };
+    })
+    .filter(Boolean);
+
+  // Dynamic: quality-gated service+area pages
+  const serviceAreaRoutes = [];
+  for (const area of areas) {
+    for (const service of localServices) {
+      const page = generateServiceAreaPage(area.slug, service.slug);
+      if (!page || !page.isIndexable) continue;
+      serviceAreaRoutes.push({
+        url: `${baseUrl}/locations/chennai/${area.slug}/${service.slug}`,
+        priority: 0.85,
+        changeFrequency: 'monthly',
+      });
+    }
+  }
+
   return [
     ...staticRoutes,
     ...serviceRoutes,
@@ -116,8 +146,11 @@ export default function sitemap() {
     ...compareRoutes,
     ...localityRoutes,
     ...materialRoutes,
+    ...areaRoutes,
+    ...serviceAreaRoutes,
   ].map((entry) => ({
     ...entry,
     lastModified: now,
   }));
 }
+
