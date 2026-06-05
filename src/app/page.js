@@ -42,7 +42,18 @@ const PARTNER_CATEGORIES = [
 ];
 
 const CHENNAI_LOCATIONS = [
-  'Chennai', 'Coimbatore', 'Madurai', 'Trichy', 'OMR', 'ECR', 'Tambaram', 'Porur', 'Medavakkam', 'Anna Nagar'
+  { name: 'Anna Nagar', slug: 'anna-nagar' },
+  { name: 'OMR', slug: 'omr' },
+  { name: 'ECR', slug: 'ecr' },
+  { name: 'Tambaram', slug: 'tambaram' },
+  { name: 'Velachery', slug: 'velachery' },
+  { name: 'Porur', slug: 'porur' },
+  { name: 'Adyar', slug: 'adyar' },
+  { name: 'Sholinganallur', slug: 'sholinganallur' },
+  { name: 'Medavakkam', slug: 'medavakkam' },
+  { name: 'T. Nagar', slug: 't-nagar' },
+  { name: 'Pallavaram', slug: 'pallavaram' },
+  { name: 'Madhavaram', slug: 'madhavaram' }
 ];
 
 /* ─── Component ───────────────────────────────────────────── */
@@ -454,11 +465,14 @@ export default function Home() {
       <section className="fullBleedSection" style={{ padding: '80px 0', background: 'white' }}>
         <div className="sectionInner text-center">
           <AnimatedSection>
-            <h3 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--secondary)', marginBottom: '24px' }}>Proudly supporting construction across Tamil Nadu</h3>
+            <h3 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--secondary)', marginBottom: '24px' }}>Proudly supporting construction across Chennai</h3>
             <div className={styles.locationTags}>
               {CHENNAI_LOCATIONS.map(loc => (
-                <span key={loc} className={styles.locTag}>{loc}</span>
+                <Link key={loc.slug} href={`/locations/chennai/${loc.slug}`} className={styles.locTag} style={{ textDecoration: 'none' }}>{loc.name}</Link>
               ))}
+            </div>
+            <div style={{ marginTop: '32px' }}>
+              <Link href="/locations/chennai" style={{ fontWeight: 600, color: 'var(--primary)', textDecoration: 'none' }}>View All Chennai Locations →</Link>
             </div>
           </AnimatedSection>
         </div>
