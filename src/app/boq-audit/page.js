@@ -216,7 +216,7 @@ export default function BOQAuditPage() {
           
           <AnimatedSection delay={0.3}>
             <p style={{ textAlign: 'center', color: 'rgba(255,255,255,0.5)', fontSize: '15px', marginTop: '24px' }}>
-              Or call us directly: <a href="tel:+919000000000" style={{ color: 'rgba(255,255,255,0.8)', fontWeight: 'bold' }}>+91 90000 00000</a>
+              Or call us directly: <a href="tel:+919000000000" style={{ color: 'rgba(255,255,255,0.8)', fontWeight: 'bold', display: 'inline-block', padding: '12px 8px', margin: '-12px -8px' }}>+91 90000 00000</a>
             </p>
             <div className={styles.disclaimer}>
               <strong>Disclaimer:</strong> This BOQ review is advisory and based on provided documents. It is not engineering, legal, contractual, or construction certification.

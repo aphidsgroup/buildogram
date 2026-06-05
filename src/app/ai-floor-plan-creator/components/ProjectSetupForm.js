@@ -149,14 +149,14 @@ export default function ProjectSetupForm({ onSubmit, isGenerating }) {
           </div>
         </div>
         <div className={styles.row} style={{ marginTop: 12 }}>
-          <div className={styles.formGroup}>
+          <div className={styles.formGroup} style={{ flex: 1.8 }}>
             <label>Location Rule Preset</label>
             <select name="locationPreset" value={formData.locationPreset} onChange={handleChange} className={styles.select}>
               <option value="Chennai / Tamil Nadu">Chennai / Tamil Nadu</option>
               <option value="General India">General India</option>
             </select>
           </div>
-          <div className={styles.formGroup}>
+          <div className={styles.formGroup} style={{ flex: 1 }}>
             <label>Floors</label>
             <input type="number" name="floors" value={formData.floors} onChange={handleChange} className={styles.input} min="1" max="4" />
           </div>

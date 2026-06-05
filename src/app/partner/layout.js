@@ -97,8 +97,16 @@ export default function PartnerLayout({ children }) {
 
   useEffect(() => { 
     fetch('/api/auth/me').then(r => r.json()).then(d => { 
-      if (d.user) setUser(d.user); 
-    });
+      if (d.user) {
+        if (!d.user.role || !d.user.role.startsWith('partner')) {
+          router.push('/login');
+        } else {
+          setUser(d.user);
+        }
+      } else {
+        router.push('/login');
+      }
+    }).catch(() => router.push('/login'));
     fetch('/api/partner/profile').then(r => r.json()).then(p => {
       if (p.success && p.profile?.metadata?.category) {
         const rawCat = p.profile.metadata.category.toLowerCase();
@@ -283,7 +291,7 @@ export default function PartnerLayout({ children }) {
           </div>
         </header>
         
-        <div className={styles.content}>
+        <div className={styles.content} style={pathname === '/partner/ai-floor-plan-creator' ? { padding: 0, maxWidth: '100%' } : {}}>
           {children}
         </div>
       </div>

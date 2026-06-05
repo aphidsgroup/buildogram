@@ -71,7 +71,7 @@ export default function ForgotPassword() {
           </button>
 
           <div style={{ textAlign: 'center', marginTop: '24px' }}>
-            <Link href="/login" style={{ color: 'var(--text-muted)', fontSize: '14px', textDecoration: 'none', fontWeight: 600 }}>
+            <Link href="/login" style={{ color: 'var(--text-muted)', fontSize: '14px', textDecoration: 'none', fontWeight: 600, display: 'inline-block', padding: '12px 20px', minHeight: '44px' }}>
               ← Back to Login
             </Link>
           </div>
