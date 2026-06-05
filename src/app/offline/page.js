@@ -1,7 +1,9 @@
-export const metadata = {
-  title: 'Offline | Buildogram',
-  description: 'You are currently offline.',
-};
+import { generateSEOMetadata } from '@/lib/seo/metadata';
+export const metadata = generateSEOMetadata({
+title: 'Offline | Buildogram',
+  description: 'You are currently offline.',,
+  path: '/offline',
+});
 
 export default function OfflinePage() {
   return (

@@ -1,10 +1,12 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import PartnerJoinForm from './PartnerJoinForm';
 
-export const metadata = {
-  title: 'Join Buildogram Partner Marketplace | Builders, Contractors, Suppliers',
-  description: 'Join Buildogram\'s partner ecosystem. Get leads, verified profile, project showcase, and material benefits. Grow your construction business.',
-};
+export const metadata = generateSEOMetadata({
+title: 'Join Buildogram Partner Marketplace | Builders, Contractors, Suppliers',
+  description: 'Join Buildogram\'s partner ecosystem. Get leads, verified profile, project showcase, and material benefits. Grow your construction business.',,
+  path: '/partners',
+});
 
 const partnerTypes = [
   { icon: '🏗️', type: 'Builders', benefit: 'Showcase projects, get verified, reach property owners who want accountability.' },

@@ -1,9 +1,11 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'About Buildogram | Construction & Property Marketplace',
-  description: 'Learn about Buildogram, an IIT-alumni, PhD structural engineer-led construction-as-a-service platform transforming home building in Chennai.',
-};
+export const metadata = generateSEOMetadata({
+title: 'About Buildogram | Construction & Property Marketplace',
+  description: 'Learn about Buildogram, an IIT-alumni, PhD structural engineer-led construction-as-a-service platform transforming home building in Chennai.',,
+  path: '/about',
+});
 
 export default function About() {
   const coreValues = [

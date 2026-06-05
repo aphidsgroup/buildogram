@@ -1,8 +1,10 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'Ops Dashboard Help & SOPs',
-};
+export const metadata = generateSEOMetadata({
+title: 'Ops Dashboard Help & SOPs',,
+  path: '/ops/help',
+});
 
 export default function OpsHelpPage() {
   return (

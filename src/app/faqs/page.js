@@ -1,10 +1,12 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import { faqCategories } from '@/data/seo/faqs';
 
-export const metadata = {
-  title: 'Frequently Asked Questions | Buildogram',
-  description: 'Answers to common questions about home construction, BOQ, contractor selection, quality inspection, property listings, Property Passport, and more.',
-};
+export const metadata = generateSEOMetadata({
+title: 'Frequently Asked Questions | Buildogram',
+  description: 'Answers to common questions about home construction, BOQ, contractor selection, quality inspection, property listings, Property Passport, and more.',,
+  path: '/faqs',
+});
 
 export default function FaqsHub() {
   return (

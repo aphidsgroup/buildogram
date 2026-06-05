@@ -1,3 +1,4 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import DirectoryClient from './DirectoryClient';
 import AnimatedSection from '@/components/ui/AnimatedSection';
@@ -8,10 +9,11 @@ import sql from '@/lib/db';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata = {
-  title: 'Verified Builders, Contractors, Architects & Suppliers | Buildogram',
-  description: 'Explore verified construction partners connected through Buildogram\'s engineer-led ecosystem, including builders, contractors, architects, consultants, and material suppliers.',
-};
+export const metadata = generateSEOMetadata({
+title: 'Verified Builders, Contractors, Architects & Suppliers | Buildogram',
+  description: 'Explore verified construction partners connected through Buildogram\'s engineer-led ecosystem, including builders, contractors, architects, consultants, and material suppliers.',,
+  path: '/partners/directory',
+});
 
 const CATEGORIES = [
   { icon: '🏗️', label: 'Builders', desc: 'Residential, villa and turnkey construction', filter: 'Builder' },

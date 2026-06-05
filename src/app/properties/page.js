@@ -1,9 +1,11 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 
-export const metadata = {
-  title: '360° Property Discovery Portals | Buildogram',
-  description: 'Discover connected property portals for buying, selling, renting, and leasing properties with immersive 360° property viewing — connected to the Buildogram construction ecosystem.',
-};
+export const metadata = generateSEOMetadata({
+title: '360° Property Discovery Portals | Buildogram',
+  description: 'Discover connected property portals for buying, selling, renting, and leasing properties with immersive 360° property viewing — connected to the Buildogram construction ecosystem.',,
+  path: '/properties',
+});
 
 export default function PropertiesHubPage() {
   return (

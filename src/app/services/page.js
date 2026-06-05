@@ -1,10 +1,12 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import { services } from '@/data/seo/services';
 
-export const metadata = {
-  title: 'Buildogram Services | Engineer-Led Construction & Property Services in Chennai',
-  description: 'Explore all Buildogram construction services — house construction, PMC, quality inspection, BOQ review, site supervision, renovation, turnkey, and more.',
-};
+export const metadata = generateSEOMetadata({
+title: 'Buildogram Services | Engineer-Led Construction & Property Services in Chennai',
+  description: 'Explore all Buildogram construction services — house construction, PMC, quality inspection, BOQ review, site supervision, renovation, turnkey, and more.',,
+  path: '/services',
+});
 
 const categories = [
   { label: 'Construction', slugs: ['house-construction', 'villa-construction', 'residential-construction', 'duplex-house-construction', 'turnkey-construction', 'renovation-construction', 'home-construction-for-rental-income', 'home-construction-for-resale-value'] },

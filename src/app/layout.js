@@ -19,7 +19,7 @@ export const metadata = {
   openGraph: {
     title: 'Buildogram | Engineer-Led Home Construction & Property Ecosystem',
     description: 'Engineer-led home construction companion in Chennai. Plan, build, source materials, verify site progress, and manage your Property Passport.',
-    url: 'https://www.buildogram.in',
+    url: 'https://www.buildogram.in/',
     siteName: 'Buildogram',
     images: [{ url: 'https://www.buildogram.in/og-image.jpg', width: 1200, height: 630 }],
     locale: 'en_IN',
@@ -29,6 +29,9 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Buildogram | Engineer-Led Construction Companion',
     description: 'Engineer-led guidance for home construction in Chennai. Verified builders, BOQ reviews, material sourcing, and Property Passport.',
+  },
+  alternates: {
+    canonical: '/',
   },
   manifest: '/manifest.webmanifest',
   applicationName: 'Buildogram',

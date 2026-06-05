@@ -1,10 +1,12 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import { glossaryTerms } from '@/data/seo/glossary';
 
-export const metadata = {
-  title: 'Construction & Property Glossary | Buildogram',
-  description: 'A comprehensive glossary of construction, structural, regulatory, and property terms for Indian homeowners. BOQ, RCC, PMC, FSI, UDS, and more — explained clearly.',
-};
+export const metadata = generateSEOMetadata({
+title: 'Construction & Property Glossary | Buildogram',
+  description: 'A comprehensive glossary of construction, structural, regulatory, and property terms for Indian homeowners. BOQ, RCC, PMC, FSI, UDS, and more — explained clearly.',,
+  path: '/glossary',
+});
 
 const categories = [...new Set(glossaryTerms.map((t) => t.category))];
 
