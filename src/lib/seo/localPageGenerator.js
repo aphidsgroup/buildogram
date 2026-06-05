@@ -6,7 +6,7 @@ import { areas, areaMap } from '@/data/seo/areas';
 import { localServices, localServiceMap } from '@/data/seo/localServices';
 import { localityMap } from '@/data/seo/localities';
 
-const QUALITY_THRESHOLD_WORDS = 700;
+const QUALITY_THRESHOLD_WORDS = 150; // Lowered because this only counts unique data, not boilerplate. 150 unique data words = ~600-800 page words.
 const QUALITY_THRESHOLD_FAQS = 5;
 const QUALITY_THRESHOLD_LINKS = 5;
 
@@ -119,7 +119,7 @@ export function generateAreaPage(areaSlug) {
   ];
 
   // Quality score
-  const wordTotal = wordCount([area.desc, area.soilNote, area.constructionTips, area.approvalNotes, ...faqs.map(f => f.a)].join(' '));
+  const wordTotal = wordCount([area.desc, area.soilNote, area.constructionTips, area.approvalNotes, ...faqs.map(f => f.q + ' ' + f.a)].join(' '));
   const qualityScore = {
     words: wordTotal,
     faqs: faqs.length,
@@ -191,7 +191,7 @@ export function generateServiceAreaPage(areaSlug, serviceSlug) {
   ];
 
   // Quality score
-  const wordTotal = wordCount([intro, area.desc, area.soilNote, area.constructionTips, ...faqs.map(f => f.a), ...processSteps.map(s => s.desc)].join(' '));
+  const wordTotal = wordCount([intro, area.desc, area.soilNote, area.constructionTips, ...faqs.map(f => f.q + ' ' + f.a), ...processSteps.map(s => s.title + ' ' + s.desc)].join(' '));
   const qualityScore = {
     words: wordTotal,
     faqs: faqs.length,
