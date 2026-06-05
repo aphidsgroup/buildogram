@@ -86,8 +86,7 @@ export default function FloatingReelPlayer() {
     setShowControls(true);
   };
 
-  // We hide the entire container visually until player is ready to prevent the black flash
-  const containerStyle = playerReady ? styles.visible : styles.hidden;
+  const containerStyle = styles.visible;
 
   return (
     <div className={`${styles.container} ${isMobile ? styles.mobile : styles.desktop} ${containerStyle}`} onClick={handleTap}>
@@ -101,7 +100,9 @@ export default function FloatingReelPlayer() {
             width="100%"
             height="100%"
             playsinline={true}
+            onStart={() => setPlayerReady(true)}
             onReady={() => setPlayerReady(true)}
+            onError={(e) => console.error("ReactPlayer Error:", e)}
             style={{ position: 'absolute', top: 0, left: 0 }}
             config={{
               youtube: { playerVars: { controls: 0, modestbranding: 1, rel: 0, fs: 0 } },
