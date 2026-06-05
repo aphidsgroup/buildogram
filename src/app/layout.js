@@ -29,7 +29,7 @@ export const metadata = {
     description: 'Structural audits, BOQ review, steel construction, site supervision, and property handover documentation — engineer-led and owner-first.',
     url: 'https://www.buildogram.in/',
     siteName: 'Buildogram',
-    images: [{ url: 'https://www.buildogram.in/logo-main.png', width: 1200, height: 300, alt: 'Buildogram — Construction · Property · Materials' }],
+    images: [{ url: 'https://www.buildogram.in/og-image.jpg', width: 1200, height: 630, alt: 'Buildogram — Construction · Property · Materials' }],
     locale: 'en_IN',
     type: 'website',
   },
@@ -37,7 +37,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: 'Buildogram | Engineer-Led Construction Support',
     description: 'Structural audits, BOQ review, steel construction, site supervision — engineer-led and owner-first.',
-    images: ['https://www.buildogram.in/logo-main.png'],
+    images: ['https://www.buildogram.in/og-image.jpg'],
   },
   alternates: {
     canonical: '/',
