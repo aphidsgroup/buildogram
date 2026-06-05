@@ -6,34 +6,14 @@ export default function Page() {
     <PublicServicePage
       heroEyebrow="Buildogram Build"
       heroTitle="Premium Villa Construction"
-      heroSub="End-to-end luxury villa construction management."
+      heroSub="End-to-end luxury villa construction management with strict quality controls."
       heroPrimaryCta={{ label: 'Talk to an Engineer', href: '/contact?type=construction' }}
-      heroSecondaryCta={{ label: 'Explore More', href: '/' }}
-      problems={[
-        { icon: '⚠️', title: 'Lack of clarity', desc: 'Owners struggle to understand technical details.' },
-        { icon: '💸', title: 'Hidden costs', desc: 'Unplanned expenses disrupt the budget.' },
-        { icon: '📉', title: 'Quality compromises', desc: 'Materials and workmanship fall below standards.' }
-      ]}
-      processSteps={[
-        { step: '01', title: 'Consultation', desc: 'Understand your unique requirements.' },
-        { step: '02', title: 'Analysis', desc: 'Deep dive into specifications and quotes.' },
-        { step: '03', title: 'Execution', desc: 'Connect with right partners and start work.' }
-      ]}
-      serviceDetails={[
-        { title: 'Detailed Reports', desc: 'Get itemized breakdowns of our findings.' },
-        { title: 'Expert Guidance', desc: 'Speak directly with our senior engineers.' },
-        { title: 'Verified Records', desc: 'All documents are stored in your Property Passport.' }
-      ]}
-      proofData={{
-        title: 'Real Engineering Value',
-        desc: 'See exactly what we check.',
-        dashboardTitle: 'Sample Verification Checks',
-        items: ['Specification Analysis', 'Quantity Takeoff Validation', 'Market Rate Comparison', 'Quality Benchmarking']
-      }}
-      faqs={[
-        { q: 'How does this work?', a: 'Simply reach out to us and our engineers will guide you.' },
-        { q: 'Is there a fee?', a: 'We offer a free initial consultation.' }
-      ]}
+      heroSecondaryCta={{ label: 'Explore Platform', href: '/' }}
+      problems={[{"icon":"💰","title":"Premium Overpricing","desc":"Contractors overcharge simply because it is a \"luxury\" project."},{"icon":"🎨","title":"Design Deviations","desc":"The finished villa looks nothing like the 3D renders."},{"icon":"🔧","title":"Complex MEP Failures","desc":"Poorly planned plumbing and HVAC leads to leaks and cooling issues."}]}
+      processSteps={[{"step":"01","title":"Architectural & MEP Sync","desc":"Ensuring structural, plumbing, and electrical drawings align perfectly."},{"step":"02","title":"Premium Material Sourcing","desc":"Direct sourcing of Italian marble, premium fixtures, and automation."},{"step":"03","title":"Precision Execution","desc":"Dedicated site engineers monitoring high-end finish quality."}]}
+      serviceDetails={[{"title":"3D to Reality Check","desc":"We ensure dimensions and materials match the exact design intent."},{"title":"Vendor Coordination","desc":"Managing specialized vendors for pools, home theaters, and automation."},{"title":"Snagging & Handover","desc":"A 200-point inspection before you move in."}]}
+      proofData={{"title":"Luxury Standard Checks","desc":"What we verify in premium builds.","dashboardTitle":"Villa Quality Checklist","items":["Waterproofing Warranty Check","HVAC Duct Alignment","Tile/Marble Leveling Tolerance","Smart Home Integration Test"]}}
+      faqs={[{"q":"What makes villa construction different?","a":"Higher specifications, complex MEP, and tighter tolerances for finishes."}]}
     />
   );
 }

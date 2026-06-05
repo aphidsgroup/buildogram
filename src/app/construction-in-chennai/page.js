@@ -6,34 +6,14 @@ export default function Page() {
     <PublicServicePage
       heroEyebrow="Local Guidance"
       heroTitle="Construction in Chennai"
-      heroSub="Local expertise, local partners, local material rates."
+      heroSub="Navigating CMDA approvals, local soil conditions, and Chennai material rates."
       heroPrimaryCta={{ label: 'Talk to an Engineer', href: '/contact?type=construction' }}
-      heroSecondaryCta={{ label: 'Explore More', href: '/' }}
-      problems={[
-        { icon: '⚠️', title: 'Lack of clarity', desc: 'Owners struggle to understand technical details.' },
-        { icon: '💸', title: 'Hidden costs', desc: 'Unplanned expenses disrupt the budget.' },
-        { icon: '📉', title: 'Quality compromises', desc: 'Materials and workmanship fall below standards.' }
-      ]}
-      processSteps={[
-        { step: '01', title: 'Consultation', desc: 'Understand your unique requirements.' },
-        { step: '02', title: 'Analysis', desc: 'Deep dive into specifications and quotes.' },
-        { step: '03', title: 'Execution', desc: 'Connect with right partners and start work.' }
-      ]}
-      serviceDetails={[
-        { title: 'Detailed Reports', desc: 'Get itemized breakdowns of our findings.' },
-        { title: 'Expert Guidance', desc: 'Speak directly with our senior engineers.' },
-        { title: 'Verified Records', desc: 'All documents are stored in your Property Passport.' }
-      ]}
-      proofData={{
-        title: 'Real Engineering Value',
-        desc: 'See exactly what we check.',
-        dashboardTitle: 'Sample Verification Checks',
-        items: ['Specification Analysis', 'Quantity Takeoff Validation', 'Market Rate Comparison', 'Quality Benchmarking']
-      }}
-      faqs={[
-        { q: 'How does this work?', a: 'Simply reach out to us and our engineers will guide you.' },
-        { q: 'Is there a fee?', a: 'We offer a free initial consultation.' }
-      ]}
+      heroSecondaryCta={{ label: 'Explore Platform', href: '/' }}
+      problems={[{"icon":"☀️","title":"Weather Extremes","desc":"High humidity and intense heat require specific curing and painting techniques."},{"icon":"🌊","title":"Waterlogging","desc":"Poor plinth height planning leads to flooding during monsoons."}]}
+      processSteps={[{"step":"01","title":"CMDA/DTCP Check","desc":"Navigating local approval processes."},{"step":"02","title":"Soil Testing","desc":"Assessing clay/sandy soil common in OMR/ECR."},{"step":"03","title":"Weather-Proof Execution","desc":"Using correct waterproofing and anti-corrosive steel."}]}
+      serviceDetails={[{"title":"Local Material Sourcing","desc":"Direct from Sriperumbudur and surrounding hubs."},{"title":"Monsoon Readiness","desc":"Planning plinth heights for Chennai rains."}]}
+      proofData={{"title":"Chennai Specifics","desc":"Local checks we perform.","dashboardTitle":"Chennai Risk Checklist","items":["Coastal Corrosion Protection (ECR/OMR)","Plinth Height vs Road Level","CMDA Setback Verification"]}}
+      faqs={[{"q":"Do you help with CMDA approvals?","a":"We connect you with licensed surveyors and architects who handle the paperwork."}]}
     />
   );
 }

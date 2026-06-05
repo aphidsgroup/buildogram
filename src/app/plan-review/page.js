@@ -6,34 +6,14 @@ export default function Page() {
     <PublicServicePage
       heroEyebrow="Buildogram Review"
       heroTitle="Architectural Plan Review"
-      heroSub="Structural and spatial flow analysis."
+      heroSub="Structural safety, spatial flow, Vastu, and ventilation analysis."
       heroPrimaryCta={{ label: 'Talk to an Engineer', href: '/contact?type=construction' }}
-      heroSecondaryCta={{ label: 'Explore More', href: '/' }}
-      problems={[
-        { icon: '⚠️', title: 'Lack of clarity', desc: 'Owners struggle to understand technical details.' },
-        { icon: '💸', title: 'Hidden costs', desc: 'Unplanned expenses disrupt the budget.' },
-        { icon: '📉', title: 'Quality compromises', desc: 'Materials and workmanship fall below standards.' }
-      ]}
-      processSteps={[
-        { step: '01', title: 'Consultation', desc: 'Understand your unique requirements.' },
-        { step: '02', title: 'Analysis', desc: 'Deep dive into specifications and quotes.' },
-        { step: '03', title: 'Execution', desc: 'Connect with right partners and start work.' }
-      ]}
-      serviceDetails={[
-        { title: 'Detailed Reports', desc: 'Get itemized breakdowns of our findings.' },
-        { title: 'Expert Guidance', desc: 'Speak directly with our senior engineers.' },
-        { title: 'Verified Records', desc: 'All documents are stored in your Property Passport.' }
-      ]}
-      proofData={{
-        title: 'Real Engineering Value',
-        desc: 'See exactly what we check.',
-        dashboardTitle: 'Sample Verification Checks',
-        items: ['Specification Analysis', 'Quantity Takeoff Validation', 'Market Rate Comparison', 'Quality Benchmarking']
-      }}
-      faqs={[
-        { q: 'How does this work?', a: 'Simply reach out to us and our engineers will guide you.' },
-        { q: 'Is there a fee?', a: 'We offer a free initial consultation.' }
-      ]}
+      heroSecondaryCta={{ label: 'Explore Platform', href: '/' }}
+      problems={[{"icon":"🚪","title":"Dead Spaces","desc":"Poorly placed doors and corridors waste expensive square footage."},{"icon":"🌬️","title":"Poor Cross-Ventilation","desc":"Rooms that trap heat and require constant AC."},{"icon":"📏","title":"Furniture Mismatch","desc":"Bedrooms where a standard wardrobe and bed don’t actually fit."}]}
+      processSteps={[{"step":"01","title":"Upload Drawings","desc":"Share your floor plans (PDF or CAD)."},{"step":"02","title":"Engineering Analysis","desc":"We check dimensions, FSI, and structural grid logic."},{"step":"03","title":"Optimization Report","desc":"We provide marked-up plans with suggested improvements."}]}
+      serviceDetails={[{"title":"Spatial Flow Audit","desc":"Checking furniture layouts and clearances."},{"title":"Natural Light & Air","desc":"Window placement analysis."},{"title":"Basic Vastu","desc":"Checking key placements like Kitchen and Pooja."}]}
+      proofData={{"title":"Plan Diagnostics","desc":"What we catch before you build.","dashboardTitle":"Common Plan Errors Found","items":["Missing Structural Columns","Inadequate Toilet Ducting","Staircase Headroom Violations","Door Swing Clashes"]}}
+      faqs={[{"q":"Do you redesign the plan?","a":"We provide markups and suggestions. You take these back to your architect to implement."}]}
     />
   );
 }

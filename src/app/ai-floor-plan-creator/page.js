@@ -6,34 +6,14 @@ export default function Page() {
     <PublicServicePage
       heroEyebrow="Construction Intelligence"
       heroTitle="AI Floor Plan Creator"
-      heroSub="Generate conceptual layouts based on your plot dimensions."
+      heroSub="Generate conceptual layouts based on your plot dimensions instantly."
       heroPrimaryCta={{ label: 'Talk to an Engineer', href: '/contact?type=construction' }}
-      heroSecondaryCta={{ label: 'Explore More', href: '/' }}
-      problems={[
-        { icon: '⚠️', title: 'Lack of clarity', desc: 'Owners struggle to understand technical details.' },
-        { icon: '💸', title: 'Hidden costs', desc: 'Unplanned expenses disrupt the budget.' },
-        { icon: '📉', title: 'Quality compromises', desc: 'Materials and workmanship fall below standards.' }
-      ]}
-      processSteps={[
-        { step: '01', title: 'Consultation', desc: 'Understand your unique requirements.' },
-        { step: '02', title: 'Analysis', desc: 'Deep dive into specifications and quotes.' },
-        { step: '03', title: 'Execution', desc: 'Connect with right partners and start work.' }
-      ]}
-      serviceDetails={[
-        { title: 'Detailed Reports', desc: 'Get itemized breakdowns of our findings.' },
-        { title: 'Expert Guidance', desc: 'Speak directly with our senior engineers.' },
-        { title: 'Verified Records', desc: 'All documents are stored in your Property Passport.' }
-      ]}
-      proofData={{
-        title: 'Real Engineering Value',
-        desc: 'See exactly what we check.',
-        dashboardTitle: 'Sample Verification Checks',
-        items: ['Specification Analysis', 'Quantity Takeoff Validation', 'Market Rate Comparison', 'Quality Benchmarking']
-      }}
-      faqs={[
-        { q: 'How does this work?', a: 'Simply reach out to us and our engineers will guide you.' },
-        { q: 'Is there a fee?', a: 'We offer a free initial consultation.' }
-      ]}
+      heroSecondaryCta={{ label: 'Explore Platform', href: '/' }}
+      problems={[{"icon":"⏳","title":"Slow Iterations","desc":"Waiting weeks for an architect just to see basic block layouts."}]}
+      processSteps={[{"step":"01","title":"Input Dimensions","desc":"Enter your plot size, facing, and room requirements."},{"step":"02","title":"AI Generation","desc":"Get multiple spatial configurations in seconds."},{"step":"03","title":"Professional Handoff","desc":"Take the concept to a real architect for structural detailing."}]}
+      serviceDetails={[{"title":"Vastu Presets","desc":"Generate layouts that adhere to basic Vastu principles."},{"title":"Setback Calculations","desc":"Automatically leaving space for CMDA rules."}]}
+      proofData={{"title":"AI Capabilities","desc":"What the engine does.","dashboardTitle":"Generation Parameters","items":["FSI Optimization","Sunlight Routing","Circulation Efficiency"]}}
+      faqs={[{"q":"Can I use this plan to build?","a":"No. AI generates a concept. A licensed structural engineer and architect MUST detail it for safety."}]}
     />
   );
 }
