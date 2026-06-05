@@ -4,9 +4,9 @@ import PublicServicePage from '@/components/ui/PublicServicePage';
 export default function Page() {
   return (
     <PublicServicePage
-      heroEyebrow="Buildogram Review"
-      heroTitle="BOQ & Contractor Quote Audit"
-      heroSub="Find hidden costs before you sign the contract."
+      heroEyebrow="Materials Dashboard"
+      heroTitle="Sand & M-Sand Quotes"
+      heroSub="Verified suppliers for river sand, M-sand, and P-sand."
       heroPrimaryCta={{ label: 'Talk to an Engineer', href: '/contact?type=construction' }}
       heroSecondaryCta={{ label: 'Explore More', href: '/' }}
       problems={[
