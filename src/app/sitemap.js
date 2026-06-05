@@ -45,6 +45,17 @@ export default function sitemap() {
     { url: `${baseUrl}/compare`, priority: 0.8, changeFrequency: 'monthly' },
     { url: `${baseUrl}/materials`, priority: 0.85, changeFrequency: 'weekly' },
     { url: `${baseUrl}/locations/chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/builders-in-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/home-construction-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/house-construction-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/commercial-construction-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/construction-company-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/construction-project-management-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/quality-inspection-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/residential-construction-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/renovation-contractors-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/site-supervision-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/turnkey-construction-chennai`, priority: 0.9, changeFrequency: 'weekly' },
   ];
 
   // Dynamic: services
