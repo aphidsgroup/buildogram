@@ -8,7 +8,7 @@ import styles from './boq.module.css';
 
 export const metadata = generateSEOMetadata({
 title: 'BOQ Review and Contractor Quote Audit | Buildogram',
-  description: 'Before you finalize a contractor, understand what is included, what is unclear, and what questions to ask. BOQ clarity service inside the Buildogram marketplace. Chennai & Tamil Nadu.',,
+  description: 'Before you finalize a contractor, understand what is included, what is unclear, and what questions to ask. BOQ clarity service inside the Buildogram marketplace. Chennai & Tamil Nadu.',
   path: '/boq-audit',
 });
 

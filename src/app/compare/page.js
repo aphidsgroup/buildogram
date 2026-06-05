@@ -4,7 +4,7 @@ import { comparisons } from '@/data/seo/comparisons';
 
 export const metadata = generateSEOMetadata({
 title: 'Compare | Buildogram',
-  description: 'Compare Buildogram services, approaches, and tools side-by-side. Make informed decisions for your home construction and property journey.',,
+  description: 'Compare Buildogram services, approaches, and tools side-by-side. Make informed decisions for your home construction and property journey.',
   path: '/compare',
 });
 

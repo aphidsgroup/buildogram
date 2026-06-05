@@ -4,7 +4,7 @@ import sql from '@/lib/db';
 
 export const metadata = generateSEOMetadata({
 title: 'Construction Blog | Buildogram',
-  description: 'Expert insights, cost guides, and structural engineering tips for home builders.',,
+  description: 'Expert insights, cost guides, and structural engineering tips for home builders.',
   path: '/blog',
 });
 

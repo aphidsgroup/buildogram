@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
 title: 'Property Buying Guide | Buildogram Resources',
-  description: 'Understand buying land, apartments, villas, legal documents, and verification.',,
+  description: 'Understand buying land, apartments, villas, legal documents, and verification.',
   path: '/resources/property-buying-guide',
 });
 

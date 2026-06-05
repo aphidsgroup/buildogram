@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
 title: 'Material Guide | Buildogram Resources',
-  description: 'A comprehensive guide on cement, steel, sand, bricks, and finishing materials.',,
+  description: 'A comprehensive guide on cement, steel, sand, bricks, and finishing materials.',
   path: '/resources/material-guide',
 });
 

@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
 title: 'Resources | Buildogram',
-  description: 'Guides, cost estimators, and resources for construction and property buying.',,
+  description: 'Guides, cost estimators, and resources for construction and property buying.',
   path: '/resources',
 });
 

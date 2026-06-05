@@ -4,7 +4,7 @@ import PartnerJoinForm from './PartnerJoinForm';
 
 export const metadata = generateSEOMetadata({
 title: 'Join Buildogram Partner Marketplace | Builders, Contractors, Suppliers',
-  description: 'Join Buildogram\'s partner ecosystem. Get leads, verified profile, project showcase, and material benefits. Grow your construction business.',,
+  description: 'Join Buildogram\'s partner ecosystem. Get leads, verified profile, project showcase, and material benefits. Grow your construction business.',
   path: '/partners',
 });
 

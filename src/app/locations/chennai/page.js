@@ -4,7 +4,7 @@ import { localities } from '@/data/seo/localities';
 
 export const metadata = generateSEOMetadata({
 title: 'House Construction in Chennai | All Localities | Buildogram',
-  description: 'Buildogram provides engineer-led house construction services across Chennai. Browse all localities including OMR, ECR, Tambaram, Anna Nagar, Porur, Velachery, and more.',,
+  description: 'Buildogram provides engineer-led house construction services across Chennai. Browse all localities including OMR, ECR, Tambaram, Anna Nagar, Porur, Velachery, and more.',
   path: '/locations/chennai',
 });
 

@@ -2,7 +2,7 @@ import { generateSEOMetadata } from '@/lib/seo/metadata';
 import AIFloorPlanStudio from '../../ai-floor-plan-creator/studio/page';
 
 export const metadata = generateSEOMetadata({
-title: 'AI Floor Plan Creator | Buildogram Partner OS',,
+title: 'AI Floor Plan Creator | Buildogram Partner OS',
   path: '/partner/ai-floor-plan-creator',
 });
 
