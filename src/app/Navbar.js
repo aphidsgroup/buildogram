@@ -10,21 +10,43 @@ const MEGA_MENUS = [
     label: 'Build',
     links: [
       { href: '/home-construction-chennai', label: 'Home Construction in Chennai' },
+      { href: '/end-to-end-construction-support-chennai', label: 'End-to-End Construction Support' },
+      { href: '/construction-project-management-chennai', label: 'Construction Project Management' },
       { href: '/residential-construction-chennai', label: 'Residential Construction' },
       { href: '/commercial-construction-chennai', label: 'Commercial Construction' },
       { href: '/turnkey-construction-chennai', label: 'Turnkey Construction' },
-      { href: '/house-construction-chennai', label: 'House Construction' },
     ]
   },
   {
     label: 'Services',
     links: [
-      { href: '/boq-audit', label: 'BOQ Audit & Review' },
-      { href: '/plan-review', label: 'Plan Review' },
-      { href: '/construction-project-management-chennai', label: 'Project Management' },
+      { href: '/boq-review-chennai', label: 'BOQ Review' },
+      { href: '/boq-audit', label: 'BOQ Audit Tool' },
+      { href: '/plan-review', label: 'Architectural Plan Review' },
+      { href: '/structural-plan-review-chennai', label: 'Structural Plan Review' },
       { href: '/site-supervision-chennai', label: 'Site Supervision' },
       { href: '/quality-inspection-chennai', label: 'Quality Inspection' },
       { href: '/cost-estimator', label: 'Cost Estimator' },
+    ]
+  },
+  {
+    label: 'Structural Safety',
+    links: [
+      { href: '/structural-audit-chennai', label: 'Structural Audit' },
+      { href: '/building-crack-inspection-chennai', label: 'Building Crack Inspection' },
+      { href: '/old-building-structural-audit-chennai', label: 'Old Building Audit' },
+      { href: '/apartment-structural-audit-chennai', label: 'Apartment Structural Audit' },
+      { href: '/structural-plan-review-chennai', label: 'Structural Plan Review' },
+    ]
+  },
+  {
+    label: 'Steel Construction',
+    links: [
+      { href: '/steel-construction-chennai', label: 'Steel Construction' },
+      { href: '/peb-building-contractors-chennai', label: 'PEB Buildings' },
+      { href: '/industrial-shed-construction-chennai', label: 'Industrial Shed Construction' },
+      { href: '/warehouse-steel-building-chennai', label: 'Warehouse Steel Building' },
+      { href: '/steel-fabrication-contractors-chennai', label: 'Steel Fabrication Contractors' },
     ]
   },
   {
@@ -45,14 +67,6 @@ const MEGA_MENUS = [
       { href: '/renovation-contractors-chennai', label: 'Renovation Contractors' },
       { href: '/partners/directory', label: 'Partner Directory' },
       { href: '/partners/register', label: 'Become a Partner' },
-    ]
-  },
-  {
-    label: 'Projects',
-    links: [
-      { href: '/projects', label: 'Case Studies' },
-      { href: '/property-passport', label: 'Property Passport' },
-      { href: 'https://www.realproprealty.com', label: 'Buy Properties', external: true },
     ]
   },
   {

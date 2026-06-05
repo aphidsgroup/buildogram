@@ -7,6 +7,7 @@ import { localities } from '@/data/seo/localities';
 import { materials } from '@/data/seo/materials';
 import { areas } from '@/data/seo/areas';
 import { localServices } from '@/data/seo/localServices';
+import { serviceHubs } from '@/data/seo/serviceHubs';
 import { generateAreaPage, generateServiceAreaPage } from '@/lib/seo/localPageGenerator';
 
 export default function sitemap() {
@@ -60,6 +61,13 @@ export default function sitemap() {
     { url: `${baseUrl}/site-supervision-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/turnkey-construction-chennai`, priority: 0.9, changeFrequency: 'weekly' },
   ];
+
+  // Dynamic: new service hub pages
+  const serviceHubRoutes = serviceHubs.map((h) => ({
+    url: `${baseUrl}${h.canonicalPath}`,
+    priority: h.priority || 0.9,
+    changeFrequency: 'weekly',
+  }));
 
   // Dynamic: services
   const serviceRoutes = services.map((s) => ({
@@ -139,6 +147,7 @@ export default function sitemap() {
 
   return [
     ...staticRoutes,
+    ...serviceHubRoutes,
     ...serviceRoutes,
     ...guideRoutes,
     ...glossaryRoutes,
