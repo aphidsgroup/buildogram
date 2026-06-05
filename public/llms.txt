@@ -1,0 +1,24 @@
+# Buildogram
+
+> Engineer-Led Construction Companion for Chennai
+
+Buildogram is a platform designed to help property owners in Chennai plan, build, source materials, verify site progress, and maintain digital property records with engineer-led support. 
+
+## Primary Services
+1. **BOQ Audit & Review**: Engineers review contractor quotes, quantities, rates, and specifications to prevent hidden costs.
+2. **Construction Project Management**: Site supervision, quality checks, and milestone tracking.
+3. **Material Sourcing**: Transparent quotes for cement, TMT steel, M sand, bricks, and RMC directly from verified suppliers.
+4. **Verified Builders**: A curated network of vetted contractors, builders, and architects in Chennai.
+5. **Property Passport**: A digital repository for architectural drawings, warranties, invoices, and maintenance logs.
+
+## Target Audience
+Homeowners, property developers, and real estate investors in Chennai, Tamil Nadu.
+
+## Important Links
+- Home: https://www.buildogram.in/
+- BOQ Review: https://www.buildogram.in/boq-audit
+- Home Construction: https://www.buildogram.in/home-construction-chennai
+- Builders in Chennai: https://www.buildogram.in/builders-in-chennai
+- Materials: https://www.buildogram.in/materials
+- Projects: https://www.buildogram.in/projects
+- Contact: https://www.buildogram.in/contact

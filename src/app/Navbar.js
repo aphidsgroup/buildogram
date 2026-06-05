@@ -9,83 +9,68 @@ const MEGA_MENUS = [
   {
     label: 'Build',
     links: [
-      { href: '/build/home-construction', label: 'Home Construction Guidance' },
-      { href: '/build/villa-construction', label: 'Villa Construction' },
-      { href: '/build/renovation', label: 'Renovation' },
-      { href: '/build/commercial', label: 'Commercial Fit-Out' },
-      { href: '/construction-in-chennai', label: 'Construction in Chennai' },
-      { href: '/build/warranty', label: 'Warranty & Maintenance' },
+      { href: '/home-construction-chennai', label: 'Home Construction in Chennai' },
+      { href: '/residential-construction-chennai', label: 'Residential Construction' },
+      { href: '/commercial-construction-chennai', label: 'Commercial Construction' },
+      { href: '/turnkey-construction-chennai', label: 'Turnkey Construction' },
+      { href: '/house-construction-chennai', label: 'House Construction' },
     ]
   },
   {
-    label: 'Review',
+    label: 'Services',
     links: [
-      { href: '/boq-audit', label: 'BOQ Audit' },
+      { href: '/boq-audit', label: 'BOQ Audit & Review' },
       { href: '/plan-review', label: 'Plan Review' },
-      { href: '/review/contractor-quote', label: 'Contractor Quote Review' },
+      { href: '/construction-project-management-chennai', label: 'Project Management' },
+      { href: '/site-supervision-chennai', label: 'Site Supervision' },
+      { href: '/quality-inspection-chennai', label: 'Quality Inspection' },
       { href: '/cost-estimator', label: 'Cost Estimator' },
-      { href: '/review/specifications', label: 'Specification Review' },
-      { href: '/review/hidden-costs', label: 'Hidden Cost Checklist' },
     ]
   },
   {
     label: 'Materials',
     links: [
       { href: '/materials', label: 'Material Quote Support' },
-      { href: '/materials/cement', label: 'Cement Rate Support' },
-      { href: '/materials/steel', label: 'TMT Steel Rate Support' },
-      { href: '/materials/sand', label: 'Sand & M-Sand' },
+      { href: '/materials/cement', label: 'Cement' },
+      { href: '/materials/tmt-steel', label: 'TMT Steel' },
+      { href: '/materials/m-sand', label: 'M Sand' },
+      { href: '/materials/ready-mix-concrete', label: 'RMC' },
       { href: '/materials/bricks', label: 'Bricks & Blocks' },
-      { href: '/materials/tiles', label: 'Tiles & Flooring' },
-      { href: '/materials/electrical-plumbing', label: 'Electrical & Plumbing' },
-      { href: '/materials/network', label: 'Supplier Network' },
     ]
   },
   {
     label: 'Partners',
     links: [
-      { href: '/partners/directory', label: 'Verified Partner Directory' },
-      { href: '/partners/builders', label: 'Builders' },
-      { href: '/partners/contractors', label: 'Contractors' },
-      { href: '/partners/architects', label: 'Architects' },
-      { href: '/partners/interiors', label: 'Interior Designers' },
-      { href: '/partners/suppliers', label: 'Material Suppliers' },
-      { href: '/partners/waterproofing', label: 'Waterproofing' },
-      { href: '/partners/solar', label: 'Solar' },
-      { href: '/partners/elevators', label: 'Elevators' },
+      { href: '/builders-in-chennai', label: 'Verified Builders' },
+      { href: '/renovation-contractors-chennai', label: 'Renovation Contractors' },
+      { href: '/partners/directory', label: 'Partner Directory' },
       { href: '/partners/register', label: 'Become a Partner' },
     ]
   },
   {
-    label: 'Property',
+    label: 'Projects',
     links: [
+      { href: '/projects', label: 'Case Studies' },
       { href: '/property-passport', label: 'Property Passport' },
       { href: 'https://www.realproprealty.com', label: 'Buy Properties', external: true },
-      { href: 'https://toletboardchennai.in', label: 'Rent Properties', external: true },
-      { href: '/property/list', label: 'List Your Property' },
-      { href: '/property/maintenance', label: 'Property Maintenance' },
-      { href: '/property/records', label: '360 Property Records' },
-    ]
-  },
-  {
-    label: 'AI Tools',
-    links: [
-      { href: '/ai-floor-plan-creator', label: 'AI Floor Plan Creator' },
-      { href: '/cost-estimator', label: 'Cost Estimator' },
-      { href: '/ai/boq-draft', label: 'BOQ Draft Assistant' },
-      { href: '/ai/plan-review', label: 'Plan Review Assistant' },
-      { href: '/ai/site-assistant', label: 'Site Assistant' },
     ]
   },
   {
     label: 'Resources',
     links: [
-      { href: '/resources/guides', label: 'Guides' },
-      { href: '/resources/faqs', label: 'FAQs' },
-      { href: '/resources/glossary', label: 'Glossary' },
-      { href: '/blog', label: 'Blog' },
-      { href: '/resources/compare', label: 'Compare Pages' },
-      { href: '/resources/chennai', label: 'Chennai Locality Pages' },
+      { href: '/resources', label: 'Resource Hub' },
+      { href: '/guides', label: 'Guides' },
+      { href: '/faqs', label: 'FAQs' },
+      { href: '/locations/chennai', label: 'Chennai Service Areas' },
+      { href: '/ai-floor-plan-creator', label: 'AI Floor Plan Tool' },
+    ]
+  },
+  {
+    label: 'Contact',
+    links: [
+      { href: '/contact', label: 'Contact Us' },
+      { href: '/about', label: 'About Buildogram' },
+      { href: '/careers', label: 'Careers' },
     ]
   }
 ];

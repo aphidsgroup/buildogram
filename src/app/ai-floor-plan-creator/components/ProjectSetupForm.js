@@ -2,72 +2,65 @@
 import { useState, useEffect } from 'react';
 import styles from '../studio/studio.module.css';
 
+const ROOM_PRESETS = [
+  { id: 'parking', label: 'Parking / Portico', icon: '🚗', defaultEnabled: true },
+  { id: 'living', label: 'Living Room', icon: '🛋️', defaultEnabled: true },
+  { id: 'kitchen', label: 'Kitchen', icon: '🍳', defaultEnabled: true },
+  { id: 'dining', label: 'Dining', icon: '🍽️', defaultEnabled: false },
+  { id: 'pooja', label: 'Pooja', icon: '🪔', defaultEnabled: true },
+  { id: 'masterBedroom', label: 'Master Bedroom', icon: '🛏️', defaultEnabled: true },
+  { id: 'bedrooms', label: 'Extra Bedroom', icon: '🛏️', defaultEnabled: false, isCounter: true },
+  { id: 'utility', label: 'Wash / Utility', icon: '🧺', defaultEnabled: true },
+  { id: 'store', label: 'Store Room', icon: '📦', defaultEnabled: false },
+  { id: 'sitout', label: 'Sit-out', icon: '🪑', defaultEnabled: true },
+  { id: 'study', label: 'Study / WFH', icon: '💻', defaultEnabled: false },
+  { id: 'staircase', label: 'Staircase', icon: '🪜', defaultEnabled: true },
+  { id: 'balcony', label: 'Balcony', icon: '🌅', defaultEnabled: false },
+];
+
 export default function ProjectSetupForm({ onSubmit, isGenerating }) {
   const [formData, setFormData] = useState({
     plotWidth: 30,
     plotDepth: 40,
     unit: 'feet',
-    facing: 'North', // Road side
+    facing: 'North',
     floors: 1,
     locationPreset: 'Chennai / Tamil Nadu',
-    roadWidthFt: 24,
     cornerPlot: false,
-    setbackPreference: 'standard', // tight, standard, spacious
-    vastuPreference: 'Moderate', // Strict, Moderate, Ignore
-    familySize: 4,
-    rentalUnit: false,
-    elderlyFriendly: false,
-    roomSizePreference: 'standard', // compact, standard, spacious
-    layerPreference: 'cad_and_blocks', // clean_cad, cad_and_blocks, all_services
-    prompt: '',
-    
+    vastuPreference: 'Strict',
     roomRequirements: {
       parking: { enabled: true, count: 1 },
       sitout: { enabled: true },
       living: { enabled: true },
       dining: { enabled: false },
-      kitchen: { enabled: true, type: 'kitchen_cum_dining' },
+      kitchen: { enabled: true, type: 'kitchen' },
       utility: { enabled: true },
       pooja: { enabled: true },
       masterBedroom: { enabled: true, attachedToilet: true },
-      bedrooms: { count: 1 },
-      commonToilets: { count: 1 },
+      bedrooms: { enabled: false, count: 1 },
       store: { enabled: false },
       staircase: { enabled: true },
       balcony: { enabled: false },
-      terrace: { enabled: true },
-      oht: { enabled: true },
-      washArea: { enabled: false },
       study: { enabled: false }
-    }
+    },
+    commonToilets: 1,
+    prompt: ''
   });
 
   const [totalEstimatedSpaces, setTotalEstimatedSpaces] = useState(0);
 
   useEffect(() => {
-    // Calculate total spaces for UI feedback
     let count = 0;
     const req = formData.roomRequirements;
-    if (req.parking.enabled) count += req.parking.count;
-    if (req.sitout.enabled) count++;
-    if (req.living.enabled) count++;
-    if (req.dining.enabled) count++;
-    if (req.kitchen.enabled) count++;
-    if (req.utility.enabled) count++;
-    if (req.pooja.enabled) count++;
-    if (req.masterBedroom.enabled) {
-      count++;
-      if (req.masterBedroom.attachedToilet) count++;
-    }
-    count += req.bedrooms.count;
-    count += req.commonToilets.count;
-    if (req.store.enabled) count++;
-    if (req.staircase.enabled) count++;
-    if (req.balcony.enabled) count++;
-    if (req.study.enabled) count++;
-    
+    Object.keys(req).forEach(k => {
+      if (req[k].enabled) {
+        count += req[k].count || 1;
+        if (k === 'masterBedroom' && req[k].attachedToilet) count++;
+      }
+    });
+    count += formData.commonToilets;
     setTotalEstimatedSpaces(count);
-  }, [formData.roomRequirements]);
+  }, [formData.roomRequirements, formData.commonToilets]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -77,42 +70,28 @@ export default function ProjectSetupForm({ onSubmit, isGenerating }) {
     }));
   };
 
-  const handleRequirementToggle = (key, field = 'enabled') => (e) => {
-    const { checked } = e.target;
+  const toggleRoom = (id) => {
     setFormData(prev => ({
       ...prev,
       roomRequirements: {
         ...prev.roomRequirements,
-        [key]: {
-          ...prev.roomRequirements[key],
-          [field]: checked
+        [id]: {
+          ...prev.roomRequirements[id],
+          enabled: !prev.roomRequirements[id].enabled
         }
       }
     }));
   };
 
-  const handleRequirementNumber = (key, field) => (e) => {
-    const val = parseInt(e.target.value) || 0;
+  const setRoomCount = (id, count) => {
     setFormData(prev => ({
       ...prev,
       roomRequirements: {
         ...prev.roomRequirements,
-        [key]: {
-          ...prev.roomRequirements[key],
-          [field]: Math.max(0, val)
-        }
-      }
-    }));
-  };
-
-  const handleRequirementSelect = (key, field) => (e) => {
-    setFormData(prev => ({
-      ...prev,
-      roomRequirements: {
-        ...prev.roomRequirements,
-        [key]: {
-          ...prev.roomRequirements[key],
-          [field]: e.target.value
+        [id]: {
+          ...prev.roomRequirements[id],
+          enabled: count > 0,
+          count: Math.max(0, count)
         }
       }
     }));
@@ -128,7 +107,7 @@ export default function ProjectSetupForm({ onSubmit, isGenerating }) {
       
       {/* 1. Plot Context */}
       <div style={{ background: '#f8fafc', padding: 16, borderRadius: 8, border: '1px solid #e2e8f0' }}>
-        <h3 style={{ margin: '0 0 12px 0', fontSize: 14, color: '#334155' }}>Plot Details</h3>
+        <h3 style={{ margin: '0 0 12px 0', fontSize: 14, color: '#334155' }}>Plot & Orientation</h3>
         <div className={styles.row}>
           <div className={styles.formGroup}>
             <label>Width (ft)</label>
@@ -149,25 +128,11 @@ export default function ProjectSetupForm({ onSubmit, isGenerating }) {
           </div>
         </div>
         <div className={styles.row} style={{ marginTop: 12 }}>
-          <div className={styles.formGroup} style={{ flex: 1.8 }}>
-            <label>Location Rule Preset</label>
-            <select name="locationPreset" value={formData.locationPreset} onChange={handleChange} className={styles.select}>
-              <option value="Chennai / Tamil Nadu">Chennai / Tamil Nadu</option>
-              <option value="General India">General India</option>
-            </select>
-          </div>
           <div className={styles.formGroup} style={{ flex: 1 }}>
             <label>Floors</label>
             <input type="number" name="floors" value={formData.floors} onChange={handleChange} className={styles.input} min="1" max="4" />
           </div>
-        </div>
-      </div>
-
-      {/* 2. Preferences & Context */}
-      <div style={{ background: '#f8fafc', padding: 16, borderRadius: 8, border: '1px solid #e2e8f0' }}>
-        <h3 style={{ margin: '0 0 12px 0', fontSize: 14, color: '#334155' }}>Design Preferences</h3>
-        <div className={styles.row}>
-          <div className={styles.formGroup}>
+          <div className={styles.formGroup} style={{ flex: 1 }}>
             <label>Vastu Priority</label>
             <select name="vastuPreference" value={formData.vastuPreference} onChange={handleChange} className={styles.select}>
               <option value="Strict">Strict (Score &gt; 90)</option>
@@ -175,106 +140,61 @@ export default function ProjectSetupForm({ onSubmit, isGenerating }) {
               <option value="Ignore">Ignore</option>
             </select>
           </div>
-          <div className={styles.formGroup}>
-            <label>Room Sizing</label>
-            <select name="roomSizePreference" value={formData.roomSizePreference} onChange={handleChange} className={styles.select}>
-              <option value="compact">Compact (Max space efficiency)</option>
-              <option value="standard">Standard</option>
-              <option value="spacious">Spacious (Premium feel)</option>
-            </select>
-          </div>
-        </div>
-        <div className={styles.row} style={{ marginTop: 12 }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
-            <input type="checkbox" name="cornerPlot" checked={formData.cornerPlot} onChange={handleChange} /> Corner Plot
-          </label>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13 }}>
-            <input type="checkbox" name="rentalUnit" checked={formData.rentalUnit} onChange={handleChange} /> Separate Rental Unit
-          </label>
         </div>
       </div>
 
-      {/* 3. Space Requirements */}
+      {/* 2. Visual Room Selection */}
       <div style={{ background: '#f8fafc', padding: 16, borderRadius: 8, border: '1px solid #e2e8f0' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
-          <h3 style={{ margin: 0, fontSize: 14, color: '#334155' }}>Required Spaces</h3>
+          <h3 style={{ margin: 0, fontSize: 14, color: '#334155' }}>Select Rooms</h3>
           <span style={{ fontSize: 12, color: '#64748b', background: '#e2e8f0', padding: '2px 8px', borderRadius: 12 }}>
             ~{totalEstimatedSpaces} spaces
           </span>
         </div>
         
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 24px' }}>
-          
-          {/* Core Areas */}
-          <div>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-              <input type="checkbox" checked={formData.roomRequirements.living.enabled} onChange={handleRequirementToggle('living')} /> Front Hall / Living
-            </label>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-              <input type="checkbox" checked={formData.roomRequirements.kitchen.enabled} onChange={handleRequirementToggle('kitchen')} /> 
-              <select value={formData.roomRequirements.kitchen.type} onChange={handleRequirementSelect('kitchen', 'type')} className={styles.select} style={{ padding: '2px 4px', fontSize: 12, height: 24, width: 'auto' }}>
-                <option value="kitchen">Kitchen</option>
-                <option value="kitchen_cum_dining">Kitchen Cum Dining</option>
-              </select>
-            </div>
-            {formData.roomRequirements.kitchen.type === 'kitchen' && (
-              <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-                <input type="checkbox" checked={formData.roomRequirements.dining.enabled} onChange={handleRequirementToggle('dining')} /> Separate Dining
-              </label>
-            )}
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-              <input type="checkbox" checked={formData.roomRequirements.pooja.enabled} onChange={handleRequirementToggle('pooja')} /> Pooja Room
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-              <input type="checkbox" checked={formData.roomRequirements.utility.enabled} onChange={handleRequirementToggle('utility')} /> Utility / Wash Area
-            </label>
-          </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 8 }}>
+          {ROOM_PRESETS.map(room => {
+            const req = formData.roomRequirements[room.id];
+            const isActive = req?.enabled;
 
-          {/* Bedrooms & Toilets */}
-          <div>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-              <input type="checkbox" checked={formData.roomRequirements.masterBedroom.enabled} onChange={handleRequirementToggle('masterBedroom')} /> Master Bedroom
-            </label>
-            {formData.roomRequirements.masterBedroom.enabled && (
-              <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8, marginLeft: 24, color: '#64748b' }}>
-                <input type="checkbox" checked={formData.roomRequirements.masterBedroom.attachedToilet} onChange={handleRequirementToggle('masterBedroom', 'attachedToilet')} /> + Attached Toilet
-              </label>
-            )}
-            
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-              <span>Extra Bedrooms:</span>
-              <input type="number" min="0" max="5" value={formData.roomRequirements.bedrooms.count} onChange={handleRequirementNumber('bedrooms', 'count')} className={styles.input} style={{ width: 48, padding: '2px 6px', height: 24 }} />
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-              <span>Common Toilets:</span>
-              <input type="number" min="0" max="4" value={formData.roomRequirements.commonToilets.count} onChange={handleRequirementNumber('commonToilets', 'count')} className={styles.input} style={{ width: 48, padding: '2px 6px', height: 24 }} />
-            </div>
-          </div>
-          
-          {/* Aux & Exterior */}
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-              <input type="checkbox" checked={formData.roomRequirements.parking.enabled} onChange={handleRequirementToggle('parking')} /> Parking Bays: 
-              <input type="number" min="1" max="4" value={formData.roomRequirements.parking.count} onChange={handleRequirementNumber('parking', 'count')} className={styles.input} style={{ width: 48, padding: '2px 6px', height: 24 }} disabled={!formData.roomRequirements.parking.enabled} />
-            </div>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-              <input type="checkbox" checked={formData.roomRequirements.sitout.enabled} onChange={handleRequirementToggle('sitout')} /> Sit Out / Verandah
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-              <input type="checkbox" checked={formData.roomRequirements.staircase.enabled} onChange={handleRequirementToggle('staircase')} /> Staircase
-            </label>
-          </div>
+            return (
+              <div 
+                key={room.id}
+                onClick={() => !room.isCounter && toggleRoom(room.id)}
+                style={{
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
+                  padding: '12px 4px', borderRadius: 6, border: isActive ? '1px solid #3b82f6' : '1px solid #cbd5e1',
+                  background: isActive ? '#eff6ff' : '#ffffff', cursor: room.isCounter ? 'default' : 'pointer',
+                  transition: 'all 0.2s', textAlign: 'center', position: 'relative'
+                }}
+              >
+                <span style={{ fontSize: 20, marginBottom: 4 }}>{room.icon}</span>
+                <span style={{ fontSize: 11, fontWeight: isActive ? 600 : 400, color: isActive ? '#1e3a8a' : '#475569' }}>
+                  {room.label}
+                </span>
 
-          <div>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-              <input type="checkbox" checked={formData.roomRequirements.store.enabled} onChange={handleRequirementToggle('store')} /> Store Room
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-              <input type="checkbox" checked={formData.roomRequirements.study.enabled} onChange={handleRequirementToggle('study')} /> Study / WFH Office
-            </label>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, marginBottom: 8 }}>
-              <input type="checkbox" checked={formData.roomRequirements.balcony.enabled} onChange={handleRequirementToggle('balcony')} /> Balcony (FF)
-            </label>
+                {room.isCounter && (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 6 }}>
+                    <button type="button" onClick={() => setRoomCount(room.id, (req.count || 0) - 1)} style={{ padding: '0 6px', border: '1px solid #cbd5e1', borderRadius: 4, background: '#fff' }}>-</button>
+                    <span style={{ fontSize: 12, fontWeight: 'bold' }}>{req.count || 0}</span>
+                    <button type="button" onClick={() => setRoomCount(room.id, (req.count || 0) + 1)} style={{ padding: '0 6px', border: '1px solid #cbd5e1', borderRadius: 4, background: '#fff' }}>+</button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+        
+        {/* Extra Toilet Input */}
+        <div style={{ marginTop: 16, display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', background: '#fff', border: '1px solid #cbd5e1', borderRadius: 6 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <span style={{ fontSize: 20 }}>🚽</span>
+            <span style={{ fontSize: 13, fontWeight: 500, color: '#334155' }}>Common Toilets</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button type="button" onClick={() => setFormData(p => ({...p, commonToilets: Math.max(0, p.commonToilets - 1)}))} style={{ padding: '2px 8px', border: '1px solid #cbd5e1', borderRadius: 4, background: '#f8fafc' }}>-</button>
+            <span style={{ fontSize: 13, fontWeight: 'bold', width: 20, textAlign: 'center' }}>{formData.commonToilets}</span>
+            <button type="button" onClick={() => setFormData(p => ({...p, commonToilets: p.commonToilets + 1}))} style={{ padding: '2px 8px', border: '1px solid #cbd5e1', borderRadius: 4, background: '#f8fafc' }}>+</button>
           </div>
         </div>
       </div>
@@ -285,7 +205,7 @@ export default function ProjectSetupForm({ onSubmit, isGenerating }) {
           name="prompt" 
           value={formData.prompt} 
           onChange={handleChange} 
-          placeholder="Any custom instructions not covered above? (e.g., 'Prefer kitchen in North-West', 'Keep a large front setback for gardening')"
+          placeholder="Any custom instructions not covered above? (e.g., 'Prefer kitchen in North-West')"
           className={styles.textarea}
           style={{ height: 60 }}
         />
@@ -297,3 +217,4 @@ export default function ProjectSetupForm({ onSubmit, isGenerating }) {
     </form>
   );
 }
+

@@ -7,7 +7,7 @@ import { localities } from '@/data/seo/localities';
 import { materials } from '@/data/seo/materials';
 
 export default function sitemap() {
-  const baseUrl = 'https://buildogram.in';
+  const baseUrl = 'https://www.buildogram.in';
   const now = new Date().toISOString();
 
   const staticRoutes = [

@@ -176,7 +176,11 @@ export function buildCADFloor(inputFloor) {
 
       if (intersects) {
         splits.push({ min: center - o.width / 2, max: center + o.width / 2 });
-        o.derivedSide = isHoriz ? 'north' : 'east'; // store inferred orientation
+        if (isHoriz) {
+          o.derivedSide = Math.abs(wall.y1 - minY) < 10 ? 'north' : 'south';
+        } else {
+          o.derivedSide = Math.abs(wall.x1 - minX) < 10 ? 'west' : 'east';
+        }
       }
     });
 

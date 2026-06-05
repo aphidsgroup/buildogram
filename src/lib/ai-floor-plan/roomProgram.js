@@ -2,7 +2,10 @@
 import { ROOM_SIZES, VASTU_RULES } from './thumbRules';
 
 export function createRoomProgram(formData) {
-  const req = formData.roomRequirements;
+  const req = {
+    ...(formData.roomRequirements || {}),
+    commonToilets: formData.roomRequirements?.commonToilets || { count: Number(formData.commonToilets || 0) }
+  };
   const pref = formData.roomSizePreference || 'standard';
   const facing = formData.facing || 'North';
   const vastu = formData.vastuPreference || 'Moderate'; // Strict, Moderate, Ignore
@@ -78,13 +81,15 @@ export function createRoomProgram(formData) {
   }
 
   // 8. Extra Bedrooms
-  for (let i = 0; i < (req.bedrooms?.count || 0); i++) {
-    const bId = `bed_${i+1}`;
-    addRoom(bId, 'BED ROOM', 'bedroom', 'bedroom', 80, true, [], ['hall']);
+  if (req.bedrooms?.enabled) {
+    for (let i = 0; i < (req.bedrooms.count || 0); i++) {
+      const bId = `bed_${i+1}`;
+      addRoom(bId, 'BED ROOM', 'bedroom', 'bedroom', 80, true, [], ['hall']);
+    }
   }
 
   // 9. Common Toilets
-  for (let i = 0; i < (req.commonToilets?.count || 0); i++) {
+  for (let i = 0; i < (formData.commonToilets || 0); i++) {
     addRoom(`common_toilet_${i+1}`, 'COMMON TOILET', 'toilet', 'toilet', 85, true, getZone('toilets', ['W', 'NW', 'S']), ['hall']);
   }
 

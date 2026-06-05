@@ -5,6 +5,6 @@ export default function robots() {
       allow: '/',
       disallow: ['/api/', '/ops/', '/client/', '/partner/'],
     },
-    sitemap: 'https://buildogram.in/sitemap.xml',
+    sitemap: 'https://www.buildogram.in/sitemap.xml',
   }
 }

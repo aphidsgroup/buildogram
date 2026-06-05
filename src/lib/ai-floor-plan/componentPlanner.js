@@ -64,14 +64,18 @@ export function placeComponents(cadFloor) {
 
     // 5. Parking
     if (room.type === 'parking') {
-      placements.push({
-        id: `bp_${bpIdCounter++}`,
-        blockId: 'car',
-        roomId: room.id,
-        x: 500,
-        y: 500,
-        rotation: 0
-      });
+      const carW = 1800;
+      const carH = 4500;
+      if (room.width >= carW && room.height >= carH) {
+        placements.push({
+          id: `bp_${bpIdCounter++}`,
+          blockId: 'car',
+          roomId: room.id,
+          x: Math.round((room.width - carW) / 2),
+          y: Math.round((room.height - carH) / 2),
+          rotation: 0
+        });
+      }
     }
   });
 
