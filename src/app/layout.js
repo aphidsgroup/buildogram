@@ -1,6 +1,7 @@
 import './globals.css';
 import SiteLayoutClient from './SiteLayoutClient';
 import PWARegister from '@/components/PWARegister';
+import FloatingReelPlayer from '@/components/reels/FloatingReelPlayer';
 
 export const metadata = {
   metadataBase: new URL('https://www.buildogram.in'),
@@ -70,7 +71,7 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         {/* Accessibility: Skip to main content */}
         <a href="#main-content" className="skip-to-content">Skip to main content</a>
         <PWARegister />
@@ -110,6 +111,7 @@ export default function RootLayout({ children }) {
             />
           </>
         )}
+        <FloatingReelPlayer />
       </body>
     </html>
   );
