@@ -159,6 +159,11 @@
   font-weight: 600;
   flex-wrap: wrap;
 }
+.trustLine span:not(:last-child)::after {
+  content: "·";
+  margin-left: 12px;
+  opacity: 0.6;
+}
 
 /* Hero Right Visual Preview */
 .heroRight {
@@ -407,6 +412,14 @@
 }
 
 @media (max-width: 768px) {
+  .hero { padding: 40px 0; }
+  .trustLine { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 12px 8px; 
+    text-align: center; 
+  }
+  .trustLine span::after { display: none !important; }
   .bentoGrid { grid-template-columns: 1fr; }
   .bentoWide1, .bentoTall1, .bentoStandard { grid-column: span 1; grid-row: span 1; }
   
