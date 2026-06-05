@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
-import ReactPlayer from 'react-player/lazy';
+import ReactPlayer from 'react-player';
 import styles from './FloatingReelPlayer.module.css';
 
 const Volume2 = ({ size = 24, ...props }) => (
