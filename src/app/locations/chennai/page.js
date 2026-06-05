@@ -1,12 +1,19 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
+import { areas, areaMap } from '@/data/seo/areas';
 import { localities } from '@/data/seo/localities';
 
 export const metadata = generateSEOMetadata({
-title: 'House Construction in Chennai | All Localities | Buildogram',
+  title: 'House Construction in Chennai | All Localities | Buildogram',
   description: 'Buildogram provides engineer-led house construction services across Chennai. Browse all localities including OMR, ECR, Tambaram, Anna Nagar, Porur, Velachery, and more.',
   path: '/locations/chennai',
 });
+
+// Combine both lists for the directory
+const allLocations = [
+  ...areas,
+  ...localities.filter(l => !areaMap[l.slug])
+].sort((a, b) => a.name.localeCompare(b.name));
 
 const orgSchema = {
   '@context': 'https://schema.org',
@@ -14,11 +21,11 @@ const orgSchema = {
   name: 'Buildogram',
   description: 'Engineer-led construction and property services across Chennai',
   url: 'https://buildogram.in',
-  areaServed: { '@type': 'City', name: 'Chennai', containsPlace: localities.map((l) => ({ '@type': 'Place', name: `${l.name}, Chennai` })) },
+  areaServed: { '@type': 'City', name: 'Chennai', containsPlace: allLocations.map((l) => ({ '@type': 'Place', name: `${l.name}, Chennai` })) },
 };
 
 export default function ChennaiHub() {
-  const regions = [...new Set(localities.map((l) => l.region))];
+  const regions = [...new Set(allLocations.map((l) => l.region))].sort();
 
   return (
     <>
@@ -30,7 +37,7 @@ export default function ChennaiHub() {
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>📍 Chennai</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 50px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>
-            House Construction in Chennai — All Localities
+            Home Construction in Chennai — All Areas
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', maxWidth: '580px', lineHeight: 1.7 }}>
             Buildogram provides engineer-led construction, BOQ-based contracts, and quality supervision across all major Chennai localities.
@@ -40,7 +47,9 @@ export default function ChennaiHub() {
 
       <div className="container" style={{ padding: '60px 24px' }}>
         {regions.map((region) => {
-          const regionLocalities = localities.filter((l) => l.region === region);
+          const regionLocalities = allLocations.filter((l) => l.region === region);
+          if (regionLocalities.length === 0) return null;
+          
           return (
             <div key={region} style={{ marginBottom: '48px' }}>
               <h2 style={{ fontSize: '18px', color: 'var(--secondary)', marginBottom: '20px', paddingBottom: '10px', borderBottom: '2px solid var(--border)' }}>
@@ -52,7 +61,7 @@ export default function ChennaiHub() {
                     <div className="card card-hover">
                       <h3 style={{ fontSize: '16px', color: 'var(--secondary)', fontWeight: 700, marginBottom: '8px' }}>{loc.name}</h3>
                       <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.6, marginBottom: '12px' }}>{loc.desc.slice(0, 90)}…</p>
-                      <div style={{ fontSize: '11px', color: 'var(--accent)', fontWeight: 600 }}>Construction & property guide →</div>
+                      <div style={{ fontSize: '11px', color: 'var(--accent)', fontWeight: 600 }}>Construction guide & services →</div>
                     </div>
                   </Link>
                 ))}
