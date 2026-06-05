@@ -101,7 +101,7 @@ export default function FloatingReelPlayer() {
     setShowControls(true);
   };
 
-  const parsed = reel ? parseReelUrl(reel.video_url) : null;
+  const parsed = reel ? parseReelUrl(reel.video_url, reel.start_muted ?? false) : null;
 
   return (
     <div className={`${styles.container} ${isMobile ? styles.mobile : styles.desktop} ${styles.visible}`} onClick={handleTap}>

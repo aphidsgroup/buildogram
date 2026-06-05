@@ -14,15 +14,15 @@
 .desktop {
   bottom: 24px;
   left: 24px;
-  width: 180px;
-  height: 320px;
+  width: 280px;
+  height: 498px;
 }
 
 .mobile {
   bottom: 16px;
   left: 16px;
-  width: 140px;
-  height: 249px;
+  width: 180px;
+  height: 320px;
   border-radius: 16px;
 }
 
