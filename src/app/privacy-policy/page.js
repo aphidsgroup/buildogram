@@ -1,7 +1,9 @@
-export const metadata = {
-  title: 'Privacy Policy | Buildogram',
-  description: 'Privacy policy for Buildogram users.',
-};
+import { generateSEOMetadata } from '@/lib/seo/metadata';
+export const metadata = generateSEOMetadata({
+title: 'Privacy Policy | Buildogram',
+  description: 'Privacy policy for Buildogram users.',,
+  path: '/privacy-policy',
+});
 
 export default function PrivacyPolicy() {
   return (

@@ -1,9 +1,11 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'Construction Guide | Buildogram Resources',
-  description: 'Educational guide for home construction process, approvals, budgeting, and execution.',
-};
+export const metadata = generateSEOMetadata({
+title: 'Construction Guide | Buildogram Resources',
+  description: 'Educational guide for home construction process, approvals, budgeting, and execution.',,
+  path: '/resources/construction-guide',
+});
 
 export default function ConstructionGuidePage() {
   return (

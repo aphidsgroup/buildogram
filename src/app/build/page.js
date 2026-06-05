@@ -1,10 +1,12 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import BuildLeadForm from './BuildLeadForm';
 
-export const metadata = {
-  title: 'Construction Support and Contractor Marketplace | Buildogram',
-  description: 'Find construction clarity, BOQ support, project tracking, partner coordination, and material support through Buildogram. Serving Chennai and Tamil Nadu.',
-};
+export const metadata = generateSEOMetadata({
+title: 'Construction Support and Contractor Marketplace | Buildogram',
+  description: 'Find construction clarity, BOQ support, project tracking, partner coordination, and material support through Buildogram. Serving Chennai and Tamil Nadu.',,
+  path: '/build',
+});
 
 const services = [
   { icon: '🏠', title: 'Home Construction', desc: 'Individual homes built with transparent BOQ, material proof and quality checks.', href: '/build/home-construction', tag: 'Most Popular' },

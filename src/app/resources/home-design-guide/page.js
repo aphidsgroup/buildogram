@@ -1,9 +1,11 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'Home Design Guide | Buildogram Resources',
-  description: 'Floor planning, interior planning, elevation, vastu, lighting, and ventilation.',
-};
+export const metadata = generateSEOMetadata({
+title: 'Home Design Guide | Buildogram Resources',
+  description: 'Floor planning, interior planning, elevation, vastu, lighting, and ventilation.',,
+  path: '/resources/home-design-guide',
+});
 
 export default function HomeDesignGuidePage() {
   return (

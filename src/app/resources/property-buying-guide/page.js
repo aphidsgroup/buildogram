@@ -1,9 +1,11 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'Property Buying Guide | Buildogram Resources',
-  description: 'Understand buying land, apartments, villas, legal documents, and verification.',
-};
+export const metadata = generateSEOMetadata({
+title: 'Property Buying Guide | Buildogram Resources',
+  description: 'Understand buying land, apartments, villas, legal documents, and verification.',,
+  path: '/resources/property-buying-guide',
+});
 
 export default function PropertyBuyingGuidePage() {
   return (

@@ -1,10 +1,12 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import MaintenanceLeadForm from './MaintenanceLeadForm';
 
-export const metadata = {
-  title: 'Home Maintenance Services Chennai | AMC & Repairs | Buildogram',
-  description: 'Professional home maintenance, waterproofing, plumbing, electrical repairs and AMC services in Chennai. All work documented with before/after proof.',
-};
+export const metadata = generateSEOMetadata({
+title: 'Home Maintenance Services Chennai | AMC & Repairs | Buildogram',
+  description: 'Professional home maintenance, waterproofing, plumbing, electrical repairs and AMC services in Chennai. All work documented with before/after proof.',,
+  path: '/maintenance',
+});
 
 const services = [
   { icon: '💧', title: 'Waterproofing', desc: 'Terrace, bathroom, wall and basement waterproofing with warranty.' },

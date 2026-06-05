@@ -1,7 +1,9 @@
-export const metadata = {
-  title: 'Terms of Service | Buildogram',
-  description: 'Terms of service for Buildogram.',
-};
+import { generateSEOMetadata } from '@/lib/seo/metadata';
+export const metadata = generateSEOMetadata({
+title: 'Terms of Service | Buildogram',
+  description: 'Terms of service for Buildogram.',,
+  path: '/terms',
+});
 
 export default function Terms() {
   return (

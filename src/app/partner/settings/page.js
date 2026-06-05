@@ -1,8 +1,10 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import ChangePasswordForm from '@/components/ChangePasswordForm';
 
-export const metadata = {
-  title: 'Settings - Partner Portal',
-};
+export const metadata = generateSEOMetadata({
+title: 'Settings - Partner Portal',,
+  path: '/partner/settings',
+});
 
 export default function PartnerSettings() {
   return (

@@ -1,3 +1,4 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import BOQAuditForm from './BOQAuditForm';
 import AnimatedSection from '@/components/ui/AnimatedSection';
@@ -5,10 +6,11 @@ import SectionHeader from '@/components/ui/SectionHeader';
 import PremiumCard from '@/components/ui/PremiumCard';
 import styles from './boq.module.css';
 
-export const metadata = {
-  title: 'BOQ Review and Contractor Quote Audit | Buildogram',
-  description: 'Before you finalize a contractor, understand what is included, what is unclear, and what questions to ask. BOQ clarity service inside the Buildogram marketplace. Chennai & Tamil Nadu.',
-};
+export const metadata = generateSEOMetadata({
+title: 'BOQ Review and Contractor Quote Audit | Buildogram',
+  description: 'Before you finalize a contractor, understand what is included, what is unclear, and what questions to ask. BOQ clarity service inside the Buildogram marketplace. Chennai & Tamil Nadu.',,
+  path: '/boq-audit',
+});
 
 const WHAT_WE_CHECK = [
   { icon: '⚙️', title: 'Steel Quantity & Grade', desc: 'Verify the exact tonnage, dia and grade of steel matches your structural drawing. Most contractors under-specify by 15–25%.' },

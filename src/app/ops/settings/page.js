@@ -1,8 +1,10 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import ChangePasswordForm from '@/components/ChangePasswordForm';
 
-export const metadata = {
-  title: 'Settings - Ops Console',
-};
+export const metadata = generateSEOMetadata({
+title: 'Settings - Ops Console',,
+  path: '/ops/settings',
+});
 
 export default function OpsSettings() {
   return (

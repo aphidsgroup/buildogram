@@ -1,9 +1,11 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import PropertyMarketplaceClient from '../PropertyMarketplaceClient';
 
-export const metadata = {
-  title: '360° Verified Rentals | Buildogram',
-  description: 'Rent premium, verified homes in Chennai with 360° virtual tours.',
-};
+export const metadata = generateSEOMetadata({
+title: '360° Verified Rentals | Buildogram',
+  description: 'Rent premium, verified homes in Chennai with 360° virtual tours.',,
+  path: '/properties/rent',
+});
 
 export default function PropertiesRentPage() {
   return (

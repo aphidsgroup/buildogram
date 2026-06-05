@@ -1,10 +1,12 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import sql from '@/lib/db';
 
-export const metadata = {
-  title: 'Construction Blog | Buildogram',
-  description: 'Expert insights, cost guides, and structural engineering tips for home builders.',
-};
+export const metadata = generateSEOMetadata({
+title: 'Construction Blog | Buildogram',
+  description: 'Expert insights, cost guides, and structural engineering tips for home builders.',,
+  path: '/blog',
+});
 
 // Next.js config to ensure the public blog page is dynamically rendered or revalidated
 export const revalidate = 60; // revalidate every minute
