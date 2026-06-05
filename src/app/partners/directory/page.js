@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = generateSEOMetadata({
 title: 'Verified Builders, Contractors, Architects & Suppliers | Buildogram',
-  description: 'Explore verified construction partners connected through Buildogram\'s engineer-led ecosystem, including builders, contractors, architects, consultants, and material suppliers.',,
+  description: 'Explore verified construction partners connected through Buildogram\'s engineer-led ecosystem, including builders, contractors, architects, consultants, and material suppliers.',
   path: '/partners/directory',
 });
 

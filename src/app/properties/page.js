@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
 title: '360° Property Discovery Portals | Buildogram',
-  description: 'Discover connected property portals for buying, selling, renting, and leasing properties with immersive 360° property viewing — connected to the Buildogram construction ecosystem.',,
+  description: 'Discover connected property portals for buying, selling, renting, and leasing properties with immersive 360° property viewing — connected to the Buildogram construction ecosystem.',
   path: '/properties',
 });
 

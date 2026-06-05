@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
 title: 'About Buildogram | Construction & Property Marketplace',
-  description: 'Learn about Buildogram, an IIT-alumni, PhD structural engineer-led construction-as-a-service platform transforming home building in Chennai.',,
+  description: 'Learn about Buildogram, an IIT-alumni, PhD structural engineer-led construction-as-a-service platform transforming home building in Chennai.',
   path: '/about',
 });
 

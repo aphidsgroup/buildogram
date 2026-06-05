@@ -4,7 +4,7 @@ import BuildLeadForm from './BuildLeadForm';
 
 export const metadata = generateSEOMetadata({
 title: 'Construction Support and Contractor Marketplace | Buildogram',
-  description: 'Find construction clarity, BOQ support, project tracking, partner coordination, and material support through Buildogram. Serving Chennai and Tamil Nadu.',,
+  description: 'Find construction clarity, BOQ support, project tracking, partner coordination, and material support through Buildogram. Serving Chennai and Tamil Nadu.',
   path: '/build',
 });
 

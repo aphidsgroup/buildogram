@@ -1,7 +1,7 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 export const metadata = generateSEOMetadata({
 title: 'Disclaimer | Buildogram',
-  description: 'Legal disclaimer for Buildogram.',,
+  description: 'Legal disclaimer for Buildogram.',
   path: '/disclaimer',
 });
 

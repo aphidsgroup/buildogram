@@ -2,7 +2,7 @@ import { generateSEOMetadata } from '@/lib/seo/metadata';
 import ChangePasswordForm from '@/components/ChangePasswordForm';
 
 export const metadata = generateSEOMetadata({
-title: 'Settings - Client Portal',,
+title: 'Settings - Client Portal',
   path: '/client/settings',
 });
 

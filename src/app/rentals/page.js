@@ -6,7 +6,7 @@ export const revalidate = 60; // ISR cache
 
 export const metadata = generateSEOMetadata({
 title: 'Verified Rentals in Chennai | Buildogram Property Passport™',
-  description: 'Rent premium, verified homes in Chennai. Zero broker fees. Every property comes with a verified Property Passport™ covering structural quality, plumbing, and electrical specs.',,
+  description: 'Rent premium, verified homes in Chennai. Zero broker fees. Every property comes with a verified Property Passport™ covering structural quality, plumbing, and electrical specs.',
   path: '/rentals',
 });
 

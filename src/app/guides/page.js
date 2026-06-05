@@ -4,7 +4,7 @@ import { guides, guideCategories } from '@/data/seo/guides';
 
 export const metadata = generateSEOMetadata({
 title: 'Buildogram Guides | Construction, BOQ, Property & Maintenance Guides',
-  description: 'Expert guides for homeowners, landlords, and property investors. BOQ, construction cost, contractor selection, plan review, property records, rental, and maintenance.',,
+  description: 'Expert guides for homeowners, landlords, and property investors. BOQ, construction cost, contractor selection, plan review, property records, rental, and maintenance.',
   path: '/guides',
 });
 

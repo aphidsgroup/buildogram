@@ -4,7 +4,7 @@ import { faqCategories } from '@/data/seo/faqs';
 
 export const metadata = generateSEOMetadata({
 title: 'Frequently Asked Questions | Buildogram',
-  description: 'Answers to common questions about home construction, BOQ, contractor selection, quality inspection, property listings, Property Passport, and more.',,
+  description: 'Answers to common questions about home construction, BOQ, contractor selection, quality inspection, property listings, Property Passport, and more.',
   path: '/faqs',
 });
 
