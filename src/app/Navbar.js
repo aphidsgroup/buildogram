@@ -127,10 +127,10 @@ export default function Navbar() {
           <Image
             src="/logo-main.png"
             alt="Buildogram"
-            width={160}
-            height={40}
+            width={200}
+            height={50}
             priority
-            style={{ objectFit: 'contain', height: '36px', width: 'auto' }}
+            style={{ objectFit: 'contain', height: '44px', width: 'auto' }}
           />
         </Link>
 

@@ -144,7 +144,7 @@ export default function PartnerLayout({ children }) {
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}>
         <div className={styles.sidebarHeader}>
           <Link href="/" className={styles.logo} style={{ display: 'block' }}>
-            <Image src="/logo-main.png" alt="Buildogram" width={140} height={35} style={{ objectFit: 'contain', height: '30px', width: 'auto', filter: 'brightness(0) invert(1)' }} />
+            <Image src="/logo-main.png" alt="Buildogram" width={160} height={40} style={{ objectFit: 'contain', height: '38px', width: 'auto', filter: 'brightness(0) invert(1)' }} />
           </Link>
           <div className={styles.sidebarBadge}>
             {category.toUpperCase()} PARTNER

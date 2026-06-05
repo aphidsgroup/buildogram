@@ -58,7 +58,7 @@ export default function OpsLayout({ children }) {
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`} style={{ background: '#0F172A', color: 'white' }}>
         <div className={styles.sidebarHeader} style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
           <Link href="/" className={styles.logo} style={{ color: 'white', display: 'block' }}>
-            <Image src="/logo-main.png" alt="Buildogram" width={140} height={35} style={{ objectFit: 'contain', height: '30px', width: 'auto', filter: 'brightness(0) invert(1)' }} />
+            <Image src="/logo-main.png" alt="Buildogram" width={160} height={40} style={{ objectFit: 'contain', height: '38px', width: 'auto', filter: 'brightness(0) invert(1)' }} />
           </Link>
           <div className={styles.sidebarBadge} style={{ background: 'rgba(252,110,32,0.15)', color: '#FC6E20', border: '1px solid rgba(252,110,32,0.3)' }}>Ops Console</div>
         </div>
