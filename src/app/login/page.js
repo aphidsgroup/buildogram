@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import styles from './page.module.css';
@@ -36,7 +37,7 @@ export default function LoginPage() {
       
       <AnimatedSection className={styles.card}>
         <Link href="/" className={styles.logo}>
-          <span style={{ color: 'var(--primary)' }}>⬡</span> Buildogram
+          <Image src="/logo-main.png" alt="Buildogram" width={160} height={40} priority style={{ objectFit: 'contain', height: '40px', width: 'auto' }} />
         </Link>
         
         <div className={styles.tabs}>

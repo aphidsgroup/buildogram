@@ -4,31 +4,40 @@ import PWARegister from '@/components/PWARegister';
 
 export const metadata = {
   metadataBase: new URL('https://www.buildogram.in'),
-  title: 'Buildogram | Home Construction Company in Chennai | BOQ Review, Builders & Materials',
-  description: 'Buildogram helps Chennai property owners plan home construction, review BOQs, compare contractor quotes, source materials, find verified builders, and manage property documents with engineer-led support.',
+  title: 'Buildogram | Engineer-Led Construction Support Chennai | Structural Audit, BOQ Review, Steel Construction',
+  description: 'Buildogram is an engineer-led construction support platform for property owners in Chennai — structural audit, BOQ review, contractor quote audit, steel construction, PEB buildings, site supervision, and property handover documentation.',
   keywords: [
     'Home construction company Chennai',
-    'Builders in Chennai',
+    'Structural audit Chennai',
     'BOQ review Chennai',
+    'Steel construction Chennai',
+    'PEB building contractors Chennai',
     'Construction project management Chennai',
+    'Site supervision Chennai',
     'Verified builders and contractors Chennai',
     'Construction material sourcing Chennai',
     'Property Passport',
     'Buildogram'
   ],
+  icons: {
+    icon: [{ url: '/logo-icon.png', type: 'image/png' }],
+    apple: '/icons/apple-touch-icon.png',
+    shortcut: '/logo-icon.png',
+  },
   openGraph: {
-    title: 'Buildogram | Engineer-Led Home Construction & Property Ecosystem',
-    description: 'Engineer-led home construction companion in Chennai. Plan, build, source materials, verify site progress, and manage your Property Passport.',
+    title: 'Buildogram | Engineer-Led Construction Support in Chennai',
+    description: 'Structural audits, BOQ review, steel construction, site supervision, and property handover documentation — engineer-led and owner-first.',
     url: 'https://www.buildogram.in/',
     siteName: 'Buildogram',
-    images: [{ url: 'https://www.buildogram.in/og-image.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.buildogram.in/logo-main.png', width: 1200, height: 300, alt: 'Buildogram — Construction · Property · Materials' }],
     locale: 'en_IN',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Buildogram | Engineer-Led Construction Companion',
-    description: 'Engineer-led guidance for home construction in Chennai. Verified builders, BOQ reviews, material sourcing, and Property Passport.',
+    title: 'Buildogram | Engineer-Led Construction Support',
+    description: 'Structural audits, BOQ review, steel construction, site supervision — engineer-led and owner-first.',
+    images: ['https://www.buildogram.in/logo-main.png'],
   },
   alternates: {
     canonical: '/',

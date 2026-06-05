@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
+import Image from 'next/image';
 import { AnimatePresence, motion } from 'motion/react';
 import styles from './Navbar.module.css';
 
@@ -123,10 +124,14 @@ export default function Navbar() {
 
         {/* Brand */}
         <Link href="/" className={styles.brand} onClick={close} aria-label="Buildogram home">
-          <div className={styles.brandMark} aria-hidden="true">
-            <i/><i/><i/><i/><i/><i/><i/><i/><i/>
-          </div>
-          <span className={styles.brandName}>Buildogram</span>
+          <Image
+            src="/logo-main.png"
+            alt="Buildogram"
+            width={160}
+            height={40}
+            priority
+            style={{ objectFit: 'contain', height: '36px', width: 'auto' }}
+          />
         </Link>
 
         {/* Desktop nav */}
