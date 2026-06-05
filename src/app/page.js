@@ -94,11 +94,8 @@ export default function Home() {
             </div>
             <div className={styles.trustLine}>
               <span>Verified partners</span>
-              <span>·</span>
               <span>BOQ checks</span>
-              <span>·</span>
               <span>Material rate clarity</span>
-              <span>·</span>
               <span>Site progress records</span>
             </div>
           </AnimatedSection>
