@@ -1,4 +1,4 @@
-export function parseReelUrl(url) {
+export function parseReelUrl(url, startMuted = false) {
   let result = {
     provider: 'unknown',
     originalUrl: url,
@@ -8,6 +8,8 @@ export function parseReelUrl(url) {
     canAutoplay: false,
     notes: null
   };
+
+  const mParam = startMuted ? '1' : '0';
 
   if (!url) return result;
 
@@ -42,8 +44,8 @@ export function parseReelUrl(url) {
       if (videoId) {
         result.videoId = videoId;
         // Build the embed URL optimized for a vertical "reels" experience
-        // autoplay=1, mute=1 (for reliable start), loop=1, playlist=videoId (required for loop), playsinline=1
-        result.embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&modestbranding=1&playsinline=1&rel=0`;
+        // autoplay=1, mute dynamic, loop=1, playlist=videoId (required for loop), playsinline=1
+        result.embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=${mParam}&loop=1&playlist=${videoId}&controls=0&modestbranding=1&playsinline=1&rel=0`;
       }
       return result;
     }
@@ -58,7 +60,7 @@ export function parseReelUrl(url) {
 
       if (videoId && /^\d+$/.test(videoId)) {
         result.videoId = videoId;
-        result.embedUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1&loop=1&muted=1&background=1`;
+        result.embedUrl = `https://player.vimeo.com/video/${videoId}?autoplay=1&loop=1&muted=${mParam}&controls=0`;
       } else {
         result.notes = "Could not strictly extract Vimeo ID from URL.";
       }
@@ -85,7 +87,7 @@ export function parseReelUrl(url) {
       result.canAutoplay = true; // FB plugin can autoplay with &autoplay=1 (muted by default)
       result.notes = "Facebook plugins enforce their own UI constraints.";
       
-      result.embedUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false&autoplay=1&mute=1`;
+      result.embedUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(url)}&show_text=false&autoplay=1&mute=${mParam}`;
       return result;
     }
 
