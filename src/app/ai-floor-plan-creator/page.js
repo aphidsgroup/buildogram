@@ -1,60 +1,39 @@
-import Link from 'next/link';
-import styles from './landing.module.css';
+'use client';
+import PublicServicePage from '@/components/ui/PublicServicePage';
 
-export const metadata = {
-  title: 'Buildogram AI Floor Plan Creator',
-  description: 'Instantly generate conceptual floor plans for your home using AI.',
-};
-
-export default function AIFloorPlanLanding() {
+export default function Page() {
   return (
-    <div className="page-wrapper">
-      <section className={styles.hero}>
-        <h1 className={styles.heroTitle}>
-          Design Your Dream Home with <span>Buildogram AI</span>
-        </h1>
-        <p className={styles.heroSubtitle}>
-          Describe your requirements and our AI instantly generates conceptual, editable floor plans. Perfect for visualizing your next residential project before engaging an engineer.
-        </p>
-        <div className={styles.ctaGroup}>
-          <Link href="/auth/login?redirect=/ai-floor-plan-creator/studio" className="btn btn-primary btn-lg">
-            Start Generating for Free
-          </Link>
-        </div>
-      </section>
-
-      <section className={styles.section}>
-        <h2 className={styles.sectionTitle}>How It Works</h2>
-        <div className={styles.grid3}>
-          <div className={styles.card}>
-            <div className={styles.cardIcon}>✍️</div>
-            <h3 className={styles.cardTitle}>1. Prompt Your Vision</h3>
-            <p className={styles.cardDesc}>
-              Enter your plot dimensions, facing, budget, and special requirements (like "Vastu compliant" or "Extra large kitchen").
-            </p>
-          </div>
-          <div className={styles.card}>
-            <div className={styles.cardIcon}>🤖</div>
-            <h3 className={styles.cardTitle}>2. AI Generation</h3>
-            <p className={styles.cardDesc}>
-              Our AI instantly generates multiple 2D conceptual layout options tailored to Indian residential standards.
-            </p>
-          </div>
-          <div className={styles.card}>
-            <div className={styles.cardIcon}>🏗️</div>
-            <h3 className={styles.cardTitle}>3. Engineer Review</h3>
-            <p className={styles.cardDesc}>
-              Love the concept? Instantly submit it to our structural engineers to convert it into a construction-ready blueprint.
-            </p>
-          </div>
-        </div>
-
-        <div className={styles.disclaimer}>
-          <strong>Disclaimer:</strong> Buildogram AI-generated floor plans are conceptual and intended for visualization and ideation purposes only. 
-          They are not substitute for professional architectural or structural engineering plans. All AI layouts must undergo professional review 
-          for construction viability, structural integrity, load-bearing capacities, permit compliance, and local building codes.
-        </div>
-      </section>
-    </div>
+    <PublicServicePage
+      heroEyebrow="Construction Intelligence"
+      heroTitle="AI Floor Plan Creator"
+      heroSub="Generate conceptual layouts based on your plot dimensions."
+      heroPrimaryCta={{ label: 'Talk to an Engineer', href: '/contact?type=construction' }}
+      heroSecondaryCta={{ label: 'Explore More', href: '/' }}
+      problems={[
+        { icon: '⚠️', title: 'Lack of clarity', desc: 'Owners struggle to understand technical details.' },
+        { icon: '💸', title: 'Hidden costs', desc: 'Unplanned expenses disrupt the budget.' },
+        { icon: '📉', title: 'Quality compromises', desc: 'Materials and workmanship fall below standards.' }
+      ]}
+      processSteps={[
+        { step: '01', title: 'Consultation', desc: 'Understand your unique requirements.' },
+        { step: '02', title: 'Analysis', desc: 'Deep dive into specifications and quotes.' },
+        { step: '03', title: 'Execution', desc: 'Connect with right partners and start work.' }
+      ]}
+      serviceDetails={[
+        { title: 'Detailed Reports', desc: 'Get itemized breakdowns of our findings.' },
+        { title: 'Expert Guidance', desc: 'Speak directly with our senior engineers.' },
+        { title: 'Verified Records', desc: 'All documents are stored in your Property Passport.' }
+      ]}
+      proofData={{
+        title: 'Real Engineering Value',
+        desc: 'See exactly what we check.',
+        dashboardTitle: 'Sample Verification Checks',
+        items: ['Specification Analysis', 'Quantity Takeoff Validation', 'Market Rate Comparison', 'Quality Benchmarking']
+      }}
+      faqs={[
+        { q: 'How does this work?', a: 'Simply reach out to us and our engineers will guide you.' },
+        { q: 'Is there a fee?', a: 'We offer a free initial consultation.' }
+      ]}
+    />
   );
 }
