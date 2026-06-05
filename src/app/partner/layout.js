@@ -1,5 +1,6 @@
 'use client';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { useState, useEffect, useRef } from 'react';
 import styles from './layout.module.css';
@@ -142,9 +143,8 @@ export default function PartnerLayout({ children }) {
     <div className={styles.shell}>
       <aside className={`${styles.sidebar} ${sidebarOpen ? styles.open : ''}`}>
         <div className={styles.sidebarHeader}>
-          <Link href="/" className={styles.logo}>
-            <span className={styles.logoIcon}>⬡</span>
-            Buildogram <span className={styles.logoSub}>OS</span>
+          <Link href="/" className={styles.logo} style={{ display: 'block' }}>
+            <Image src="/logo-main.png" alt="Buildogram" width={140} height={35} style={{ objectFit: 'contain', height: '30px', width: 'auto', filter: 'brightness(0) invert(1)' }} />
           </Link>
           <div className={styles.sidebarBadge}>
             {category.toUpperCase()} PARTNER

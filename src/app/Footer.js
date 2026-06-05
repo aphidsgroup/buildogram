@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './Footer.module.css';
 
 const FOOTER_COLS = [
@@ -83,10 +84,13 @@ export default function Footer() {
             {/* Brand column */}
             <div className={styles.brandCol}>
               <Link href="/" className={styles.brandLink} aria-label="Buildogram home">
-                <div className={styles.brandMark} aria-hidden="true">
-                  <i/><i/><i/><i/><i/><i/><i/><i/><i/>
-                </div>
-                <span className={styles.brandName}>Buildogram</span>
+                <Image
+                  src="/logo-main.png"
+                  alt="Buildogram"
+                  width={180}
+                  height={45}
+                  style={{ objectFit: 'contain', height: '38px', width: 'auto', marginBottom: '12px' }}
+                />
               </Link>
               <p className={styles.brandDesc}>
                 Engineer-led construction and property ecosystem helping owners plan, build, source materials, verify progress, and maintain digital property records.
