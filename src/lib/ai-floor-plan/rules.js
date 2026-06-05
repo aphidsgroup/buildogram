@@ -30,6 +30,41 @@ const M_PER_FT = 0.3048;
 
 import { checkBlockPlacements } from './blockPlacement';
 
+function getZone(x, y, w, h, plotW, plotH, facing) {
+  const cx = x + w / 2;
+  const cy = y + h / 2;
+  const nx = cx / plotW;
+  const ny = cy / plotH;
+  
+  let col = nx < 0.33 ? 'W' : nx > 0.66 ? 'E' : 'C';
+  let row = ny < 0.33 ? 'F' : ny > 0.66 ? 'R' : 'C'; // F = Front, R = Rear
+
+  let geoRow, geoCol;
+  if (facing === 'South') {
+    geoRow = row === 'F' ? 'S' : row === 'R' ? 'N' : 'C';
+    geoCol = col === 'W' ? 'E' : col === 'E' ? 'W' : 'C';
+  } else if (facing === 'East') {
+    geoRow = col === 'W' ? 'N' : col === 'E' ? 'S' : 'C';
+    geoCol = row === 'F' ? 'E' : row === 'R' ? 'W' : 'C';
+  } else if (facing === 'West') {
+    geoRow = col === 'W' ? 'S' : col === 'E' ? 'N' : 'C';
+    geoCol = row === 'F' ? 'W' : row === 'R' ? 'E' : 'C';
+  } else { // North
+    geoRow = row === 'F' ? 'N' : row === 'R' ? 'S' : 'C';
+    geoCol = col;
+  }
+
+  if (geoRow === 'N' && geoCol === 'W') return 'NW';
+  if (geoRow === 'N' && geoCol === 'E') return 'NE';
+  if (geoRow === 'S' && geoCol === 'W') return 'SW';
+  if (geoRow === 'S' && geoCol === 'E') return 'SE';
+  if (geoRow === 'N') return 'N';
+  if (geoRow === 'S') return 'S';
+  if (geoCol === 'E') return 'E';
+  if (geoCol === 'W') return 'W';
+  return 'Center';
+}
+
 /**
  * Run all advisory checks on a floor plan
  * @param {Object} plan - The full plan JSON with floors, rooms, doors, windows
@@ -49,7 +84,10 @@ export function validateFloorPlan(plan) {
     const blockWarnings = checkBlockPlacements(floor);
     warnings.push(...blockWarnings);
 
-    // --- Room size checks ---
+    const plotW = Number(floor.width || plan.plotWidth || 9144);
+    const plotH = Number(floor.depth || plan.plotDepth || 12192);
+
+    // --- Room size & Vastu checks ---
     for (const room of rooms) {
       const areaSqm = (Number(room.width || 0) / 1000) * (Number(room.height || 0) / 1000);
       const areaSqft = areaSqm / SQM_PER_SQFT;
@@ -77,13 +115,64 @@ export function validateFloorPlan(plan) {
       }
 
       // Very small rooms advisory
-      if (areaSqft < 20 && room.type !== 'bathroom' && room.type !== 'stair') {
+      if (areaSqft < 20 && !['bathroom', 'stair', 'dress'].includes(room.type)) {
         warnings.push({
           type: 'info',
           code: 'SMALL_ROOM_ADVISORY',
           message: `${room.name}: Room is very small (${areaSqft.toFixed(0)} sqft). Consider increasing.`,
           roomId: room.id,
         });
+      }
+
+      // --- Vastu Checks ---
+      if (plan.vastuPreference !== 'Ignore') {
+        const rx = Number(room.x || 0);
+        const ry = Number(room.y || 0);
+        const rw = Number(room.width || 0);
+        const rh = Number(room.height || 0);
+        const facing = plan.facing || 'North';
+        const zone = room.vastuZone || getZone(rx, ry, rw, rh, plotW, plotH, facing);
+        const name = (room.name || '').toLowerCase();
+
+        // Pooja Vastu
+        if (name.includes('pooja') && zone !== 'NE') {
+          warnings.push({
+            type: 'warning',
+            code: 'VASTU_POOJA',
+            message: `Vastu: Pooja room is in ${zone} zone. North-East (Eesanya) is recommended.`,
+            roomId: room.id,
+          });
+        }
+
+        // Kitchen Vastu
+        if (name.includes('kitchen') && !['SE', 'NW'].includes(zone)) {
+          warnings.push({
+            type: 'warning',
+            code: 'VASTU_KITCHEN',
+            message: `Vastu: Kitchen is in ${zone} zone. South-East (Agnimoola) or North-West is recommended.`,
+            roomId: room.id,
+          });
+        }
+
+        // Master Bedroom Vastu
+        if (name.includes('master') && zone !== 'SW') {
+          warnings.push({
+            type: 'warning',
+            code: 'VASTU_MASTER_BED',
+            message: `Vastu: Master Bedroom is in ${zone} zone. South-West (Niruthi) is recommended.`,
+            roomId: room.id,
+          });
+        }
+
+        // Toilet Vastu
+        if (['toilet', 'bathroom', 'wc'].some(t => name.includes(t)) && ['NE', 'SW', 'Center'].includes(zone)) {
+           warnings.push({
+            type: 'error',
+            code: 'VASTU_TOILET',
+            message: `Vastu: Toilet is in ${zone} zone. Avoid NE, SW, and Center (Brahmasthan).`,
+            roomId: room.id,
+          });
+        }
       }
     }
 
@@ -109,11 +198,12 @@ export function validateFloorPlan(plan) {
     // --- Door width checks ---
     for (const door of doors) {
       const widthM = Number(door.width || 0) / 1000;
-      if (widthM < NBC_RULES.minDoorWidth) {
+      const minDoorWidthM = door.symbol === 'D1' || door.symbol === 'D2' ? 0.75 : NBC_RULES.minDoorWidth;
+      if (widthM < minDoorWidthM) {
         warnings.push({
           type: 'warning',
           code: 'NBC_MIN_DOOR_WIDTH',
-          message: `Door '${door.id}': Width is ${widthM.toFixed(2)}m, below NBC minimum of ${NBC_RULES.minDoorWidth}m`,
+          message: `Door '${door.id}': Width is ${widthM.toFixed(2)}m, below expected minimum of ${minDoorWidthM}m`,
         });
       }
     }
@@ -147,9 +237,10 @@ export function validateFloorPlan(plan) {
     }
 
     // --- Staircase check ---
-    const stairs = rooms.filter(r => r.type === 'stair');
+    const stairs = rooms.filter(r => r.type === 'staircase' || r.type === 'stair');
     for (const stair of stairs) {
-      const widthFt = Math.min(Number(stair.width || 0), Number(stair.height || 0));
+      const widthMm = Math.min(Number(stair.width || 0), Number(stair.height || 0));
+      const widthFt = widthMm / 304.8;
       if (widthFt < 3) {
         warnings.push({
           type: 'error',
@@ -163,7 +254,7 @@ export function validateFloorPlan(plan) {
     // --- Parking fit check ---
     const parking = rooms.filter(r => r.type === 'parking');
     for (const p of parking) {
-      const areaSqft = Number(p.width || 0) * Number(p.height || 0);
+      const areaSqft = (Number(p.width || 0) / 304.8) * (Number(p.height || 0) / 304.8);
       if (areaSqft < 120) {
         warnings.push({
           type: 'warning',

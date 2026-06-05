@@ -3,45 +3,51 @@ import styles from './Footer.module.css';
 
 const FOOTER_COLS = [
   {
-    title: 'For Owners',
-    links: [
-      ['Build Your Home', '/contact?type=construction'],
-      ['BOQ & Plan Review', '/contact?type=boq_audit'],
-      ['Material Support', '/materials'],
-      ['Property Passport', '/property-passport'],
-      ['Site Progress Tracking', '/projects'],
-      ['Contact Buildogram', '/contact?type=general'],
-    ],
-  },
-  {
-    title: 'Ecosystem',
-    links: [
-      ['Verified Partners', '/partners/directory'],
-      ['Become a Partner', '/partners/register'],
-      ['Material Suppliers', '/materials'],
-      ['Cost Estimator', '/cost-estimator'],
-      ['BOQ Audit Tool', '/boq-audit'],
-      ['AI Floor Plan', '/partner/ai-floor-plan-creator'],
-    ],
-  },
-  {
-    title: 'Property Portals',
-    links: [
-      ['Buy / Sell Properties', 'https://www.realproprealty.com'],
-      ['Rent / Lease Properties', 'https://toletboardchennai.in'],
-      ['360° Property Tours', 'https://www.realproprealty.com'],
-      ['Property Discovery', '/properties'],
-    ],
-  },
-  {
     title: 'Company',
     links: [
       ['About', '/about'],
-      ['Contact', '/contact?type=general'],
-      ['Privacy Policy', '/privacy-policy'],
-      ['Terms', '/terms'],
-      ['Guides', '/guides/what-is-boq-in-construction'],
-      ['FAQs', '/faqs/construction'],
+      ['Contact', '/contact'],
+      ['Careers', '/careers'],
+      ['Projects', '/projects'],
+    ],
+  },
+  {
+    title: 'Services',
+    links: [
+      ['Home Construction in Chennai', '/home-construction-chennai'],
+      ['BOQ Review', '/boq-audit'],
+      ['Construction Cost Estimator', '/cost-estimator'],
+      ['Plan Review', '/plan-review'],
+      ['Site Supervision', '/site-supervision-chennai'],
+    ],
+  },
+  {
+    title: 'Materials',
+    links: [
+      ['Cement', '/materials/cement'],
+      ['TMT Steel', '/materials/tmt-steel'],
+      ['M Sand', '/materials/m-sand'],
+      ['Bricks', '/materials/bricks'],
+      ['RMC', '/materials/ready-mix-concrete'],
+    ],
+  },
+  {
+    title: 'Locations',
+    links: [
+      ['Chennai', '/locations/chennai'],
+      ['Velachery', '/locations/chennai/velachery'],
+      ['Anna Nagar', '/locations/chennai/anna-nagar'],
+      ['Tambaram', '/locations/chennai/tambaram'],
+      ['OMR', '/locations/chennai/omr'],
+    ],
+  },
+  {
+    title: 'Resources',
+    links: [
+      ['Guides', '/guides'],
+      ['FAQ', '/faqs'],
+      ['Glossary', '/glossary'],
+      ['Property Passport', '/property-passport'],
     ],
   },
 ];

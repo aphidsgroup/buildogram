@@ -130,3 +130,36 @@ export const VASTU_RULES = {
     staircase: ['S', 'W', 'SW']
   }
 };
+
+export const THUMB_RULES = {
+  doors: {
+    MD: { widthFt: 3.5, label: 'Main Door' },
+    D: { widthFt: 3.0, label: 'Bedroom/Kitchen Door' },
+    D1: { widthFt: 2.5, label: 'Toilet/Store Door' },
+  },
+  windows: {
+    W: { widthFt: 5.0, label: 'Living/Master Bed Window' },
+    W1: { widthFt: 4.0, label: 'Bedroom/Kitchen Window' },
+    V: { widthFt: 2.0, label: 'Ventilator' },
+  },
+  rooms: {
+    masterBedroom: { minW: 11, minH: 11, idealW: 14, idealH: 14 },
+    bedroom: { minW: 10, minH: 10, idealW: 12, idealH: 12 },
+    kitchen: { minW: 8, minH: 8, idealW: 10, idealH: 10 },
+    pooja: { minW: 4, minH: 4, idealW: 6, idealH: 6 },
+    toilet: { minW: 4, minH: 6, idealW: 5, idealH: 8 },
+    living: { minW: 11, minH: 16, idealW: 16, idealH: 16 },
+    parking: { minW: 10, minH: 15, idealW: 12, idealH: 16 }, // 12x16 standard SUV
+  },
+  walls: {
+    exterior: 9, // inches
+    interior: 4.5, // inches
+  }
+};
+
+export function getRoomSize(type, preference = 'standard') {
+  const rules = THUMB_RULES.rooms[type] || THUMB_RULES.rooms.bedroom;
+  if (preference === 'compact') return { w: rules.minW, h: rules.minH };
+  if (preference === 'spacious') return { w: Math.max(rules.idealW, rules.minW + 2), h: Math.max(rules.idealH, rules.minH + 2) };
+  return { w: rules.idealW, h: rules.idealH };
+}

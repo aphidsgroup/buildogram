@@ -35,6 +35,8 @@ export async function generateFloorPlans(projectInput) {
         let f = buildCADFloor(floor);
         // Cut Doors & Windows
         f = planOpenings(f);
+        // Rebuild once with planned openings so the 9-inch/4.5-inch wall geometry is physically cut.
+        f = buildCADFloor(f);
         // Place Database Components
         if (input.layerPreference !== 'clean_cad') {
           f = placeComponents(f);

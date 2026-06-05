@@ -7,7 +7,31 @@ export function planOpenings(cadFloor) {
   let doorIdCounter = 1;
   let winIdCounter = 1;
 
-  const getWallLength = (w) => w.isHorizontal ? Math.abs(w.x2 - w.x1) : Math.abs(w.y2 - w.y1);
+  const getWallLength = (w) => Math.abs(w.y1 - w.y2) < 1 ? Math.abs(w.x2 - w.x1) : Math.abs(w.y2 - w.y1);
+  const getWallSide = (w) => {
+    const minX = Math.min(...cadFloor.rooms.map(r => r.x));
+    const maxX = Math.max(...cadFloor.rooms.map(r => r.x + r.width));
+    const minY = Math.min(...cadFloor.rooms.map(r => r.y));
+    const maxY = Math.max(...cadFloor.rooms.map(r => r.y + r.height));
+    if (Math.abs(w.y1 - minY) < 10) return 'N';
+    if (Math.abs(w.y1 - maxY) < 10) return 'S';
+    if (Math.abs(w.x1 - minX) < 10) return 'W';
+    if (Math.abs(w.x1 - maxX) < 10) return 'E';
+    return 'I';
+  };
+  const bySidePreference = (prefs) => (a, b) => {
+    const ai = prefs.indexOf(getWallSide(a));
+    const bi = prefs.indexOf(getWallSide(b));
+    const as = ai === -1 ? 99 : ai;
+    const bs = bi === -1 ? 99 : bi;
+    if (as !== bs) return as - bs;
+    return getWallLength(b) - getWallLength(a);
+  };
+  const openingCenter = (wall, width, clearance = 450) => {
+    const length = getWallLength(wall);
+    const safe = Math.max(width / 2 + clearance, Math.min(length / 2, length - width / 2 - clearance));
+    return Math.round(safe);
+  };
 
   // Re-map rooms into rawWalls from cadFloor.rawWalls (populated by cadModel, but we need it beforehand?)
   // Actually, generator calls planOpenings *after* buildCADFloor. 
@@ -40,26 +64,29 @@ export function planOpenings(cadFloor) {
     
     // Toilets must have ventilators on exterior walls
     if (room.type === 'toilet') {
-      const wWall = extWalls.sort((a,b) => getWallLength(b) - getWallLength(a))[0];
+      const wWall = extWalls.sort(bySidePreference(['E', 'N', 'W', 'S']))[0];
       if (wWall) {
         windows.push({
           id: `w_${winIdCounter++}`,
           wallId: wWall.id,
-          offsetMm: Math.round(getWallLength(wWall) / 2 - winRule.minWidth / 2),
+          roomId: room.id,
+          offsetMm: openingCenter(wWall, winRule.minWidth, 250),
           width: winRule.minWidth,
           symbol: 'V'
         });
       }
     } else if (extWalls.length > 0 && winRule.type === 'window') {
       // Place windows for habitable rooms
-      // One window on the longest exterior wall
-      const wWall = extWalls.sort((a,b) => getWallLength(b) - getWallLength(a))[0];
+      // Larger openings are preferred on north/east walls for daylight and cooler exposure.
+      const wallPrefs = room.type === 'kitchen' ? ['E', 'N', 'SE', 'NW', 'S', 'W'] : ['N', 'E', 'W', 'S'];
+      const wWall = extWalls.sort(bySidePreference(wallPrefs))[0];
       const length = getWallLength(wWall);
       if (length > winRule.minWidth + 300) {
         windows.push({
           id: `w_${winIdCounter++}`,
           wallId: wWall.id,
-          offsetMm: Math.round(length / 2 - winRule.minWidth / 2),
+          roomId: room.id,
+          offsetMm: openingCenter(wWall, winRule.minWidth, 300),
           width: winRule.minWidth,
           symbol: winRule.symbol
         });
@@ -72,7 +99,8 @@ export function planOpenings(cadFloor) {
           windows.push({
             id: `w_${winIdCounter++}`,
             wallId: wWall2.id,
-            offsetMm: Math.round(getWallLength(wWall2) / 2 - winRule.minWidth / 2),
+            roomId: room.id,
+            offsetMm: openingCenter(wWall2, winRule.minWidth, 300),
             width: winRule.minWidth,
             symbol: winRule.symbol
           });
@@ -83,14 +111,17 @@ export function planOpenings(cadFloor) {
     // 2. Plan Doors
     // Main Door logic
     if (room.type === 'living') {
-      const mdWall = extWalls[0]; // simplistic MD placement for now
+      const facing = cadFloor.facing || 'North';
+      const frontSide = { North: 'N', South: 'S', East: 'E', West: 'W' }[facing] || 'N';
+      const mdWall = extWalls.sort(bySidePreference([frontSide, 'E', 'N', 'W', 'S']))[0];
       if (mdWall) {
         const rule = DOOR_RULES.main;
         // Place MD near the corner
         doors.push({
           id: `d_${doorIdCounter++}`,
           wallId: mdWall.id,
-          offsetMm: rule.clearanceFromCorner, // Indian standard: push to corner
+          roomId: room.id,
+          offsetMm: openingCenter(mdWall, rule.width, rule.clearanceFromCorner),
           width: rule.width,
           symbol: rule.symbol
         });
@@ -103,7 +134,8 @@ export function planOpenings(cadFloor) {
         doors.push({
           id: `d_${doorIdCounter++}`,
           wallId: dWall.id,
-          offsetMm: rule.clearanceFromCorner, // Push door to corner (flush with adjoining wall)
+          roomId: room.id,
+          offsetMm: openingCenter(dWall, rule.width, rule.clearanceFromCorner),
           width: rule.width,
           symbol: rule.symbol
         });

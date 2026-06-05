@@ -3,10 +3,12 @@ import SiteLayoutClient from './SiteLayoutClient';
 import PWARegister from '@/components/PWARegister';
 
 export const metadata = {
-  title: 'Buildogram | Engineer-Led Home Construction & Property Ecosystem in Chennai',
-  description: 'Engineer-led home construction companion in Chennai. We help owners with BOQ reviews, construction project management, finding verified builders and contractors, construction material sourcing, and maintaining a digital Property Passport.',
+  metadataBase: new URL('https://www.buildogram.in'),
+  title: 'Buildogram | Home Construction Company in Chennai | BOQ Review, Builders & Materials',
+  description: 'Buildogram helps Chennai property owners plan home construction, review BOQs, compare contractor quotes, source materials, find verified builders, and manage property documents with engineer-led support.',
   keywords: [
-    'Engineer-led home construction Chennai',
+    'Home construction company Chennai',
+    'Builders in Chennai',
     'BOQ review Chennai',
     'Construction project management Chennai',
     'Verified builders and contractors Chennai',
@@ -17,9 +19,9 @@ export const metadata = {
   openGraph: {
     title: 'Buildogram | Engineer-Led Home Construction & Property Ecosystem',
     description: 'Engineer-led home construction companion in Chennai. Plan, build, source materials, verify site progress, and manage your Property Passport.',
-    url: 'https://buildogram.in',
+    url: 'https://www.buildogram.in',
     siteName: 'Buildogram',
-    images: [{ url: 'https://buildogram.in/og-image.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.buildogram.in/og-image.jpg', width: 1200, height: 630 }],
     locale: 'en_IN',
     type: 'website',
   },
@@ -46,14 +48,9 @@ export const viewport = {
   viewportFit: 'cover',
 };
 
-const orgSchema = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'Buildogram',
-  url: 'https://buildogram.in',
-  logo: 'https://buildogram.in/globe.svg',
-  description: 'Buildogram is an engineer-led construction companion and property ecosystem helping owners plan, build, source materials, track site progress, and maintain digital property records.',
-};
+import { generateOrganizationSchema } from '@/lib/seo/schema';
+
+const orgSchema = generateOrganizationSchema();
 
 export default function RootLayout({ children }) {
   return (
