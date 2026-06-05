@@ -86,7 +86,7 @@ export default function Home() {
             <h1 className={styles.heroH1}>
               Your engineer-led partner —
               <br />
-              <span className={styles.heroAccent}>from idea to handover.</span>
+              <span className={styles.heroAccent}> {" "}from idea to handover.</span>
             </h1>
             <p className={styles.heroSub}>
               Buildogram supports property owners through every stage — design review, BOQ audit, structural safety, contractor selection, material sourcing, site supervision, and final handover documentation. Engineer-led. Owner-first.
