@@ -7,41 +7,42 @@ import styles from './page.module.css';
 
 /* ─── Data ────────────────────────────────────────────────── */
 const PAIN_POINTS = [
-  { icon: '📋', title: 'Contractor quotes are hard to compare', desc: 'Multiple quotes with no standard scope make apples-to-apples comparison nearly impossible.' },
-  { icon: '📐', title: 'BOQ line items are confusing', desc: 'Technical specifications and hidden exclusions are difficult for non-engineers to interpret.' },
-  { icon: '🧱', title: 'Material rates vary widely', desc: 'Owners often pay retail prices or receive incorrect material grades without realizing it.' },
-  { icon: '📸', title: 'Site updates are not documented', desc: 'Contractors give verbal updates with no verifiable photographic proof or milestone documentation.' },
-  { icon: '💸', title: 'Hidden charges appear mid-project', desc: 'Unplanned costs and scope changes create financial stress and distrust once work begins.' },
-  { icon: '📁', title: 'Property records get lost after handover', desc: 'Drawings, warranties, and vendor details are scattered, making maintenance difficult later.' },
+  { icon: '📋', title: 'Contractor quotes hide the real costs', desc: 'Vague BOQs, missing items, and non-standard scopes make it impossible to compare quotes — until it is too late.' },
+  { icon: '🏗️', title: 'No independent eye on site quality', desc: 'Contractors self-report on quality. Without engineer supervision, structural shortcuts are invisible until years later.' },
+  { icon: '🔩', title: 'Structural safety goes unchecked', desc: 'Most homes in Chennai are built without an independent structural review — rebar, concrete grade, and foundation depths are assumed correct.' },
+  { icon: '🧱', title: 'Material rates and grades are opaque', desc: 'Owners pay retail prices, receive wrong grades, or get quantity shortfalls without any third-party verification.' },
+  { icon: '💸', title: 'Hidden charges accumulate mid-project', desc: 'Scope changes, missing BOQ items, and contractor claims create financial stress once execution begins.' },
+  { icon: '📁', title: 'Property records vanish at handover', desc: 'Drawings, warranties, material grades, and vendor details are scattered — making maintenance and resale difficult.' },
 ];
 
 const HOW_IT_WORKS = [
-  { step: '01', title: 'Requirement Mapping', desc: 'Plot size, location, budget, and construction type are clearly mapped before any execution begins.' },
-  { step: '02', title: 'Plan / BOQ Review', desc: 'Engineers review your drawings, quantities, specifications, and contractor quotes for clarity.' },
-  { step: '03', title: 'Partner Shortlisting', desc: 'Connect with verified architects, builders, and contractors based on your specific project needs.' },
-  { step: '04', title: 'Material Quote Routing', desc: 'Transparent routing for cement, steel, sand, and finishings through our trusted supplier network.' },
-  { step: '05', title: 'Site Progress Tracking', desc: 'Track milestones, delivery photos, execution status, and quality notes during execution.' },
-  { step: '06', title: 'Property Passport Handover', desc: 'All drawings, invoices, and records are handed over digitally for lifetime access and maintenance.' },
+  { step: '01', title: 'Concept & Feasibility', desc: 'Map your plot, budget, soil conditions, approval authority, and construction type before any commitment.' },
+  { step: '02', title: 'Design & Structural Review', desc: 'Independent review of architectural and structural drawings — catching under-design, compliance gaps, and value engineering opportunities.' },
+  { step: '03', title: 'BOQ & Contractor Audit', desc: 'Line-by-line audit of every contractor quote — rates, quantities, specifications, and hidden exclusions — before you sign.' },
+  { step: '04', title: 'Verified Contractor & Material Match', desc: 'Connect with screened contractors and verified suppliers with transparent material pricing and MTC compliance.' },
+  { step: '05', title: 'Site Supervision & Quality Checks', desc: 'Engineer-led milestone inspections at every structural stage — concrete grades, rebar, waterproofing — with photographic reports.' },
+  { step: '06', title: 'Property Passport Handover', desc: 'All drawings, invoices, material records, warranties, and maintenance guides — compiled into your permanent digital Property Passport.' },
 ];
 
 const SERVICES = [
-  { icon: '🏗️', title: 'Home Construction Guidance', desc: 'Engineer-led support from planning to execution.', href: '/build/home-construction', color: 'orange', bentoClass: 'bentoWide1' },
-  { icon: '📋', title: 'BOQ & Contractor Quote Audit', desc: 'Review scope, quantities, and cost clarity.', href: '/boq-audit', color: 'blue', bentoClass: 'bentoStandard' },
-  { icon: '📐', title: 'Plan Review', desc: 'Structural and spatial review of your architectural plans.', href: '/plan-review', color: 'teal', bentoClass: 'bentoStandard' },
-  { icon: '🧱', title: 'Material Sourcing Support', desc: 'Compare quotes for cement, steel, tiles, and more.', href: '/materials', color: 'purple', bentoClass: 'bentoStandard' },
-  { icon: '🤝', title: 'Verified Partner Network', desc: 'Connect with trusted builders and contractors.', href: '/partners/directory', color: 'green', bentoClass: 'bentoStandard' },
-  { icon: '📸', title: 'Site Progress Tracking', desc: 'Track milestones, photos, and project updates.', href: '/projects', color: 'slate', bentoClass: 'bentoStandard' },
-  { icon: '🏠', title: 'Property Passport', desc: 'Maintain digital records of drawings and invoices.', href: '/property-passport', color: 'blue', bentoClass: 'bentoWide1' },
-  { icon: '🤖', title: 'AI Floor Plan Creator', desc: 'Generate conceptual layouts based on your plot size.', href: '/ai-floor-plan-creator', color: 'purple', bentoClass: 'bentoStandard' },
-  { icon: '🔧', title: 'Maintenance & AMC', desc: 'Post-handover property maintenance services.', href: '/property/maintenance', color: 'orange', bentoClass: 'bentoStandard' },
+  { icon: '🏗️', title: 'End-to-End Construction Support', desc: 'From concept to key handover — engineer-led support at every stage.', href: '/end-to-end-construction-support-chennai', color: 'orange', bentoClass: 'bentoWide1' },
+  { icon: '🔎', title: 'Structural Audit', desc: 'Crack inspection, corrosion check, settlement analysis, NDT coordination, written safety report.', href: '/structural-audit-chennai', color: 'blue', bentoClass: 'bentoStandard' },
+  { icon: '📋', title: 'BOQ & Contractor Quote Audit', desc: 'Line-by-line review of contractor quotes — rates, quantities, and missing items.', href: '/boq-review-chennai', color: 'teal', bentoClass: 'bentoStandard' },
+  { icon: '🏭', title: 'Steel Construction & PEB', desc: 'Industrial sheds, warehouses, PEB buildings, steel fabrication vetting and erection supervision.', href: '/steel-construction-chennai', color: 'purple', bentoClass: 'bentoStandard' },
+  { icon: '📐', title: 'Plan & Drawing Review', desc: 'Independent review of architectural and structural drawings before construction begins.', href: '/structural-plan-review-chennai', color: 'green', bentoClass: 'bentoStandard' },
+  { icon: '🔍', title: 'Site Supervision', desc: 'Milestone inspections, quality checklists, and photographic progress reports.', href: '/site-supervision-chennai', color: 'slate', bentoClass: 'bentoStandard' },
+  { icon: '🏠', title: 'Property Passport', desc: 'Permanent digital records of drawings, invoices, warranties, and material grades.', href: '/property-passport', color: 'blue', bentoClass: 'bentoWide1' },
+  { icon: '🤖', title: 'AI Floor Plan Creator', desc: 'Generate conceptual layouts based on your plot size and requirements.', href: '/ai-floor-plan-creator', color: 'purple', bentoClass: 'bentoStandard' },
+  { icon: '🧱', title: 'Material Sourcing Support', desc: 'Transparent rates and MTC-verified supply for cement, TMT steel, M-sand, and more.', href: '/materials', color: 'orange', bentoClass: 'bentoStandard' },
 ];
 
 const PARTNER_CATEGORIES = [
-  'Builders', 'RCC Contractors', 'MEP Contractors', 'Architects', 
+  'Builders', 'RCC Contractors', 'MEP Contractors', 'Architects',
   'Interior Designers', 'Material Suppliers', 'Waterproofing', 'Solar', 'Elevators'
 ];
 
-const CHENNAI_LOCATIONS = [
+// Chennai service areas — these are all specific localities within Chennai
+const CHENNAI_AREAS = [
   { name: 'Anna Nagar', slug: 'anna-nagar' },
   { name: 'OMR', slug: 'omr' },
   { name: 'ECR', slug: 'ecr' },
@@ -53,7 +54,17 @@ const CHENNAI_LOCATIONS = [
   { name: 'Medavakkam', slug: 'medavakkam' },
   { name: 'T. Nagar', slug: 't-nagar' },
   { name: 'Pallavaram', slug: 'pallavaram' },
-  { name: 'Madhavaram', slug: 'madhavaram' }
+  { name: 'Chromepet', slug: 'chromepet' },
+];
+
+// Featured service hub links for the local section cross-links
+const SERVICE_HUBS = [
+  { label: 'Structural Audit', href: '/structural-audit-chennai' },
+  { label: 'Steel Construction', href: '/steel-construction-chennai' },
+  { label: 'BOQ Review', href: '/boq-review-chennai' },
+  { label: 'Site Supervision', href: '/site-supervision-chennai' },
+  { label: 'End-to-End Support', href: '/end-to-end-construction-support-chennai' },
+  { label: 'PEB Buildings', href: '/peb-building-contractors-chennai' },
 ];
 
 /* ─── Component ───────────────────────────────────────────── */
@@ -71,30 +82,31 @@ export default function Home() {
 
           {/* Left copy */}
           <AnimatedSection className={styles.heroLeft}>
-            <span className={styles.eyebrow}>ENGINEER-LED CONSTRUCTION SUPPORT</span>
+            <span className={styles.eyebrow}>ENGINEER-LED CONSTRUCTION SUPPORT · CHENNAI</span>
             <h1 className={styles.heroH1}>
-              Build your home with<br />
-              <span className={styles.heroAccent}>clarity</span> before the first brick.
+              Your engineer-led partner —
+              <br />
+              <span className={styles.heroAccent}>from idea to handover.</span>
             </h1>
             <p className={styles.heroSub}>
-              Buildogram helps property owners review plans, verify contractor quotes, compare material rates, connect with trusted construction partners, and track site progress with engineer-backed records.
+              Buildogram supports property owners through every stage — design review, BOQ audit, structural safety, contractor selection, material sourcing, site supervision, and final handover documentation. Engineer-led. Owner-first.
             </p>
 
             <div className={styles.heroCtas}>
               <Link href="/contact?type=construction" className="btn btn-primary btn-lg">
                 Talk to an Engineer
               </Link>
-              <Link href="/boq-audit" className={`btn btn-lg ${styles.heroOutline}`}>
-                Review My Contractor Quote
+              <Link href="/end-to-end-construction-support-chennai" className={`btn btn-lg ${styles.heroOutline}`}>
+                See How We Help →
               </Link>
             </div>
             
             <div className={styles.trustLine}>
-              <span>Engineer-led review</span>
-              <span>BOQ checks</span>
-              <span>Material rate clarity</span>
-              <span>Verified partners</span>
-              <span>Site progress records</span>
+              <span>Structural audits</span>
+              <span>BOQ review</span>
+              <span>Steel &amp; PEB</span>
+              <span>Site supervision</span>
+              <span>Property Passport</span>
             </div>
           </AnimatedSection>
 
@@ -166,9 +178,9 @@ export default function Home() {
         <div className="sectionInner">
           <AnimatedSection>
             <SectionHeader
-              eyebrow="The Buildogram Way"
-              title="A structured approach to building your property."
-              description="From first conversation to project completion and property records."
+              eyebrow="How Buildogram Works"
+              title="Engineer-led at every stage — from concept to key handover."
+              description="We are not your contractor or your architect. We are the independent engineering layer that protects your interests throughout the entire construction journey."
             />
           </AnimatedSection>
           
@@ -194,9 +206,9 @@ export default function Home() {
         <div className="sectionInner">
           <AnimatedSection>
             <SectionHeader
-              eyebrow="Platform Services"
-              title="Everything you need to build and manage your property."
-              description="One platform covering the entire construction lifecycle — from planning and material sourcing to site tracking and digital property records."
+              eyebrow="What Buildogram Does"
+              title="Engineer-led support across every construction need."
+              description="From structural audits and steel buildings to BOQ review, site supervision, and handover documentation — Buildogram is your independent engineering layer."
             />
           </AnimatedSection>
           <div className={styles.bentoGrid}>
@@ -463,16 +475,34 @@ export default function Home() {
 
       {/* ── 11. CHENNAI LOCAL SECTION ───────────────────── */}
       <section className="fullBleedSection" style={{ padding: '80px 0', background: 'white' }}>
-        <div className="sectionInner text-center">
+        <div className="sectionInner">
           <AnimatedSection>
-            <h3 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--secondary)', marginBottom: '24px' }}>Proudly supporting construction across Chennai</h3>
-            <div className={styles.locationTags}>
-              {CHENNAI_LOCATIONS.map(loc => (
-                <Link key={loc.slug} href={`/locations/chennai/${loc.slug}`} className={styles.locTag} style={{ textDecoration: 'none' }}>{loc.name}</Link>
+            <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+              <span style={{ fontSize: '12px', fontWeight: 700, color: 'var(--primary)', textTransform: 'uppercase', letterSpacing: '1px', display: 'block', marginBottom: '12px' }}>Chennai Service Areas</span>
+              <h2 style={{ fontSize: 'clamp(20px, 3vw, 30px)', fontWeight: 900, color: 'var(--secondary)', marginBottom: '12px' }}>Serving all major areas across Chennai</h2>
+              <p style={{ fontSize: '15px', color: 'var(--text-muted)', maxWidth: '540px', margin: '0 auto' }}>Home construction, structural audits, BOQ review, and site supervision — available across Chennai localities.</p>
+            </div>
+
+            {/* Area tags */}
+            <div className={styles.locationTags} style={{ marginBottom: '32px' }}>
+              {CHENNAI_AREAS.map(area => (
+                <Link key={area.slug} href={`/locations/chennai/${area.slug}`} className={styles.locTag} style={{ textDecoration: 'none' }}>{area.name}</Link>
               ))}
             </div>
-            <div style={{ marginTop: '32px' }}>
-              <Link href="/locations/chennai" style={{ fontWeight: 600, color: 'var(--primary)', textDecoration: 'none' }}>View All Chennai Locations →</Link>
+
+            {/* Service cross-links */}
+            <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: '28px', marginTop: '8px' }}>
+              <p style={{ fontSize: '12px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.8px', textAlign: 'center', marginBottom: '16px' }}>Popular services across Chennai</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'center', marginBottom: '28px' }}>
+                {SERVICE_HUBS.map(s => (
+                  <Link key={s.href} href={s.href} style={{ display: 'inline-block', padding: '8px 18px', borderRadius: '100px', background: '#F1F5F9', border: '1px solid #E2E8F0', color: '#374151', fontSize: '14px', fontWeight: 600, textDecoration: 'none' }}>
+                    {s.label}
+                  </Link>
+                ))}
+              </div>
+              <div style={{ textAlign: 'center' }}>
+                <Link href="/locations/chennai" style={{ fontWeight: 700, color: 'var(--primary)', textDecoration: 'none', fontSize: '15px' }}>View all Chennai service areas →</Link>
+              </div>
             </div>
           </AnimatedSection>
         </div>
