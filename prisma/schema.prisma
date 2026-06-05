@@ -1116,3 +1116,17 @@ model ai_floor_plan_credit_ledger {
   reference_id String?  @db.Uuid
   created_at   DateTime @default(now()) @db.Timestamptz(6)
 }
+
+model reels {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title       String
+  video_url   String
+  provider    String
+  active      Boolean?  @default(false)
+  autoplay    Boolean?  @default(true)
+  start_muted Boolean?  @default(false)
+  cta_label   String?
+  cta_url     String?
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+}

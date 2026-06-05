@@ -14,6 +14,7 @@ const OPS_NAV = [
   { href: '/ops/properties',  icon: '🛂', label: 'Properties' },
   { href: '/ops/projects',    icon: '🏗️', label: 'Projects' },
   { href: '/ops/users',       icon: '👥', label: 'Users' },
+  { href: '/ops/reels',       icon: '📱', label: 'Reels Player' },
   { href: '/ops/blog',        icon: '📝', label: 'Blog CMS' },
   { href: '/ops/whatsapp-templates', icon: '💬', label: 'WA Templates', requiredPerm: 'manage_whatsapp_templates' },
   { href: '/ops/notification-rules', icon: '⚙️', label: 'Notif Rules', requiredPerm: 'manage_notification_rules' },
@@ -78,7 +79,7 @@ export default function OpsLayout({ children }) {
                     '/ops/pilot-launch', '/ops/launch-checklist', '/ops/system-status',
                     '/ops/notification-settings', '/ops/notification-rules',
                     '/ops/notification-queue', '/ops/whatsapp-templates',
-                    '/ops/blog', '/ops/help',
+                    '/ops/blog', '/ops/help', '/ops/reels',
                   ];
 
                   if (!builtRoutes.includes(href)) {
