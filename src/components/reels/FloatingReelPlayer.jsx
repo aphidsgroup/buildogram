@@ -26,11 +26,8 @@ export default function FloatingReelPlayer() {
   const videoRef = useRef(null);
   const controlTimeoutRef = useRef(null);
 
-  // Exclude dashboard routes
-  const isHiddenRoute = pathname?.startsWith('/ops') || 
-                        pathname?.startsWith('/client') || 
-                        pathname?.startsWith('/partner') || 
-                        pathname?.startsWith('/login');
+  // Only show on the homepage
+  const isHiddenRoute = pathname !== '/';
 
   useEffect(() => {
     setIsMobile(window.innerWidth <= 768);
@@ -42,11 +39,6 @@ export default function FloatingReelPlayer() {
 
   useEffect(() => {
     if (isHiddenRoute) return;
-
-    const closedState = sessionStorage.getItem('buildogram_reel_closed');
-    if (closedState === 'true') {
-      return;
-    }
 
     async function fetchReel() {
       try {
@@ -83,7 +75,6 @@ export default function FloatingReelPlayer() {
   const handleClose = (e) => {
     e.stopPropagation();
     setIsClosed(true);
-    sessionStorage.setItem('buildogram_reel_closed', 'true');
   };
 
   const toggleMute = (e) => {
