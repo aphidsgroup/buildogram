@@ -26,8 +26,18 @@ export default function ClientLayout({ children }) {
   const [comingSoonModule, setComingSoonModule] = useState(null);
 
   useEffect(() => {
-    fetch('/api/auth/me').then(r => r.json()).then(d => { if (d.user) setUser(d.user); });
-  }, []);
+    fetch('/api/auth/me').then(r => r.json()).then(d => { 
+      if (d.user) {
+        if (d.user.role !== 'client') {
+          router.push('/login');
+        } else {
+          setUser(d.user); 
+        }
+      } else {
+        router.push('/login');
+      }
+    }).catch(() => router.push('/login'));
+  }, [router]);
 
   const logout = async () => {
     await fetch('/api/auth/logout', { method: 'POST' });

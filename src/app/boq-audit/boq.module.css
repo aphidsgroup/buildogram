@@ -31,7 +31,7 @@
   font-size: 14px;
   font-weight: 600;
 }
-.breadcrumbLink { color: rgba(255, 255, 255, 0.5); text-decoration: none; }
+.breadcrumbLink { color: rgba(255, 255, 255, 0.5); text-decoration: none; display: inline-block; padding: 10px 4px; margin: -10px -4px; }
 .breadcrumbLink:hover { color: white; }
 .breadcrumbSep { color: rgba(255, 255, 255, 0.3); }
 .breadcrumbCurrent {

@@ -1,6 +1,5 @@
 'use client';
-import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import PremiumCard from '@/components/ui/PremiumCard';
 import styles from './contact.module.css';
@@ -17,14 +16,11 @@ const INTENT_OPTIONS = [
 ];
 
 function ContactForm() {
-  const searchParams = useSearchParams();
-  const typeParam = searchParams?.get('type') || 'construction';
-
   const [form, setForm] = useState({
     name: '',
     phone: '',
     email: '',
-    leadType: typeParam,
+    leadType: 'construction',
     location: '',
     notes: '',
     formData: {}
@@ -35,12 +31,14 @@ function ContactForm() {
   const [tracking, setTracking] = useState({});
 
   useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const typeParam = searchParams.get('type');
+    
     if (typeParam) {
       setForm(prev => ({ ...prev, leadType: typeParam }));
     }
     
     // Capture tracking info
-    const searchParams = new URLSearchParams(window.location.search);
     setTracking({
       sourcePage: window.location.pathname,
       sourceCta: searchParams.get('source') || 'Direct',
@@ -51,7 +49,7 @@ function ContactForm() {
       referrer: document.referrer,
       deviceType: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop'
     });
-  }, [typeParam]);
+  }, []);
 
   const handleExtraFieldChange = (key, value) => {
     setForm(prev => ({ ...prev, formData: { ...prev.formData, [key]: value } }));
@@ -72,7 +70,7 @@ function ContactForm() {
       if (res.ok) {
         setStatus('Success');
         setSubmittedData(form);
-        setForm({ name: '', phone: '', email: '', leadType: typeParam, location: '', notes: '', formData: {} });
+        setForm({ name: '', phone: '', email: '', leadType: form.leadType, location: '', notes: '', formData: {} });
       } else {
         setStatus('Failed to submit. Please try again.');
       }
@@ -264,9 +262,7 @@ export default function Contact() {
           <AnimatedSection>
             <div className={styles.formCard}>
               <h2 className={styles.formTitle}>Send a Message</h2>
-              <Suspense fallback={<div>Loading form...</div>}>
-                <ContactForm />
-              </Suspense>
+              <ContactForm />
             </div>
           </AnimatedSection>
 

@@ -9,10 +9,9 @@
 /* ── HERO ── */
 .hero {
   position: relative;
-  min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 120px 0 80px;
+  padding: 160px 0;
   background: var(--bg);
   overflow: hidden;
 }
