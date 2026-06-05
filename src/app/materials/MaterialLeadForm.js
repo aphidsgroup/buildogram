@@ -1,18 +1,19 @@
 'use client';
-import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 const MATERIAL_CATEGORIES = ['Cement', 'Steel / TMT', 'Sand', 'M-Sand', 'Solid Blocks', 'Red Bricks', 'Electricals', 'Plumbing', 'Tiles', 'Paint', 'Doors & Windows', 'RMC', 'Other'];
 const CUSTOMER_TYPES = ['Home Owner', 'Contractor', 'Builder', 'Architect', 'Supplier', 'Other'];
 
-function MaterialLeadFormInner() {
-  const searchParams = useSearchParams();
+export default function MaterialLeadForm() {
   const [refPartnerId, setRefPartnerId] = useState(null);
 
   useEffect(() => {
-    const ref = searchParams.get('ref');
-    if (ref) setRefPartnerId(ref);
-  }, [searchParams]);
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      const ref = urlParams.get('ref');
+      if (ref) setRefPartnerId(ref);
+    }
+  }, []);
 
   const [form, setForm] = useState({
     name: '', phone: '', email: '',
@@ -150,13 +151,5 @@ function MaterialLeadFormInner() {
       </button>
       {status === 'error' && <p style={{ color: '#f87171', textAlign: 'center', fontSize: '14px' }}>Something went wrong. Please try again.</p>}
     </form>
-  );
-}
-
-export default function MaterialLeadForm() {
-  return (
-    <Suspense fallback={<div>Loading form...</div>}>
-      <MaterialLeadFormInner />
-    </Suspense>
   );
 }
