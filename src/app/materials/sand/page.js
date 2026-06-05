@@ -5,35 +5,15 @@ export default function Page() {
   return (
     <PublicServicePage
       heroEyebrow="Materials Dashboard"
-      heroTitle="Sand & M-Sand Quotes"
-      heroSub="Verified suppliers for river sand, M-sand, and P-sand."
+      heroTitle="Sand & M-Sand Sourcing"
+      heroSub="Verified suppliers for River Sand, M-Sand (Plastering & Concreting), and P-Sand."
       heroPrimaryCta={{ label: 'Talk to an Engineer', href: '/contact?type=construction' }}
-      heroSecondaryCta={{ label: 'Explore More', href: '/' }}
-      problems={[
-        { icon: '⚠️', title: 'Lack of clarity', desc: 'Owners struggle to understand technical details.' },
-        { icon: '💸', title: 'Hidden costs', desc: 'Unplanned expenses disrupt the budget.' },
-        { icon: '📉', title: 'Quality compromises', desc: 'Materials and workmanship fall below standards.' }
-      ]}
-      processSteps={[
-        { step: '01', title: 'Consultation', desc: 'Understand your unique requirements.' },
-        { step: '02', title: 'Analysis', desc: 'Deep dive into specifications and quotes.' },
-        { step: '03', title: 'Execution', desc: 'Connect with right partners and start work.' }
-      ]}
-      serviceDetails={[
-        { title: 'Detailed Reports', desc: 'Get itemized breakdowns of our findings.' },
-        { title: 'Expert Guidance', desc: 'Speak directly with our senior engineers.' },
-        { title: 'Verified Records', desc: 'All documents are stored in your Property Passport.' }
-      ]}
-      proofData={{
-        title: 'Real Engineering Value',
-        desc: 'See exactly what we check.',
-        dashboardTitle: 'Sample Verification Checks',
-        items: ['Specification Analysis', 'Quantity Takeoff Validation', 'Market Rate Comparison', 'Quality Benchmarking']
-      }}
-      faqs={[
-        { q: 'How does this work?', a: 'Simply reach out to us and our engineers will guide you.' },
-        { q: 'Is there a fee?', a: 'We offer a free initial consultation.' }
-      ]}
+      heroSecondaryCta={{ label: 'Explore Platform', href: '/' }}
+      problems={[{"icon":"🪨","title":"High Silt Content","desc":"Adulterated sand weakens concrete and causes plastering cracks."}]}
+      processSteps={[{"step":"01","title":"Requirement Mapping","desc":"M-Sand for concrete, P-Sand/River Sand for plastering."},{"step":"02","title":"Source Verification","desc":"Ensuring M-Sand is VSI processed and washed."}]}
+      serviceDetails={[{"title":"Silt Testing","desc":"Guiding on basic site tests for silt and clay."},{"title":"Volume Verification","desc":"Checking truck box measurements to ensure you get the CFt you paid for."}]}
+      proofData={{"title":"Sand Checks","desc":"Preventing weak concrete.","dashboardTitle":"Aggregate Verification","items":["VSI Processing Confirmation","Silt Content < 5%","Cubic Feet Measurement Check"]}}
+      faqs={[{"q":"Is M-Sand safe to use?","a":"Yes, properly washed VSI M-Sand is structurally excellent for concreting."}]}
     />
   );
 }

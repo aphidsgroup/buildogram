@@ -5,35 +5,15 @@ export default function Page() {
   return (
     <PublicServicePage
       heroEyebrow="Buildogram Materials"
-      heroTitle="Material Quote Support"
-      heroSub="Transparent pricing for all construction materials."
+      heroTitle="Construction Material Support"
+      heroSub="Transparent pricing and verified sourcing for all major construction materials."
       heroPrimaryCta={{ label: 'Talk to an Engineer', href: '/contact?type=construction' }}
-      heroSecondaryCta={{ label: 'Explore More', href: '/' }}
-      problems={[
-        { icon: '⚠️', title: 'Lack of clarity', desc: 'Owners struggle to understand technical details.' },
-        { icon: '💸', title: 'Hidden costs', desc: 'Unplanned expenses disrupt the budget.' },
-        { icon: '📉', title: 'Quality compromises', desc: 'Materials and workmanship fall below standards.' }
-      ]}
-      processSteps={[
-        { step: '01', title: 'Consultation', desc: 'Understand your unique requirements.' },
-        { step: '02', title: 'Analysis', desc: 'Deep dive into specifications and quotes.' },
-        { step: '03', title: 'Execution', desc: 'Connect with right partners and start work.' }
-      ]}
-      serviceDetails={[
-        { title: 'Detailed Reports', desc: 'Get itemized breakdowns of our findings.' },
-        { title: 'Expert Guidance', desc: 'Speak directly with our senior engineers.' },
-        { title: 'Verified Records', desc: 'All documents are stored in your Property Passport.' }
-      ]}
-      proofData={{
-        title: 'Real Engineering Value',
-        desc: 'See exactly what we check.',
-        dashboardTitle: 'Sample Verification Checks',
-        items: ['Specification Analysis', 'Quantity Takeoff Validation', 'Market Rate Comparison', 'Quality Benchmarking']
-      }}
-      faqs={[
-        { q: 'How does this work?', a: 'Simply reach out to us and our engineers will guide you.' },
-        { q: 'Is there a fee?', a: 'We offer a free initial consultation.' }
-      ]}
+      heroSecondaryCta={{ label: 'Explore Platform', href: '/' }}
+      problems={[{"icon":"🛒","title":"Retail Markup","desc":"Owners pay retail prices while contractors get wholesale discounts."},{"icon":"📉","title":"Fake Brands","desc":"Counterfeit cement and underweight steel flooding the market."}]}
+      processSteps={[{"step":"01","title":"BOQ Extraction","desc":"We calculate exact quantities from your drawings."},{"step":"02","title":"Live Quotes","desc":"We pull live rates from our verified supplier network."},{"step":"03","title":"Direct Delivery","desc":"Materials delivered to your site with authentic weighbridge and batch slips."}]}
+      serviceDetails={[{"title":"Quantity Takeoffs","desc":"Knowing exactly how many bags or tonnes you actually need."},{"title":"Quality Assurance","desc":"We check Manufacturer Test Certificates (MTC)."}]}
+      proofData={{"title":"Material Tracking","desc":"What we verify upon delivery.","dashboardTitle":"Delivery Checks","items":["Weighbridge Slip Verification","Batch Date / Freshness Check","Brand Authenticity Marks"]}}
+      faqs={[{"q":"Do you sell materials directly?","a":"No, we route your request to verified wholesale suppliers to get you the best direct rate."}]}
     />
   );
 }
