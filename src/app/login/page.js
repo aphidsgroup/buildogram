@@ -37,7 +37,7 @@ export default function LoginPage() {
       
       <AnimatedSection className={styles.card}>
         <Link href="/" className={styles.logo}>
-          <Image src="/logo-main.png" alt="Buildogram" width={200} height={50} priority style={{ objectFit: 'contain', height: '50px', width: 'auto' }} />
+          <Image src="/logo-main.png" alt="Buildogram" width={240} height={60} priority style={{ objectFit: 'contain', height: '60px', width: 'auto' }} />
         </Link>
         
         <div className={styles.tabs}>

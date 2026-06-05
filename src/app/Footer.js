@@ -87,9 +87,9 @@ export default function Footer() {
                 <Image
                   src="/logo-main.png"
                   alt="Buildogram"
-                  width={220}
-                  height={55}
-                  style={{ objectFit: 'contain', height: '48px', width: 'auto', marginBottom: '4px', filter: 'brightness(0) invert(1)' }}
+                  width={280}
+                  height={70}
+                  style={{ objectFit: 'contain', height: '60px', width: 'auto', marginBottom: '8px', filter: 'brightness(0) invert(1)' }}
                 />
               </Link>
               <p className={styles.brandDesc}>
