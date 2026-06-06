@@ -80,24 +80,29 @@
   transition: opacity 180ms ease;
   background: rgba(0,0,0,0.15);
 }
-  background: rgba(0,0,0,0.15);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-}
 
 .overlayHidden {
   opacity: 0;
   pointer-events: none;
+  visibility: hidden;
 }
 
 .overlayInteractive {
   opacity: 1;
   pointer-events: auto;
+  visibility: visible;
+}
+
+.overlay.overlayInteractive {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+.overlayHidden .closeBtn,
+.overlayHidden .centerBtn,
+.overlayHidden .ctaBtn {
+  pointer-events: none;
 }
 
 .closeBtn {
