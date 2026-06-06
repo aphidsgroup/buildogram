@@ -104,30 +104,52 @@ export default function FloatingReelPlayer() {
 
   const containerStyle = styles.visible;
 
+  const renderPlayer = () => {
+    if (reel.provider === 'vimeo' || (reel.video_url && reel.video_url.includes('vimeo.com'))) {
+      const videoId = reel.video_url.split('/').pop();
+      const iframeSrc = `https://player.vimeo.com/video/${videoId}?badge=0&autopause=0&autoplay=1&loop=1&muted=${isMuted ? 1 : 0}&controls=0&playsinline=1`;
+      return (
+        <iframe
+          src={iframeSrc}
+          frameBorder="0"
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          title={reel.title || "Buildogram Reel"}
+          onLoad={() => setPlayerReady(true)}
+          style={{ width: '100%', height: '100%', border: 'none' }}
+        />
+      );
+    }
+    
+    return (
+      <ReactPlayer 
+        url={reel.video_url}
+        playing={true}
+        muted={isMuted}
+        loop={true}
+        width="100%"
+        height="100%"
+        playsinline={true}
+        onStart={() => setPlayerReady(true)}
+        onReady={() => setPlayerReady(true)}
+        onError={(e) => {
+          console.error("ReactPlayer Error:", e);
+          if (!isMuted) setIsMuted(true);
+        }}
+        style={{ position: 'absolute', top: 0, left: 0 }}
+        config={{
+          youtube: { playerVars: { controls: 0, modestbranding: 1, rel: 0, fs: 0 } },
+          vimeo: { playerOptions: { controls: false, byline: false, portrait: false, title: false } }
+        }}
+      />
+    );
+  };
+
   return (
     <div className={`${styles.container} ${isMobile ? styles.mobile : styles.desktop} ${containerStyle}`} onClick={handleTap}>
       {!loading && reel && (
         <div className={styles.videoWrapper}>
-          <ReactPlayer 
-            url={reel.video_url}
-            playing={true}
-            muted={isMuted}
-            loop={true}
-            width="100%"
-            height="100%"
-            playsinline={true}
-            onStart={() => setPlayerReady(true)}
-            onReady={() => setPlayerReady(true)}
-            onError={(e) => {
-              console.error("ReactPlayer Error:", e);
-              if (!isMuted) setIsMuted(true);
-            }}
-            style={{ position: 'absolute', top: 0, left: 0 }}
-            config={{
-              youtube: { playerVars: { controls: 0, modestbranding: 1, rel: 0, fs: 0 } },
-              vimeo: { playerOptions: { controls: false, byline: false, portrait: false, title: false } }
-            }}
-          />
+          {renderPlayer()}
 
           {/* Overlays */}
           <div className={`${styles.overlay} ${showControls ? styles.overlayInteractive : styles.overlayHidden}`}>
