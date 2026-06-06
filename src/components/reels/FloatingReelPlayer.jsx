@@ -21,7 +21,7 @@ export default function FloatingReelPlayer() {
   const [reel, setReel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isClosed, setIsClosed] = useState(false);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [playerReady, setPlayerReady] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -63,7 +63,7 @@ export default function FloatingReelPlayer() {
         const json = await res.json();
         if (json.success && json.data) {
           setReel(json.data);
-          setIsMuted(json.data.start_muted ?? true);
+          setIsMuted(json.data.start_muted ?? false);
         }
       } catch (error) {
         console.error('Failed to fetch active reel', error);
@@ -122,7 +122,7 @@ export default function FloatingReelPlayer() {
   const renderPlayer = () => {
     if (reel.provider === 'vimeo' || (reel.video_url && reel.video_url.includes('vimeo.com'))) {
       const videoId = reel.video_url.split('/').pop();
-      const iframeSrc = `https://player.vimeo.com/video/${videoId}?badge=0&autopause=0&autoplay=1&loop=1&muted=${isMuted ? 1 : 0}&controls=0&playsinline=1`;
+      const iframeSrc = `https://player.vimeo.com/video/${videoId}?transparent=1&badge=0&autopause=0&autoplay=1&loop=1&muted=${isMuted ? 1 : 0}&controls=0&playsinline=1`;
       return (
         <iframe
           ref={iframeRef}
