@@ -12,6 +12,7 @@
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
     "@prisma/client": "^6.4.1",
+    "@vimeo/player": "^2.30.4",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.10.0",
     "jsonwebtoken": "^9.0.3",
