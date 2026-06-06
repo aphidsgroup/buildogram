@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import ReactPlayer from 'react-player';
+import Player from '@vimeo/player';
 import styles from './FloatingReelPlayer.module.css';
 
 const Volume2 = ({ size = 24, ...props }) => (
@@ -25,6 +26,8 @@ export default function FloatingReelPlayer() {
   const [playerReady, setPlayerReady] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const controlTimeoutRef = useRef(null);
+  const iframeRef = useRef(null);
+  const vimeoPlayerRef = useRef(null);
 
   // Hide on private/admin routes
   const isHiddenRoute = pathname.startsWith('/ops') || 
@@ -83,6 +86,12 @@ export default function FloatingReelPlayer() {
     };
   }, [showControls, isClosed]);
 
+  useEffect(() => {
+    if (iframeRef.current && !vimeoPlayerRef.current) {
+      vimeoPlayerRef.current = new Player(iframeRef.current);
+    }
+  }, [loading, reel]);
+
   if (isHiddenRoute || isClosed || (!loading && !reel)) return null;
 
   const handleClose = (e) => {
@@ -95,7 +104,13 @@ export default function FloatingReelPlayer() {
 
   const toggleMute = (e) => {
     e.stopPropagation();
-    setIsMuted(prev => !prev);
+    const nextMuted = !isMuted;
+    setIsMuted(nextMuted);
+    
+    if (vimeoPlayerRef.current) {
+      vimeoPlayerRef.current.setVolume(nextMuted ? 0 : 1);
+      vimeoPlayerRef.current.setMuted(nextMuted);
+    }
   };
 
   const handleTap = () => {
@@ -110,13 +125,14 @@ export default function FloatingReelPlayer() {
       const iframeSrc = `https://player.vimeo.com/video/${videoId}?badge=0&autopause=0&autoplay=1&loop=1&muted=${isMuted ? 1 : 0}&controls=0&playsinline=1`;
       return (
         <iframe
+          ref={iframeRef}
           src={iframeSrc}
           frameBorder="0"
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
           title={reel.title || "Buildogram Reel"}
           onLoad={() => setPlayerReady(true)}
-          style={{ width: '100%', height: '100%', border: 'none' }}
+          className={styles.videoFrame}
         />
       );
     }
@@ -146,10 +162,16 @@ export default function FloatingReelPlayer() {
   };
 
   return (
-    <div className={`${styles.container} ${isMobile ? styles.mobile : styles.desktop} ${containerStyle}`} onClick={handleTap}>
+    <div className={`${styles.container} ${isMobile ? styles.mobile : styles.desktop} ${containerStyle}`}>
       {!loading && reel && (
         <div className={styles.videoWrapper}>
           {renderPlayer()}
+
+          <button
+            className={styles.tapLayer}
+            aria-label="Show reel controls"
+            onClick={handleTap}
+          />
 
           {/* Overlays */}
           <div className={`${styles.overlay} ${showControls ? styles.overlayInteractive : styles.overlayHidden}`}>
