@@ -146,6 +146,17 @@
   backdrop-filter: blur(4px);
   transition: background 0.2s ease, transform 0.2s ease;
 }
+
+.centerBtnPulse {
+  animation: pulseButton 2s ease-in-out 3; /* Pulse 3 times (6 seconds total) */
+}
+
+@keyframes pulseButton {
+  0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+  50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); }
+  100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
 .centerBtn:active {
   transform: scale(0.95);
 }
