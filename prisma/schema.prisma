@@ -1130,3 +1130,113 @@ model reels {
   created_at  DateTime? @default(now()) @db.Timestamptz(6)
   updated_at  DateTime? @default(now()) @db.Timestamptz(6)
 }
+
+model material_leads {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  phone       String
+  email       String?
+  city        String    @default("Chennai")
+  locality    String?
+  material    String?
+  brand       String?
+  quantity    String?
+  unit        String?
+  source_page String?
+  status      String?   @default("new")
+  notes       String?
+  metadata    Json?     @default("{}")
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([status], map: "idx_material_leads_status")
+  @@index([created_at], map: "idx_material_leads_created_at")
+}
+
+model structural_audit_leads {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name            String
+  phone           String
+  email           String?
+  city            String    @default("Chennai")
+  locality        String?
+  building_type   String?
+  audit_type      String?
+  floors          String?
+  age_of_building String?
+  concern         String?
+  source_page     String?
+  status          String?   @default("new")
+  engineer_notes  String?
+  report_status   String?   @default("pending")
+  report_url      String?
+  photos          Json?     @default("[]")
+  metadata        Json?     @default("{}")
+  created_at      DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([status], map: "idx_structural_leads_status")
+  @@index([audit_type], map: "idx_structural_leads_audit_type")
+}
+
+model survey_leads {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String
+  phone        String
+  email        String?
+  city         String    @default("Chennai")
+  locality     String?
+  survey_type  String?
+  plot_area    String?
+  deliverable  String?
+  equipment    String?
+  assigned_to  String?
+  source_page  String?
+  status       String?   @default("new")
+  notes        String?
+  metadata     Json?     @default("{}")
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([status], map: "idx_survey_leads_status")
+  @@index([survey_type], map: "idx_survey_leads_type")
+}
+
+model piling_leads {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String
+  phone        String
+  email        String?
+  city         String    @default("Chennai")
+  locality     String?
+  piling_type  String?
+  pile_depth   String?
+  no_of_piles  String?
+  soil_report  String?
+  source_page  String?
+  status       String?   @default("new")
+  notes        String?
+  metadata     Json?     @default("{}")
+  created_at   DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([status], map: "idx_piling_leads_status")
+  @@index([piling_type], map: "idx_piling_leads_type")
+}
+
+model ai_tool_submissions {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tool_name   String
+  name        String?
+  phone       String?
+  email       String?
+  input_data  Json?     @default("{}")
+  output_data Json?     @default("{}")
+  status      String?   @default("submitted")
+  source_page String?
+  created_at  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([tool_name], map: "idx_ai_submissions_tool")
+  @@index([status], map: "idx_ai_submissions_status")
+}

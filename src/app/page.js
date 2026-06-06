@@ -82,30 +82,31 @@ export default function Home() {
 
           {/* Left copy */}
           <AnimatedSection className={styles.heroLeft}>
-            <span className={styles.eyebrow}>ENGINEER-LED CONSTRUCTION SUPPORT · CHENNAI</span>
+            <span className={styles.eyebrow}>AI-DRIVEN · ENGINEER-LED · CHENNAI</span>
             <h1 className={styles.heroH1}>
-              Your engineer-led partner —
+              AI-Driven Construction Intelligence,
               <br />
-              <span className={styles.heroAccent}> {" "}from idea to handover.</span>
+              <span className={styles.heroAccent}>{" "}Engineer-Led from Idea to Handover.</span>
             </h1>
             <p className={styles.heroSub}>
-              Buildogram supports property owners through every stage — design review, BOQ audit, structural safety, contractor selection, material sourcing, site supervision, and final handover documentation. Engineer-led. Owner-first.
+              Buildogram helps homeowners, builders, contractors, architects, and suppliers plan, verify, build, source materials, track quality, and document every property journey through one proof-backed construction ecosystem.
             </p>
 
             <div className={styles.heroCtas}>
               <Link href="/contact?type=construction" className="btn btn-primary btn-lg">
-                Talk to an Engineer
+                Start Your Construction Journey
               </Link>
-              <Link href="/end-to-end-construction-support-chennai" className={`btn btn-lg ${styles.heroOutline}`}>
-                See How We Help →
+              <Link href="/materials" className={`btn btn-lg ${styles.heroOutline}`}>
+                Shop Materials →
               </Link>
             </div>
             
             <div className={styles.trustLine}>
-              <span>Structural audits</span>
-              <span>BOQ review</span>
-              <span>Steel &amp; PEB</span>
-              <span>Site supervision</span>
+              <span>AI-Driven Planning</span>
+              <span>Structural Auditing</span>
+              <span>Land Survey & Piling</span>
+              <span>Shop Materials</span>
+              <span>Site Supervision</span>
             </div>
           </AnimatedSection>
 
@@ -206,8 +207,8 @@ export default function Home() {
           <AnimatedSection>
             <SectionHeader
               eyebrow="What Buildogram Does"
-              title="Engineer-led support across every construction need."
-              description="From structural audits and steel buildings to BOQ review, site supervision, and handover documentation — Buildogram is your independent engineering layer."
+              title="Eight pillars of engineer-led construction support."
+              description="From AI-driven planning tools to structural auditing, land survey, piling, materials, site supervision, and handover documentation — Buildogram is your complete construction ecosystem."
             />
           </AnimatedSection>
           <div className={styles.bentoGrid}>
@@ -223,6 +224,36 @@ export default function Home() {
                 <h3 className={styles.bentoTitle}>{s.title}</h3>
                 <p className={styles.bentoDesc}>{s.desc}</p>
                 <Link href={s.href} className={styles.bentoLink}>Learn more →</Link>
+              </PremiumCard>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── NEW: ENGINEERING SERVICES BEFORE YOU BUILD ────── */}
+      <section className="fullBleedSection" style={{ padding: '80px 0', background: 'white' }}>
+        <div className="sectionInner">
+          <AnimatedSection>
+            <SectionHeader
+              eyebrow="Pre-Construction Engineering"
+              title="Engineering Services Before You Build."
+              description="Critical technical work that must happen before a single brick is laid — survey, soil investigation, structural planning, and pile foundation design."
+            />
+          </AnimatedSection>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px', marginTop: '40px' }}>
+            {[
+              { icon: '📐', title: 'Land Survey & Plot Measurement', desc: 'Boundary survey, total station survey, DGPS measurement, and CAD drawings for your plot.', href: '/land-survey-chennai' },
+              { icon: '🔩', title: 'Soil Investigation', desc: 'Borehole testing, SPT, plate load test, and soil bearing capacity reports before foundation design.', href: '/soil-testing-chennai' },
+              { icon: '📋', title: 'Structural Plan Review', desc: 'Independent review of architectural and structural drawings to catch under-design and compliance gaps.', href: '/structural-plan-review-chennai' },
+              { icon: '🏗️', title: 'Pile Foundation Support', desc: 'Bored piles, DMC piles, micro piles — contractor matching, BOQ review, and execution oversight.', href: '/pile-foundation-contractors-chennai' },
+              { icon: '🔍', title: 'Structural Audit', desc: 'NDT testing, crack inspection, and evidence-backed structural assessment for existing buildings.', href: '/structural-audit-chennai' },
+              { icon: '🧱', title: 'Material Planning', desc: 'Transparent rates and MTC-verified supply for cement, TMT steel, sand, and all construction materials.', href: '/materials' },
+            ].map((card, i) => (
+              <PremiumCard key={i} animated={true} delay={i * 0.07} hoverEffect={true} className={styles.problemCard}>
+                <div style={{ fontSize: '32px', marginBottom: '14px' }}>{card.icon}</div>
+                <h3 style={{ fontSize: '17px', fontWeight: 800, color: 'var(--secondary)', marginBottom: '8px' }}>{card.title}</h3>
+                <p style={{ fontSize: '14px', color: 'var(--text-muted)', lineHeight: 1.6, margin: '0 0 16px' }}>{card.desc}</p>
+                <Link href={card.href} style={{ fontSize: '13px', fontWeight: 700, color: 'var(--primary)', textDecoration: 'none' }}>Learn more →</Link>
               </PremiumCard>
             ))}
           </div>
