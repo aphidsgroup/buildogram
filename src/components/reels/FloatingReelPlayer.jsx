@@ -89,10 +89,28 @@ export default function FloatingReelPlayer() {
   useEffect(() => {
     if (iframeRef.current && !vimeoPlayerRef.current) {
       vimeoPlayerRef.current = new Player(iframeRef.current);
+      
+      vimeoPlayerRef.current.getMuted().then((muted) => {
+        setIsMuted(muted);
+      }).catch(err => console.error("Vimeo API getMuted Error:", err));
+      
+      vimeoPlayerRef.current.on('volumechange', (data) => {
+        setIsMuted(data.volume === 0);
+      });
     }
   }, [loading, reel]);
 
   if (isHiddenRoute || isClosed || (!loading && !reel)) return null;
+
+  const containerStyle = styles.visible;
+
+  if (loading) {
+    return (
+      <div className={`${styles.container} ${isMobile ? styles.mobile : styles.desktop} ${containerStyle}`}>
+        <div className={styles.skeleton} />
+      </div>
+    );
+  }
 
   const handleClose = (e) => {
     e.stopPropagation();
@@ -116,8 +134,6 @@ export default function FloatingReelPlayer() {
   const handleTap = () => {
     setShowControls(true);
   };
-
-  const containerStyle = styles.visible;
 
   const renderPlayer = () => {
     if (reel.provider === 'vimeo' || (reel.video_url && reel.video_url.includes('vimeo.com'))) {
