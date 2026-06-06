@@ -106,7 +106,6 @@ export default function Home() {
               <span>BOQ review</span>
               <span>Steel &amp; PEB</span>
               <span>Site supervision</span>
-              <span>Property Passport</span>
             </div>
           </AnimatedSection>
 
