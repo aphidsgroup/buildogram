@@ -104,6 +104,16 @@ export default function sitemap() {
     { url: `${baseUrl}/pile-load-test-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/pile-integrity-test-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/dynamic-pile-load-test-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    // Materials (Enriched)
+    { url: `${baseUrl}/materials/cement`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/materials/tmt-steel`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/materials/msand-psand`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/materials/bricks-aac-blocks`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/materials/rmc`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/materials/waterproofing`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/materials/electrical`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/materials/plumbing`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/materials/fabrication-steel`, priority: 0.9, changeFrequency: 'weekly' },
     // AI Tools
     { url: `${baseUrl}/ai-construction-cost-estimator`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/ai-boq-checker`, priority: 0.9, changeFrequency: 'weekly' },
