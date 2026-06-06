@@ -21,7 +21,7 @@ export default function FloatingReelPlayer() {
   const [reel, setReel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isClosed, setIsClosed] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
   const [showControls, setShowControls] = useState(true);
   const [playerReady, setPlayerReady] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -63,7 +63,7 @@ export default function FloatingReelPlayer() {
         const json = await res.json();
         if (json.success && json.data) {
           setReel(json.data);
-          setIsMuted(json.data.start_muted ?? false);
+          setIsMuted(json.data.start_muted ?? true);
         }
       } catch (error) {
         console.error('Failed to fetch active reel', error);
@@ -133,6 +133,14 @@ export default function FloatingReelPlayer() {
 
   const handleTap = () => {
     setShowControls(true);
+    // On first tap anywhere, if the video is muted, unmute it automatically
+    if (isMuted) {
+      setIsMuted(false);
+      if (vimeoPlayerRef.current) {
+        vimeoPlayerRef.current.setVolume(1);
+        vimeoPlayerRef.current.setMuted(false);
+      }
+    }
   };
 
   const renderPlayer = () => {
@@ -195,7 +203,7 @@ export default function FloatingReelPlayer() {
               <XIcon size={14} strokeWidth={3} />
             </button>
             
-            <button className={styles.centerBtn} onClick={toggleMute} aria-label={isMuted ? "Unmute" : "Mute"}>
+            <button className={`${styles.centerBtn} ${isMuted ? styles.centerBtnPulse : ''}`} onClick={toggleMute} aria-label={isMuted ? "Unmute" : "Mute"}>
               {isMuted ? <VolumeX size={20} /> : <Volume2 size={20} />}
             </button>
             
