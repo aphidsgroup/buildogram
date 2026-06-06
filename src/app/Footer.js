@@ -96,10 +96,6 @@ export default function Footer() {
                 Engineer-led construction and property ecosystem helping owners plan, build, source materials, verify progress, and maintain digital property records.
               </p>
               <div className={styles.tagline}>Engineer-led. Owner-first. Build with confidence.</div>
-              <div className={styles.statusBadge}>
-                <span className={styles.statusDot} />
-                <span>Active Platform · Chennai, Tamil Nadu</span>
-              </div>
             </div>
 
             {/* Link columns */}
