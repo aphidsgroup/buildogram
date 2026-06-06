@@ -1,12 +1,101 @@
-﻿import { generateSEOMetadata } from "@/lib/seo/metadata";
-import AnswerBlock from "@/components/seo/AnswerBlock";
-import EntitySummary from "@/components/seo/EntitySummary";
-import ProcessSteps from "@/components/seo/ProcessSteps";
-import FAQBlock from "@/components/seo/FAQBlock";
-import LocalIntentBlock from "@/components/seo/LocalIntentBlock";
-import Link from "next/link";
-export const metadata = generateSEOMetadata({ title: "Pile Load Test in Chennai | Vertical & Lateral Load Testing | Buildogram", description: "Buildogram connects you with verified engineers for Pile Load Test in Chennai. Engineer-led, report-based service in Chennai.", path: "/pile-load-test-chennai" });
-const STEPS = [{ title: "1. Enquiry & Scope", desc: "Share your project details, site location, and service requirements with our team." }, { title: "2. Site Mobilisation", desc: "Verified engineers and equipment are mobilised to your site at the agreed schedule." }, { title: "3. Field Work & Testing", desc: "Field work is carried out following standard protocols. Data is recorded systematically." }, { title: "4. Lab Analysis", desc: "Samples and field data are processed in accredited laboratories where applicable." }, { title: "5. Report & Recommendation", desc: "A formal technical report is issued with findings, data, and engineer recommendations." }];
-const DELIVERABLES = ["Technical Report", "Field Data Records", "Lab Test Results", "Engineer Recommendations", "Site Photographs"];
-const FAQS = [{ question: "How do I request this service?", answer: "Contact Buildogram with your site address and project details. We will match you with a verified engineer and provide a project-specific quote." }, { question: "How long does the process take?", answer: "Timelines vary by service. Field work typically takes 1–3 days. Report preparation takes 3–7 working days after field completion." }, { question: "Do you provide services across Tamil Nadu?", answer: "Yes. Our verified engineer network covers Chennai and major districts across Tamil Nadu." }, { question: "Is the report accepted by structural engineers and banks?", answer: "Our reports are prepared by qualified engineers following IS standards and are suitable for submission to structural engineers, approving authorities, and financial institutions." }];
-export default function Page() { return (<main className={"page"} style={{ paddingTop: "80px", paddingBottom: "80px" }}><div className={"sectionInner"}><div style={{ marginBottom: "16px", fontSize: "14px", color: "#64748B" }}><a href={"/"} style={{ color: "#FC6E20" }}>Home</a> / <span style={{ color: "#0F172A", fontWeight: 600 }}>Pile Load Test in Chennai</span></div><h1 style={{ fontSize: "36px", fontWeight: 800, color: "#0F172A", marginBottom: "24px" }}>Pile Load Test in Chennai</h1><AnswerBlock question={"What does a pile load test verify?"} answer={"A pile load test verifies that installed piles can carry the designed loads with acceptable settlements. It includes vertical (compression) load tests and may include lateral and uplift tests depending on the structural requirements — giving engineers direct evidence of pile performance."} /><ProcessSteps title={"Our Process"} steps={STEPS} /><div style={{ background: "#F8FAFC", borderRadius: "16px", padding: "32px", margin: "40px 0" }}><h2 style={{ fontSize: "22px", fontWeight: 800, color: "#0F172A", marginBottom: "16px" }}>What You Receive</h2><ul style={{ listStyle: "none", padding: 0, display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "12px" }}>{DELIVERABLES.map(d => (<li key={d} style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "15px", color: "#374151" }}><span style={{ color: "#10B981", fontWeight: 700 }}>✓</span> {d}</li>))}</ul></div><EntitySummary serviceName={"Pile Load Test in Chennai"} /><LocalIntentBlock /><FAQBlock title={"Frequently Asked Questions"} faqs={FAQS} /><div style={{ marginTop: "32px", textAlign: "center" }}><Link href={"/contact?type=piling"} className={"btn btn-primary btn-lg"}>Request This Service</Link></div></div></main>); }
+import { generateSEOMetadata } from '@/components/seo/generateSEOMetadata';
+import AnswerBlock from '@/components/seo/AnswerBlock';
+import EntitySummary from '@/components/seo/EntitySummary';
+import ProcessSteps from '@/components/seo/ProcessSteps';
+import FAQBlock from '@/components/seo/FAQBlock';
+import LocalIntentBlock from '@/components/seo/LocalIntentBlock';
+import Link from 'next/link';
+
+export const metadata = generateSEOMetadata({
+  title: 'Pile Load Test in Chennai | Static Load Capacity Testing',
+  description: 'Initial and Routine Pile Load Testing in Chennai. Prove the ultimate bearing capacity of your foundation piles with certified kentledge static load testing.',
+  path: '/pile-load-test-chennai',
+});
+
+const STEPS = [
+  { title: '1. Test Pile Casting', desc: 'A specific pile is cast and allowed to cure fully (typically 28 days for full strength) before testing can commence.' },
+  { title: '2. Kentledge Assembly', desc: 'We build a massive platform over the test pile and load it with dead weights (kentledge)—usually concrete blocks or sandbags—equivalent to 1.5 to 2.5 times the pile\'s designed safe load.' },
+  { title: '3. Hydraulic Jack Setup', desc: 'A hydraulic jack and calibrated load cells are placed between the pile head and the kentledge platform. Dial gauges are fixed to measure settlement.' },
+  { title: '4. Incremental Loading', desc: 'Load is applied in increments (e.g., 20% of safe load at a time). The settlement (sinking) of the pile is recorded at each stage over a period of 24-48 hours.' },
+  { title: '5. Load-Settlement Graph', desc: 'The data is plotted into a graph. If the pile rebounds sufficiently when the load is removed, and the total settlement is within IS Code limits, the pile passes.' },
+];
+
+const DELIVERABLES = [
+  'Certified Load-Settlement Graph',
+  'Ultimate Bearing Capacity Report',
+  'Elastic Rebound Analysis',
+  'IS:2911 Compliance Certificate',
+  'Foundation Safety Endorsement'
+];
+
+const FAQS = [
+  { question: 'What is the difference between an Initial and a Routine Pile Load Test?', answer: 'An Initial Test is done on a sacrificial test pile before the main construction begins, loaded up to 2.5 times the safe load to find the ultimate breaking point. A Routine Test is done on a working pile (one that will be part of the building) loaded up to 1.5 times the safe load.' },
+  { question: 'Is Static Load testing legally required in Chennai?', answer: 'For large commercial buildings, high-rises, and government projects, IS:2911 code mandates pile load testing. CMDA structural engineers will require the test reports before issuing completion certificates.' },
+  { question: 'Can I do a Dynamic Load Test instead?', answer: 'Dynamic testing is much faster and cheaper as it uses a dropped weight and sensors instead of building a massive kentledge platform. However, IS Codes usually require at least one Static Load Test for initial calibration; Dynamic tests can be used for the remaining routine tests.' },
+  { question: 'How long does a Static Load Test take?', answer: 'Building the kentledge platform takes 2-3 days. The actual loading and observation period takes 24 to 48 hours continuously, followed by unloading.' },
+];
+
+export default function Page() {
+  return (
+    <main className="page" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
+      <div className="sectionInner">
+        <div style={{ marginBottom: '16px', fontSize: '14px', color: '#64748B' }}>
+          <Link href="/" style={{ color: '#FC6E20' }}>Home</Link> / <Link href="/pile-foundation-contractors-chennai" style={{ color: '#FC6E20' }}>Pile Foundation</Link> / <span style={{ color: '#0F172A', fontWeight: 600 }}>Pile Load Test</span>
+        </div>
+        
+        <h1 style={{ fontSize: '36px', fontWeight: 800, color: '#0F172A', marginBottom: '24px' }}>Static Pile Load Testing in Chennai</h1>
+        <p style={{ fontSize: '18px', color: '#374151', lineHeight: 1.6, marginBottom: '32px' }}>
+          Prove your foundation can handle the weight. Before you build a 10-story apartment on marshy Chennai soil, a Static Pile Load Test physically demonstrates that your concrete piles will not sink under the immense pressure of the building.
+        </p>
+
+        <AnswerBlock
+          question="Why do engineers insist on a Kentledge Static Load Test?"
+          answer="Soil reports give a theoretical Safe Bearing Capacity. Piling execution is prone to human error. A Static Load Test bridges the gap between theory and reality. By stacking hundreds of tons of concrete blocks over the pile and pressing down with a hydraulic jack, we physically prove—without a shadow of a doubt—that the pile can support the building."
+        />
+        
+        <ProcessSteps title="Kentledge Load Test Procedure" steps={STEPS} />
+        
+        <div style={{ background: '#F8FAFC', borderRadius: '16px', padding: '32px', margin: '40px 0' }}>
+          <h2 style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', marginBottom: '16px' }}>What You Receive</h2>
+          <ul style={{ listStyle: 'none', padding: 0, display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '16px' }}>
+            {DELIVERABLES.map(d => (
+              <li key={d} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', fontSize: '15px', color: '#374151', lineHeight: 1.5 }}>
+                <span style={{ color: '#10B981', fontWeight: 700, marginTop: '2px' }}>✓</span> {d}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div style={{ margin: '40px 0', padding: '32px', background: 'rgba(252, 110, 32, 0.05)', borderRadius: '16px', border: '1px solid rgba(252, 110, 32, 0.1)' }}>
+          <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#0F172A', marginBottom: '16px' }}>Pull-Out and Lateral Testing</h3>
+          <p style={{ color: '#374151', lineHeight: 1.6 }}>
+            In addition to vertical compression testing, tall structures (like chimneys or telecom towers) and retaining walls experience severe wind loads and soil pressure in Chennai. We also conduct <strong>Pull-Out (Uplift) Tests</strong> to ensure the pile isn't ripped out of the ground by wind, and <strong>Lateral Load Tests</strong> to ensure it doesn't bend sideways.
+          </p>
+        </div>
+
+        <FAQBlock title="Frequently Asked Questions" faqs={FAQS} />
+        
+        <EntitySummary serviceName="Pile Load Test in Chennai" />
+        <LocalIntentBlock />
+        
+        <div style={{ marginTop: '40px', padding: '24px', background: '#FFF7ED', borderRadius: '12px', border: '1px solid #FED7AA' }}>
+          <p style={{ fontWeight: 700, color: '#FC6E20', marginBottom: '12px' }}>Related Piling Services</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+            {[
+              ['Dynamic Pile Load Test', '/dynamic-pile-load-test-chennai'],
+              ['Pile Integrity Test', '/pile-integrity-test-chennai'],
+              ['Bored Cast-In-Situ', '/bored-cast-in-situ-piles-chennai'],
+              ['DMC Piling', '/dmc-piling-contractors-chennai'],
+            ].map(([label, href]) => (
+              <Link key={href} href={href} style={{ padding: '8px 16px', background: 'white', border: '1px solid #FED7AA', borderRadius: '100px', color: '#374151', fontSize: '14px', fontWeight: 600, textDecoration: 'none' }}>{label}</Link>
+            ))}
+          </div>
+        </div>
+        
+        <div style={{ marginTop: '40px', textAlign: 'center' }}>
+          <Link href="/contact?type=piling" className="btn btn-primary btn-lg">Book a Load Test</Link>
+        </div>
+      </div>
+    </main>
+  );
+}
