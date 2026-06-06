@@ -14,15 +14,15 @@
 .desktop {
   bottom: 24px;
   left: 24px;
-  width: 280px;
-  height: 498px;
+  width: 180px;
+  aspect-ratio: 9 / 16;
 }
 
 .mobile {
   bottom: 16px;
   left: 16px;
-  width: 180px;
-  height: 320px;
+  width: 140px;
+  aspect-ratio: 9 / 16;
   border-radius: 16px;
 }
 
@@ -73,8 +73,8 @@
   pointer-events: none;
 }
 
-/* Allow interaction with inner overlay elements even if background overlay is invisible */
 .overlayInteractive {
+  opacity: 1;
   pointer-events: auto;
 }
 
