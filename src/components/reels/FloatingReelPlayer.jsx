@@ -18,43 +18,56 @@ const XIcon = ({ size = 24, strokeWidth = 2, ...props }) => (
 export default function FloatingReelPlayer() {
   const pathname = usePathname();
   const [reel, setReel] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [isClosed, setIsClosed] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
   const [showControls, setShowControls] = useState(true);
-  const [loading, setLoading] = useState(true);
   const [playerReady, setPlayerReady] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  
   const controlTimeoutRef = useRef(null);
 
-  // Only show on the homepage
-  const isHiddenRoute = pathname !== '/';
+  // Hide on private/admin routes
+  const isHiddenRoute = pathname.startsWith('/ops') || 
+                        pathname.startsWith('/partner') || 
+                        pathname.startsWith('/client') || 
+                        pathname.startsWith('/admin') || 
+                        pathname.startsWith('/dashboard') || 
+                        pathname.startsWith('/login');
 
   useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth <= 768);
-    handleResize();
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
-    if (isHiddenRoute) return;
+    // Check session storage first
+    if (typeof window !== 'undefined' && sessionStorage.getItem('buildogram_reel_closed') === 'true') {
+      setIsClosed(true);
+      setLoading(false);
+      return;
+    }
 
-    async function fetchReel() {
+    if (isHiddenRoute) {
+      setLoading(false);
+      return;
+    }
+
+    const fetchReel = async () => {
       try {
         const res = await fetch('/api/reels/active');
         const json = await res.json();
         if (json.success && json.data) {
           setReel(json.data);
-          // Try to respect the database setting
-          setIsMuted(json.data.start_muted ?? false);
+          setIsMuted(json.data.start_muted ?? true);
         }
-      } catch (err) {
-        console.error('Failed to fetch active reel:', err);
+      } catch (error) {
+        console.error('Failed to fetch active reel', error);
       } finally {
         setLoading(false);
       }
-    }
+    };
     fetchReel();
   }, [isHiddenRoute]);
 
@@ -75,6 +88,9 @@ export default function FloatingReelPlayer() {
   const handleClose = (e) => {
     e.stopPropagation();
     setIsClosed(true);
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('buildogram_reel_closed', 'true');
+    }
   };
 
   const toggleMute = (e) => {
@@ -102,7 +118,10 @@ export default function FloatingReelPlayer() {
             playsinline={true}
             onStart={() => setPlayerReady(true)}
             onReady={() => setPlayerReady(true)}
-            onError={(e) => console.error("ReactPlayer Error:", e)}
+            onError={(e) => {
+              console.error("ReactPlayer Error:", e);
+              if (!isMuted) setIsMuted(true);
+            }}
             style={{ position: 'absolute', top: 0, left: 0 }}
             config={{
               youtube: { playerVars: { controls: 0, modestbranding: 1, rel: 0, fs: 0 } },
