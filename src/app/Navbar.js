@@ -1,100 +1,150 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'motion/react';
 import styles from './Navbar.module.css';
 
 const MEGA_MENUS = [
   {
-    label: 'Build',
+    label: 'Services',
     links: [
       { href: '/home-construction-chennai', label: 'Home Construction in Chennai' },
       { href: '/end-to-end-construction-support-chennai', label: 'End-to-End Construction Support' },
-      { href: '/construction-project-management-chennai', label: 'Construction Project Management' },
+      { href: '/builders-in-chennai', label: 'Builders in Chennai' },
+      { href: '/construction-company-chennai', label: 'Construction Company Chennai' },
+      { href: '/villa-construction', label: 'Villa Construction' },
+      { href: '/turnkey-construction-chennai', label: 'Turnkey Construction' },
       { href: '/residential-construction-chennai', label: 'Residential Construction' },
       { href: '/commercial-construction-chennai', label: 'Commercial Construction' },
-      { href: '/turnkey-construction-chennai', label: 'Turnkey Construction' },
-    ]
-  },
-  {
-    label: 'Services',
-    links: [
+      { href: '/renovation-contractors-chennai', label: 'Renovation & Remodeling' },
       { href: '/boq-review-chennai', label: 'BOQ Review' },
-      { href: '/boq-audit', label: 'BOQ Audit Tool' },
-      { href: '/plan-review', label: 'Architectural Plan Review' },
+      { href: '/contractor-quote-review-chennai', label: 'Contractor Quote Review' },
+      { href: '/construction-cost-estimation-chennai', label: 'Construction Cost Estimation' },
       { href: '/structural-plan-review-chennai', label: 'Structural Plan Review' },
+      { href: '/plan-review', label: 'Floor Plan Review' },
       { href: '/site-supervision-chennai', label: 'Site Supervision' },
-      { href: '/quality-inspection-chennai', label: 'Quality Inspection' },
-      { href: '/cost-estimator', label: 'Cost Estimator' },
-    ]
-  },
-  {
-    label: 'Structural Safety',
-    links: [
-      { href: '/structural-audit-chennai', label: 'Structural Audit' },
-      { href: '/building-crack-inspection-chennai', label: 'Building Crack Inspection' },
-      { href: '/old-building-structural-audit-chennai', label: 'Old Building Audit' },
-      { href: '/apartment-structural-audit-chennai', label: 'Apartment Structural Audit' },
-      { href: '/structural-plan-review-chennai', label: 'Structural Plan Review' },
-    ]
-  },
-  {
-    label: 'Steel Construction',
-    links: [
+      { href: '/construction-project-management-chennai', label: 'Project Management' },
       { href: '/steel-construction-chennai', label: 'Steel Construction' },
       { href: '/peb-building-contractors-chennai', label: 'PEB Buildings' },
       { href: '/industrial-shed-construction-chennai', label: 'Industrial Shed Construction' },
-      { href: '/warehouse-steel-building-chennai', label: 'Warehouse Steel Building' },
-      { href: '/steel-fabrication-contractors-chennai', label: 'Steel Fabrication Contractors' },
     ]
   },
   {
-    label: 'Materials',
+    label: 'Shop Materials',
     links: [
-      { href: '/materials', label: 'Material Quote Support' },
+      { href: '/materials', label: 'Shop All Materials' },
       { href: '/materials/cement', label: 'Cement' },
       { href: '/materials/tmt-steel', label: 'TMT Steel' },
-      { href: '/materials/m-sand', label: 'M Sand' },
-      { href: '/materials/ready-mix-concrete', label: 'RMC' },
-      { href: '/materials/bricks', label: 'Bricks & Blocks' },
+      { href: '/materials/msand-psand', label: 'M-Sand & P-Sand' },
+      { href: '/materials/bricks-aac-blocks', label: 'Bricks & AAC Blocks' },
+      { href: '/materials/ready-mix-concrete', label: 'Ready Mix Concrete' },
+      { href: '/materials/waterproofing', label: 'Waterproofing Materials' },
+      { href: '/materials/electrical', label: 'Electrical Materials' },
+      { href: '/materials/plumbing', label: 'Plumbing Materials' },
+      { href: '/materials/fabrication-steel', label: 'Fabrication & Steel Materials' },
+      { href: '/materials/piling-foundation-materials', label: 'Piling & Foundation Materials' },
+      { href: '/materials/finishing-materials', label: 'Finishing Materials' },
+      { href: '/material-quotes', label: 'Request Material Quote' },
+    ]
+  },
+  {
+    label: 'Structural Auditing',
+    links: [
+      { href: '/structural-audit-chennai', label: 'Building Structural Audit' },
+      { href: '/building-structural-audit-chennai', label: 'Residential Structural Audit' },
+      { href: '/commercial-structural-audit-chennai', label: 'Commercial Building Audit' },
+      { href: '/apartment-structural-audit-chennai', label: 'Apartment Structural Audit' },
+      { href: '/old-building-structural-audit-chennai', label: 'Old Building Safety Audit' },
+      { href: '/building-crack-inspection-chennai', label: 'Crack Inspection' },
+      { href: '/ndt-testing-chennai', label: 'NDT Testing' },
+      { href: '/rebound-hammer-test-chennai', label: 'Rebound Hammer Test' },
+      { href: '/upv-test-chennai', label: 'Ultrasonic Pulse Velocity Test' },
+      { href: '/rebar-scanning-chennai', label: 'Cover Meter / Rebar Scanning' },
+      { href: '/core-test-concrete-chennai', label: 'Concrete Core Test' },
+    ]
+  },
+  {
+    label: 'Survey & Piling',
+    links: [
+      { href: '/land-survey-chennai', label: 'Land Survey' },
+      { href: '/topographic-survey-chennai', label: 'Topographic Survey' },
+      { href: '/dgps-survey-chennai', label: 'DGPS / RTK Survey' },
+      { href: '/drone-survey-chennai', label: 'Drone Survey / UAV Mapping' },
+      { href: '/construction-layout-marking-chennai', label: 'Construction Layout Marking' },
+      { href: '/soil-testing-chennai', label: 'Soil Investigation' },
+      { href: '/plate-load-test-chennai', label: 'Plate Load Test' },
+      { href: '/pile-foundation-contractors-chennai', label: 'Pile Foundation' },
+      { href: '/bored-cast-in-situ-piles-chennai', label: 'Bored Cast-In-Situ Piles' },
+      { href: '/dmc-piling-contractors-chennai', label: 'DMC Piles' },
+      { href: '/micro-piling-contractors-chennai', label: 'Micro Piles' },
+      { href: '/pile-load-test-chennai', label: 'Pile Load Test' },
+      { href: '/pile-integrity-test-chennai', label: 'Pile Integrity Test' },
+      { href: '/dynamic-pile-load-test-chennai', label: 'Dynamic Pile Load Test' },
     ]
   },
   {
     label: 'Partners',
     links: [
-      { href: '/builders-in-chennai', label: 'Verified Builders' },
-      { href: '/renovation-contractors-chennai', label: 'Renovation Contractors' },
-      { href: '/partners/directory', label: 'Partner Directory' },
-      { href: '/partners/register', label: 'Become a Partner' },
+      { href: '/partners/directory', label: 'Find Verified Partners' },
+      { href: '/partners/builders', label: 'Builders' },
+      { href: '/partners/contractors', label: 'Contractors' },
+      { href: '/partners/architects', label: 'Architects' },
+      { href: '/partners/directory?category=Structural+Engineers', label: 'Structural Engineers' },
+      { href: '/partners/directory?category=Surveyors', label: 'Surveyors' },
+      { href: '/partners/directory?category=NDT+Labs', label: 'NDT Testing Labs' },
+      { href: '/partners/directory?category=Piling', label: 'Piling Contractors' },
+      { href: '/partners/suppliers', label: 'Material Suppliers' },
+      { href: '/partners/directory?category=Steel+Fabricators', label: 'Steel Fabricators' },
+      { href: '/partners/interiors', label: 'Interior Designers' },
+      { href: '/partners/waterproofing', label: 'Waterproofing Vendors' },
+      { href: '/partners/solar', label: 'Solar Vendors' },
+      { href: '/join-as-partner', label: 'Join as Partner' },
+      { href: '/partner-os', label: 'Partner OS' },
     ]
   },
   {
-    label: 'Resources',
+    label: 'AI Tools',
     links: [
-      { href: '/resources', label: 'Resource Hub' },
-      { href: '/guides', label: 'Guides' },
+      { href: '/ai-tools', label: 'All AI Tools' },
+      { href: '/ai-construction-cost-estimator', label: 'AI Cost Estimator' },
+      { href: '/ai-boq-checker', label: 'AI BOQ Checker' },
+      { href: '/ai-contractor-quote-analyzer', label: 'AI Quote Analyzer' },
+      { href: '/ai-material-estimator', label: 'AI Material Estimator' },
+      { href: '/ai-structural-audit-intake', label: 'AI Structural Audit Intake' },
+      { href: '/ai-survey-requirement-builder', label: 'AI Survey Requirement Builder' },
+      { href: '/ai-soil-test-requirement-builder', label: 'AI Soil Test Builder' },
+      { href: '/ai-pile-foundation-boq-checker', label: 'AI Pile Foundation BOQ' },
+      { href: '/ai-property-passport-assistant', label: 'AI Property Passport Assistant' },
+    ]
+  },
+  {
+    label: 'Quality & Passport',
+    links: [
+      { href: '/quality-system', label: 'Buildogram Quality System (BQS)' },
+      { href: '/property-passport', label: 'Property Passport' },
+      { href: '/quality-system', label: 'Site Documentation' },
+      { href: '/quality-system', label: 'Material Verification Records' },
+      { href: '/structural-audit-chennai', label: 'Structural Audit Records' },
+    ]
+  },
+  {
+    label: 'Learn',
+    links: [
+      { href: '/guides', label: 'Construction Guides' },
+      { href: '/resources/material-guide', label: 'Material Guides' },
       { href: '/faqs', label: 'FAQs' },
       { href: '/locations/chennai', label: 'Chennai Service Areas' },
-      { href: '/ai-floor-plan-creator', label: 'AI Floor Plan Tool' },
+      { href: '/glossary', label: 'Glossary' },
     ]
   },
-  {
-    label: 'Contact',
-    links: [
-      { href: '/contact', label: 'Contact Us' },
-      { href: '/about', label: 'About Buildogram' },
-      { href: '/careers', label: 'Careers' },
-    ]
-  }
 ];
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [openAccordion, setOpenAccordion] = useState(null);
-  const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -103,7 +153,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handler);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => { 
     setMenuOpen(false); 
     setOpenAccordion(null);
@@ -147,10 +196,9 @@ export default function Navbar() {
               <div className={styles.megaMenu}>
                 {menu.links.map(link => (
                   <Link 
-                    key={link.href} 
+                    key={link.href + link.label} 
                     href={link.href} 
                     className={styles.megaLink}
-                    target={link.external ? '_blank' : '_self'}
                   >
                     {link.label}
                   </Link>
@@ -159,8 +207,9 @@ export default function Navbar() {
             </div>
           ))}
           
-          <div className={styles.navItemContainer} style={{ marginLeft: 8 }}>
-             <Link href="/login" className="btn btn-primary" style={{ padding: '8px 18px', fontSize: '14px' }}>Dashboard OS</Link>
+          <div className={styles.navItemContainer} style={{ marginLeft: 8, display: 'flex', gap: '8px' }}>
+            <Link href="/contact?type=construction" className="btn btn-primary" style={{ padding: '8px 18px', fontSize: '14px' }}>Start Project</Link>
+            <Link href="/login" className="btn" style={{ padding: '8px 18px', fontSize: '14px', background: 'transparent', border: '1px solid var(--border)', color: 'var(--secondary)' }}>Dashboard OS</Link>
           </div>
         </div>
 
@@ -212,11 +261,10 @@ export default function Navbar() {
                       >
                         {menu.links.map(link => (
                           <Link 
-                            key={link.href} 
+                            key={link.href + link.label} 
                             href={link.href} 
                             onClick={close} 
                             className={styles.mobileLink}
-                            target={link.external ? '_blank' : '_self'}
                           >
                             {link.label}
                           </Link>
@@ -227,11 +275,11 @@ export default function Navbar() {
                 </div>
               ))}
               <div style={{ padding: '16px 0 0 0', marginTop: '8px', borderTop: '1px solid var(--border)' }}>
-                <Link href="/login" onClick={close} className={`${styles.mobileLink} ${styles.mobileLinkPrimary}`}>
-                  Open Dashboard OS
+                <Link href="/contact?type=construction" onClick={close} className={`${styles.mobileLink} ${styles.mobileLinkPrimary}`}>
+                  Start Your Project
                 </Link>
-                <Link href="/contact?type=construction" onClick={close} className={styles.mobileLinkOutline}>
-                  Talk to an Engineer
+                <Link href="/login" onClick={close} className={styles.mobileLinkOutline}>
+                  Open Dashboard OS
                 </Link>
               </div>
             </div>

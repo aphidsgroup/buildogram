@@ -4,72 +4,92 @@ import styles from './Footer.module.css';
 
 const FOOTER_COLS = [
   {
+    title: 'Services',
+    links: [
+      ['Home Construction', '/home-construction-chennai'],
+      ['End-to-End Support', '/end-to-end-construction-support-chennai'],
+      ['BOQ Review', '/boq-review-chennai'],
+      ['Site Supervision', '/site-supervision-chennai'],
+      ['Steel & PEB', '/steel-construction-chennai'],
+      ['Turnkey Construction', '/turnkey-construction-chennai'],
+    ],
+  },
+  {
+    title: 'Shop Materials',
+    links: [
+      ['All Materials', '/materials'],
+      ['Cement', '/materials/cement'],
+      ['TMT Steel', '/materials/tmt-steel'],
+      ['M-Sand & P-Sand', '/materials/msand-psand'],
+      ['Bricks & AAC Blocks', '/materials/bricks-aac-blocks'],
+      ['Request Material Quote', '/material-quotes'],
+    ],
+  },
+  {
+    title: 'Structural Auditing',
+    links: [
+      ['Building Structural Audit', '/structural-audit-chennai'],
+      ['Crack Inspection', '/building-crack-inspection-chennai'],
+      ['NDT Testing', '/ndt-testing-chennai'],
+      ['Old Building Audit', '/old-building-structural-audit-chennai'],
+      ['Rebound Hammer Test', '/rebound-hammer-test-chennai'],
+    ],
+  },
+  {
+    title: 'Survey, Testing & Piling',
+    links: [
+      ['Land Survey', '/land-survey-chennai'],
+      ['Soil Testing', '/soil-testing-chennai'],
+      ['Pile Foundation', '/pile-foundation-contractors-chennai'],
+      ['Pile Load Test', '/pile-load-test-chennai'],
+      ['Drone Survey', '/drone-survey-chennai'],
+    ],
+  },
+  {
+    title: 'Partners',
+    links: [
+      ['Find Verified Partners', '/partners/directory'],
+      ['Builders', '/partners/builders'],
+      ['Contractors', '/partners/contractors'],
+      ['Architects', '/partners/architects'],
+      ['Join as Partner', '/join-as-partner'],
+    ],
+  },
+  {
+    title: 'AI Tools',
+    links: [
+      ['All AI Tools', '/ai-tools'],
+      ['Cost Estimator', '/ai-construction-cost-estimator'],
+      ['BOQ Checker', '/ai-boq-checker'],
+      ['Quote Analyzer', '/ai-contractor-quote-analyzer'],
+      ['Property Passport Assistant', '/ai-property-passport-assistant'],
+    ],
+  },
+  {
+    title: 'Quality & Property Passport',
+    links: [
+      ['Quality System (BQS)', '/quality-system'],
+      ['Property Passport', '/property-passport'],
+      ['Site Documentation', '/quality-system'],
+    ],
+  },
+  {
+    title: 'Learn',
+    links: [
+      ['Guides', '/guides'],
+      ['FAQs', '/faqs'],
+      ['Chennai Service Areas', '/locations/chennai'],
+      ['Glossary', '/glossary'],
+    ],
+  },
+  {
     title: 'Company',
     links: [
       ['About', '/about'],
       ['Contact', '/contact'],
       ['Careers', '/careers'],
-      ['Partners', '/partners/register'],
-    ],
-  },
-  {
-    title: 'Construction Support',
-    links: [
-      ['End-to-End Construction Support', '/end-to-end-construction-support-chennai'],
-      ['Home Construction Chennai', '/home-construction-chennai'],
-      ['Construction Project Management', '/construction-project-management-chennai'],
-      ['Site Supervision', '/site-supervision-chennai'],
-      ['Quality Inspection', '/quality-inspection-chennai'],
-    ],
-  },
-  {
-    title: 'Review Services',
-    links: [
-      ['BOQ Audit', '/boq-audit'],
-      ['BOQ Review Chennai', '/boq-review-chennai'],
-      ['Plan Review', '/plan-review'],
-      ['Structural Plan Review', '/structural-plan-review-chennai'],
-      ['Contractor Quote Review', '/contractor-quote-review-chennai'],
-      ['Construction Cost Estimator', '/cost-estimator'],
-    ],
-  },
-  {
-    title: 'Structural Safety',
-    links: [
-      ['Structural Audit Chennai', '/structural-audit-chennai'],
-      ['Building Crack Inspection', '/building-crack-inspection-chennai'],
-      ['Old Building Structural Audit', '/old-building-structural-audit-chennai'],
-      ['Apartment Structural Audit', '/apartment-structural-audit-chennai'],
-    ],
-  },
-  {
-    title: 'Steel Construction',
-    links: [
-      ['Steel Construction Chennai', '/steel-construction-chennai'],
-      ['PEB Buildings', '/peb-building-contractors-chennai'],
-      ['Industrial Shed Construction', '/industrial-shed-construction-chennai'],
-      ['Warehouse Steel Building', '/warehouse-steel-building-chennai'],
-      ['Steel Fabrication Contractors', '/steel-fabrication-contractors-chennai'],
-    ],
-  },
-  {
-    title: 'Locations',
-    links: [
-      ['Chennai Construction Areas', '/locations/chennai'],
-      ['Velachery', '/locations/chennai/velachery'],
-      ['Tambaram', '/locations/chennai/tambaram'],
-      ['Anna Nagar', '/locations/chennai/anna-nagar'],
-      ['OMR', '/locations/chennai/omr'],
-    ],
-  },
-  {
-    title: 'Resources',
-    links: [
-      ['Guides', '/guides'],
-      ['FAQ', '/faqs'],
-      ['Glossary', '/glossary'],
-      ['Property Passport', '/property-passport'],
-      ['Materials', '/materials'],
+      ['Privacy Policy', '/privacy-policy'],
+      ['Terms', '/terms'],
     ],
   },
 ];
@@ -93,9 +113,9 @@ export default function Footer() {
                 />
               </Link>
               <p className={styles.brandDesc}>
-                Engineer-led construction and property ecosystem helping owners plan, build, source materials, verify progress, and maintain digital property records.
+                AI-driven, engineer-led construction, materials, structural auditing, survey, testing, piling, partner, and property documentation ecosystem in Chennai.
               </p>
-              <div className={styles.tagline}>Engineer-led. Owner-first. Build with confidence.</div>
+              <div className={styles.tagline}>AI-Driven. Engineer-Led. Build with Confidence.</div>
             </div>
 
             {/* Link columns */}
@@ -127,7 +147,7 @@ export default function Footer() {
         <div className="container">
           <div className={styles.bottomInner}>
             <span className={styles.copyright}>
-              © 2026 Buildogram. Engineer-Led Construction Companion. Chennai, Tamil Nadu, India.
+              © 2026 Buildogram. AI-Driven, Engineer-Led Construction & Property Ecosystem. Chennai, Tamil Nadu, India.
             </span>
             <div className={styles.legalLinks}>
               {[['Privacy Policy', '/privacy-policy'], ['Terms', '/terms'], ['Contact', '/contact']].map(([l, h]) => (
