@@ -12,7 +12,8 @@
     "test:seo": "node scripts/launch-smoke-test.js",
     "test:security": "node scripts/security-smoke-test.js",
     "test:performance": "node scripts/performance-smoke-test.js",
-    "test:leads": "node scripts/lead-routing-smoke-test.js"
+    "test:leads": "node scripts/lead-routing-smoke-test.js",
+    "test:production-leads": "node scripts/production-lead-smoke-test.js"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

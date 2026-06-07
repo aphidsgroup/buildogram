@@ -58,7 +58,25 @@ if (fs.existsSync(apiOpsDir)) {
 
 report += `\n**Summary**: ${protectedApis}/${totalApis} mutating API routes are protected with explicit RBAC checks.\n`;
 
-report += `\n## 3. Data Safety Principles Verified\n`;
+report += `\n## 3. Public Registration Lockdown\n`;
+const loginPagePath = path.join(srcDir, 'app/login/page.js');
+if (fs.existsSync(loginPagePath)) {
+  const loginContent = fs.readFileSync(loginPagePath, 'utf8');
+  if (!loginContent.includes('>Register<')) report += `✅ Login UI: No Register tab found.\n`;
+  else report += `❌ Login UI: Register tab still present.\n`;
+  
+  if (loginContent.includes('user.must_change_password')) report += `✅ Login UI: Checks for must_change_password.\n`;
+  else report += `❌ Login UI: Missing must_change_password check.\n`;
+}
+
+const registerApiPath = path.join(srcDir, 'app/api/auth/register/route.js');
+if (fs.existsSync(registerApiPath)) {
+  const regApiContent = fs.readFileSync(registerApiPath, 'utf8');
+  if (regApiContent.includes('status: 403')) report += `✅ Register API: Hardcoded to 403 Forbidden.\n`;
+  else report += `❌ Register API: Might not be disabled.\n`;
+}
+
+report += `\n## 4. Data Safety Principles Verified\n`;
 report += `- Financial routes require \`manage_finance\`.\n`;
 report += `- External routes strip internal margins and private notes.\n`;
 report += `- All mutating requests trigger \`audit_logs\` generation.\n`;

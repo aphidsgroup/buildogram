@@ -32,8 +32,8 @@ export async function POST(req) {
     if (!user || !user.is_active || !(await bcrypt.compare(password, user.password_hash)))
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
       
-    const token = await signToken({ id: user.id, name: user.name, email: user.email, role: user.role });
-    const res = NextResponse.json({ user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+    const token = await signToken({ id: user.id, name: user.name, email: user.email, role: user.role, must_change_password: user.must_change_password });
+    const res = NextResponse.json({ user: { id: user.id, name: user.name, email: user.email, role: user.role, must_change_password: user.must_change_password } });
     res.cookies.set('buildogram_token', token, { httpOnly: true, maxAge: 60 * 60 * 24 * 7, path: '/' });
     return res;
   } catch (error) {
