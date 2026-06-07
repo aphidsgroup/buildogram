@@ -88,14 +88,16 @@ export default function LoginPage() {
           )}
         </div>
         
-        <div className={styles.demoBox}>
-          <p style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 700, marginBottom: '8px' }}>Demo Credentials (password: password123)</p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-            <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Admin: admin@buildogram.in</p>
-            <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Partner: partner@buildogram.in</p>
-            <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Client: client@buildogram.in</p>
+        {process.env.NODE_ENV !== 'production' || process.env.NEXT_PUBLIC_SHOW_DEMO_CREDENTIALS === 'true' ? (
+          <div className={styles.demoBox}>
+            <p style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 700, marginBottom: '8px' }}>Demo Credentials (password: password123)</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+              <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Admin: admin@buildogram.in</p>
+              <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Partner: partner@buildogram.in</p>
+              <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Client: client@buildogram.in</p>
+            </div>
           </div>
-        </div>
+        ) : null}
       </AnimatedSection>
     </div>
   );
