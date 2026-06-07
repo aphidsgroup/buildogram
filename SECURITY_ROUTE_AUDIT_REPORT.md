@@ -48,13 +48,21 @@
 - ✅ C:\Users\Kawinfinite PC 32\Downloads\Buildogram\buildogram-app\src\app\api\ops\revenue\route.js [Protected]
 - ✅ C:\Users\Kawinfinite PC 32\Downloads\Buildogram\buildogram-app\src\app\api\ops\revenue\[id]\route.js [Protected]
 - ✅ C:\Users\Kawinfinite PC 32\Downloads\Buildogram\buildogram-app\src\app\api\ops\seed-pilot\route.js [Protected]
+- ✅ C:\Users\Kawinfinite PC 32\Downloads\Buildogram\buildogram-app\src\app\api\ops\users\route.js [Protected]
+- ✅ C:\Users\Kawinfinite PC 32\Downloads\Buildogram\buildogram-app\src\app\api\ops\users\[id]\reset-password\route.js [Protected]
+- ✅ C:\Users\Kawinfinite PC 32\Downloads\Buildogram\buildogram-app\src\app\api\ops\users\[id]\route.js [Protected]
 - ✅ C:\Users\Kawinfinite PC 32\Downloads\Buildogram\buildogram-app\src\app\api\ops\whatsapp\send\route.js [Protected]
 - ✅ C:\Users\Kawinfinite PC 32\Downloads\Buildogram\buildogram-app\src\app\api\ops\whatsapp\templates\route.js [Protected]
 - ✅ C:\Users\Kawinfinite PC 32\Downloads\Buildogram\buildogram-app\src\app\api\ops\whatsapp\templates\[id]\route.js [Protected]
 
-**Summary**: 42/42 mutating API routes are protected with explicit RBAC checks.
+**Summary**: 45/45 mutating API routes are protected with explicit RBAC checks.
 
-## 3. Data Safety Principles Verified
+## 3. Public Registration Lockdown
+✅ Login UI: No Register tab found.
+✅ Login UI: Checks for must_change_password.
+✅ Register API: Hardcoded to 403 Forbidden.
+
+## 4. Data Safety Principles Verified
 - Financial routes require `manage_finance`.
 - External routes strip internal margins and private notes.
 - All mutating requests trigger `audit_logs` generation.
