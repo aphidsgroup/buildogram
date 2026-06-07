@@ -486,7 +486,7 @@ export default function OpsLeads() {
                     <label style={{ fontSize: '11px', fontWeight: 700, color: '#92400e', display: 'block', marginBottom: '4px' }}>Select Verified Partner</label>
                     <select className="input" style={{ margin: 0, padding: '6px 10px', fontSize: '12px', background: 'white', borderColor: '#fcd34d' }}
                       value={selected.assigned_partner_id || ''}
-                      onChange={e => {
+                      onChange={async e => {
                         const partnerId = e.target.value;
                         if (!partnerId) {
                           update(selected.id, { assigned_partner_id: null });
@@ -496,6 +496,21 @@ export default function OpsLeads() {
                         const partner = partners.find(p => p.id === partnerId);
                         update(selected.id, { assigned_partner_id: partnerId });
                         logActivity(selected.id, { activity_type: 'system', title: 'Partner Assigned', description: `Assigned to ${partner?.companyName}` });
+
+                        // Push to new Marketplace OS
+                        try {
+                          await fetch('/api/ops/partner-assignments', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              lead_id: selected.id,
+                              lead_source_table: 'leads',
+                              partner_id: partnerId,
+                              assignment_notes: selected.internal_notes || '',
+                              priority_level: 'high'
+                            })
+                          });
+                        } catch(err) { console.error('Failed to create partner assignment record', err) }
                       }}
                     >
                       <option value="">-- No Partner Assigned --</option>

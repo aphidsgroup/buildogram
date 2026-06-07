@@ -8,10 +8,11 @@ import { opsGetEnquiries } from '@/lib/enquiryApi';
 
 
 const APPROVAL_COLORS = {
-  'Approved':       { bg: '#DCFCE7', color: '#166534' },
-  'Pending Review': { bg: '#FEF9C3', color: '#854D0E' },
-  'Rejected':       { bg: '#FEE2E2', color: '#991B1B' },
-  'Suspended':      { bg: '#F1F5F9', color: '#475569' },
+  'verified':       { bg: '#DCFCE7', color: '#166534', label: 'Verified' },
+  'pending_review': { bg: '#FEF9C3', color: '#854D0E', label: 'Pending Review' },
+  'pending':        { bg: '#FEF9C3', color: '#854D0E', label: 'Pending Review' },
+  'rejected':       { bg: '#FEE2E2', color: '#991B1B', label: 'Rejected' },
+  'suspended':      { bg: '#F1F5F9', color: '#475569', label: 'Suspended' },
 };
 
 const BLANK_PARTNER = {
@@ -19,12 +20,12 @@ const BLANK_PARTNER = {
   location: '', serviceAreas: '', yearsExperience: '', contactPerson: '',
   phone: '', email: '', whatsapp: '', website: '',
   logoUrl: '', coverUrl: '',
-  approvalStatus: 'Pending Review', isActive: false, isFeatured: false,
+  approvalStatus: 'pending_review', isActive: false, isFeatured: false,
 };
 
 function Badge({ status }) {
-  const c = APPROVAL_COLORS[status] || APPROVAL_COLORS['Pending Review'];
-  return <span style={{ background: c.bg, color: c.color, padding: '3px 10px', borderRadius: '99px', fontSize: '11px', fontWeight: 700 }}>{status}</span>;
+  const c = APPROVAL_COLORS[status] || APPROVAL_COLORS['pending_review'];
+  return <span style={{ background: c.bg, color: c.color, padding: '3px 10px', borderRadius: '99px', fontSize: '11px', fontWeight: 700 }}>{c.label || status}</span>;
 }
 
 function CompletionBar({ pct }) {
@@ -128,7 +129,7 @@ export default function OpsPartnersV2() {
 
   const setApproval = async (id, slug, status) => {
     let rejectionReason = null;
-    if (status === 'Rejected') {
+    if (status === 'rejected') {
       rejectionReason = prompt('Reason for rejection (optional but recommended):');
       if (rejectionReason === null) return; // user cancelled
     }
@@ -192,8 +193,8 @@ export default function OpsPartnersV2() {
 
   const counts = {
     total: partners.length,
-    approved: partners.filter(p => p.approvalStatus === 'Approved').length,
-    pending: partners.filter(p => p.approvalStatus === 'Pending Review').length,
+    approved: partners.filter(p => p.approvalStatus === 'verified').length,
+    pending: partners.filter(p => p.approvalStatus === 'pending_review' || p.approvalStatus === 'pending').length,
     featured: partners.filter(p => p.isFeatured).length,
     active: partners.filter(p => p.isActive).length,
   };
@@ -214,7 +215,7 @@ export default function OpsPartnersV2() {
         </Field>
         <Field label="Approval Status">
           <select style={inputStyle} value={form.approvalStatus} onChange={f('approvalStatus')}>
-            {APPROVAL_STATUSES.map(s => <option key={s}>{s}</option>)}
+            {APPROVAL_STATUSES.map(s => <option key={s} value={s}>{APPROVAL_COLORS[s]?.label || s}</option>)}
           </select>
         </Field>
         <Field label="Location">
@@ -326,7 +327,7 @@ export default function OpsPartnersV2() {
             </select>
             <select style={{ ...inputStyle, maxWidth: '180px' }} value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
               <option value="All">All Statuses</option>
-              {APPROVAL_STATUSES.map(s => <option key={s}>{s}</option>)}
+              {APPROVAL_STATUSES.map(s => <option key={s} value={s}>{APPROVAL_COLORS[s]?.label || s}</option>)}
             </select>
             <span style={{ fontSize: '13px', color: '#94A3B8', marginLeft: 'auto' }}>{filtered.length} shown</span>
           </div>
@@ -344,7 +345,8 @@ export default function OpsPartnersV2() {
             </thead>
             <tbody>
               {filtered.map(partner => {
-                const completion = partner.profileCompletion || calcProfileCompletion(partner);
+                const profileObj = calcProfileCompletion(partner);
+                const completion = partner.profileCompletion || (typeof profileObj === 'object' ? profileObj.score : profileObj);
                 const partnerLeads = partner.enquiryCount || 0;
 
                 return (
@@ -379,7 +381,7 @@ export default function OpsPartnersV2() {
                           <select value={partner.approvalStatus} onChange={e => { e.stopPropagation(); setApproval(partner.id, partner.slug, e.target.value); }}
                             onClick={e => e.stopPropagation()}
                             style={{ fontSize: '11px', padding: '3px 6px', borderRadius: '6px', border: '1px solid #E2E8F0', background: 'white', cursor: 'pointer' }}>
-                            {APPROVAL_STATUSES.map(s => <option key={s}>{s}</option>)}
+                            {APPROVAL_STATUSES.map(s => <option key={s} value={s}>{APPROVAL_COLORS[s]?.label || s}</option>)}
                           </select>
                         </div>
                       </div>
@@ -531,10 +533,10 @@ export default function OpsPartnersV2() {
                 <a href={`/partners/${selected.slug}`} target="_blank" rel="noreferrer" style={{ padding: '10px 16px', borderRadius: '10px', background: '#EFF6FF', color: '#2563EB', textDecoration: 'none', fontWeight: 700, fontSize: '13px' }}>👁️ View Public</a>
               </div>
               <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                {['Approved', 'Pending Review', 'Rejected', 'Suspended'].map(s => (
-                  <button key={s} onClick={() => { setApproval(selected.slug, s); setSelected(p => ({ ...p, approvalStatus: s })); }}
+                {['verified', 'pending_review', 'rejected', 'suspended'].map(s => (
+                  <button key={s} onClick={() => { setApproval(selected.id, selected.slug, s); setSelected(p => ({ ...p, approvalStatus: s })); }}
                     style={{ padding: '7px 14px', borderRadius: '8px', border: '1.5px solid', cursor: 'pointer', fontSize: '12px', fontWeight: 700, background: selected.approvalStatus === s ? (APPROVAL_COLORS[s]?.color || '#FC6E20') : 'white', color: selected.approvalStatus === s ? 'white' : (APPROVAL_COLORS[s]?.color || '#64748B'), borderColor: APPROVAL_COLORS[s]?.color || '#E2E8F0', transition: 'all 0.15s' }}>
-                    {s}
+                    {APPROVAL_COLORS[s]?.label || s}
                   </button>
                 ))}
               </div>

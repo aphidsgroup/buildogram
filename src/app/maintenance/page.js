@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import MaintenanceLeadForm from './MaintenanceLeadForm';
@@ -24,7 +25,7 @@ const amcPlans = [
 ];
 
 export default function MaintenancePage() {
-  return (
+  return ( <>
     <>
       {/* ── Hero ── */}
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
@@ -116,6 +117,8 @@ export default function MaintenancePage() {
           </div>
         </div>
       </section>
+    </>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Home Maintenance Services Chennai","path":"/maintenance"}]} />
     </>
   );
 }

@@ -1,3 +1,4 @@
+import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth';
 import { roleCan } from '@/lib/permissions';
@@ -5,6 +6,7 @@ import { normalizePhone } from '@/lib/whatsapp';
 import sql from '@/lib/db';
 
 export async function POST(req) {
+  await requirePermission('manage_whatsapp_templates');
   const u = getUserFromRequest(req);
   if (!u || !roleCan(u.role, 'send_whatsapp_message')) {
     return NextResponse.json({ success: false, error: 'Forbidden. Lacking permission.' }, { status: 403 });

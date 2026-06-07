@@ -1,12 +1,16 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import { services } from '@/data/seo/services';
 
 export const metadata = generateSEOMetadata({
-title: 'Buildogram Services | Engineer-Led Construction & Property Services in Chennai',
-  description: 'Explore all Buildogram construction services — house construction, PMC, quality inspection, BOQ review, site supervision, renovation, turnkey, and more.',
-  path: '/services',
+  title: "Services | Buildogram",
+  description: "Comprehensive services services. Buildogram is an AI-driven, engineer-led construction and property ecosystem offering BOQ review, structural audit, survey, testing, and piling.",
+  path: "/services"
 });
+
+
+
 
 const categories = [
   { label: 'Construction', slugs: ['house-construction', 'villa-construction', 'residential-construction', 'duplex-house-construction', 'turnkey-construction', 'renovation-construction', 'home-construction-for-rental-income', 'home-construction-for-resale-value'] },
@@ -15,7 +19,7 @@ const categories = [
 ];
 
 export default function ServicesHub() {
-  return (
+  return ( <>
     <div className="marketplacePage">
       <section className="fullBleedSection" style={{ background: 'var(--secondary)', color: 'white', padding: 'clamp(48px, 6vw, 88px) 0 clamp(56px, 7vw, 104px) 0' }}>
         <div className="sectionInnerWide" style={{ textAlign: 'center' }}>
@@ -69,5 +73,7 @@ export default function ServicesHub() {
         </div>
       </section>
     </div>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Buildogram Services","path":"/services"}]} />
+    </>
   );
 }

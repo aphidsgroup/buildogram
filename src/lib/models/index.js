@@ -415,3 +415,22 @@ export const SubscriptionLimitModel = {
     storageGB: 0,
   },
 };
+
+/**
+ * Check if a partner has hit a plan limit.
+ * @param {object} partner — must have planType and usage
+ * @param {'projects'|'materialRequests'|'documents'|'teamMembers'} resource
+ * @returns {{ allowed: boolean, used: number, max: number, pct: number }}
+ */
+export function checkPlanLimit(partner, resource) {
+  const plan  = partner?.planType || 'free';
+  const limits = PLAN_LIMITS[plan] || PLAN_LIMITS.free;
+  const used  = partner?.usage?.[resource] ?? 0;
+  const max   = limits[resource] ?? 0;
+  return {
+    allowed: max === Infinity || used < max,
+    used,
+    max,
+    pct: max === Infinity ? 0 : Math.round((used / max) * 100),
+  };
+}

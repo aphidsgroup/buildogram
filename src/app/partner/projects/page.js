@@ -6,7 +6,7 @@ import { DEMO_PROJECTS, PROJECT_STAGES } from '../_shared/demoData';
 import Link from 'next/link';
 import { notifyEvent } from '@/lib/services/notificationService';
 import { logActivity } from '@/lib/services/activityLogService';
-import { checkPlanLimit } from '@/lib/auth/permissions';
+import { checkPlanLimit } from '@/lib/models/index';
 
 const BLANK = { name: '', client: '', location: '', type: 'Residential', startDate: '', targetDate: '', stage: 'Agreement', progress: 0, budget: 0, status: 'Planning' };
 const PROJECT_TYPES = ['Residential', 'Villa', 'Interior', 'Commercial', 'Renovation', 'Solar', 'Elevator', 'Waterproofing'];

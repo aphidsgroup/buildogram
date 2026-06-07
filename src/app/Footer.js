@@ -10,86 +10,37 @@ const FOOTER_COLS = [
       ['End-to-End Support', '/end-to-end-construction-support-chennai'],
       ['BOQ Review', '/boq-review-chennai'],
       ['Site Supervision', '/site-supervision-chennai'],
-      ['Steel & PEB', '/steel-construction-chennai'],
-      ['Turnkey Construction', '/turnkey-construction-chennai'],
+      ['Property Passport', '/property-passport'],
     ],
   },
   {
-    title: 'Shop Materials',
+    title: 'Materials & Resources',
     links: [
-      ['All Materials', '/materials'],
+      ['Shop Materials', '/materials'],
       ['Cement', '/materials/cement'],
       ['TMT Steel', '/materials/tmt-steel'],
-      ['M-Sand & P-Sand', '/materials/msand-psand'],
-      ['Bricks & AAC Blocks', '/materials/bricks-aac-blocks'],
-      ['Request Material Quote', '/material-quotes'],
+      ['Find Verified Partners', '/partners/directory'],
+      ['AI Tools', '/ai-tools'],
     ],
   },
   {
-    title: 'Structural Auditing',
+    title: 'Engineering & Audits',
     links: [
       ['Building Structural Audit', '/structural-audit-chennai'],
-      ['Crack Inspection', '/building-crack-inspection-chennai'],
       ['NDT Testing', '/ndt-testing-chennai'],
-      ['Old Building Audit', '/old-building-structural-audit-chennai'],
-      ['Rebound Hammer Test', '/rebound-hammer-test-chennai'],
-    ],
-  },
-  {
-    title: 'Survey, Testing & Piling',
-    links: [
       ['Land Survey', '/land-survey-chennai'],
       ['Soil Testing', '/soil-testing-chennai'],
       ['Pile Foundation', '/pile-foundation-contractors-chennai'],
-      ['Pile Load Test', '/pile-load-test-chennai'],
-      ['Drone Survey', '/drone-survey-chennai'],
-    ],
-  },
-  {
-    title: 'Partners',
-    links: [
-      ['Find Verified Partners', '/partners/directory'],
-      ['Builders', '/partners/builders'],
-      ['Contractors', '/partners/contractors'],
-      ['Architects', '/partners/architects'],
-      ['Join as Partner', '/join-as-partner'],
-    ],
-  },
-  {
-    title: 'AI Tools',
-    links: [
-      ['All AI Tools', '/ai-tools'],
-      ['Cost Estimator', '/ai-construction-cost-estimator'],
-      ['BOQ Checker', '/ai-boq-checker'],
-      ['Quote Analyzer', '/ai-contractor-quote-analyzer'],
-      ['Property Passport Assistant', '/ai-property-passport-assistant'],
-    ],
-  },
-  {
-    title: 'Quality & Property Passport',
-    links: [
-      ['Quality System (BQS)', '/quality-system'],
-      ['Property Passport', '/property-passport'],
-      ['Site Documentation', '/quality-system'],
-    ],
-  },
-  {
-    title: 'Learn',
-    links: [
-      ['Guides', '/guides'],
-      ['FAQs', '/faqs'],
-      ['Chennai Service Areas', '/locations/chennai'],
-      ['Glossary', '/glossary'],
     ],
   },
   {
     title: 'Company',
     links: [
-      ['About', '/about'],
-      ['Contact', '/contact'],
-      ['Careers', '/careers'],
-      ['Privacy Policy', '/privacy-policy'],
-      ['Terms', '/terms'],
+      ['About Buildogram', '/about'],
+      ['Guides & Glossary', '/guides'],
+      ['Chennai Locations', '/locations/chennai'],
+      ['Contact Us', '/contact'],
+      ['Privacy & Terms', '/privacy-policy'],
     ],
   },
 ];
@@ -113,9 +64,17 @@ export default function Footer() {
                 />
               </Link>
               <p className={styles.brandDesc}>
-                AI-driven, engineer-led construction, materials, structural auditing, survey, testing, piling, partner, and property documentation ecosystem in Chennai.
+                Buildogram is an AI-driven, engineer-led construction and property ecosystem serving Chennai and surrounding areas.
               </p>
               <div className={styles.tagline}>AI-Driven. Engineer-Led. Build with Confidence.</div>
+              <div style={{ marginTop: '24px', fontSize: '14px', color: '#CBD5E1', lineHeight: 1.6 }}>
+                <strong>Buildogram Headquarters</strong><br />
+                No.35, 7th floor, Awfis Space, Centre Point 3,<br />
+                Poonamallee High Road, Manapakkam, Porur,<br />
+                Chennai — 600089, Tamil Nadu, India.<br />
+                📞 +91 93602 32456<br />
+                ✉️ hello@buildogram.in
+              </div>
             </div>
 
             {/* Link columns */}

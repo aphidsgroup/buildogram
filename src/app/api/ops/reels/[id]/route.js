@@ -1,3 +1,4 @@
+import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { getUserFromRequest } from '@/lib/auth';
@@ -8,6 +9,7 @@ if (process.env.NODE_ENV !== 'production') global.prisma = prisma;
 export const dynamic = 'force-dynamic';
 
 export async function PATCH(req, { params }) {
+  await requirePermission('manage_content');
   const u = getUserFromRequest(req);
   if (!u || !['ops_admin', 'ops_pm', 'ops_engineer', 'admin'].includes(u.role)) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
@@ -43,6 +45,7 @@ export async function PATCH(req, { params }) {
 }
 
 export async function DELETE(req, { params }) {
+  await requirePermission('manage_content');
   const u = getUserFromRequest(req);
   if (!u || !['ops_admin', 'ops_pm', 'ops_engineer', 'admin'].includes(u.role)) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });

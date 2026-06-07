@@ -1,6 +1,7 @@
 'use client';
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { getAttributionPayload } from '@/lib/analytics/attribution';
 
 function InquiryFormInner({ listing }) {
   const searchParams = useSearchParams();
@@ -43,6 +44,7 @@ function InquiryFormInner({ listing }) {
           message: form.message,
           lead_type: 'property_inquiry',
           source_page: `/properties/listing/${listing.id}`,
+          attribution: getAttributionPayload(),
           metadata
         }),
       });

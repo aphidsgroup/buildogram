@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Buildogram Review"
       heroTitle="Material Specification Audit"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"Spec Locking","desc":"Examples of fixed specs.","dashboardTitle":"Vague vs Fixed","items":["\"Standard Wires\" → \"Finolex FRLS\""," \"Teak Wood\" → \"1st Quality Burma Teak\""]}}
       faqs={[{"q":"Why do specifications matter?","a":"If a brand is not specified, the contractor is legally allowed to use the cheapest available option."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Review","path":"/review"},{"name":"Specifications","path":"/review/specifications"}]} />
+    </>
   );
 }

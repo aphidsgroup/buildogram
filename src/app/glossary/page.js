@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import { glossaryTerms } from '@/data/seo/glossary';
@@ -22,7 +23,7 @@ const categoryLabels = {
 };
 
 export default function GlossaryHub() {
-  return (
+  return ( <>
     <>
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">
@@ -61,6 +62,8 @@ export default function GlossaryHub() {
           );
         })}
       </div>
+    </>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Construction & Property Glossary","path":"/glossary"}]} />
     </>
   );
 }

@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { getAttributionPayload } from '@/lib/analytics/attribution';
 
 const MATERIAL_CATEGORIES = ['Cement', 'Steel / TMT', 'Sand', 'M-Sand', 'Solid Blocks', 'Red Bricks', 'Electricals', 'Plumbing', 'Tiles', 'Paint', 'Doors & Windows', 'RMC', 'Other'];
 const CUSTOMER_TYPES = ['Home Owner', 'Contractor', 'Builder', 'Architect', 'Supplier', 'Other'];
@@ -68,6 +69,7 @@ export default function MaterialLeadForm() {
           lead_type: 'material_quote',
           source_page: '/materials/request-quote',
           source: 'website',
+          attribution: getAttributionPayload(),
           metadata: metadata,
         }),
       });

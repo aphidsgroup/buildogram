@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 export const metadata = generateSEOMetadata({
 title: 'Terms of Service | Buildogram',
@@ -6,7 +7,7 @@ title: 'Terms of Service | Buildogram',
 });
 
 export default function Terms() {
-  return (
+  return ( <>
     <main className="container" style={{ padding: '60px 24px', maxWidth: '800px', lineHeight: 1.7 }}>
       <h1 style={{ fontSize: '32px', marginBottom: '24px', color: 'var(--primary-dark)' }}>Terms of Service</h1>
       <p className="text-muted">Last updated: [Insert Date]</p>
@@ -31,5 +32,7 @@ export default function Terms() {
         <p>While Buildogram verifies partner credentials to the best of our ability, we do not guarantee the performance of any independent contractor, architect, or supplier.</p>
       </section>
     </main>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Terms of Service","path":"/terms"}]} />
+    </>
   );
 }

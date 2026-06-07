@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import { guides, guideCategories } from '@/data/seo/guides';
@@ -19,7 +20,7 @@ const categoryLabels = {
 };
 
 export default function GuidesHub() {
-  return (
+  return ( <>
     <>
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">
@@ -61,6 +62,8 @@ export default function GuidesHub() {
           );
         })}
       </div>
+    </>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Buildogram Guides","path":"/guides"}]} />
     </>
   );
 }

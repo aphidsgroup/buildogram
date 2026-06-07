@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import BOQAuditForm from './BOQAuditForm';
@@ -42,7 +43,7 @@ const PROCESS = [
 ];
 
 export default function BOQAuditPage() {
-  return (
+  return ( <>
     <div className="engineerLedPage">
       {/* ── Hero ── */}
       <section className={`fullBleedSection ${styles.hero}`}>
@@ -227,5 +228,7 @@ export default function BOQAuditPage() {
         </div>
       </section>
     </div>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"BOQ Review and Contractor Quote Audit","path":"/boq-audit"}]} />
+    </>
   );
 }

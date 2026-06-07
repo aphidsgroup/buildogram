@@ -1,8 +1,10 @@
+import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
 
 export async function PUT(req, { params }) {
+  await requirePermission('manage_finance');
   const u = getUserFromRequest(req);
   if (!u || !['ops_admin', 'ops_pm'].includes(u.role)) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });

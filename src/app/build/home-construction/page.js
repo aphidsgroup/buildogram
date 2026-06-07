@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Buildogram Build"
       heroTitle="Home Construction Guidance"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"Verifiable Construction","desc":"How we track progress.","dashboardTitle":"Site OS Milestones","items":["Foundation Sign-off","Plinth Beam Concrete","Roof Slab Reinforcement","Brickwork Curing"]}}
       faqs={[{"q":"Do you build the house?","a":"We act as your Project Management Consultant (PMC) to manage the builder."},{"q":"Can I choose my own contractor?","a":"Yes, but we will audit their quote and past work first."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Build","path":"/build"},{"name":"Home Construction","path":"/build/home-construction"}]} />
+    </>
   );
 }

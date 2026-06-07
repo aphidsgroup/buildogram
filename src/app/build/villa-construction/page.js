@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Buildogram Build"
       heroTitle="Premium Villa Construction"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"Luxury Standard Checks","desc":"What we verify in premium builds.","dashboardTitle":"Villa Quality Checklist","items":["Waterproofing Warranty Check","HVAC Duct Alignment","Tile/Marble Leveling Tolerance","Smart Home Integration Test"]}}
       faqs={[{"q":"What makes villa construction different?","a":"Higher specifications, complex MEP, and tighter tolerances for finishes."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Build","path":"/build"},{"name":"Villa Construction","path":"/build/villa-construction"}]} />
+    </>
   );
 }

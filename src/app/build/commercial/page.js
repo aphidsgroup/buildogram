@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Buildogram Build"
       heroTitle="Commercial Fit-Outs & Construction"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"Commercial Speed","desc":"Keeping projects on track.","dashboardTitle":"Fast-Track Checks","items":["Fire Safety Approval","HVAC Commissioning","Network Cabling Sign-off"]}}
       faqs={[{"q":"Do you manage night shifts?","a":"Yes, we can coordinate with partners who execute outside business hours."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Build","path":"/build"},{"name":"Commercial","path":"/build/commercial"}]} />
+    </>
   );
 }

@@ -6,7 +6,14 @@ export const generateOrganizationSchema = () => ({
   name: 'Buildogram',
   url: SITE_URL,
   logo: `${SITE_URL}/globe.svg`,
-  description: 'Buildogram is an engineer-led construction companion and property ecosystem helping owners plan, build, source materials, track site progress, and maintain digital property records in Chennai.',
+  description: 'Buildogram is an AI-driven, engineer-led construction companion and property ecosystem helping owners plan, build, source materials, track site progress, and maintain digital property records in Chennai.',
+  areaServed: {
+    '@type': 'City',
+    name: 'Chennai'
+  },
+  sameAs: [
+    'https://www.linkedin.com/company/buildogram'
+  ]
 });
 
 export const generateLocalBusinessSchema = () => ({
@@ -16,20 +23,40 @@ export const generateLocalBusinessSchema = () => ({
   image: `${SITE_URL}/og-image.jpg`,
   '@id': SITE_URL,
   url: SITE_URL,
-  telephone: '+919999999999', // Placeholder
+  telephone: '+919360232456',
   address: {
     '@type': 'PostalAddress',
+    streetAddress: 'No.35, 7th floor, Awfis Space, Centre Point 3, Poonamallee High Road, Manapakkam, Porur',
     addressLocality: 'Chennai',
     addressRegion: 'Tamil Nadu',
+    postalCode: '600089',
     addressCountry: 'IN',
   },
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: 13.0827,
-    longitude: 80.2707,
+    latitude: 13.0232, // More accurate for Manapakkam/Porur
+    longitude: 80.1704,
   },
-  priceRange: '₹₹',
-  description: 'Engineer-led home construction and property support in Chennai.',
+  areaServed: {
+    '@type': 'City',
+    name: 'Chennai'
+  },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Construction & Property Services',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Home Construction' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'BOQ & Plan Review' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Building Structural Audit' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Construction Material Sourcing' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Land & Property Survey' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Soil Testing' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Pile Foundation' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Property Passport Documentation' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Verified Partner Network' } }
+    ]
+  },
+  description: 'AI-driven, engineer-led home construction and property support in Chennai.',
 });
 
 export const generateFAQSchema = (faqs) => ({

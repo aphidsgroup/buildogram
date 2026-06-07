@@ -9,8 +9,12 @@ import { areas } from '@/data/seo/areas';
 import { localServices } from '@/data/seo/localServices';
 import { serviceHubs } from '@/data/seo/serviceHubs';
 import { generateAreaPage, generateServiceAreaPage } from '@/lib/seo/localPageGenerator';
+import { PrismaClient } from '@prisma/client';
+import { safeDbCall } from '@/lib/db/safePrisma';
 
-export default function sitemap() {
+const prisma = new PrismaClient();
+
+export default async function sitemap() {
   const baseUrl = 'https://www.buildogram.in';
   const now = new Date().toISOString();
 
@@ -209,8 +213,56 @@ export default function sitemap() {
     }
   }
 
+  // Dynamic: published case studies
+  let caseStudyRoutes = [];
+  let proofAssetRoutes = [];
+  try {
+    const caseStudies = await safeDbCall(() => prisma.case_studies.findMany({
+      where: { status: 'published' },
+      select: { slug: true, updated_at: true },
+    }), []);
+    caseStudyRoutes = caseStudies.map((cs) => ({
+      url: `${baseUrl}/case-studies/${cs.slug}`,
+      priority: 0.85,
+      changeFrequency: 'weekly',
+      lastModified: cs.updated_at,
+    }));
+
+    const proofAssets = await safeDbCall(() => prisma.proof_assets.findMany({
+      where: { approved_for_website: true },
+      select: { slug: true, updated_at: true },
+    }), []);
+    proofAssetRoutes = proofAssets.map((proof) => ({
+      url: `${baseUrl}/proof/${proof.slug}`,
+      priority: 0.7,
+      changeFrequency: 'monthly',
+      lastModified: proof.updated_at,
+    }));
+  } catch (err) {
+    console.error('Failed to fetch content for sitemap:', err);
+  }
+
+  // Dynamic: approved partner profiles
+  let partnerRoutes = [];
+  try {
+    const partners = await safeDbCall(() => prisma.partners.findMany({
+      where: { verification_status: 'verified', public_profile_enabled: true }
+    }), []);
+    partnerRoutes = partners.map((p) => ({
+      url: `${baseUrl}/partners/${p.slug}`,
+      priority: 0.85,
+      changeFrequency: 'weekly',
+    }));
+  } catch (err) {
+    console.error('Failed to fetch partners for sitemap:', err);
+  }
+
   return [
     ...staticRoutes,
+    { url: `${baseUrl}/case-studies`, priority: 0.9, changeFrequency: 'weekly' },
+    ...caseStudyRoutes,
+    ...proofAssetRoutes,
+    ...partnerRoutes,
     ...serviceHubRoutes,
     ...serviceRoutes,
     ...guideRoutes,

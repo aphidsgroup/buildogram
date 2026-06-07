@@ -1,4 +1,6 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -19,7 +21,7 @@ export default function SupplierQuotationsPage() {
 
   const total = (q) => (q.rate * q.qty * (1 + q.tax / 100)) + Number(q.deliveryCharge || 0);
 
-  return (
+  return ( <>
     <div>
       <div style={{ marginBottom: '28px' }}>
         <h1 style={{ fontSize: '24px', fontWeight: 800, color: '#0F172A', marginBottom: '6px' }}>💬 My Quotations</h1>
@@ -101,5 +103,7 @@ export default function SupplierQuotationsPage() {
         </div>
       )}
     </div>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Supplier","path":"/supplier"},{"name":"Quotations","path":"/supplier/quotations"}]} />
+    </>
   );
 }

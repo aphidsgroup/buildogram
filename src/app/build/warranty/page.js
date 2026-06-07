@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Buildogram Support"
       heroTitle="Construction Warranty & Maintenance"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"Asset Protection","desc":"Records we maintain.","dashboardTitle":"Warranty Tracking","items":["Termite Treatment Cert","Waterproofing Cert","Lift AMC","Generator AMC"]}}
       faqs={[{"q":"How long is the standard warranty?","a":"Typically 1 year for general construction, and 5-10 years for waterproofing."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Build","path":"/build"},{"name":"Warranty","path":"/build/warranty"}]} />
+    </>
   );
 }

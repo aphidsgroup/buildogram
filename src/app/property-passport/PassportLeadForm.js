@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getAttributionPayload } from '@/lib/analytics/attribution';
 
 export default function PassportLeadForm() {
   const [form, setForm] = useState({ name: '', phone: '', email: '', city: 'Chennai', property_type: '', message: '' });
@@ -17,6 +18,7 @@ export default function PassportLeadForm() {
           lead_type: 'property_passport',
           source_page: '/property-passport',
           source: 'property_passport_page',
+          attribution: getAttributionPayload(),
           metadata: { property_type: form.property_type },
         }),
       });

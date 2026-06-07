@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getAttributionPayload } from '@/lib/analytics/attribution';
 
 const PARTNER_TYPES = ['Builder', 'Contractor', 'Architect', 'Structural Engineer', 'Interior Designer', 'Material Supplier', 'Real Estate Agent', 'Maintenance Vendor', '360 Tour Vendor', 'Legal Consultant', 'Other'];
 
@@ -40,6 +41,7 @@ export default function PartnerJoinForm() {
           lead_type: 'partner_application',
           source_page: '/partners',
           source: 'website',
+          attribution: getAttributionPayload(),
           metadata: metadata,
         }),
       });

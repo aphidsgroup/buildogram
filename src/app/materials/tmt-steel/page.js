@@ -1,5 +1,6 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
-import { generateSEOMetadata } from '@/components/seo/generateSEOMetadata';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export const metadata = generateSEOMetadata({
   title: 'TMT Steel Bars for Construction in Chennai | Fe500D & Fe550D',
@@ -8,7 +9,7 @@ export const metadata = generateSEOMetadata({
 });
 
 export default function TmtSteelPage() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Material Sourcing Hub"
       heroTitle="Engineer-Verified TMT Steel in Chennai"
@@ -56,5 +57,7 @@ export default function TmtSteelPage() {
         { q: "Is surface rust on TMT bars bad?", a: "A light yellowish/brown surface rust is normal and actually helps bond with concrete. However, if the rust is scaling off or pitting the metal, the bar has degraded and should be rejected." }
       ]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Materials","path":"/materials"},{"name":"TMT Steel Bars for Construction in Chennai","path":"/materials/tmt-steel"}]} />
+    </>
   );
 }

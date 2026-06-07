@@ -1,7 +1,13 @@
 import './globals.css';
 import SiteLayoutClient from './SiteLayoutClient';
 import PWARegister from '@/components/PWARegister';
-import FloatingReelPlayer from '@/components/reels/FloatingReelPlayer';
+import AttributionTracker from '@/components/analytics/AttributionTracker';
+import FloatingReelPlayerClientWrapper from '@/components/reels/FloatingReelPlayerClientWrapper';
+import { Space_Grotesk, Be_Vietnam_Pro, DM_Serif_Text } from 'next/font/google';
+
+const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space', display: 'swap' });
+const beVietnamPro = Be_Vietnam_Pro({ subsets: ['latin'], weight: ['100','200','300','400','500','600','700','800','900'], variable: '--font-vietnam', display: 'swap' });
+const dmSerifText = DM_Serif_Text({ subsets: ['latin'], weight: ['400'], style: ['normal', 'italic'], variable: '--font-dm-serif', display: 'swap' });
 
 export const metadata = {
   metadataBase: new URL('https://www.buildogram.in'),
@@ -61,9 +67,10 @@ export const viewport = {
   viewportFit: 'cover',
 };
 
-import { generateOrganizationSchema } from '@/lib/seo/schema';
+import { generateOrganizationSchema, generateLocalBusinessSchema } from '@/lib/seo/schema';
 
 const orgSchema = generateOrganizationSchema();
+const localBusinessSchema = generateLocalBusinessSchema();
 
 export default function RootLayout({ children }) {
   return (
@@ -71,10 +78,11 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
       </head>
-      <body suppressHydrationWarning>
+      <body className={`${spaceGrotesk.variable} ${beVietnamPro.variable} ${dmSerifText.variable}`} suppressHydrationWarning>
         {/* Accessibility: Skip to main content */}
         <a href="#main-content" className="skip-to-content">Skip to main content</a>
         <PWARegister />
+        <AttributionTracker />
         <SiteLayoutClient>
           {children}
         </SiteLayoutClient>
@@ -92,6 +100,7 @@ export default function RootLayout({ children }) {
           }}
         />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
         
         {/* Analytics Placeholder */}
         {process.env.NEXT_PUBLIC_GA_ID && (
@@ -111,7 +120,7 @@ export default function RootLayout({ children }) {
             />
           </>
         )}
-        <FloatingReelPlayer />
+        <FloatingReelPlayerClientWrapper />
       </body>
     </html>
   );

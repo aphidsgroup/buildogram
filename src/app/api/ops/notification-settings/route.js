@@ -1,3 +1,4 @@
+import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
@@ -21,6 +22,7 @@ export async function GET(req) {
 }
 
 export async function PUT(req) {
+  await requirePermission('manage_notification_rules');
   const u = getUserFromRequest(req);
   if (!u || u.role !== 'ops_admin') return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 

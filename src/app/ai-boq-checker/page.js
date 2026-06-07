@@ -1,11 +1,12 @@
-import { generateSEOMetadata } from '@/components/seo/generateSEOMetadata';
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import AnswerBlock from '@/components/seo/AnswerBlock';
 import EntitySummary from '@/components/seo/EntitySummary';
 import ProcessSteps from '@/components/seo/ProcessSteps';
 import FAQBlock from '@/components/seo/FAQBlock';
 import LocalIntentBlock from '@/components/seo/LocalIntentBlock';
 import Link from 'next/link';
-
+import BOQCheckerClient from './BOQCheckerClient';
 export const metadata = generateSEOMetadata({
   title: 'AI BOQ Checker for Construction | Prevent Hidden Costs',
   description: 'Upload your builder\'s Bill of Quantities (BOQ). Our AI instantly detects missing line items, overpriced materials, and vague specifications before you sign the contract.',
@@ -36,7 +37,7 @@ const FAQS = [
 ];
 
 export default function Page() {
-  return (
+  return ( <>
     <main className="page" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
       <div className="sectionInner">
         <div style={{ marginBottom: '16px', fontSize: '14px', color: '#64748B' }}>
@@ -47,6 +48,10 @@ export default function Page() {
         <p style={{ fontSize: '18px', color: '#374151', lineHeight: 1.6, marginBottom: '32px' }}>
           Don't sign a construction contract blind. Upload your builder's Bill of Quantities (BOQ) or construction agreement. Our AI—trained on thousands of Chennai construction projects—will instantly highlight missing items, vague brand specifications, and overpriced line items.
         </p>
+
+        <div className="mb-12">
+          <BOQCheckerClient />
+        </div>
 
         <AnswerBlock
           question="What is the biggest trap in Construction Quotes?"
@@ -93,9 +98,11 @@ export default function Page() {
         </div>
         
         <div style={{ marginTop: '40px', textAlign: 'center' }}>
-          <Link href="/contact?type=ai" className="btn btn-primary btn-lg">Upload Your BOQ Now</Link>
+          {/* Static CTA removed as lead capture is now handled inside BOQCheckerClient */}
         </div>
       </div>
     </main>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"AI BOQ Checker for Construction","path":"/ai-boq-checker"}]} />
+    </>
   );
 }

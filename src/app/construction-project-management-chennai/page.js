@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import AnswerBlock from '@/components/seo/AnswerBlock';
 import EntitySummary from '@/components/seo/EntitySummary';
@@ -12,7 +13,7 @@ export const metadata = generateSEOMetadata({
 });
 
 export default function Page() {
-  return (
+  return ( <>
     <main className="page" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
       <div className="sectionInner">
         {/* Breadcrumbs could go here */}
@@ -54,5 +55,7 @@ export default function Page() {
 
       </div>
     </main>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Construction Project Management in Chennai","path":"/construction-project-management-chennai"}]} />
+    </>
   );
 }

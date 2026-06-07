@@ -46,14 +46,21 @@ export default function PartnerDashboard() {
         setChecklist(cl);
         const dismissed = localStorage.getItem('bos_checklist_dismissed');
         if (dismissed) setChecklistDismissed(true);
+
+        // Fetch matched assignments from our new API endpoint
+        fetch('/api/partner/assignments')
+          .then(r => r.json())
+          .then(data => {
+            if (data.assignments && data.assignments.length > 0) {
+              setMatches(data.assignments);
+            }
+          })
+          .catch(e => console.error(e));
       }
     });
     getLeads().then(data => { if (data?.length) setLeads(data); });
     getProjects().then(data => { if (data?.length) setProjects(data); });
     getMaterialRequests().then(data => { if (data?.length) setMaterials(data); });
-    fetch('/api/partner-matches').then(r => r.json()).then(d => {
-      if (d.data) setMatches(d.data);
-    }).catch(() => {});
   }, []);
 
   const dismissChecklist = () => {
@@ -244,16 +251,24 @@ export default function PartnerDashboard() {
             <button className="btn btn-outline btn-sm" onClick={() => alert('Coming Soon!')}>Submit Profile Proof</button>
           </div>
 
-          {matches.map(m => (
-            <div key={m.id} className={styles.oppCard}>
-              <div className={styles.oppCardHeader}>
-                <span className={styles.oppCardTitle}>{m.partnerType || 'Opportunity'}</span>
-                <Badge variant="info">{m.matchStatus}</Badge>
+          {matches.map(m => {
+            const ld = m.lead_data || {};
+            const typeLabel = m.lead_source_table ? m.lead_source_table.replace('_leads', '').replace(/^\w/, c => c.toUpperCase()) + ' Lead' : (m.partnerType || 'Opportunity');
+            const name = ld.name || ld.customerName || 'New Client';
+            const req = ld.requirement || ld.piling_type || ld.service_type || 'Construction Requirement';
+            const loc = ld.locality ? `${ld.locality}, ${ld.city}` : (ld.city || 'Chennai');
+            
+            return (
+              <div key={m.id} className={styles.oppCard}>
+                <div className={styles.oppCardHeader}>
+                  <span className={styles.oppCardTitle}>{typeLabel}</span>
+                  <Badge variant={m.assignment_status === 'accepted' ? 'success' : 'info'}>{m.assignment_status || m.matchStatus || 'assigned'}</Badge>
+                </div>
+                <p className={styles.oppCardDesc}><b>{name}</b> from {loc} requested <b>{req}</b>.</p>
+                <button className="btn btn-outline btn-sm" onClick={() => alert('View Lead Details coming soon.')}>View Opportunity</button>
               </div>
-              <p className={styles.oppCardDesc}>Buildogram matched you with a new requirement.</p>
-              <button className="btn btn-outline btn-sm" onClick={() => alert('Coming Soon!')}>View Opportunity</button>
-            </div>
-          ))}
+            );
+          })}
 
           <div className={styles.oppCard}>
             <div className={styles.oppCardHeader}>

@@ -1,3 +1,4 @@
+import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
@@ -51,6 +52,7 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
+  await requirePermission('manage_finance');
   const u = getUserFromRequest(req);
   if (!u || !roleCan(u.role, 'view_revenue')) { // Assuming they can add revenue if they can view it in v1
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });

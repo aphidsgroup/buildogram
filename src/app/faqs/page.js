@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import { faqCategories } from '@/data/seo/faqs';
@@ -9,7 +10,7 @@ title: 'Frequently Asked Questions | Buildogram',
 });
 
 export default function FaqsHub() {
-  return (
+  return ( <>
     <>
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">
@@ -44,6 +45,8 @@ export default function FaqsHub() {
           <Link href="/contact" className="btn btn-primary btn-lg">Talk to an Engineer</Link>
         </div>
       </div>
+    </>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Frequently Asked Questions","path":"/faqs"}]} />
     </>
   );
 }

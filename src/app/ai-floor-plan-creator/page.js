@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Construction Intelligence"
       heroTitle="AI Floor Plan Creator"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"AI Capabilities","desc":"What the engine does.","dashboardTitle":"Generation Parameters","items":["FSI Optimization","Sunlight Routing","Circulation Efficiency"]}}
       faqs={[{"q":"Can I use this plan to build?","a":"No. AI generates a concept. A licensed structural engineer and architect MUST detail it for safety."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Ai Floor Plan Creator","path":"/ai-floor-plan-creator"}]} />
+    </>
   );
 }

@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Property Management"
       heroTitle="Property Maintenance & AMC"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"Maintenance Regimen","desc":"Keeping it running.","dashboardTitle":"AMC Checklist","items":["Lift Servicing","Sump/Tank Cleaning","AC Gas/Filter Check","Pest Control"]}}
       faqs={[{"q":"Do you provide the technicians?","a":"We coordinate with verified local AMC partners to execute the work."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Property","path":"/property"},{"name":"Maintenance","path":"/property/maintenance"}]} />
+    </>
   );
 }

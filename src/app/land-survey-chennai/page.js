@@ -1,10 +1,14 @@
-import { generateSEOMetadata } from '@/components/seo/generateSEOMetadata';
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import AnswerBlock from '@/components/seo/AnswerBlock';
 import EntitySummary from '@/components/seo/EntitySummary';
 import ProcessSteps from '@/components/seo/ProcessSteps';
 import FAQBlock from '@/components/seo/FAQBlock';
 import LocalIntentBlock from '@/components/seo/LocalIntentBlock';
 import Link from 'next/link';
+import RelatedLinksBlock from '@/components/seo/RelatedLinksBlock';
+import ContextualCTA from '@/components/seo/ContextualCTA';
+import { getContextualLinks } from '@/lib/seo/internalLinks';
 
 export const metadata = generateSEOMetadata({
   title: 'Land Surveyors in Chennai | DGPS, Total Station & FMB Sketch',
@@ -37,7 +41,10 @@ const FAQS = [
 ];
 
 export default function Page() {
-  return (
+  const currentPath = '/page.js';
+  const relatedLinks = getContextualLinks('survey', currentPath);
+
+  return ( <>
     <main className="page" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
       <div className="sectionInner">
         <div style={{ marginBottom: '16px', fontSize: '14px', color: '#64748B' }}>
@@ -99,5 +106,10 @@ export default function Page() {
         </div>
       </div>
     </main>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Land Surveyors in Chennai","path":"/land-survey-chennai"}]} />
+    
+      <RelatedLinksBlock title="Explore Related Services" links={relatedLinks} variant="light" />
+      <ContextualCTA pageType="survey" currentPath={currentPath} />
+</>
   );
 }

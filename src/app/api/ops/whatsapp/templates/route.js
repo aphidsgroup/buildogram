@@ -1,3 +1,4 @@
+import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
@@ -28,6 +29,7 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
+  await requirePermission('manage_whatsapp_templates');
   const u = getUserFromRequest(req);
   if (!u || !roleCan(u.role, 'manage_whatsapp_templates')) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });

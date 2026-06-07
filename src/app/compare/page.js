@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import { comparisons } from '@/data/seo/comparisons';
@@ -9,7 +10,7 @@ title: 'Compare | Buildogram',
 });
 
 export default function CompareHub() {
-  return (
+  return ( <>
     <>
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">
@@ -35,6 +36,8 @@ export default function CompareHub() {
           ))}
         </div>
       </div>
+    </>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Compare","path":"/compare"}]} />
     </>
   );
 }

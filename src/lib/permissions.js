@@ -1,32 +1,8 @@
-export const PERMISSIONS = {
-  ops_admin: ['*'],
-  ops_pm: [
-    'view_pipeline',
-    'manage_leads',
-    'view_properties',
-    'view_documents',
-    'view_partners',
-    'manage_partners',
-    'generate_boq',
-    'view_revenue',
-    'send_whatsapp_message',
-    'manage_notification_rules',
-    'manage_notification_queue',
-    'manage_invoices',
-    'view_reports',
-  ],
-  ops_engineer: [
-    'view_pipeline',
-    'manage_leads',
-    'view_properties',
-    'view_documents',
-    'generate_boq',
-  ],
-};
+import { rolePermissions, hasPermission } from '@/lib/auth/shared-permissions';
 
+export const PERMISSIONS = rolePermissions;
+
+// Backwards compatibility layer
 export function roleCan(role, permission) {
-  if (!role) return false;
-  const perms = PERMISSIONS[role] || [];
-  if (perms.includes('*')) return true;
-  return perms.includes(permission);
+  return hasPermission({ role }, permission);
 }

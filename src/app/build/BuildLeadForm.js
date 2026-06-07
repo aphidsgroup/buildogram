@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getAttributionPayload } from '@/lib/analytics/attribution';
 
 export default function BuildLeadForm({ leadType = 'construction', sourcePage = '/build', ctaLabel = '🏗️ Get Free Consultation' }) {
   const [form, setForm] = useState({ name: '', phone: '', email: '', city: 'Chennai', locality: '', plot_area_sqft: '', floors: '', spec_level: '', message: '' });
@@ -22,6 +23,7 @@ export default function BuildLeadForm({ leadType = 'construction', sourcePage = 
           lead_type: leadType,
           source_page: sourcePage,
           source: 'website',
+          attribution: getAttributionPayload(),
           metadata: { plot_area_sqft: form.plot_area_sqft, floors: form.floors, spec_level: form.spec_level },
         }),
       });

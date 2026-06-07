@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import sql from '@/lib/db';
@@ -25,7 +26,7 @@ export default async function RentalsPage() {
 
   const fmt = n => n ? '₹' + Number(n).toLocaleString('en-IN') : '—';
 
-  return (
+  return ( <>
     <>
       {/* ── Hero ── */}
       <section style={{ background: '#292929', color: 'white', padding: '80px 0 60px', position: 'relative', overflow: 'hidden' }}>
@@ -124,6 +125,8 @@ export default async function RentalsPage() {
           )}
         </div>
       </section>
+    </>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Verified Rentals in Chennai","path":"/rentals"}]} />
     </>
   );
 }

@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Buildogram Review"
       heroTitle="Architectural Plan Review"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"Plan Diagnostics","desc":"What we catch before you build.","dashboardTitle":"Common Plan Errors Found","items":["Missing Structural Columns","Inadequate Toilet Ducting","Staircase Headroom Violations","Door Swing Clashes"]}}
       faqs={[{"q":"Do you redesign the plan?","a":"We provide markups and suggestions. You take these back to your architect to implement."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Plan Review","path":"/plan-review"}]} />
+    </>
   );
 }

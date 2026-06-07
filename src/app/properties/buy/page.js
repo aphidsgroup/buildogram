@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import PropertyMarketplaceClient from '../PropertyMarketplaceClient';
 
@@ -8,7 +9,7 @@ title: '360° Property Listings in Chennai | Buildogram Marketplace',
 });
 
 export default function PropertiesBuyPage() {
-  return (
+  return ( <>
     <>
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
@@ -35,6 +36,8 @@ export default function PropertiesBuyPage() {
           <PropertyMarketplaceClient initialListingType="buy" />
         </div>
       </section>
+    </>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Properties","path":"/properties"},{"name":"360° Property Listings in Chennai","path":"/properties/buy"}]} />
     </>
   );
 }

@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { services } from '@/data/seo/services';
 import { notFound } from 'next/navigation';
+import RelatedLinksBlock from '@/components/seo/RelatedLinksBlock';
+import ContextualCTA from '@/components/seo/ContextualCTA';
+import { getContextualLinks } from '@/lib/seo/internalLinks';
 
 export async function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -39,6 +42,9 @@ const breadcrumbSchema = (itemData) => ({
 });
 
 export default function ServicePage({ params }) {
+  const currentPath = `/services${params.slug}`.replace('//', '/');
+  const relatedLinks = getContextualLinks('service', currentPath);
+
   const svc = services.find((s) => s.slug === params.slug);
   if (!svc) notFound();
 
@@ -216,6 +222,9 @@ export default function ServicePage({ params }) {
         </div>
 
       </div>
-    </>
+    
+      <RelatedLinksBlock title="Explore Related Services" links={relatedLinks} variant="light" />
+      <ContextualCTA pageType="service" currentPath={currentPath} />
+</>
   );
 }

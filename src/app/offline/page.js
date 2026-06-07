@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 export const metadata = generateSEOMetadata({
 title: 'Offline | Buildogram',
@@ -6,7 +7,7 @@ title: 'Offline | Buildogram',
 });
 
 export default function OfflinePage() {
-  return (
+  return ( <>
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', padding: '20px', fontFamily: 'Inter, sans-serif', textAlign: 'center', backgroundColor: '#F9FAFB' }}>
       <div style={{ width: '80px', height: '80px', backgroundColor: '#FC6E20', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '24px' }}>
         <span style={{ color: 'white', fontSize: '40px', fontWeight: 900 }}>B</span>
@@ -22,5 +23,7 @@ export default function OfflinePage() {
         Try Again
       </a>
     </div>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Offline","path":"/offline"}]} />
+    </>
   );
 }

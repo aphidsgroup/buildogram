@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getAttributionPayload } from '@/lib/analytics/attribution';
 
 export default function PlanReviewForm() {
   const [form, setForm] = useState({
@@ -26,6 +27,7 @@ export default function PlanReviewForm() {
           lead_type: 'plan_review',
           source_page: '/plan-review',
           source: 'website',
+          attribution: getAttributionPayload(),
           metadata: {
             plan_stage: form.plan_stage,
             vastu_required: form.vastu,

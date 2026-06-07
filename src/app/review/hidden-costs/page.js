@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Buildogram Review"
       heroTitle="Hidden Cost Analysis"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"Cost Traps Avoided","desc":"Common omissions.","dashboardTitle":"Frequent Exclusions","items":["Soil Excavation Carting","Compound Wall & Gate","Elevation Works","Sump/Septic Tank"]}}
       faqs={[{"q":"How much do hidden costs usually add up to?","a":"Typically 15-25% of the total project value if not caught early."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Review","path":"/review"},{"name":"Hidden Costs","path":"/review/hidden-costs"}]} />
+    </>
   );
 }

@@ -1,26 +1,32 @@
+import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
-import sql from '@/lib/db';
-import { requireOps, ok, fail } from '@/lib/apiAuth';
+import prisma from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
 // ── GET single partner (ops detail) ──────────────────────────────────────
 export async function GET(request, { params }) {
-  const { user, error } = requireOps(request);
-  if (error) return error;
-
   try {
-    const [partner] = await sql`SELECT * FROM partners WHERE id = ${params.id}`;
+    const partner = await prisma.partners.findUnique({
+      where: { id: params.id },
+      include: {
+        partner_gallery: { orderBy: { sort_order: 'asc' } },
+        partner_videos: { orderBy: { sort_order: 'asc' } },
+        partner_portfolio: { orderBy: { completion_year: 'desc' } },
+        partner_documents: true,
+        partner_lead_assignments: {
+          take: 20,
+          orderBy: { created_at: 'desc' },
+          include: {
+            lead: true, // Need polymorphic relation resolver or just fetch basic info if possible
+          }
+        }
+      }
+    });
+
     if (!partner) return NextResponse.json({ success: false, message: 'Partner not found' }, { status: 404 });
 
-    const [gallery, videos, portfolio, enquiries] = await Promise.all([
-      sql`SELECT * FROM partner_gallery WHERE partner_id = ${params.id} ORDER BY sort_order, created_at`,
-      sql`SELECT * FROM partner_videos WHERE partner_id = ${params.id} ORDER BY sort_order, created_at`,
-      sql`SELECT * FROM partner_portfolio WHERE partner_id = ${params.id} ORDER BY completion_year DESC NULLS LAST`,
-      sql`SELECT id, customer_name, phone, requirement, budget_range, status, created_at FROM partner_enquiries WHERE partner_id = ${params.id} ORDER BY created_at DESC LIMIT 20`,
-    ]);
-
-    return ok({ partner: { ...partner, gallery, videos, portfolio, enquiries } });
+    return NextResponse.json({ success: true, partner });
   } catch (e) {
     return NextResponse.json({ success: false, message: e.message }, { status: 500 });
   }
@@ -28,44 +34,40 @@ export async function GET(request, { params }) {
 
 // ── PUT update partner (full update) ─────────────────────────────────────
 export async function PUT(request, { params }) {
-  const { user, error } = requireOps(request);
-  if (error) return error;
-
+  await requirePermission('manage_partners');
   try {
     const b = await request.json();
-    if (!b.companyName || !b.category) return fail('companyName and category required');
+    if (!b.companyName || !b.category) return NextResponse.json({ success: false, message: 'companyName and category required' }, { status: 400 });
 
-    const [updated] = await sql`
-      UPDATE partners SET
-        company_name     = ${b.companyName},
-        category         = ${b.category},
-        short_description = ${b.shortDescription || null},
-        full_description = ${b.fullDescription || null},
-        logo_url         = ${b.logoUrl || null},
-        cover_url        = ${b.coverUrl || null},
-        location         = ${b.location || null},
-        service_areas    = ${b.serviceAreas || null},
-        years_experience = ${b.yearsExperience ? parseInt(b.yearsExperience) : null},
-        contact_person   = ${b.contactPerson || null},
-        phone            = ${b.phone || null},
-        email            = ${b.email || null},
-        whatsapp         = ${b.whatsapp || null},
-        website          = ${b.website || null},
-        services         = ${b.services || []},
-        specializations  = ${b.specializations || []},
-        certifications   = ${b.certifications || []},
-        brands_handled   = ${b.brands || []},
-        project_types    = ${b.projectTypes || []},
-        approval_status  = ${b.approvalStatus || 'Pending Review'},
-        active           = ${b.isActive === true},
-        featured         = ${b.isFeatured === true},
-        updated_at       = NOW()
-      WHERE id = ${params.id}
-      RETURNING id, slug, company_name
-    `;
+    const updated = await prisma.partners.update({
+      where: { id: params.id },
+      data: {
+        company_name: b.companyName,
+        partner_type: b.category,
+        short_description: b.shortDescription || null,
+        full_description: b.fullDescription || null,
+        logo_url: b.logoUrl || null,
+        cover_url: b.coverUrl || null,
+        location: b.location || null,
+        service_areas: b.serviceAreas ? b.serviceAreas.split(',').map(s => s.trim()) : [],
+        years_experience: b.yearsExperience ? parseInt(b.yearsExperience) : null,
+        contact_person: b.contactPerson || null,
+        phone: b.phone || null,
+        email: b.email || null,
+        whatsapp: b.whatsapp || null,
+        website: b.website || null,
+        services: b.services || [],
+        specializations: b.specializations || [],
+        certifications: b.certifications || [],
+        brands_handled: b.brands || [],
+        project_types: b.projectTypes || [],
+        verification_status: b.approvalStatus || 'pending_review',
+        public_profile_enabled: b.isActive === true,
+        featured: b.isFeatured === true,
+      }
+    });
 
-    if (!updated) return NextResponse.json({ success: false, message: 'Partner not found' }, { status: 404 });
-    return ok({ partner: updated });
+    return NextResponse.json({ success: true, partner: updated });
   } catch (e) {
     return NextResponse.json({ success: false, message: e.message }, { status: 500 });
   }
@@ -73,12 +75,16 @@ export async function PUT(request, { params }) {
 
 // ── DELETE soft-delete (deactivate) ──────────────────────────────────────
 export async function DELETE(request, { params }) {
-  const { user, error } = requireOps(request);
-  if (error) return error;
-
+  await requirePermission('manage_partners');
   try {
-    await sql`UPDATE partners SET active = false, approval_status = 'Suspended', updated_at = NOW() WHERE id = ${params.id}`;
-    return ok({ message: 'Partner deactivated' });
+    await prisma.partners.update({
+      where: { id: params.id },
+      data: {
+        public_profile_enabled: false,
+        verification_status: 'suspended'
+      }
+    });
+    return NextResponse.json({ success: true, message: 'Partner deactivated' });
   } catch (e) {
     return NextResponse.json({ success: false, message: e.message }, { status: 500 });
   }
