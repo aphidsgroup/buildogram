@@ -1,7 +1,8 @@
 'use client';
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { getAttributionPayload } from '@/lib/analytics/attribution';
 
 function ListYourPropertyPageInner() {
   const router = useRouter();
@@ -44,6 +45,7 @@ function ListYourPropertyPageInner() {
           lead_type: 'property_listing',
           source_page: '/properties/list-your-property',
           message: form.message,
+          attribution: getAttributionPayload(),
           metadata: {
             listing_type: form.listing_type,
             property_type: form.property_type,

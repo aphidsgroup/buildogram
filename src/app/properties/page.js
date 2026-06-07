@@ -1,14 +1,18 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
-title: '360° Property Discovery Portals | Buildogram',
-  description: 'Discover connected property portals for buying, selling, renting, and leasing properties with immersive 360° property viewing — connected to the Buildogram construction ecosystem.',
-  path: '/properties',
+  title: "Properties | Buildogram",
+  description: "Professional properties services via Buildogram, the AI-driven, engineer-led construction and property ecosystem. We handle BOQ review, structural audit, survey, testing, and piling.",
+  path: "/properties"
 });
 
+
+
+
 export default function PropertiesHubPage() {
-  return (
+  return ( <>
     <div className="marketplacePage">
       {/* ── Hero ── */}
       <section className="fullBleedSection" style={{
@@ -107,5 +111,7 @@ export default function PropertiesHubPage() {
         </div>
       </section>
     </div>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"360° Property Discovery Portals","path":"/properties"}]} />
+    </>
   );
 }

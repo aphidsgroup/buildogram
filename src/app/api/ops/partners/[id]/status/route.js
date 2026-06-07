@@ -1,3 +1,4 @@
+import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { requireOps, ok, fail } from '@/lib/apiAuth';
@@ -6,6 +7,7 @@ export const dynamic = 'force-dynamic';
 
 // PATCH — update approval_status, active, or featured
 export async function PATCH(request, { params }) {
+  await requirePermission('manage_partners');
   const { user, error } = requireOps(request);
   if (error) return error;
 

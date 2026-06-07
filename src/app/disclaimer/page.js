@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 export const metadata = generateSEOMetadata({
 title: 'Disclaimer | Buildogram',
@@ -6,7 +7,7 @@ title: 'Disclaimer | Buildogram',
 });
 
 export default function Disclaimer() {
-  return (
+  return ( <>
     <main className="container" style={{ padding: '60px 24px', maxWidth: '800px', lineHeight: 1.7 }}>
       <h1 style={{ fontSize: '32px', marginBottom: '24px', color: 'var(--primary-dark)' }}>Legal Disclaimer</h1>
       
@@ -18,5 +19,7 @@ export default function Disclaimer() {
         <p style={{ marginTop: '16px' }}>Information regarding properties listed via our connected portals (e.g., RealPropRealty, ToLetBoard) should be independently verified by the user before making any financial or legal commitments.</p>
       </section>
     </main>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Disclaimer","path":"/disclaimer"}]} />
+    </>
   );
 }

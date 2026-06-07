@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Property Market"
       heroTitle="List Your Property"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"Listing Power","desc":"Standing out.","dashboardTitle":"Buyer Trust Signals","items":["Buildogram Verified Tag","Access to BOQ summary","Maintenance History"]}}
       faqs={[{"q":"Can I list a non-Buildogram property?","a":"Yes, but it will not receive the \"Engineer Verified\" badge unless we audit it."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Property","path":"/property"},{"name":"List","path":"/property/list"}]} />
+    </>
   );
 }

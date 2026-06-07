@@ -1,4 +1,6 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { notifyEvent } from '@/lib/services/notificationService';
@@ -61,7 +63,7 @@ export default function SupplierRequestsPage() {
 
   const total = quoteModal ? (Number(quoteForm.rate) * quoteModal.qty * (1 + Number(quoteForm.tax) / 100) + Number(quoteForm.deliveryCharge || 0)) : 0;
 
-  return (
+  return ( <>
     <div>
       {toast && (
         <div style={{ position: 'fixed', top: '80px', right: '24px', zIndex: 2000, background: '#10B981', color: 'white', padding: '14px 20px', borderRadius: '12px', fontWeight: 600, boxShadow: '0 4px 20px rgba(0,0,0,0.15)' }}>{toast}</div>
@@ -189,5 +191,7 @@ export default function SupplierRequestsPage() {
         </div>
       )}
     </div>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Supplier","path":"/supplier"},{"name":"Quotation Submitted","path":"/supplier/requests"}]} />
+    </>
   );
 }

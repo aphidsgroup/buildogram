@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getAttributionPayload } from '@/lib/analytics/attribution';
 
 export default function BOQAuditForm() {
   const [form, setForm] = useState({
@@ -39,6 +40,7 @@ export default function BOQAuditForm() {
           lead_type: 'boq_audit',
           source_page: '/boq-audit',
           source: 'website',
+          attribution: getAttributionPayload(),
           metadata: {
             project_type: form.project_type,
             quoted_amount: form.contractor_quote,

@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import BuildLeadForm from './BuildLeadForm';
@@ -29,7 +30,7 @@ const proofPoints = [
 const stats = [['Chennai', 'Primary Market'], ['Transparent', 'BOQ Policy'], ['2500+', 'Quality Checks'], ['100%', 'Proof-Based']];
 
 export default function BuildPage() {
-  return (
+  return ( <>
     <>
       {/* ── Hero ── */}
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '40px 0 80px', position: 'relative', overflow: 'hidden' }}>
@@ -127,6 +128,8 @@ export default function BuildPage() {
           </div>
         </div>
       </section>
+    </>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Construction Support and Contractor Marketplace","path":"/build"}]} />
     </>
   );
 }

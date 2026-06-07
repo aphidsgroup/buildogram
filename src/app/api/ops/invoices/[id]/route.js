@@ -1,9 +1,11 @@
+import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
 import { roleCan } from '@/lib/permissions';
 
 export async function PUT(req, { params }) {
+  await requirePermission('manage_finance');
   const { id } = params;
   const u = getUserFromRequest(req);
   

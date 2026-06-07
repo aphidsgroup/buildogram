@@ -1,4 +1,6 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -76,7 +78,7 @@ export default function WarrantyAndMaintenance() {
     return Math.round(emi);
   };
 
-  return (
+  return ( <>
     <>
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
@@ -326,6 +328,8 @@ export default function WarrantyAndMaintenance() {
           </div>
         </div>
       </div>
+    </>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Plan & BOQ Sign-Off","path":"/warranty-and-maintenance"}]} />
     </>
   );
 }

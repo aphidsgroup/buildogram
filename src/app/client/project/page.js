@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-
+import Image from 'next/image';
 function ProjectContent() {
   const searchParams = useSearchParams();
   const id = searchParams.get('id');
@@ -133,7 +133,7 @@ function ProjectContent() {
               <p className="text-muted" style={{ fontSize: '14px' }}>{l.notes}</p>
               {l.photos?.length > 0 && (
                 <div style={{ display: 'flex', gap: '8px', marginTop: '12px', flexWrap: 'wrap' }}>
-                  {l.photos.map((ph, i) => <img key={i} src={ph} alt="Site" style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '6px' }} />)}
+                  {l.photos.map((ph, i) => <Image key={i} src={ph} alt="Site" width={80} height={80} style={{ objectFit: 'cover', borderRadius: '6px' }} />)}
                 </div>
               )}
             </div>

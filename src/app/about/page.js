@@ -1,6 +1,6 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
-
+import Image from 'next/image';
 export const metadata = generateSEOMetadata({
 title: 'About Buildogram | Construction & Property Marketplace',
   description: 'Learn about Buildogram, an IIT-alumni, PhD structural engineer-led construction-as-a-service platform transforming home building in Chennai.',
@@ -70,7 +70,7 @@ export default function About() {
             </p>
           </div>
           <div className="card" style={{ padding: '0', overflow: 'hidden', boxShadow: 'var(--shadow-premium)' }}>
-            <img src="https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?auto=format&fit=crop&w=800&q=80" alt="Engineers working in architectural drafting studio" style={{ width: '100%', height: '400px', objectFit: 'cover' }} />
+            <Image src="https://images.unsplash.com/photo-1581094288338-2314dddb7ecc?auto=format&fit=crop&w=800&q=80" alt="Engineers working in architectural drafting studio" width={800} height={400} style={{ width: '100%', height: '400px', objectFit: 'cover' }} />
           </div>
         </div>
 
@@ -99,7 +99,7 @@ export default function About() {
             {team.map(member => (
               <div key={member.name} className="card card-hover" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-                  <img src={member.img} alt={member.name} style={{ width: '80px', height: '80px', borderRadius: '50%', objectFit: 'cover', border: '3px solid var(--primary)' }} />
+                  <Image src={member.img} alt={member.name} width={80} height={80} style={{ borderRadius: '50%', objectFit: 'cover', border: '3px solid var(--primary)' }} />
                   <div>
                     <h3 style={{ fontSize: '18px', color: 'var(--primary-dark)' }}>{member.name}</h3>
                     <span className="badge badge-blue mt-1" style={{ fontSize: '10px' }}>{member.role}</span>

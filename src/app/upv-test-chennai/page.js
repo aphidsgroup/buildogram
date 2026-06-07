@@ -1,4 +1,5 @@
-import { generateSEOMetadata } from '@/components/seo/generateSEOMetadata';
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import AnswerBlock from '@/components/seo/AnswerBlock';
 import EntitySummary from '@/components/seo/EntitySummary';
 import ProcessSteps from '@/components/seo/ProcessSteps';
@@ -36,7 +37,7 @@ const FAQS = [
 ];
 
 export default function Page() {
-  return (
+  return ( <>
     <main className="page" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
       <div className="sectionInner">
         <div style={{ marginBottom: '16px', fontSize: '14px', color: '#64748B' }}>
@@ -97,5 +98,7 @@ export default function Page() {
         </div>
       </div>
     </main>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"UPV Test in Chennai","path":"/upv-test-chennai"}]} />
+    </>
   );
 }

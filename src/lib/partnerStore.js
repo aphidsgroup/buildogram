@@ -7,7 +7,7 @@ export const PARTNER_CATEGORIES = [
   'Home Automation', 'Solar', 'Elevators', 'Waterproofing',
 ];
 
-export const APPROVAL_STATUSES = ['Pending Review', 'Approved', 'Rejected', 'Suspended'];
+export const APPROVAL_STATUSES = ['pending_review', 'verified', 'rejected', 'suspended'];
 
 // ─── Full Demo Partner Dataset ─────────────────────────────────────────────
 export const DEMO_PARTNERS_FULL = [

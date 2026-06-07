@@ -1,4 +1,6 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { useState } from 'react';
 import Link from 'next/link';
 
@@ -95,7 +97,7 @@ export default function Projects() {
     }, 1500);
   };
 
-  return (
+  return ( <>
     <div className="marketplacePage">
       {/* HERO */}
       <section className="fullBleedSection" style={{ background: 'var(--secondary)', color: 'white', padding: 'clamp(48px, 6vw, 88px) 0 clamp(56px, 7vw, 104px) 0', position: 'relative', overflow: 'hidden' }}>
@@ -297,5 +299,7 @@ export default function Projects() {
         </div>
       </section>
     </div>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Ocean-Safe Villa","path":"/projects"}]} />
+    </>
   );
 }

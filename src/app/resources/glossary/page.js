@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Knowledge Base"
       heroTitle="Construction Glossary"
@@ -15,5 +17,7 @@ export default function Page() {
       
       faqs={[]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Resources","path":"/resources"},{"name":"Glossary","path":"/resources/glossary"}]} />
+    </>
   );
 }

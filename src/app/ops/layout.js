@@ -24,6 +24,7 @@ const OPS_NAV = [
   { href: '/ops/revenue',     icon: '💰', label: 'Revenue', requiredPerm: 'view_revenue' },
   { href: '/ops/invoices',    icon: '🧾', label: 'Invoices', requiredPerm: 'manage_invoices' },
   { href: '/ops/accounting',  icon: '🧮', label: 'Accounting', requiredPerm: 'manage_revenue' },
+  { href: '/ops/exports',     icon: '💾', label: 'Exports & Backup', requiredPerm: 'view_reports' },
   { href: '/ops/settings',    icon: '⚙️', label: 'Settings' },
 ];
 
@@ -79,7 +80,7 @@ export default function OpsLayout({ children }) {
                     '/ops/pilot-launch', '/ops/launch-checklist', '/ops/system-status',
                     '/ops/notification-settings', '/ops/notification-rules',
                     '/ops/notification-queue', '/ops/whatsapp-templates',
-                    '/ops/blog', '/ops/help', '/ops/reels',
+                    '/ops/blog', '/ops/help', '/ops/reels', '/ops/exports',
                   ];
 
                   if (!builtRoutes.includes(href)) {

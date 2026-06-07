@@ -1,7 +1,8 @@
 'use client';
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { getAttributionPayload } from '@/lib/analytics/attribution';
 
 const ISSUE_CATEGORIES = [
   { id: 'plumbing', label: 'Plumbing & Leakage' },
@@ -60,6 +61,7 @@ function MaintenanceRequestFormInner() {
           lead_type: 'maintenance',
           source_page: '/maintenance/request',
           source: 'website',
+          attribution: getAttributionPayload(),
           metadata: metadata,
         }),
       });

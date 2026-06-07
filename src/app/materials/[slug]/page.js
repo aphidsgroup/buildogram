@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { materials } from '@/data/seo/materials';
 import { notFound } from 'next/navigation';
+import RelatedLinksBlock from '@/components/seo/RelatedLinksBlock';
+import ContextualCTA from '@/components/seo/ContextualCTA';
+import { getContextualLinks } from '@/lib/seo/internalLinks';
 
 const materialMap = Object.fromEntries(materials.map((m) => [m.slug, m]));
 
@@ -38,14 +41,16 @@ const breadcrumbSchema = (itemData) => ({
 });
 
 export default function MaterialPage({ params }) {
+  const currentPath = `/materials${params.slug}`.replace('//', '/');
+  const relatedLinks = getContextualLinks('material', currentPath);
+
   const mat = materialMap[params.slug];
   if (!mat) notFound();
 
   return (
     <>
-      
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema(mat)) }} />
-{mat.faqs && mat.faqs.length > 0 && (
+      {mat.faqs && mat.faqs.length > 0 && (
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema(mat.faqs)) }} />
       )}
 
@@ -170,6 +175,32 @@ export default function MaterialPage({ params }) {
           </div>
         )}
 
+        {/* QUOTE MARKETPLACE EXPLAINER (SEO/AEO) */}
+        <div style={{ marginBottom: '64px', background: 'white', padding: '40px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
+          <h2 style={{ fontSize: '28px', fontWeight: 800, marginBottom: '24px', color: '#0F172A' }}>The Buildogram Material Marketplace</h2>
+          <p style={{ color: '#475569', fontSize: '16px', lineHeight: 1.6, marginBottom: '32px' }}>
+            We simplify material procurement by connecting you with verified suppliers across Chennai. Instead of haggling with multiple vendors, our marketplace does the heavy lifting for you.
+          </p>
+          
+          <div className="grid-3" style={{ gap: '24px', marginBottom: '32px' }}>
+            <div>
+              <div style={{ fontSize: '24px', marginBottom: '12px' }}>⚖️</div>
+              <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0F172A', marginBottom: '8px' }}>Quote Comparison</h3>
+              <p style={{ color: '#64748B', fontSize: '14px', lineHeight: 1.5 }}>Upload your BOQ or material requirements and receive side-by-side comparisons of landed costs, including GST and transport.</p>
+            </div>
+            <div>
+              <div style={{ fontSize: '24px', marginBottom: '12px' }}>🔍</div>
+              <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0F172A', marginBottom: '8px' }}>Brand & Spec Matching</h3>
+              <p style={{ color: '#64748B', fontSize: '14px', lineHeight: 1.5 }}>Our AI checks quotes to ensure suppliers match the exact brand and grade specifications you requested.</p>
+            </div>
+            <div>
+              <div style={{ fontSize: '24px', marginBottom: '12px' }}>🛡️</div>
+              <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0F172A', marginBottom: '8px' }}>Property Passport Connection</h3>
+              <p style={{ color: '#64748B', fontSize: '14px', lineHeight: 1.5 }}>Delivery proofs, weighbridge slips, and invoices are automatically saved to your digital Property Passport for lifetime warranty tracking.</p>
+            </div>
+          </div>
+        </div>
+
         {/* MARKETPLACE DISCOVERY BLOCK */}
         <div style={{ marginBottom: '64px', background: '#F8FAFC', padding: '40px', borderRadius: '16px', border: '1px solid #E2E8F0' }}>
           <h2 style={{ fontSize: '24px', fontWeight: 800, marginBottom: '24px', color: '#0F172A' }}>Buildogram Ecosystem Partners</h2>
@@ -199,10 +230,10 @@ export default function MaterialPage({ params }) {
 
         <div className="card" style={{ background: '#0F172A', border: 'none', textAlign: 'center', padding: '44px', borderRadius: '16px' }}>
           <h3 style={{ color: 'white', fontSize: '24px', fontWeight: 800, marginBottom: '12px' }}>Need {mat.name} for your project?</h3>
-          <p style={{ color: '#CBD5E1', fontSize: '16px', marginBottom: '28px' }}>Get delivery proof where available with invoice documentation and top brand confirmation.</p>
+          <p style={{ color: '#CBD5E1', fontSize: '16px', marginBottom: '28px' }}>Get side-by-side quotes from verified suppliers. Upload your BOQ or request pricing directly.</p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link href="/materials/request-quote" className="btn btn-primary" style={{ padding: '14px 28px', fontSize: '16px' }}>Request Quote</Link>
-            <Link href="/partners/register" className="btn btn-outline-light" style={{ padding: '14px 28px', fontSize: '16px' }}>Join as Supplier</Link>
+            <Link href={`/materials/request-quote?category=${mat.slug}`} className="btn btn-primary" style={{ padding: '14px 28px', fontSize: '16px' }}>Request {mat.name} Quote</Link>
+            <Link href={`/materials/request-quote?category=${mat.slug}&boq=true`} className="btn btn-outline-light" style={{ padding: '14px 28px', fontSize: '16px' }}>Upload BOQ</Link>
           </div>
         </div>
 
@@ -212,6 +243,9 @@ export default function MaterialPage({ params }) {
           </Link>
         </div>
       </div>
+    
+      <RelatedLinksBlock title="Explore Related Services" links={relatedLinks} variant="light" />
+      <ContextualCTA pageType="material" currentPath={currentPath} />
     </>
   );
 }

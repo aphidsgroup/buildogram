@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 
@@ -74,7 +75,7 @@ const AI_TOOLS = [
 ];
 
 export default function Page() {
-  return (
+  return ( <>
     <main className="page" style={{ paddingTop: '80px', paddingBottom: '80px' }}>
       <div className="sectionInner">
         <div style={{ marginBottom: '16px', fontSize: '14px', color: '#64748B' }}>
@@ -120,9 +121,11 @@ export default function Page() {
           <p style={{ color: '#94A3B8', marginBottom: '24px', maxWidth: '480px', margin: '0 auto 24px' }}>
             AI tools give you direction. Our engineers give you certainty. Connect with a Buildogram engineer for project-specific advice.
           </p>
-          <Link href="/contact?type=construction" className="btn btn-primary btn-lg">Talk to an Engineer</Link>
+          <Link href="/contact?type=ai" className="btn btn-primary btn-lg">Talk to an Engineer</Link>
         </div>
       </div>
     </main>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"AI-Engineered Construction Tools","path":"/ai-tools"}]} />
+    </>
   );
 }

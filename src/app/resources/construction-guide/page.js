@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 
@@ -8,7 +9,7 @@ title: 'Construction Guide | Buildogram Resources',
 });
 
 export default function ConstructionGuidePage() {
-  return (
+  return ( <>
     <>
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
@@ -44,6 +45,8 @@ export default function ConstructionGuidePage() {
           </div>
         </div>
       </section>
+    </>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Resources","path":"/resources"},{"name":"Construction Guide","path":"/resources/construction-guide"}]} />
     </>
   );
 }

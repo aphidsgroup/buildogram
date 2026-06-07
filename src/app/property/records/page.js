@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Digital Records"
       heroTitle="360 Property Records"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"Record Value","desc":"Never guess again.","dashboardTitle":"360 Log Benefits","items":["Safe Wall Drilling","Leak Tracing","Renovation Planning"]}}
       faqs={[{"q":"When is the best time to do this?","a":"Right after plumbing and electrical chasing is done, but before plastering begins."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Property","path":"/property"},{"name":"Records","path":"/property/records"}]} />
+    </>
   );
 }

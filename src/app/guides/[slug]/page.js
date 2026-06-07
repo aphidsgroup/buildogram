@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { guides, guideMap, guideCategories } from '@/data/seo/guides';
 import { notFound } from 'next/navigation';
+import RelatedLinksBlock from '@/components/seo/RelatedLinksBlock';
+import ContextualCTA from '@/components/seo/ContextualCTA';
+import { getContextualLinks } from '@/lib/seo/internalLinks';
 
 export async function generateStaticParams() {
   return guides.map((g) => ({ slug: g.slug }));
@@ -48,6 +51,9 @@ const breadcrumbSchema = (itemData) => ({
 });
 
 export default function GuidePage({ params }) {
+  const currentPath = `/guides${params.slug}`.replace('//', '/');
+  const relatedLinks = getContextualLinks('service', currentPath);
+
   const guide = guideMap[params.slug];
   if (!guide) notFound();
 
@@ -186,6 +192,9 @@ export default function GuidePage({ params }) {
         </aside>
 
       </div>
-    </>
+    
+      <RelatedLinksBlock title="Explore Related Services" links={relatedLinks} variant="light" />
+      <ContextualCTA pageType="service" currentPath={currentPath} />
+</>
   );
 }

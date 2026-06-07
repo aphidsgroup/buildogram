@@ -12,6 +12,22 @@ export async function POST(req) {
     }
 
     const leadType = body.leadType || 'general';
+    const attr = body.attribution || {};
+    const attributionData = {
+      first_landing_page: attr.first_landing_page || null,
+      conversion_page: attr.conversion_page || body.sourcePage || null,
+      referrer: attr.referrer || null,
+      utm_source: attr.utm_source || body.utmSource || null,
+      utm_medium: attr.utm_medium || body.utmMedium || null,
+      utm_campaign: attr.utm_campaign || body.utmCampaign || null,
+      utm_content: attr.utm_content || body.utmContent || null,
+      utm_term: attr.utm_term || null,
+      gclid: attr.gclid || null,
+      session_id: attr.session_id || null,
+      device_type: attr.device_type || body.deviceType || null,
+      page_category: attr.page_category || null,
+      attribution_json: attr || null
+    };
 
     // Route to new specialized tables if applicable
     const { PrismaClient } = require('@prisma/client');
@@ -30,7 +46,8 @@ export async function POST(req) {
           material: body.formData?.materialType,
           quantity: body.formData?.quantity,
           source_page: body.sourcePage,
-          metadata: body.formData || {}
+          metadata: body.formData || {},
+          ...attributionData
         }
       });
       newLeadId = res.id;
@@ -45,11 +62,12 @@ export async function POST(req) {
           audit_type: body.formData?.auditType,
           concern: body.notes,
           source_page: body.sourcePage,
-          metadata: body.formData || {}
+          metadata: body.formData || {},
+          ...attributionData
         }
       });
       newLeadId = res.id;
-    } else if (leadType === 'survey') {
+    } else if (leadType === 'survey' || leadType === 'soil') {
       const res = await prisma.survey_leads.create({
         data: {
           name: body.name,
@@ -57,10 +75,11 @@ export async function POST(req) {
           email: body.email,
           city: 'Chennai',
           locality: body.location,
-          survey_type: body.formData?.surveyType,
+          survey_type: leadType === 'soil' ? 'Soil Testing' : body.formData?.surveyType,
           source_page: body.sourcePage,
           notes: body.notes,
-          metadata: body.formData || {}
+          metadata: body.formData || {},
+          ...attributionData
         }
       });
       newLeadId = res.id;
@@ -75,7 +94,8 @@ export async function POST(req) {
           piling_type: body.formData?.pilingType,
           source_page: body.sourcePage,
           notes: body.notes,
-          metadata: body.formData || {}
+          metadata: body.formData || {},
+          ...attributionData
         }
       });
       newLeadId = res.id;
@@ -87,31 +107,29 @@ export async function POST(req) {
           phone: body.phone || '',
           email: body.email,
           input_data: body.formData || {},
-          source_page: body.sourcePage
+          source_page: body.sourcePage,
+          ...attributionData
         }
       });
       newLeadId = res.id;
     } else {
-      // Fallback to legacy
-      const newLead = await addLead({
-        name: body.name,
-        phone: body.phone,
-        email: body.email || null,
-        location: body.location || null,
-        leadType: body.leadType || 'general',
-        source: body.source || 'Website Form',
-        sourcePage: body.sourcePage || null,
-        sourceCta: body.sourceCta || null,
-        utmSource: body.utmSource || null,
-        utmMedium: body.utmMedium || null,
-        utmCampaign: body.utmCampaign || null,
-        utmContent: body.utmContent || null,
-        referrer: body.referrer || null,
-        deviceType: body.deviceType || null,
-        notes: body.notes || null,
-        formData: body.formData || {}
+      // General leads natively in Prisma
+      const res = await prisma.leads.create({
+        data: {
+          name: body.name,
+          phone: body.phone || '',
+          email: body.email,
+          city: body.city || 'Chennai',
+          locality: body.location,
+          lead_type: leadType,
+          source: body.source || 'Website Form',
+          notes: body.notes,
+          metadata: body.formData || {},
+          status: 'new',
+          ...attributionData
+        }
       });
-      newLeadId = newLead.id;
+      newLeadId = res.id;
     }
 
     // Fire notification placeholder

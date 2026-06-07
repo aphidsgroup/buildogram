@@ -1,10 +1,13 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export const metadata = generateSEOMetadata({
-  title: 'Plan Review | Buildogram',
-  description: 'Engineer-led home construction companion in Chennai. Plan, build, source materials, verify site progress, and manage your Property.',
-  path: '/plan-review',
+  title: "Plan Review | Buildogram",
+  description: "Comprehensive plan review services. Buildogram is an AI-driven, engineer-led construction and property ecosystem offering BOQ review, structural audit, survey, testing, and piling.",
+  path: "/plan-review"
 });
+
+
+
 
 export default function Layout({ children }) {
   return <>{children}</>;

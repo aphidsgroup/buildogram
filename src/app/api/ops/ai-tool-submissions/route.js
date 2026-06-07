@@ -1,1 +1,2 @@
+import { requirePermission } from '@/lib/auth/permissions';
 ﻿import { NextResponse } from 'next/server'; import { PrismaClient } from '@prisma/client'; const prisma = new PrismaClient(); export async function GET() { try { const d = await prisma.ai_tool_submissions.findMany({ orderBy:{created_at:'desc'}, take:500 }); return NextResponse.json({success:true,data:d}); } catch(e){ return NextResponse.json({success:false,error:e.message},{status:500}); }}

@@ -1,3 +1,4 @@
+import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { requireAdmin, ok, fail } from '@/lib/apiAuth';
@@ -5,6 +6,7 @@ import { requireAdmin, ok, fail } from '@/lib/apiAuth';
 export const dynamic = 'force-dynamic';
 
 export async function POST(request) {
+  await requirePermission('ops_admin');
   const { user, error } = requireAdmin(request);
   if (error) return error;
 

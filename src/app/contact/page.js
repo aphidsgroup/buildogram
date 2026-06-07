@@ -1,18 +1,22 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { getAttributionPayload } from '@/lib/analytics/attribution';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import PremiumCard from '@/components/ui/PremiumCard';
 import styles from './contact.module.css';
 
 const INTENT_OPTIONS = [
-  { value: 'construction', label: 'I want to build a home' },
-  { value: 'boq_audit', label: 'I need BOQ / plan review' },
-  { value: 'material_quote', label: 'I need material support' },
-  { value: 'partner_application', label: 'I want to register as a partner' },
-  { value: 'property_listing', label: 'I want to list / showcase a property' },
-  { value: 'property_support', label: 'I need property buying / selling support' },
-  { value: 'rental_listing', label: 'I need rent / lease property support' },
-  { value: 'general', label: 'General enquiry' },
+  { value: 'construction', label: 'Home & Commercial Construction' },
+  { value: 'boq_audit', label: 'BOQ & Plan Review' },
+  { value: 'audit', label: 'Building Structural Audit' },
+  { value: 'material_quote', label: 'Construction Material Sourcing' },
+  { value: 'survey', label: 'Land & Property Survey' },
+  { value: 'soil', label: 'Soil Testing' },
+  { value: 'piling', label: 'Pile Foundation' },
+  { value: 'passport', label: 'Property Passport Documentation' },
+  { value: 'partner_application', label: 'Join Verified Partner Network' },
+  { value: 'ai', label: 'AI Tools Support' },
+  { value: 'general', label: 'General Enquiry' },
 ];
 
 function ContactForm() {
@@ -47,7 +51,8 @@ function ContactForm() {
       utmCampaign: searchParams.get('utm_campaign'),
       utmContent: searchParams.get('utm_content'),
       referrer: document.referrer,
-      deviceType: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop'
+      deviceType: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
+      attribution: getAttributionPayload()
     });
   }, []);
 
@@ -174,7 +179,7 @@ function ContactForm() {
         </div>
       )}
 
-      {form.leadType === 'partner_application' && (
+      {(form.leadType === 'partner_application' || form.leadType === 'partner') && (
         <div className={styles.conditionalBox}>
           <div className={styles.inputGrid}>
             <div className={styles.inputGroup}>
@@ -199,6 +204,89 @@ function ContactForm() {
               <input className={styles.inputField} value={form.formData.experience || ''} onChange={e => handleExtraFieldChange('experience', e.target.value)} placeholder="e.g., 10 Years" />
             </div>
           </div>
+        </div>
+      )}
+
+      
+      {form.leadType === 'audit' && (
+        <div className={styles.conditionalBox}>
+          <div className={styles.inputGrid}>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Building Location</label>
+              <input required className={styles.inputField} value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="e.g., Chennai" />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Audit Type</label>
+              <select className={styles.inputField} value={form.formData.auditType || ''} onChange={e => handleExtraFieldChange('auditType', e.target.value)}>
+                <option value="">Select Type</option>
+                <option value="Residential">Residential Building</option>
+                <option value="Commercial">Commercial Building</option>
+                <option value="Industrial">Industrial</option>
+                <option value="Old Building">Old Building / Heritage</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {form.leadType === 'survey' && (
+        <div className={styles.conditionalBox}>
+          <div className={styles.inputGrid}>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Property Location</label>
+              <input required className={styles.inputField} value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="e.g., OMR" />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Survey Type</label>
+              <select className={styles.inputField} value={form.formData.surveyType || ''} onChange={e => handleExtraFieldChange('surveyType', e.target.value)}>
+                <option value="">Select Type</option>
+                <option value="Land/Boundary">Land / Boundary Survey</option>
+                <option value="Contour">Contour Survey</option>
+                <option value="Topographic">Topographic Survey</option>
+                <option value="Drone">Drone Survey</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {form.leadType === 'piling' && (
+        <div className={styles.conditionalBox}>
+          <div className={styles.inputGrid}>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Site Location</label>
+              <input required className={styles.inputField} value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="e.g., Chennai" />
+            </div>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Piling Type</label>
+              <select className={styles.inputField} value={form.formData.pilingType || ''} onChange={e => handleExtraFieldChange('pilingType', e.target.value)}>
+                <option value="">Select Type</option>
+                <option value="Bored Cast In Situ">Bored Cast In Situ</option>
+                <option value="DMC">DMC Piling</option>
+                <option value="Micro Piling">Micro Piling</option>
+                <option value="Pile Testing">Pile Load / Integrity Test</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {form.leadType === 'soil' && (
+        <div className={styles.conditionalBox}>
+          <div className={styles.inputGrid}>
+            <div className={styles.inputGroup}>
+              <label className={styles.inputLabel}>Site Location</label>
+              <input required className={styles.inputField} value={form.location} onChange={e => setForm({ ...form, location: e.target.value })} placeholder="e.g., Chennai" />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {form.leadType === 'ai' && (
+        <div className={styles.conditionalBox}>
+          <p style={{ fontSize: '13px', color: '#64748B', marginBottom: '12px' }}>
+            We see you came from an AI Tool. Please tell us how we can assist you with your AI-generated results.
+          </p>
         </div>
       )}
 
@@ -268,22 +356,26 @@ export default function Contact() {
 
           <AnimatedSection delay={0.2} className={styles.sidebar}>
             <div className={styles.sideCard}>
-              <h3 className={styles.sideTitle}>Buildogram Headquarters</h3>
-              <p className={styles.sideText}>
-                No.35, 7th floor, Awfis Space, Centre Point 3,<br />
-                Poonamallee High Road, Manapakkam, Porur,<br />
-                Chennai — 600 089
-              </p>
-            </div>
-
-            <div className={styles.sideCard}>
-              <h3 className={styles.sideTitle}>Contact Details</h3>
+              <h3 className={styles.sideTitle}>Business & Contact Details</h3>
+              <div style={{ marginBottom: '16px' }}>
+                <strong>Buildogram</strong><br />
+                <span style={{ color: '#475569', fontSize: '14px', lineHeight: 1.6 }}>
+                  No.35, 7th floor, Awfis Space, Centre Point 3,<br />
+                  Poonamallee High Road, Manapakkam, Porur,<br />
+                  Chennai — 600 089, Tamil Nadu, India.
+                </span>
+              </div>
               <p className={styles.sideText} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 📞 <a href="tel:+919360232456" className={styles.sideLink}>+91 93602 32456</a>
               </p>
               <p className={styles.sideText} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 ✉️ <a href="mailto:hello@buildogram.in" className={styles.sideLink}>hello@buildogram.in</a>
               </p>
+              <div style={{ marginTop: '16px', fontSize: '14px', color: '#475569' }}>
+                <strong>Operating Hours:</strong><br />
+                Mon - Sat: 9:00 AM – 6:30 PM<br />
+                Sun: Closed
+              </div>
             </div>
 
             <div className={styles.sideCard}>
@@ -308,6 +400,53 @@ export default function Contact() {
           </AnimatedSection>
         </div>
       </section>
+
+      {/* FAQ Section */}
+      <section className="fullBleedSection" style={{ background: '#F8FAFC', padding: '60px 0' }}>
+        <div className="sectionInner">
+          <AnimatedSection>
+            <h2 style={{ fontSize: '24px', fontWeight: 800, textAlign: 'center', marginBottom: '32px' }}>Frequently Asked Questions</h2>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '800px', margin: '0 auto' }}>
+              <div style={{ background: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '8px' }}>What areas in Chennai do you serve?</h3>
+                <p style={{ color: '#475569', fontSize: '15px', lineHeight: 1.6, margin: 0 }}>
+                  Buildogram serves all major localities in Chennai including OMR, ECR, Anna Nagar, Velachery, Tambaram, Porur, Guindy, and surrounding metropolitan areas.
+                </p>
+              </div>
+              <div style={{ background: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '8px' }}>Do you provide free initial consultations?</h3>
+                <p style={{ color: '#475569', fontSize: '15px', lineHeight: 1.6, margin: 0 }}>
+                  Yes, we offer an initial consultation to understand your construction or property requirement and guide you to the right services or verified partners.
+                </p>
+              </div>
+              <div style={{ background: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
+                <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '8px' }}>How quickly do you respond to enquiries?</h3>
+                <p style={{ color: '#475569', fontSize: '15px', lineHeight: 1.6, margin: 0 }}>
+                  Our engineering team typically reviews and responds to enquiries within 24 hours during working days.
+                </p>
+              </div>
+            </div>
+          </AnimatedSection>
+        </div>
+      </section>
+
+      {/* JSON-LD Schema for Contact Page */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "ContactPage",
+            "name": "Contact Buildogram",
+            "url": "https://www.buildogram.in/contact",
+            "description": "Contact Buildogram for engineer-led home construction, BOQ review, structural auditing, and material sourcing in Chennai.",
+            "mainEntity": {
+              "@type": "LocalBusiness",
+              "@id": "https://www.buildogram.in"
+            }
+          })
+        }}
+      />
     </div>
   );
 }

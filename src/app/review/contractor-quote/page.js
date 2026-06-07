@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Buildogram Review"
       heroTitle="Contractor Quote Comparison"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"Quote Clarity","desc":"How we visualize bids.","dashboardTitle":"Comparison Metrics","items":["Total Cost per SqFt","Material Grade Variance","Exclusion List Alignment"]}}
       faqs={[{"q":"Can you review 3 quotes at once?","a":"Yes, our comparative dashboard makes reviewing multiple quotes easy."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Review","path":"/review"},{"name":"Contractor Quote","path":"/review/contractor-quote"}]} />
+    </>
   );
 }

@@ -240,48 +240,63 @@ model lead_activities {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model leads {
-  id                                           String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id                                           String                    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name                                         String
   phone                                        String
   email                                        String?
-  city                                         String               @default("Chennai")
+  city                                         String                    @default("Chennai")
   locality                                     String?
-  plot_area_sqft                               Decimal?             @db.Decimal
+  plot_area_sqft                               Decimal?                  @db.Decimal
   floors                                       String?
   spec_level                                   String?
-  rough_budget                                 Decimal?             @db.Decimal
-  estimated_cost_min                           Decimal?             @db.Decimal
-  estimated_cost_max                           Decimal?             @db.Decimal
-  source                                       String?              @default("website")
-  status                                       String?              @default("new")
-  assigned_to                                  String?              @db.Uuid
+  rough_budget                                 Decimal?                  @db.Decimal
+  estimated_cost_min                           Decimal?                  @db.Decimal
+  estimated_cost_max                           Decimal?                  @db.Decimal
+  source                                       String?                   @default("website")
+  status                                       String?                   @default("new")
+  assigned_to                                  String?                   @db.Uuid
   notes                                        String?
-  created_at                                   DateTime?            @default(now()) @db.Timestamptz(6)
-  updated_at                                   DateTime?            @default(now()) @db.Timestamptz(6)
-  lead_type                                    String?              @default("construction")
+  created_at                                   DateTime?                 @default(now()) @db.Timestamptz(6)
+  updated_at                                   DateTime?                 @default(now()) @db.Timestamptz(6)
+  lead_type                                    String?                   @default("construction")
   message                                      String?
   source_page                                  String?
-  metadata                                     Json?                @default("{}")
-  follow_up_date                               DateTime?            @db.Date
+  metadata                                     Json?                     @default("{}")
+  follow_up_date                               DateTime?                 @db.Date
   lost_reason                                  String?
-  property_id                                  String?              @db.Uuid
-  converted_at                                 DateTime?            @db.Timestamptz(6)
-  assigned_partner_id                          String?              @db.Uuid
-  partner_id                                   String?              @db.Uuid
-  priority                                     String?              @default("Medium")
-  spam_status                                  String?              @default("Not Spam")
+  property_id                                  String?                   @db.Uuid
+  converted_at                                 DateTime?                 @db.Timestamptz(6)
+  assigned_partner_id                          String?                   @db.Uuid
+  partner_id                                   String?                   @db.Uuid
+  priority                                     String?                   @default("Medium")
+  spam_status                                  String?                   @default("Not Spam")
   internal_notes                               String?
   partner_notes                                String?
   requirement                                  String?
   category                                     String?
+  attribution_json                             Json?
+  conversion_page                              String?
+  device_type                                  String?
+  first_landing_page                           String?
+  gclid                                        String?
+  page_category                                String?
+  referrer                                     String?
+  session_id                                   String?
+  utm_campaign                                 String?
+  utm_content                                  String?
+  utm_medium                                   String?
+  utm_source                                   String?
+  utm_term                                     String?
   ai_requests                                  ai_requests[]
   lead_activities                              lead_activities[]
-  partners_leads_assigned_partner_idTopartners partners?            @relation("leads_assigned_partner_idTopartners", fields: [assigned_partner_id], references: [id], onUpdate: NoAction)
-  users                                        users?               @relation(fields: [assigned_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  partners_leads_partner_idTopartners          partners?            @relation("leads_partner_idTopartners", fields: [partner_id], references: [id], onUpdate: NoAction)
-  properties                                   properties?          @relation(fields: [property_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  partners_leads_assigned_partner_idTopartners partners?                 @relation("leads_assigned_partner_idTopartners", fields: [assigned_partner_id], references: [id], onUpdate: NoAction)
+  users                                        users?                    @relation(fields: [assigned_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  partners_leads_partner_idTopartners          partners?                 @relation("leads_partner_idTopartners", fields: [partner_id], references: [id], onUpdate: NoAction)
+  properties                                   properties?               @relation(fields: [property_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  material_quote_requests                      material_quote_requests[]
   notification_queue                           notification_queue[]
   projects                                     projects[]
+  property_passports                           property_passports[]
 
   @@index([assigned_partner_id], map: "idx_leads_assigned_partner")
   @@index([follow_up_date], map: "idx_leads_follow_up")
@@ -477,26 +492,39 @@ model partner_documents {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model partner_enquiries {
-  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  partner_id     String?   @db.Uuid
-  partner_slug   String?
-  partner_name   String?
-  category       String?
-  customer_name  String
-  phone          String
-  email          String?
-  requirement    String?
-  location       String?
-  budget_range   String?
-  message        String?
-  source_page    String?   @default("partner_profile")
-  source_type    String?   @default("web")
-  status         String?   @default("New")
-  follow_up_date DateTime? @db.Date
-  notes          String?
-  created_at     DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at     DateTime? @default(now()) @db.Timestamptz(6)
-  partners       partners? @relation(fields: [partner_id], references: [id], onUpdate: NoAction)
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  partner_id         String?   @db.Uuid
+  partner_slug       String?
+  partner_name       String?
+  category           String?
+  customer_name      String
+  phone              String
+  email              String?
+  requirement        String?
+  location           String?
+  budget_range       String?
+  message            String?
+  source_page        String?   @default("partner_profile")
+  source_type        String?   @default("web")
+  status             String?   @default("New")
+  follow_up_date     DateTime? @db.Date
+  notes              String?
+  created_at         DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime? @default(now()) @db.Timestamptz(6)
+  attribution_json   Json?
+  conversion_page    String?
+  device_type        String?
+  first_landing_page String?
+  gclid              String?
+  page_category      String?
+  referrer           String?
+  session_id         String?
+  utm_campaign       String?
+  utm_content        String?
+  utm_medium         String?
+  utm_source         String?
+  utm_term           String?
+  partners           partners? @relation(fields: [partner_id], references: [id], onUpdate: NoAction)
 
   @@index([created_at(sort: Desc)], map: "idx_partner_enquiries_created")
   @@index([partner_id], map: "idx_partner_enquiries_partner")
@@ -618,13 +646,11 @@ model partners {
   id                                        String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   slug                                      String                      @unique
   company_name                              String
-  category                                  String
   short_description                         String?
   full_description                          String?
   logo_url                                  String?
   cover_url                                 String?
   location                                  String?
-  service_areas                             String?
   years_experience                          Int?
   contact_person                            String?
   phone                                     String?
@@ -636,30 +662,44 @@ model partners {
   certifications                            String[]
   brands_handled                            String[]
   project_types                             String[]
-  approval_status                           String                      @default("Pending Review")
   active                                    Boolean?                    @default(false)
   featured                                  Boolean?                    @default(false)
   profile_completion                        Int?                        @default(0)
   created_at                                DateTime?                   @default(now()) @db.Timestamptz(6)
   updated_at                                DateTime?                   @default(now()) @db.Timestamptz(6)
+  contact_visibility                        String?                     @default("hidden")
+  partner_type                              String                      @default("builder")
+  project_count                             Int?                        @default(0)
+  public_profile_enabled                    Boolean?                    @default(false)
+  seo_description                           String?
+  seo_title                                 String?
+  verification_status                       String                      @default("pending")
+  service_areas                             String[]                    @default([])
   leads_leads_assigned_partner_idTopartners leads[]                     @relation("leads_assigned_partner_idTopartners")
   leads_leads_partner_idTopartners          leads[]                     @relation("leads_partner_idTopartners")
+  material_delivery_records                 material_delivery_records[]
   notifications                             notifications[]
   partner_boqs                              partner_boqs[]
   partner_documents                         partner_documents[]
   partner_enquiries                         partner_enquiries[]
   partner_gallery                           partner_gallery[]
+  partner_lead_assignments                  partner_lead_assignments[]
   partner_material_requests                 partner_material_requests[]
   partner_portfolio                         partner_portfolio[]
   partner_projects                          partner_projects[]
   partner_site_logs                         partner_site_logs[]
   partner_videos                            partner_videos[]
+  property_passports                        property_passports[]
+  supplier_quote_responses                  supplier_quote_responses[]
   users                                     users[]
+  projects                                  projects[]
+  partner_commissions                       partner_commissions[]
+  material_order_finance                    material_order_finance[]
 
-  @@index([approval_status], map: "idx_partners_approval")
-  @@index([category], map: "idx_partners_category")
   @@index([featured], map: "idx_partners_featured")
   @@index([slug], map: "idx_partners_slug")
+  @@index([partner_type], map: "idx_partners_type")
+  @@index([verification_status], map: "idx_partners_verification")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -785,29 +825,29 @@ model project_contractors {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model projects {
-  id                                     String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  lead_id                                String?               @db.Uuid
-  client_id                              String                @db.Uuid
-  pm_id                                  String?               @db.Uuid
-  site_engineer_id                       String?               @db.Uuid
+  id                                     String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lead_id                                String?                 @db.Uuid
+  client_id                              String                  @db.Uuid
+  pm_id                                  String?                 @db.Uuid
+  site_engineer_id                       String?                 @db.Uuid
   name                                   String
   address                                String?
-  city                                   String?               @default("Chennai")
+  city                                   String?                 @default("Chennai")
   locality                               String?
-  plot_area_sqft                         Decimal?              @db.Decimal
-  built_up_area_sqft                     Decimal?              @db.Decimal
+  plot_area_sqft                         Decimal?                @db.Decimal
+  built_up_area_sqft                     Decimal?                @db.Decimal
   floors                                 String?
   spec_level                             String?
-  start_date                             DateTime?             @db.Date
-  expected_end_date                      DateTime?             @db.Date
-  actual_end_date                        DateTime?             @db.Date
-  status                                 String?               @default("design")
-  total_contract_value                   Decimal?              @db.Decimal
-  completion_pct                         Decimal?              @default(0) @db.Decimal
+  start_date                             DateTime?               @db.Date
+  expected_end_date                      DateTime?               @db.Date
+  actual_end_date                        DateTime?               @db.Date
+  status                                 String?                 @default("design")
+  total_contract_value                   Decimal?                @db.Decimal
+  completion_pct                         Decimal?                @default(0) @db.Decimal
   cover_image_url                        String?
   notes                                  String?
-  created_at                             DateTime?             @default(now()) @db.Timestamptz(6)
-  updated_at                             DateTime?             @default(now()) @db.Timestamptz(6)
+  created_at                             DateTime?               @default(now()) @db.Timestamptz(6)
+  updated_at                             DateTime?               @default(now()) @db.Timestamptz(6)
   amc_contracts                          amc_contracts[]
   boq_items                              boq_items[]
   change_orders                          change_orders[]
@@ -818,13 +858,37 @@ model projects {
   portfolio_projects                     portfolio_projects[]
   progress_logs                          progress_logs[]
   project_contractors                    project_contractors[]
-  users_projects_client_idTousers        users                 @relation("projects_client_idTousers", fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  leads                                  leads?                @relation(fields: [lead_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users_projects_pm_idTousers            users?                @relation("projects_pm_idTousers", fields: [pm_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  users_projects_site_engineer_idTousers users?                @relation("projects_site_engineer_idTousers", fields: [site_engineer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_projects_client_idTousers        users                   @relation("projects_client_idTousers", fields: [client_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  leads                                  leads?                  @relation(fields: [lead_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_projects_pm_idTousers            users?                  @relation("projects_pm_idTousers", fields: [pm_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_projects_site_engineer_idTousers users?                  @relation("projects_site_engineer_idTousers", fields: [site_engineer_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   purchase_orders                        purchase_orders[]
   qc_submissions                         qc_submissions[]
   warranty_claims                        warranty_claims[]
+  project_code                           String?                 @unique
+  client_name                            String?
+  client_phone                           String?
+  client_email                           String?
+  project_area                           String?
+  property_type                          String?
+  project_type                           String?
+  source_lead_table                      String?
+  source_lead_id                         String?                 @db.Uuid
+  target_handover_date                   DateTime?               @db.Date
+  budget_range                           String?
+  assigned_ops_owner                     String?                 @db.Uuid
+  linked_partner_id                      String?                 @db.Uuid
+  linked_passport_id                     String?                 @db.Uuid
+  share_token                            String?                 @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_activity_logs                  project_activity_logs[]
+  project_documents_list                 project_documents[]
+  project_milestones                     project_milestones[]
+  partners                               partners?               @relation(fields: [linked_partner_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  property_passports                     property_passports?     @relation(fields: [linked_passport_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  project_finance                        project_finance?
+  project_invoices                       project_invoices[]
+  project_payments                       project_payments[]
+  partner_commissions                    partner_commissions[]
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -964,55 +1028,60 @@ model revenue_records {
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model users {
-  id                                                       String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id                                                       String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name                                                     String
-  email                                                    String               @unique
-  phone                                                    String?              @unique
+  email                                                    String                      @unique
+  phone                                                    String?                     @unique
   password_hash                                            String
   role                                                     String
   avatar_url                                               String?
-  is_active                                                Boolean?             @default(true)
-  created_at                                               DateTime?            @default(now()) @db.Timestamptz(6)
-  updated_at                                               DateTime?            @default(now()) @db.Timestamptz(6)
-  metadata                                                 Json?                @default("{}")
-  partner_id                                               String?              @db.Uuid
+  is_active                                                Boolean?                    @default(true)
+  created_at                                               DateTime?                   @default(now()) @db.Timestamptz(6)
+  updated_at                                               DateTime?                   @default(now()) @db.Timestamptz(6)
+  metadata                                                 Json?                       @default("{}")
+  partner_id                                               String?                     @db.Uuid
   accounting_ledger                                        accounting_ledger[]
   ai_requests                                              ai_requests[]
   amc_contracts                                            amc_contracts[]
   blog_posts                                               blog_posts[]
+  bqs_inspections                                          bqs_inspections[]
+  bqs_rework_items                                         bqs_rework_items[]
   change_orders                                            change_orders[]
   contractors                                              contractors[]
-  documents_documents_consented_byTousers                  documents[]          @relation("documents_consented_byTousers")
-  documents_documents_uploaded_byTousers                   documents[]          @relation("documents_uploaded_byTousers")
+  documents_documents_consented_byTousers                  documents[]                 @relation("documents_consented_byTousers")
+  documents_documents_uploaded_byTousers                   documents[]                 @relation("documents_uploaded_byTousers")
   invoice_records                                          invoice_records[]
-  issues_issues_assigned_toTousers                         issues[]             @relation("issues_assigned_toTousers")
-  issues_issues_raised_byTousers                           issues[]             @relation("issues_raised_byTousers")
+  issues_issues_assigned_toTousers                         issues[]                    @relation("issues_assigned_toTousers")
+  issues_issues_raised_byTousers                           issues[]                    @relation("issues_raised_byTousers")
   lead_activities                                          lead_activities[]
   leads                                                    leads[]
-  notification_queue_notification_queue_approved_byTousers notification_queue[] @relation("notification_queue_approved_byTousers")
-  notification_queue_notification_queue_created_byTousers  notification_queue[] @relation("notification_queue_created_byTousers")
-  notification_queue_notification_queue_sent_byTousers     notification_queue[] @relation("notification_queue_sent_byTousers")
-  notification_queue_notification_queue_user_idTousers     notification_queue[] @relation("notification_queue_user_idTousers")
+  notification_queue_notification_queue_approved_byTousers notification_queue[]        @relation("notification_queue_approved_byTousers")
+  notification_queue_notification_queue_created_byTousers  notification_queue[]        @relation("notification_queue_created_byTousers")
+  notification_queue_notification_queue_sent_byTousers     notification_queue[]        @relation("notification_queue_sent_byTousers")
+  notification_queue_notification_queue_user_idTousers     notification_queue[]        @relation("notification_queue_user_idTousers")
   notification_rules                                       notification_rules[]
   notifications                                            notifications[]
+  partner_applications                                     partner_applications[]
+  partner_lead_assignments                                 partner_lead_assignments[]
   passport_documents                                       passport_documents[]
   password_resets                                          password_resets[]
-  payment_orders_payment_orders_client_user_idTousers      payment_orders[]     @relation("payment_orders_client_user_idTousers")
-  payment_orders_payment_orders_created_byTousers          payment_orders[]     @relation("payment_orders_created_byTousers")
+  payment_orders_payment_orders_client_user_idTousers      payment_orders[]            @relation("payment_orders_client_user_idTousers")
+  payment_orders_payment_orders_created_byTousers          payment_orders[]            @relation("payment_orders_created_byTousers")
   payments                                                 payments[]
   progress_logs                                            progress_logs[]
-  projects_projects_client_idTousers                       projects[]           @relation("projects_client_idTousers")
-  projects_projects_pm_idTousers                           projects[]           @relation("projects_pm_idTousers")
-  projects_projects_site_engineer_idTousers                projects[]           @relation("projects_site_engineer_idTousers")
+  projects_projects_client_idTousers                       projects[]                  @relation("projects_client_idTousers")
+  projects_projects_pm_idTousers                           projects[]                  @relation("projects_pm_idTousers")
+  projects_projects_site_engineer_idTousers                projects[]                  @relation("projects_site_engineer_idTousers")
   properties                                               properties[]
-  purchase_orders_purchase_orders_created_byTousers        purchase_orders[]    @relation("purchase_orders_created_byTousers")
-  purchase_orders_purchase_orders_supplier_idTousers       purchase_orders[]    @relation("purchase_orders_supplier_idTousers")
-  qc_submissions_qc_submissions_reviewed_byTousers         qc_submissions[]     @relation("qc_submissions_reviewed_byTousers")
-  qc_submissions_qc_submissions_submitted_byTousers        qc_submissions[]     @relation("qc_submissions_submitted_byTousers")
+  property_passport_records                                property_passport_records[]
+  purchase_orders_purchase_orders_created_byTousers        purchase_orders[]           @relation("purchase_orders_created_byTousers")
+  purchase_orders_purchase_orders_supplier_idTousers       purchase_orders[]           @relation("purchase_orders_supplier_idTousers")
+  qc_submissions_qc_submissions_reviewed_byTousers         qc_submissions[]            @relation("qc_submissions_reviewed_byTousers")
+  qc_submissions_qc_submissions_submitted_byTousers        qc_submissions[]            @relation("qc_submissions_submitted_byTousers")
   revenue_records                                          revenue_records[]
-  partners                                                 partners?            @relation(fields: [partner_id], references: [id], onUpdate: NoAction)
-  warranty_claims_warranty_claims_assigned_toTousers       warranty_claims[]    @relation("warranty_claims_assigned_toTousers")
-  warranty_claims_warranty_claims_client_idTousers         warranty_claims[]    @relation("warranty_claims_client_idTousers")
+  partners                                                 partners?                   @relation(fields: [partner_id], references: [id], onUpdate: NoAction)
+  warranty_claims_warranty_claims_assigned_toTousers       warranty_claims[]           @relation("warranty_claims_assigned_toTousers")
+  warranty_claims_warranty_claims_client_idTousers         warranty_claims[]           @relation("warranty_claims_client_idTousers")
 
   @@index([partner_id], map: "idx_users_partner_id")
 }
@@ -1055,54 +1124,54 @@ model whatsapp_templates {
 }
 
 model ai_floor_plan_projects {
-  id                  String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id                  String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   title               String
-  owner_user_id       String?  @db.Uuid
-  partner_id          String?  @db.Uuid
-  lead_id             String?  @db.Uuid
+  owner_user_id       String?                     @db.Uuid
+  partner_id          String?                     @db.Uuid
+  lead_id             String?                     @db.Uuid
   plot_width          Float
   plot_depth          Float
-  unit                String   @default("feet")
+  unit                String                      @default("feet")
   facing              String?
   building_type       String?
-  floors              Int      @default(1)
+  floors              Int                         @default(1)
   vastu_preference    String?
   budget_range        String?
   family_size         String?
   parking             String?
-  special_spaces      String[] @default([])
+  special_spaces      String[]                    @default([])
   style               String?
-  status              String   @default("draft")
-  selected_version_id String?  @db.Uuid
-  metadata            Json?    @default("{}")
-  created_at          DateTime @default(now()) @db.Timestamptz(6)
-  updated_at          DateTime @default(now()) @db.Timestamptz(6)
-  versions            ai_floor_plan_versions[]
+  status              String                      @default("draft")
+  selected_version_id String?                     @db.Uuid
+  metadata            Json?                       @default("{}")
+  created_at          DateTime                    @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime                    @default(now()) @db.Timestamptz(6)
   generations         ai_floor_plan_generations[]
+  versions            ai_floor_plan_versions[]
 }
 
 model ai_floor_plan_versions {
-  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  project_id   String   @db.Uuid
+  id           String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id   String                 @db.Uuid
   version_name String
   option_type  String?
   plan_json    Json
   summary_json Json?
-  created_by   String?  @db.Uuid
-  created_at   DateTime @default(now()) @db.Timestamptz(6)
+  created_by   String?                @db.Uuid
+  created_at   DateTime               @default(now()) @db.Timestamptz(6)
   project      ai_floor_plan_projects @relation(fields: [project_id], references: [id], onDelete: Cascade)
 }
 
 model ai_floor_plan_generations {
-  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  project_id    String   @db.Uuid
+  id            String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id    String                 @db.Uuid
   prompt        String
   parsed_input  Json?
   output_json   Json?
-  status        String   @default("pending")
-  credits_used  Float?   @default(1.0)
+  status        String                 @default("pending")
+  credits_used  Float?                 @default(1.0)
   error_message String?
-  created_at    DateTime @default(now()) @db.Timestamptz(6)
+  created_at    DateTime               @default(now()) @db.Timestamptz(6)
   completed_at  DateTime?
   project       ai_floor_plan_projects @relation(fields: [project_id], references: [id], onDelete: Cascade)
 }
@@ -1132,111 +1201,717 @@ model reels {
 }
 
 model material_leads {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name        String
-  phone       String
-  email       String?
-  city        String    @default("Chennai")
-  locality    String?
-  material    String?
-  brand       String?
-  quantity    String?
-  unit        String?
-  source_page String?
-  status      String?   @default("new")
-  notes       String?
-  metadata    Json?     @default("{}")
-  created_at  DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String
+  phone              String
+  email              String?
+  city               String    @default("Chennai")
+  locality           String?
+  material           String?
+  brand              String?
+  quantity           String?
+  unit               String?
+  source_page        String?
+  status             String?   @default("new")
+  notes              String?
+  metadata           Json?     @default("{}")
+  created_at         DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime? @default(now()) @db.Timestamptz(6)
+  attribution_json   Json?
+  conversion_page    String?
+  device_type        String?
+  first_landing_page String?
+  gclid              String?
+  page_category      String?
+  referrer           String?
+  session_id         String?
+  utm_campaign       String?
+  utm_content        String?
+  utm_medium         String?
+  utm_source         String?
+  utm_term           String?
 
   @@index([status], map: "idx_material_leads_status")
   @@index([created_at], map: "idx_material_leads_created_at")
 }
 
 model structural_audit_leads {
-  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name            String
-  phone           String
-  email           String?
-  city            String    @default("Chennai")
-  locality        String?
-  building_type   String?
-  audit_type      String?
-  floors          String?
-  age_of_building String?
-  concern         String?
-  source_page     String?
-  status          String?   @default("new")
-  engineer_notes  String?
-  report_status   String?   @default("pending")
-  report_url      String?
-  photos          Json?     @default("[]")
-  metadata        Json?     @default("{}")
-  created_at      DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at      DateTime? @default(now()) @db.Timestamptz(6)
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String
+  phone              String
+  email              String?
+  city               String    @default("Chennai")
+  locality           String?
+  building_type      String?
+  audit_type         String?
+  floors             String?
+  age_of_building    String?
+  concern            String?
+  source_page        String?
+  status             String?   @default("new")
+  engineer_notes     String?
+  report_status      String?   @default("pending")
+  report_url         String?
+  photos             Json?     @default("[]")
+  metadata           Json?     @default("{}")
+  created_at         DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime? @default(now()) @db.Timestamptz(6)
+  attribution_json   Json?
+  conversion_page    String?
+  device_type        String?
+  first_landing_page String?
+  gclid              String?
+  page_category      String?
+  referrer           String?
+  session_id         String?
+  utm_campaign       String?
+  utm_content        String?
+  utm_medium         String?
+  utm_source         String?
+  utm_term           String?
 
   @@index([status], map: "idx_structural_leads_status")
   @@index([audit_type], map: "idx_structural_leads_audit_type")
 }
 
 model survey_leads {
-  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name         String
-  phone        String
-  email        String?
-  city         String    @default("Chennai")
-  locality     String?
-  survey_type  String?
-  plot_area    String?
-  deliverable  String?
-  equipment    String?
-  assigned_to  String?
-  source_page  String?
-  status       String?   @default("new")
-  notes        String?
-  metadata     Json?     @default("{}")
-  created_at   DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String
+  phone              String
+  email              String?
+  city               String    @default("Chennai")
+  locality           String?
+  survey_type        String?
+  plot_area          String?
+  deliverable        String?
+  equipment          String?
+  assigned_to        String?
+  source_page        String?
+  status             String?   @default("new")
+  notes              String?
+  metadata           Json?     @default("{}")
+  created_at         DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime? @default(now()) @db.Timestamptz(6)
+  attribution_json   Json?
+  conversion_page    String?
+  device_type        String?
+  first_landing_page String?
+  gclid              String?
+  page_category      String?
+  referrer           String?
+  session_id         String?
+  utm_campaign       String?
+  utm_content        String?
+  utm_medium         String?
+  utm_source         String?
+  utm_term           String?
 
   @@index([status], map: "idx_survey_leads_status")
   @@index([survey_type], map: "idx_survey_leads_type")
 }
 
 model piling_leads {
-  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name         String
-  phone        String
-  email        String?
-  city         String    @default("Chennai")
-  locality     String?
-  piling_type  String?
-  pile_depth   String?
-  no_of_piles  String?
-  soil_report  String?
-  source_page  String?
-  status       String?   @default("new")
-  notes        String?
-  metadata     Json?     @default("{}")
-  created_at   DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at   DateTime? @default(now()) @db.Timestamptz(6)
+  id                 String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name               String
+  phone              String
+  email              String?
+  city               String    @default("Chennai")
+  locality           String?
+  piling_type        String?
+  pile_depth         String?
+  no_of_piles        String?
+  soil_report        String?
+  source_page        String?
+  status             String?   @default("new")
+  notes              String?
+  metadata           Json?     @default("{}")
+  created_at         DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime? @default(now()) @db.Timestamptz(6)
+  attribution_json   Json?
+  conversion_page    String?
+  device_type        String?
+  first_landing_page String?
+  gclid              String?
+  page_category      String?
+  referrer           String?
+  session_id         String?
+  utm_campaign       String?
+  utm_content        String?
+  utm_medium         String?
+  utm_source         String?
+  utm_term           String?
 
   @@index([status], map: "idx_piling_leads_status")
   @@index([piling_type], map: "idx_piling_leads_type")
 }
 
 model ai_tool_submissions {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  tool_name   String
-  name        String?
-  phone       String?
-  email       String?
-  input_data  Json?     @default("{}")
-  output_data Json?     @default("{}")
-  status      String?   @default("submitted")
-  source_page String?
-  created_at  DateTime? @default(now()) @db.Timestamptz(6)
-  updated_at  DateTime? @default(now()) @db.Timestamptz(6)
+  id                         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  tool_name                  String
+  name                       String?
+  phone                      String?
+  email                      String?
+  input_data                 Json?     @default("{}")
+  output_data                Json?     @default("{}")
+  status                     String?   @default("submitted")
+  source_page                String?
+  created_at                 DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at                 DateTime? @default(now()) @db.Timestamptz(6)
+  attribution_json           Json?
+  conversion_page            String?
+  device_type                String?
+  first_landing_page         String?
+  gclid                      String?
+  page_category              String?
+  referrer                   String?
+  session_id                 String?
+  utm_campaign               String?
+  utm_content                String?
+  utm_medium                 String?
+  utm_source                 String?
+  utm_term                   String?
+  follow_up_priority         String?   @default("within_24_hours")
+  follow_up_reason           String?
+  lead_status                String?   @default("new")
+  next_best_action           String?
+  recommended_ops_team       String?
+  recommended_service_url    String?
+  risk_level                 String?   @default("low")
+  score                      Int?
+  suggested_call_script      String?
+  suggested_email_body       String?
+  suggested_email_subject    String?
+  suggested_whatsapp_message String?
 
   @@index([tool_name], map: "idx_ai_submissions_tool")
   @@index([status], map: "idx_ai_submissions_status")
+}
+
+model bqs_checklist_items {
+  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  template_id            String                   @db.Uuid
+  stage                  String
+  category               String
+  item_text              String
+  inspection_method      String?
+  required_proof_type    String?                  @default("photo")
+  severity               String?                  @default("medium")
+  is_required            Boolean?                 @default(true)
+  created_at             DateTime?                @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?                @default(now()) @db.Timestamptz(6)
+  bqs_templates          bqs_templates            @relation(fields: [template_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  bqs_inspection_results bqs_inspection_results[]
+
+  @@index([stage], map: "idx_bqs_items_stage")
+  @@index([template_id], map: "idx_bqs_items_template")
+}
+
+model bqs_inspection_results {
+  id                  String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  inspection_id       String              @db.Uuid
+  checklist_item_id   String              @db.Uuid
+  status              String?             @default("not_applicable")
+  remarks             String?
+  proof_urls          Json?               @default("[]")
+  measurement_value   String?
+  severity            String?
+  rework_required     Boolean?            @default(false)
+  rework_status       String?             @default("none")
+  created_at          DateTime?           @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime?           @default(now()) @db.Timestamptz(6)
+  bqs_checklist_items bqs_checklist_items @relation(fields: [checklist_item_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  bqs_inspections     bqs_inspections     @relation(fields: [inspection_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  bqs_rework_items    bqs_rework_items[]
+
+  @@index([inspection_id], map: "idx_bqs_results_inspection")
+  @@index([checklist_item_id], map: "idx_bqs_results_item")
+}
+
+model bqs_inspections {
+  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  passport_id            String?                  @db.Uuid
+  project_name           String?
+  project_area           String?
+  project_type           String?
+  stage                  String
+  assigned_engineer      String?                  @db.Uuid
+  inspection_date        DateTime?                @db.Timestamptz(6)
+  status                 String?                  @default("scheduled")
+  overall_score          Float?
+  summary                String?
+  created_at             DateTime?                @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?                @default(now()) @db.Timestamptz(6)
+  bqs_inspection_results bqs_inspection_results[]
+  users                  users?                   @relation(fields: [assigned_engineer], references: [id], onUpdate: NoAction)
+  property_passports     property_passports?      @relation(fields: [passport_id], references: [id], onUpdate: NoAction)
+
+  @@index([passport_id], map: "idx_bqs_inspections_passport")
+  @@index([status], map: "idx_bqs_inspections_status")
+}
+
+model bqs_rework_items {
+  id                     String                 @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  inspection_result_id   String                 @db.Uuid
+  issue_title            String
+  issue_description      String?
+  assigned_to            String?                @db.Uuid
+  due_date               DateTime?              @db.Date
+  status                 String?                @default("open")
+  closure_proof_urls     Json?                  @default("[]")
+  closure_remarks        String?
+  created_at             DateTime?              @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime?              @default(now()) @db.Timestamptz(6)
+  users                  users?                 @relation(fields: [assigned_to], references: [id], onUpdate: NoAction)
+  bqs_inspection_results bqs_inspection_results @relation(fields: [inspection_result_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([inspection_result_id], map: "idx_bqs_reworks_result")
+  @@index([status], map: "idx_bqs_reworks_status")
+}
+
+model bqs_templates {
+  id                  String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  template_name       String
+  project_type        String?               @default("residential")
+  stage               String?
+  category            String?
+  description         String?
+  is_active           Boolean?              @default(true)
+  created_at          DateTime?             @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime?             @default(now()) @db.Timestamptz(6)
+  bqs_checklist_items bqs_checklist_items[]
+
+  @@index([project_type], map: "idx_bqs_templates_project_type")
+  @@index([stage], map: "idx_bqs_templates_stage")
+}
+
+model case_studies {
+  id                   String               @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug                 String               @unique
+  title                String
+  category             String
+  location_area        String?
+  property_type        String?
+  scope_of_work        String?
+  starting_problem     String?
+  process              String?
+  tools_used           String[]             @default([])
+  materials_used       String[]             @default([])
+  observations         String?
+  proof_records        String[]             @default([])
+  outcome              String?
+  timeline             String?
+  related_services     String[]             @default([])
+  status               String?              @default("draft")
+  seo_title            String?
+  seo_description      String?
+  property_passport_id String?              @db.Uuid
+  media                Json?                @default("[]")
+  created_at           DateTime?            @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime?            @default(now()) @db.Timestamptz(6)
+  property_passports   property_passports[]
+}
+
+model content_calendar_items {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title                 String
+  slug                  String    @unique
+  channel               String
+  category              String
+  target_area           String?
+  linked_proof_asset_id String?   @db.Uuid
+  linked_case_study_id  String?   @db.Uuid
+  linked_partner_id     String?   @db.Uuid
+  linked_service_url    String?
+  planned_date          DateTime? @db.Date
+  status                String?   @default("idea")
+  publish_url           String?
+  caption_short         String?
+  caption_long          String?
+  gbp_post_text         String?
+  reel_hook             String?
+  reel_script           String?
+  seo_title             String?
+  seo_description       String?
+  target_keywords       Json?     @default("[]")
+  internal_links        Json?     @default("[]")
+  privacy_review_status String?   @default("pending")
+  notes                 String?
+  created_at            DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([channel], map: "idx_content_calendar_channel")
+  @@index([planned_date], map: "idx_content_calendar_date")
+  @@index([status], map: "idx_content_calendar_status")
+}
+
+model material_delivery_records {
+  id                       String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  quote_request_id         String                  @db.Uuid
+  supplier_partner_id      String                  @db.Uuid
+  delivery_status          String                  @default("dispatched")
+  delivery_date            DateTime?               @db.Timestamptz(6)
+  invoice_url              String?
+  weighbridge_slip_url     String?
+  delivery_photos          Json?                   @default("[]")
+  quality_notes            String?
+  property_passport_linked Boolean?                @default(false)
+  created_at               DateTime?               @default(now()) @db.Timestamptz(6)
+  updated_at               DateTime?               @default(now()) @db.Timestamptz(6)
+  material_quote_requests  material_quote_requests @relation(fields: [quote_request_id], references: [id], onDelete: Cascade)
+  partners                 partners                @relation(fields: [supplier_partner_id], references: [id], onDelete: Cascade)
+
+  @@index([quote_request_id], map: "idx_material_delivery_records_request")
+}
+
+model material_quote_requests {
+  id                        String                      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lead_id                   String?                     @db.Uuid
+  summary_token             String                      @unique @default(dbgenerated("gen_random_uuid()"))
+  customer_name             String
+  phone                     String
+  email                     String?
+  project_area              String?
+  material_categories       Json?                       @default("[]")
+  boq_available             Boolean?                    @default(false)
+  boq_file_url              String?
+  required_date             DateTime?                   @db.Date
+  delivery_location         String?
+  notes                     String?
+  status                    String?                     @default("new")
+  first_landing_page        String?
+  conversion_page           String?
+  referrer                  String?
+  utm_source                String?
+  utm_medium                String?
+  utm_campaign              String?
+  utm_content               String?
+  utm_term                  String?
+  created_at                DateTime?                   @default(now()) @db.Timestamptz(6)
+  updated_at                DateTime?                   @default(now()) @db.Timestamptz(6)
+  material_delivery_records material_delivery_records[]
+  leads                     leads?                      @relation(fields: [lead_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  property_passports        property_passports[]
+  supplier_quote_responses  supplier_quote_responses[]
+
+  @@index([status], map: "idx_material_quote_requests_status")
+  @@index([summary_token], map: "idx_material_quote_requests_token")
+}
+
+model partner_applications {
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  business_name       String
+  contact_person      String
+  phone               String
+  email               String
+  category            String
+  service_areas       String?   @default("[]")
+  years_experience    Int?
+  services_offered    String?   @default("[]")
+  project_types       String?   @default("[]")
+  website             String?
+  gst_number          String?
+  registration_number String?
+  license_number      String?
+  portfolio_links     String?   @default("[]")
+  profile_summary     String?
+  consent_given       Boolean   @default(true)
+  status              String?   @default("new")
+  internal_notes      String?
+  assigned_to         String?   @db.Uuid
+  created_at          DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime? @default(now()) @db.Timestamptz(6)
+  users               users?    @relation(fields: [assigned_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([category], map: "idx_partner_applications_category")
+  @@index([status], map: "idx_partner_applications_status")
+}
+
+model partner_lead_assignments {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  lead_source_table String
+  lead_id           String    @db.Uuid
+  partner_id        String    @db.Uuid
+  assigned_by       String?   @db.Uuid
+  assignment_status String    @default("assigned")
+  assignment_notes  String?
+  quoted_amount     Decimal?  @db.Decimal
+  commission_status String?
+  created_at        DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime? @default(now()) @db.Timestamptz(6)
+  users             users?    @relation(fields: [assigned_by], references: [id], onDelete: NoAction)
+  partners          partners  @relation(fields: [partner_id], references: [id], onDelete: Cascade)
+
+  @@index([lead_id], map: "idx_partner_lead_assignments_lead")
+  @@index([partner_id], map: "idx_partner_lead_assignments_partner")
+  @@index([assignment_status], map: "idx_partner_lead_assignments_status")
+}
+
+model proof_assets {
+  id                   String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  slug                 String    @unique
+  title                String
+  category             String
+  area                 String?
+  description          String?
+  before_after_notes   String?
+  methods_used         String?
+  materials_used       String?
+  media                Json?     @default("[]")
+  privacy_status       String?   @default("public")
+  approved_for_website Boolean?  @default(false)
+  approved_for_gbp     Boolean?  @default(false)
+  approved_for_social  Boolean?  @default(false)
+  linked_case_study_id String?   @db.Uuid
+  linked_partner_id    String?   @db.Uuid
+  linked_service_url   String?
+  seo_metadata         Json?     @default("{}")
+  created_at           DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime? @default(now()) @db.Timestamptz(6)
+
+  @@index([approved_for_website], map: "idx_proof_assets_approved_web")
+  @@index([category], map: "idx_proof_assets_category")
+}
+
+model property_passport_checklists {
+  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  passport_id        String             @db.Uuid
+  stage              String
+  checklist_item     String
+  status             String?            @default("pending")
+  proof_record_id    String?            @db.Uuid
+  remarks            String?
+  created_at         DateTime?          @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime?          @default(now()) @db.Timestamptz(6)
+  property_passports property_passports @relation(fields: [passport_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([passport_id], map: "idx_passport_checklists_passport")
+}
+
+model property_passport_records {
+  id                 String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  passport_id        String             @db.Uuid
+  category           String
+  title              String
+  description        String?
+  file_url           String?
+  external_url       String?
+  record_date        DateTime?          @db.Timestamptz(6)
+  uploaded_by        String?            @db.Uuid
+  visibility         String?            @default("private")
+  metadata_json      Json?              @default("{}")
+  created_at         DateTime?          @default(now()) @db.Timestamptz(6)
+  updated_at         DateTime?          @default(now()) @db.Timestamptz(6)
+  property_passports property_passports @relation(fields: [passport_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users              users?             @relation(fields: [uploaded_by], references: [id], onUpdate: NoAction)
+
+  @@index([category], map: "idx_passport_records_category")
+  @@index([passport_id], map: "idx_passport_records_passport")
+}
+
+model property_passports {
+  id                           String                         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  passport_number              String                         @unique
+  property_name                String?
+  owner_name                   String?
+  owner_phone                  String?
+  owner_email                  String?
+  property_area                String?
+  property_type                String?
+  project_type                 String?
+  status                       String?                        @default("draft")
+  linked_lead_id               String?                        @db.Uuid
+  linked_partner_id            String?                        @db.Uuid
+  linked_case_study_id         String?                        @db.Uuid
+  linked_quote_request_id      String?                        @db.Uuid
+  privacy_level                String?                        @default("private")
+  share_token                  String?                        @unique @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                   DateTime?                      @default(now()) @db.Timestamptz(6)
+  updated_at                   DateTime?                      @default(now()) @db.Timestamptz(6)
+  bqs_inspections              bqs_inspections[]
+  property_passport_checklists property_passport_checklists[]
+  property_passport_records    property_passport_records[]
+  case_studies                 case_studies?                  @relation(fields: [linked_case_study_id], references: [id], onUpdate: NoAction)
+  leads                        leads?                         @relation(fields: [linked_lead_id], references: [id], onUpdate: NoAction)
+  partners                     partners?                      @relation(fields: [linked_partner_id], references: [id], onUpdate: NoAction)
+  material_quote_requests      material_quote_requests?       @relation(fields: [linked_quote_request_id], references: [id], onUpdate: NoAction)
+  projects                     projects[]
+
+  @@index([passport_number], map: "idx_property_passports_number")
+  @@index([share_token], map: "idx_property_passports_token")
+}
+
+model supplier_quote_responses {
+  id                      String                  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  quote_request_id        String                  @db.Uuid
+  supplier_partner_id     String                  @db.Uuid
+  material_category       String
+  brand                   String?
+  grade_spec              String?
+  quantity                Decimal?                @db.Decimal
+  unit                    String?
+  unit_rate               Decimal?                @db.Decimal
+  transport_cost          Decimal?                @db.Decimal
+  gst_included            Boolean?                @default(false)
+  delivery_timeline       String?
+  payment_terms           String?
+  quote_file_url          String?
+  validity_date           DateTime?               @db.Date
+  status                  String?                 @default("pending")
+  created_at              DateTime?               @default(now()) @db.Timestamptz(6)
+  updated_at              DateTime?               @default(now()) @db.Timestamptz(6)
+  material_quote_requests material_quote_requests @relation(fields: [quote_request_id], references: [id], onDelete: Cascade)
+  partners                partners                @relation(fields: [supplier_partner_id], references: [id], onDelete: Cascade)
+
+  @@index([quote_request_id], map: "idx_supplier_quote_responses_request")
+  @@index([supplier_partner_id], map: "idx_supplier_quote_responses_supplier")
+}
+
+model project_milestones {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id     String?   @db.Uuid
+  milestone_name String
+  stage          String
+  planned_date   DateTime? @db.Date
+  completed_date DateTime? @db.Date
+  status         String    @default("pending")
+  owner          String?
+  notes          String?
+  created_at     DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime? @default(now()) @db.Timestamptz(6)
+  projects       projects? @relation(fields: [project_id], references: [id], onDelete: Cascade)
+}
+
+model project_activity_logs {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id    String?   @db.Uuid
+  activity_type String
+  title         String
+  description   String?
+  actor         String?
+  metadata_json Json?     @default("{}")
+  created_at    DateTime? @default(now()) @db.Timestamptz(6)
+  projects      projects? @relation(fields: [project_id], references: [id], onDelete: Cascade)
+}
+
+model project_documents {
+  id                        String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id                String?   @db.Uuid
+  category                  String
+  title                     String
+  file_url                  String?
+  external_url              String?
+  visibility                String    @default("ops_only")
+  linked_passport_record_id String?   @db.Uuid
+  created_at                DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at                DateTime? @default(now()) @db.Timestamptz(6)
+  projects                  projects? @relation(fields: [project_id], references: [id], onDelete: Cascade)
+}
+
+model project_finance {
+  id                          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id                  String    @unique @db.Uuid
+  estimated_budget            Decimal?  @default(0) @db.Decimal
+  approved_budget             Decimal?  @default(0) @db.Decimal
+  current_spend               Decimal?  @default(0) @db.Decimal
+  payment_status              String?   @default("not_started")
+  margin_type                 String?   @default("service_fee")
+  buildogram_revenue_estimate Decimal?  @default(0) @db.Decimal
+  buildogram_revenue_actual   Decimal?  @default(0) @db.Decimal
+  notes                       String?
+  created_at                  DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at                  DateTime? @default(now()) @db.Timestamptz(6)
+  projects                    projects  @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model project_invoices {
+  id               String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id       String             @db.Uuid
+  invoice_number   String             @unique
+  invoice_type     String             @default("customer_invoice")
+  billed_to        String?
+  billed_by        String?
+  amount           Decimal?           @default(0) @db.Decimal
+  tax_amount       Decimal?           @default(0) @db.Decimal
+  total_amount     Decimal?           @default(0) @db.Decimal
+  due_date         DateTime?          @db.Date
+  paid_date        DateTime?          @db.Timestamptz(6)
+  status           String?            @default("draft")
+  file_url         String?
+  notes            String?
+  created_at       DateTime?          @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime?          @default(now()) @db.Timestamptz(6)
+  projects         projects           @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  project_payments project_payments[]
+}
+
+model project_payments {
+  id                    String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id            String            @db.Uuid
+  invoice_id            String?           @db.Uuid
+  payment_direction     String            @default("incoming")
+  payer                 String?
+  payee                 String?
+  amount                Decimal?          @default(0) @db.Decimal
+  payment_mode          String?           @default("bank_transfer")
+  transaction_reference String?
+  payment_date          DateTime?         @db.Timestamptz(6)
+  proof_url             String?
+  status                String?           @default("pending")
+  notes                 String?
+  created_at            DateTime?         @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime?         @default(now()) @db.Timestamptz(6)
+  projects              projects          @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  project_invoices      project_invoices? @relation(fields: [invoice_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
+}
+
+model partner_commissions {
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id        String?   @db.Uuid
+  partner_id        String    @db.Uuid
+  assignment_id     String?   @db.Uuid
+  commission_type   String    @default("percentage")
+  base_amount       Decimal?  @default(0) @db.Decimal
+  commission_rate   Decimal?  @default(0) @db.Decimal
+  commission_amount Decimal?  @default(0) @db.Decimal
+  status            String?   @default("pending")
+  payment_id        String?   @db.Uuid
+  notes             String?
+  created_at        DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at        DateTime? @default(now()) @db.Timestamptz(6)
+  projects          projects? @relation(fields: [project_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
+  partners          partners  @relation(fields: [partner_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model material_order_finance {
+  id                     String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  quote_request_id       String?   @db.Uuid
+  supplier_partner_id    String?   @db.Uuid
+  accepted_quote_id      String?   @db.Uuid
+  customer_total         Decimal?  @default(0) @db.Decimal
+  supplier_total         Decimal?  @default(0) @db.Decimal
+  buildogram_margin      Decimal?  @default(0) @db.Decimal
+  payment_status         String?   @default("pending")
+  delivery_payment_terms String?
+  created_at             DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime? @default(now()) @db.Timestamptz(6)
+  partners               partners? @relation(fields: [supplier_partner_id], references: [id], onDelete: SetNull, onUpdate: NoAction)
+}
+
+model audit_logs {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  actor_user_id String?   @db.Uuid
+  actor_name    String?
+  actor_role    String?
+  action        String
+  resource_type String
+  resource_id   String
+  before_json   Json?
+  after_json    Json?
+  ip_address    String?
+  user_agent    String?
+  created_at    DateTime  @default(now()) @db.Timestamptz(6)
+  
+  @@index([action], map: "idx_audit_logs_action")
+  @@index([resource_type, resource_id], map: "idx_audit_logs_resource")
+  @@index([created_at(sort: Desc)], map: "idx_audit_logs_created_at")
 }

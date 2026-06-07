@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Construction Intelligence"
       heroTitle="Construction Cost Estimator"
@@ -35,5 +37,7 @@ export default function Page() {
         { q: 'Is there a fee?', a: 'We offer a free initial consultation.' }
       ]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Lack of clarity","path":"/cost-estimator"}]} />
+    </>
   );
 }

@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Local Guidance"
       heroTitle="Construction in Chennai"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"Chennai Specifics","desc":"Local checks we perform.","dashboardTitle":"Chennai Risk Checklist","items":["Coastal Corrosion Protection (ECR/OMR)","Plinth Height vs Road Level","CMDA Setback Verification"]}}
       faqs={[{"q":"Do you help with CMDA approvals?","a":"We connect you with licensed surveyors and architects who handle the paperwork."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Construction In Chennai","path":"/construction-in-chennai"}]} />
+    </>
   );
 }

@@ -26,15 +26,24 @@ export async function POST(request) {
       }
     }
 
+    const attr = b.attribution || {};
+
     const [enquiry] = await sql`
       INSERT INTO leads (
         partner_id, category, name, phone, email,
         requirement, locality, message,
-        source_page, source, status, lead_type
+        source_page, source, status, lead_type,
+        first_landing_page, conversion_page, referrer, utm_source, utm_medium,
+        utm_campaign, utm_content, utm_term, gclid, session_id, device_type, page_category, attribution_json
       ) VALUES (
         ${partnerId}, ${b.category || null}, ${b.customerName}, ${b.phone}, ${b.email || null},
         ${b.requirement || null}, ${b.location || null}, ${b.message || null},
-        ${b.sourcePage || 'partner_profile'}, ${b.sourceType || 'web'}, 'new', 'partner_enquiry'
+        ${b.sourcePage || 'partner_profile'}, ${b.sourceType || 'web'}, 'new', 'partner_enquiry',
+        ${attr.first_landing_page || null}, ${attr.conversion_page || b.sourcePage || null}, ${attr.referrer || null},
+        ${attr.utm_source || null}, ${attr.utm_medium || null}, ${attr.utm_campaign || null},
+        ${attr.utm_content || null}, ${attr.utm_term || null}, ${attr.gclid || null},
+        ${attr.session_id || null}, ${attr.device_type || null}, ${attr.page_category || null},
+        ${attr.attribution_json ? JSON.stringify(attr.attribution_json) : null}
       )
       RETURNING id, name as customer_name, status, created_at
     `;

@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 export const metadata = generateSEOMetadata({
 title: 'Privacy Policy | Buildogram',
@@ -6,7 +7,7 @@ title: 'Privacy Policy | Buildogram',
 });
 
 export default function PrivacyPolicy() {
-  return (
+  return ( <>
     <main className="container" style={{ padding: '60px 24px', maxWidth: '800px', lineHeight: 1.7 }}>
       <h1 style={{ fontSize: '32px', marginBottom: '24px', color: 'var(--primary-dark)' }}>Privacy Policy</h1>
       <p className="text-muted">Last updated: [Insert Date]</p>
@@ -31,5 +32,7 @@ export default function PrivacyPolicy() {
         <p>We implement reasonable security measures to protect your documents, project photos, and personal information stored within the Buildogram ecosystem.</p>
       </section>
     </main>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Privacy Policy","path":"/privacy-policy"}]} />
+    </>
   );
 }

@@ -1,10 +1,13 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export const metadata = generateSEOMetadata({
-  title: 'Maintenance | Buildogram',
-  description: 'Engineer-led home construction companion in Chennai. Plan, build, source materials, verify site progress, and manage your Property.',
-  path: '/property/maintenance',
+  title: "Maintenance | Buildogram",
+  description: "Comprehensive maintenance services. Buildogram is an AI-driven, engineer-led construction and property ecosystem offering BOQ review, structural audit, survey, testing, and piling.",
+  path: "/property/maintenance"
 });
+
+
+
 
 export default function Layout({ children }) {
   return <>{children}</>;

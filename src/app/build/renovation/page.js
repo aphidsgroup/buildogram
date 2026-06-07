@@ -1,8 +1,10 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
 
 export default function Page() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Buildogram Build"
       heroTitle="Home Renovation & Remodeling"
@@ -15,5 +17,7 @@ export default function Page() {
       proofData={{"title":"Renovation Safety","desc":"How we protect your existing home.","dashboardTitle":"Pre-Renovation Checklist","items":["Load Bearing Wall ID","Plumbing Route Tracing","Electrical Load Calculation","Debris Disposal Plan"]}}
       faqs={[{"q":"Can you add a floor to my old house?","a":"Only after our structural engineers conduct a thorough foundation assessment."}]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Build","path":"/build"},{"name":"Renovation","path":"/build/renovation"}]} />
+    </>
   );
 }

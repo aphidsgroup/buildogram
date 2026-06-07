@@ -1,6 +1,9 @@
 import Link from 'next/link';
 import { glossaryTerms, glossaryMap } from '@/data/seo/glossary';
 import { notFound } from 'next/navigation';
+import RelatedLinksBlock from '@/components/seo/RelatedLinksBlock';
+import ContextualCTA from '@/components/seo/ContextualCTA';
+import { getContextualLinks } from '@/lib/seo/internalLinks';
 
 export async function generateStaticParams() {
   return glossaryTerms.map((t) => ({ term: t.slug }));
@@ -36,6 +39,9 @@ const breadcrumbSchema = (itemData) => ({
 });
 
 export default function GlossaryTermPage({ params }) {
+  const currentPath = `/glossary${params.term}`.replace('//', '/');
+  const relatedLinks = getContextualLinks('service', currentPath);
+
   const term = glossaryMap[params.term];
   if (!term) notFound();
 
@@ -164,6 +170,9 @@ export default function GlossaryTermPage({ params }) {
         </div>
 
       </div>
-    </>
+    
+      <RelatedLinksBlock title="Explore Related Services" links={relatedLinks} variant="light" />
+      <ContextualCTA pageType="service" currentPath={currentPath} />
+</>
   );
 }

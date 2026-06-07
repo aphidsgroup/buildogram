@@ -5,7 +5,7 @@ import DataSourceBadge from '@/components/DataSourceBadge';
 import { DEMO_MATERIALS, DEMO_PROJECTS, MATERIAL_STATUSES } from '../_shared/demoData';
 import { notifyEvent } from '@/lib/services/notificationService';
 import { logActivity } from '@/lib/services/activityLogService';
-import { checkPlanLimit } from '@/lib/auth/permissions';
+import { checkPlanLimit } from '@/lib/models/index';
 
 const UNITS = ['Bags', 'MT', 'm²', 'm³', 'Nos', 'RFT', 'Liter', 'kg', 'Sqft', 'Set'];
 const PRIORITIES = ['High', 'Medium', 'Low'];

@@ -1,3 +1,4 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import sql from '@/lib/db';
@@ -19,7 +20,7 @@ export default async function Blog() {
     console.error('Failed to fetch blog posts:', err);
   }
 
-  return (
+  return ( <>
     <>
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
@@ -60,6 +61,8 @@ export default async function Blog() {
           </div>
         )}
       </div>
+    </>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Construction Blog","path":"/blog"}]} />
     </>
   );
 }

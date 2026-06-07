@@ -1,14 +1,18 @@
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
-import { generateSEOMetadata } from '@/components/seo/generateSEOMetadata';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export const metadata = generateSEOMetadata({
-  title: 'Buy Cement in Chennai | Best Market Prices & Quality Audit',
-  description: 'Source top-brand cement (OPC 53, PPC) in Chennai with engineer-led quality checks. We verify manufacturing dates, grade, and delivery weights. Compare Ultratech, Ramco, Dalmia, and more.',
-  path: '/materials/cement',
+  title: "Cement | Buildogram",
+  description: "Source verified cement materials directly through Buildogram, the AI-driven, engineer-led construction and property ecosystem. Ensure quality and transparent pricing.",
+  path: "/materials/cement"
 });
 
+
+
+
 export default function CementPage() {
-  return (
+  return ( <>
     <PublicServicePage
       heroEyebrow="Material Sourcing Hub"
       heroTitle="Engineer-Verified Cement in Chennai"
@@ -56,5 +60,7 @@ export default function CementPage() {
         { q: "Can I return cement if it has lumps?", a: "Yes. If cement is sourced through our verified network and arrives with moisture-induced lumps, it will be replaced. Lumpy cement indicates pre-hydration and is useless." }
       ]}
     />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Materials","path":"/materials"},{"name":"Buy Cement in Chennai","path":"/materials/cement"}]} />
+    </>
   );
 }

@@ -1,3 +1,4 @@
+import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { getUserFromRequest } from '@/lib/auth';
@@ -25,6 +26,7 @@ export async function GET(req) {
 }
 
 export async function POST(req) {
+  await requirePermission('manage_content');
   const u = getUserFromRequest(req);
   if (!u || !['ops_admin', 'ops_pm', 'ops_engineer', 'admin'].includes(u.role)) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });

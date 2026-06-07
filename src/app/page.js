@@ -1,8 +1,9 @@
-'use client';
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import Link from 'next/link';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import SectionHeader from '@/components/ui/SectionHeader';
 import PremiumCard from '@/components/ui/PremiumCard';
+import { getMoneyPageLinks } from '@/lib/seo/internalLinks';
 import styles from './page.module.css';
 
 /* ─── Data ────────────────────────────────────────────────── */
@@ -69,7 +70,9 @@ const SERVICE_HUBS = [
 
 /* ─── Component ───────────────────────────────────────────── */
 export default function Home() {
-  return (
+  const topMoneyPages = getMoneyPageLinks(8);
+
+  return ( <>
     <main className={styles.page}>
 
       {/* ── 1. HERO ──────────────────────────────────────── */}
@@ -503,6 +506,35 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── 10.5. EXPLORE BY NEED ────────────────────────── */}
+      <section className="fullBleedSection" style={{ padding: '80px 0', background: 'var(--gradient-dark)' }}>
+        <div className="sectionInner">
+          <AnimatedSection>
+            <SectionHeader
+              eyebrow="Quick Navigation"
+              title={<span style={{ color: 'white' }}>Explore Buildogram by Need.</span>}
+              description={<span style={{ color: '#CBD5E1' }}>Find exactly what you need for your construction or property management journey.</span>}
+            />
+          </AnimatedSection>
+          
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px', marginTop: '40px' }}>
+            {topMoneyPages.map((page, i) => (
+              <AnimatedSection key={i} delay={i * 0.05}>
+                <Link href={page.href} style={{ textDecoration: 'none', display: 'block', height: '100%' }}>
+                  <div className="card card-hover" style={{ height: '100%', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', padding: '24px', borderRadius: '12px', display: 'flex', flexDirection: 'column' }}>
+                    <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'white', marginBottom: '8px' }}>{page.label}</h3>
+                    <p style={{ fontSize: '14px', color: '#94A3B8', lineHeight: 1.6, margin: 0, paddingBottom: '16px' }}>{page.description}</p>
+                    <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', color: 'var(--primary)', fontSize: '14px', fontWeight: 600 }}>
+                      Explore <span style={{ marginLeft: '4px' }}>→</span>
+                    </div>
+                  </div>
+                </Link>
+              </AnimatedSection>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── 11. CHENNAI LOCAL SECTION ───────────────────── */}
       <section className="fullBleedSection" style={{ padding: '80px 0', background: 'white' }}>
         <div className="sectionInner">
@@ -565,5 +597,5 @@ export default function Home() {
       </section>
 
     </main>
-  );
+  </>);
 }

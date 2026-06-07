@@ -1,3 +1,4 @@
+import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
@@ -6,6 +7,7 @@ import { evaluateNotificationRule } from '@/lib/notifications';
 import { renderTemplate } from '@/lib/whatsapp';
 
 export async function POST(req) {
+  await requirePermission('manage_notification_rules');
   const u = getUserFromRequest(req);
   if (!u || !roleCan(u.role, 'manage_notification_queue')) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

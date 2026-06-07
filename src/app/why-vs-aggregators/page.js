@@ -1,4 +1,6 @@
 'use client';
+
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import Link from 'next/link';
 
 export default function WhyVsAggregators() {
@@ -30,7 +32,7 @@ export default function WhyVsAggregators() {
     }
   ];
 
-  return (
+  return ( <>
     <>
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
@@ -117,6 +119,8 @@ export default function WhyVsAggregators() {
             </div>
           </div>
       </div>
+    </>
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Primary Business Model","path":"/why-vs-aggregators"}]} />
     </>
   );
 }
