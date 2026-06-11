@@ -115,6 +115,7 @@ const MEGA_MENUS = [
       { href: '/ai-soil-test-requirement-builder', label: 'AI Soil Test Builder' },
       { href: '/ai-pile-foundation-boq-checker', label: 'AI Pile Foundation BOQ' },
       { href: '/ai-property-passport-assistant', label: 'AI Property Passport Assistant' },
+      { href: '/boq-calculator', label: 'AI BOQ Calculator (Coming Soon)' },
     ]
   },
   {
