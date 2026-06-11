@@ -70,6 +70,8 @@ export default function PublicBOQCalculator() {
   const [plastering, setPlastering] = useState({ innerRows: [], ceilingArea: '' });
   const [mepOthers, setMepOthers] = useState({ terraceArea: '' });
   const [addlWorks, setAddlWorks] = useState([{ description: 'Underground Water Sump (5000L)', unit: 'Nos', quantity: 1, rate: 45000, _id: 1 }, { description: 'Septic Tank (2-chamber RCC)', unit: 'Nos', quantity: 1, rate: 35000, _id: 2 }]);
+  // Premium & site works
+  const [premiumItems, setPremiumItems] = useState({ compoundWallLength: '', numBathrooms: 3, electricalPoints: '', numOHTanks: 1, borewellDepth: '', kitchenPlatformRM: '', bbsSteelOverride: '', upvcWindowsSqft: '', contingencyPct: 5, prelimsPct: 3 });
 
   // ── load/save draft ──────────────────────────────────────────────────────
   useEffect(() => {
@@ -95,7 +97,7 @@ export default function PublicBOQCalculator() {
 
   function saveDraft() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ info, floorsData, foundation, plinthBeam, slabConcrete, brickwork9, brickwork4, tileWork, doorsWindows, plastering, addlWorks, staircase }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ info, floorsData, foundation, plinthBeam, slabConcrete, brickwork9, brickwork4, tileWork, doorsWindows, plastering, addlWorks, staircase, mepOthers, premiumItems }));
     } catch {}
   }
 
@@ -114,6 +116,7 @@ export default function PublicBOQCalculator() {
     setMepOthers({ terraceArea: '' });
     setAddlWorks([{ description: 'Underground Water Sump (5000L)', unit: 'Nos', quantity: 1, rate: 45000, _id: 1 }, { description: 'Septic Tank (2-chamber RCC)', unit: 'Nos', quantity: 1, rate: 35000, _id: 2 }]);
     setStaircase({ width: 4, tread: 1, riser: 0.67, noOfSteps: 14, graniteArea: 12, handrailLength: 20, concreteL: 4, concreteB: 1.2, concreteD: 0.2 });
+    setPremiumItems({ compoundWallLength: '', numBathrooms: 3, electricalPoints: '', numOHTanks: 1, borewellDepth: '', kitchenPlatformRM: '', bbsSteelOverride: '', upvcWindowsSqft: '', contingencyPct: 5, prelimsPct: 3 });
     setResult(null);
     setDemoLoaded(false);
     setShowFeedback(false);
@@ -135,14 +138,14 @@ export default function PublicBOQCalculator() {
     saveDraft();
     try {
       const rateMap = buildRateMap([]);
-      // Auto-derive ceiling area from total floor area if not manually entered
       const totalFloorM2 = floorsData.reduce((s, r) => s + (n(r.area) * 0.0929), 0);
-      const ceilingArea = n(plastering?.ceilingArea) > 0 ? plastering.ceilingArea : parseFloat(totalFloorM2.toFixed(2));
+      const ceilingArea  = n(plastering?.ceilingArea) > 0 ? plastering.ceilingArea : parseFloat(totalFloorM2.toFixed(2));
       const inputs = {
         floors: floorsData, foundation, plinthBeam, basement: {}, brickwork9, brickwork4,
-        plastering: { ...plastering, ceilingArea, innerRows: [] }, // inner plastering auto-derived in engine
+        plastering: { ...plastering, ceilingArea, innerRows: [] },
         sillLintel: {}, tileWork, doorsWindows, slabConcrete,
         staircase, others: mepOthers, addlWorks, pileRows: [],
+        premiumItems,
       };
       const res = computeBoq(inputs, rateMap, n(info.marginPct) || 12);
       setResult(res);
@@ -191,32 +194,36 @@ export default function PublicBOQCalculator() {
       });
 
       // Populate all section states
-      if (sec.floors)       setFloorsData(sec.floors);
-      if (sec.foundation)   setFoundation(sec.foundation);
-      if (sec.plinthBeam)   setPlinthBeam(sec.plinthBeam);
-      if (sec.brickwork9)   setBrickwork9(sec.brickwork9);
-      if (sec.brickwork4)   setBrickwork4(sec.brickwork4);
-      if (sec.tileWork)     setTileWork(sec.tileWork);
-      if (sec.doorsWindows) setDoorsWindows(sec.doorsWindows);
-      if (sec.plastering)   setPlastering(sec.plastering || { innerRows: [], ceilingArea: '' });
-      if (sec.slabConcrete) setSlabConcrete(sec.slabConcrete);
-      if (sec.staircase)    setStaircase(sec.staircase);
-      if (sec.mepOthers)    setMepOthers(sec.mepOthers);
-      if (sec.addlWorks)    setAddlWorks(sec.addlWorks);
+      if (sec.floors)        setFloorsData(sec.floors);
+      if (sec.foundation)    setFoundation(sec.foundation);
+      if (sec.plinthBeam)    setPlinthBeam(sec.plinthBeam);
+      if (sec.brickwork9)    setBrickwork9(sec.brickwork9);
+      if (sec.brickwork4)    setBrickwork4(sec.brickwork4);
+      if (sec.tileWork)      setTileWork(sec.tileWork);
+      if (sec.doorsWindows)  setDoorsWindows(sec.doorsWindows);
+      if (sec.plastering)    setPlastering(sec.plastering || { innerRows: [], ceilingArea: '' });
+      if (sec.slabConcrete)  setSlabConcrete(sec.slabConcrete);
+      if (sec.staircase)     setStaircase(sec.staircase);
+      if (sec.mepOthers)     setMepOthers(sec.mepOthers);
+      if (sec.addlWorks)     setAddlWorks(sec.addlWorks);
+      if (sec.premiumItems)  setPremiumItems(p => ({ ...p, ...sec.premiumItems }));
 
       // Build rate map with any project overrides
       const rateMap = buildRateMap(demo.rateOverrides || []);
 
       // Run calculation immediately
       const floors = sec.floors || floorsData;
+      const totalFloorM2demo = (sec.floors || []).reduce((s, r) => s + (Number(r.area) || 0) * 0.0929, 0);
+      const ceilingAreaDemo  = Number((sec.plastering || {}).ceilingArea) > 0 ? (sec.plastering || {}).ceilingArea : parseFloat(totalFloorM2demo.toFixed(2));
       const inputs = {
         floors, foundation: sec.foundation || foundation, plinthBeam: sec.plinthBeam || plinthBeam,
         basement: {}, brickwork9: sec.brickwork9 || brickwork9, brickwork4: sec.brickwork4 || brickwork4,
-        plastering: sec.plastering || { innerRows: [], ceilingArea: '' },
+        plastering: { ...(sec.plastering || {}), ceilingArea: ceilingAreaDemo, innerRows: [] },
         sillLintel: sec.sillLintel || {}, tileWork: sec.tileWork || tileWork,
         doorsWindows: sec.doorsWindows || doorsWindows, slabConcrete: sec.slabConcrete || slabConcrete,
         staircase: sec.staircase || staircase, others: sec.mepOthers || mepOthers,
         addlWorks: sec.addlWorks || addlWorks, pileRows: sec.pileRows || [],
+        premiumItems: sec.premiumItems || {},
       };
       const res2 = computeBoq(inputs, rateMap, Number(demo.marginPct) || 12);
       setResult(res2);
@@ -668,6 +675,41 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
               <label style={lbl_s}>Terrace / Stilt Area (sq.ft) — for waterproofing
                 <Inp value={mepOthers.terraceArea} onChange={v => setMepOthers(p => ({ ...p, terraceArea: v }))} w={140} />
               </label>
+
+              {/* ── PREMIUM & SITE WORKS ── */}
+              <div style={{ marginTop: 32, background: 'linear-gradient(135deg,#FFF7ED,#FFFBF5)', border: '1px solid #FED7AA', borderRadius: 16, padding: '20px 18px' }}>
+                <h3 style={{ fontSize: 15, fontWeight: 800, color: '#C2410C', margin: '0 0 4px' }}>🏆 Premium & Site Works</h3>
+                <p style={{ fontSize: 12, color: '#92400E', margin: '0 0 18px' }}>These items are needed for a full turnkey estimate (₹2,000+/sqft). Leave blank to skip any item.</p>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 14 }}>
+                  {[
+                    ['Compound Wall Length (RM)', 'compoundWallLength', 'e.g. 48'],
+                    ['No. of Bathrooms (sanitaryware)', 'numBathrooms', 'e.g. 3'],
+                    ['Electrical Fixture Points', 'electricalPoints', 'auto if blank'],
+                    ['Overhead Tanks (Nos)', 'numOHTanks', 'e.g. 1'],
+                    ['Borewell Depth (RFT)', 'borewellDepth', 'e.g. 180'],
+                    ['Kitchen Platform (RM)', 'kitchenPlatformRM', 'e.g. 4'],
+                  ].map(([lbl, key, ph]) => (
+                    <label key={key} style={lbl_s}>{lbl}
+                      <Inp value={premiumItems[key]} onChange={v => setPremiumItems(p => ({ ...p, [key]: v }))} placeholder={ph} w="100%" />
+                    </label>
+                  ))}
+                </div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 14, marginTop: 14 }}>
+                  <label style={lbl_s}>UPVC Windows (sq.ft) — override
+                    <Inp value={premiumItems.upvcWindowsSqft} onChange={v => setPremiumItems(p => ({ ...p, upvcWindowsSqft: v }))} placeholder="auto from brickwork" w="100%" />
+                  </label>
+                  <label style={lbl_s}>BBS Steel Override (kg total)
+                    <Inp value={premiumItems.bbsSteelOverride} onChange={v => setPremiumItems(p => ({ ...p, bbsSteelOverride: v }))} placeholder="auto IS 456 estimate" w="100%" />
+                    <span style={{ fontSize: 11, color: '#94A3B8' }}>Paste your BBS total to override empirical calculation</span>
+                  </label>
+                  <label style={lbl_s}>Contractor Prelims %
+                    <Inp value={premiumItems.prelimsPct} onChange={v => setPremiumItems(p => ({ ...p, prelimsPct: v }))} w="100%" />
+                  </label>
+                  <label style={lbl_s}>Contingency %
+                    <Inp value={premiumItems.contingencyPct} onChange={v => setPremiumItems(p => ({ ...p, contingencyPct: v }))} w="100%" />
+                  </label>
+                </div>
+              </div>
             </div>
           )}
 
@@ -681,19 +723,21 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
               </div>
 
               {/* Summary cards */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: 12, marginBottom: 28 }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: 12, marginBottom: 28 }}>
                 {[
-                  ['Building Estimate', fc(result.buildingEstimate), 'linear-gradient(135deg,#FFB347,#FC6E20)', 'white'],
+                  ['Grand Total (turnkey)', fc(result.grandTotal || result.buildingEstimate), 'linear-gradient(135deg,#FFB347,#FC6E20)', 'white'],
                   ['Rate / Sq.ft', fc(result.ratePerSqft), '#0F172A', 'white'],
                   ['Total Area', `${fq(result.totalAreaSqft)} sqft`, '#EFF6FF', '#1E40AF'],
                   ['Foundation', fc(result.sectionTotals.foundation), '#F0FDF4', '#166534'],
                   ['Steel', fc(result.sectionTotals.steel), '#FFF1F2', '#9F1239'],
                   ['Superstructure', fc(result.sectionTotals.superstructure), '#FAF5FF', '#7E22CE'],
-                  ['Margin', `${result.marginPct}%`, '#FFF7ED', '#C2410C'],
+                  ['Premium & Site', fc(result.sectionTotals.premium), '#FFF7ED', '#C2410C'],
+                  ['Provisionals', fc(result.sectionTotals.provisionals), '#F0F9FF', '#0369A1'],
+                  ['Margin', `${result.marginPct}%`, '#F8FAFC', '#475569'],
                 ].map(([lbl, val, bg, col]) => (
-                  <div key={lbl} style={{ background: bg, borderRadius: 14, padding: '16px 14px', border: '1px solid rgba(0,0,0,0.06)' }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, color: col, opacity: 0.7, marginBottom: 4 }}>{lbl}</div>
-                    <div style={{ fontSize: 18, fontWeight: 900, color: col }}>{val}</div>
+                  <div key={lbl} style={{ background: bg, borderRadius: 14, padding: '14px 12px', border: '1px solid rgba(0,0,0,0.06)' }}>
+                    <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, color: col, opacity: 0.75, marginBottom: 4 }}>{lbl}</div>
+                    <div style={{ fontSize: 16, fontWeight: 900, color: col }}>{val}</div>
                   </div>
                 ))}
               </div>
