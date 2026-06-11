@@ -87,6 +87,22 @@ export const DEFAULT_RATES = [
 
   // ── WATERPROOFING ─────────────────────────────────────────────────────
   { sno: 49, category: 'Waterproofing', description: 'Bathroom waterproofing (floor + 300mm skirting) — crystalline', unit: 'm²', rateGFloor: 220, rate1st: 240, rate2nd: 260, rate3rd: 280, rateAvg: 250 },
+
+  // ── PREMIUM / SITE WORKS ──────────────────────────────────────────────────
+  { sno: 50, category: 'Site Works',   description: 'Compound wall — 9" brick + CM plaster + RCC coping (per RM)',    unit: 'RM',   rateGFloor: 1800, rate1st: 1800, rate2nd: 1800, rate3rd: 1800, rateAvg: 1800 },
+  { sno: 51, category: 'Elevation',    description: 'Elevation / façade — texture paint + stone / ACP accent (m²)',    unit: 'm²',   rateGFloor: 480,  rate1st: 520,  rate2nd: 560,  rate3rd: 600,  rateAvg: 540 },
+  { sno: 52, category: 'Electrical',   description: 'Electrical fixtures — fans, lights, switches per point (supply+fix)', unit: 'Nos', rateGFloor: 1100, rate1st: 1100, rate2nd: 1100, rate3rd: 1100, rateAvg: 1100 },
+  { sno: 53, category: 'Plumbing',     description: 'Sanitaryware set — EWC + wash-basin + CP fittings (per bathroom)', unit: 'Set',  rateGFloor: 42000,rate1st: 42000,rate2nd: 42000,rate3rd: 42000,rateAvg: 42000 },
+  { sno: 54, category: 'Site Works',   description: 'Overhead water tank — PVC 1000 L installed on RCC ring beam',     unit: 'Nos',  rateGFloor: 24000,rate1st: 24000,rate2nd: 24000,rate3rd: 24000,rateAvg: 24000 },
+  { sno: 55, category: 'Site Works',   description: 'Borewell + 3HP submersible pump + GI casing (per RFT)',            unit: 'RFT',  rateGFloor: 700,  rate1st: 700,  rate2nd: 700,  rate3rd: 700,  rateAvg: 700 },
+  { sno: 56, category: 'Site Works',   description: 'Plan approval / building permit & DTCP/CMDA fees (per sqft BUA)',  unit: 'Sqft', rateGFloor: 38,   rate1st: 38,   rate2nd: 38,   rate3rd: 38,   rateAvg: 38 },
+  { sno: 57, category: 'Finishes',     description: 'Kitchen platform — 20mm granite slab + SS sink + accessories (RM)', unit: 'RM', rateGFloor: 30000,rate1st: 30000,rate2nd: 30000,rate3rd: 30000,rateAvg: 30000 },
+  { sno: 58, category: 'Finishes',     description: 'MS window safety grilles — fabricated + powder coated (m²)',       unit: 'm²',  rateGFloor: 980,  rate1st: 1010, rate2nd: 1040, rate3rd: 1070, rateAvg: 1015 },
+
+  // ── PROVISIONALS ──────────────────────────────────────────────────────────
+  // Rates stored as percentages; engine applies them against base building total
+  { sno: 90, category: 'Provisionals', description: 'Contractor preliminaries — mobilisation, PPE, scaffolding, temp works', unit: 'LS', rateGFloor: 3, rate1st: 3, rate2nd: 3, rate3rd: 3, rateAvg: 3 },
+  { sno: 91, category: 'Provisionals', description: 'Contingency & escalation provision',                                    unit: 'LS', rateGFloor: 5, rate1st: 5, rate2nd: 5, rate3rd: 5, rateAvg: 5 },
 ];
 
 /**
