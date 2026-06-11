@@ -72,6 +72,13 @@ const AI_TOOLS = [
     href: '/ai-property-passport-assistant',
     badge: 'Live',
   },
+  {
+    icon: '🧮',
+    title: 'AI BOQ Calculator',
+    desc: 'Generate a full engineer-checked Bill of Quantities for your residential or commercial project — 44 line items, COCENA Dec 2025 rates, per-floor breakdown, and margin analysis.',
+    href: '/boq-calculator',
+    badge: 'Coming Soon',
+  },
 ];
 
 export default function Page() {

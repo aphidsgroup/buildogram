@@ -1916,3 +1916,82 @@ model audit_logs {
   @@index([resource_type, resource_id], map: "idx_audit_logs_resource")
   @@index([created_at(sort: Desc)], map: "idx_audit_logs_created_at")
 }
+
+// ────────────────────────────────────────────────────────────────────────────
+// BOQ CALCULATOR MODULE
+// ────────────────────────────────────────────────────────────────────────────
+
+/// Master rate override table — per-project editable copy of COCENA rates
+model boq_project_rate {
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id  String      @db.Uuid
+  sno         Int
+  category    String?
+  description String?
+  unit        String?
+  rate_g      Decimal     @default(0) @db.Decimal(12, 2)
+  rate_1st    Decimal     @default(0) @db.Decimal(12, 2)
+  rate_2nd    Decimal     @default(0) @db.Decimal(12, 2)
+  rate_3rd    Decimal     @default(0) @db.Decimal(12, 2)
+  rate_avg    Decimal     @default(0) @db.Decimal(12, 2)
+  created_at  DateTime    @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime    @default(now()) @db.Timestamptz(6)
+  project     boq_project @relation(fields: [project_id], references: [id], onDelete: Cascade)
+
+  @@unique([project_id, sno], map: "uq_boq_project_rate_sno")
+  @@index([project_id], map: "idx_boq_project_rate_project")
+}
+
+/// One BOQ project = one client estimate
+model boq_project {
+  id               String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  title            String
+  client_name      String?
+  client_phone     String?
+  client_email     String?
+  plot_address     String?
+  floor_config     String              @default("G")        // "G", "G+1", "G+2", "G+3"
+  total_builtup    Decimal?            @default(0) @db.Decimal(12, 2)
+  margin_pct       Decimal             @default(12) @db.Decimal(5, 2)
+  status           String              @default("draft")    // draft | final | shared
+  notes            String?
+  created_by       String?             @db.Uuid
+  created_at       DateTime            @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime            @default(now()) @db.Timestamptz(6)
+
+  rates            boq_project_rate[]
+  sections         boq_section_data[]
+  exports          boq_export_log[]
+
+  @@index([status], map: "idx_boq_project_status")
+  @@index([created_by], map: "idx_boq_project_creator")
+  @@index([created_at(sort: Desc)], map: "idx_boq_project_created")
+}
+
+/// Flexible JSON store for every input section (16 sections)
+model boq_section_data {
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id  String      @db.Uuid
+  section_key String                  // e.g. "floors", "foundation", "brickwork9"
+  data_json   Json        @default("{}")
+  version     Int         @default(1)
+  updated_at  DateTime    @default(now()) @db.Timestamptz(6)
+  project     boq_project @relation(fields: [project_id], references: [id], onDelete: Cascade)
+
+  @@unique([project_id, section_key], map: "uq_boq_section_data_key")
+  @@index([project_id], map: "idx_boq_section_data_project")
+}
+
+/// Log of PDF exports for audit
+model boq_export_log {
+  id          String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id  String      @db.Uuid
+  exported_by String?     @db.Uuid
+  format      String      @default("pdf")
+  file_url    String?
+  snapshot    Json?                   // frozen copy of result at export time
+  created_at  DateTime    @default(now()) @db.Timestamptz(6)
+  project     boq_project @relation(fields: [project_id], references: [id], onDelete: Cascade)
+
+  @@index([project_id], map: "idx_boq_export_log_project")
+}
