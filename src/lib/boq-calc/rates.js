@@ -77,6 +77,16 @@ export const DEFAULT_RATES = [
   // ── ADDITIONAL WORKS ─────────────────────────────────────────────────
   { sno: 43, category: 'Additional',   description: 'Underground water sump (brick / RCC, 5000 L)',                unit: 'Nos',  rateGFloor: 45000, rate1st: 45000, rate2nd: 45000, rate3rd: 45000, rateAvg: 45000 },
   { sno: 44, category: 'Additional',   description: 'Septic tank (2-chamber RCC, standard size)',                  unit: 'Nos',  rateGFloor: 35000, rate1st: 35000, rate2nd: 35000, rate3rd: 35000, rateAvg: 35000 },
+
+  // ── REINFORCEMENT STEEL ───────────────────────────────────────────────
+  // Rate per kg (supply + bending + binding + wastage already in rate)
+  { sno: 45, category: 'Steel',        description: 'Reinforcement Fe500D — Footings & Plinth Beam',               unit: 'kg',   rateGFloor: 78,    rate1st: 78,    rate2nd: 78,    rate3rd: 78,    rateAvg: 78 },
+  { sno: 46, category: 'Steel',        description: 'Reinforcement Fe500D — Columns (all floors)',                  unit: 'kg',   rateGFloor: 82,    rate1st: 85,    rate2nd: 88,    rate3rd: 91,    rateAvg: 86.5 },
+  { sno: 47, category: 'Steel',        description: 'Reinforcement Fe500D — Roof Beams & Slabs',                   unit: 'kg',   rateGFloor: 78,    rate1st: 80,    rate2nd: 82,    rate3rd: 84,    rateAvg: 81 },
+  { sno: 48, category: 'Steel',        description: 'Binding wire & misc (1% of total steel)',                      unit: 'kg',   rateGFloor: 120,   rate1st: 120,   rate2nd: 120,   rate3rd: 120,   rateAvg: 120 },
+
+  // ── WATERPROOFING ─────────────────────────────────────────────────────
+  { sno: 49, category: 'Waterproofing', description: 'Bathroom waterproofing (floor + 300mm skirting) — crystalline', unit: 'm²', rateGFloor: 220, rate1st: 240, rate2nd: 260, rate3rd: 280, rateAvg: 250 },
 ];
 
 /**

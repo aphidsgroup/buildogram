@@ -127,11 +127,7 @@ export default function PublicBOQCalculator() {
     setFloorsData(prev => labels.map((l, i) => prev[i] ? { ...prev[i], floorLabel: l } : { floorLabel: l, length: '', breadth: '', area: '' }));
   }, [info.floorConfig]);
 
-  function calcFloorArea(idx) {
-    const r = floorsData[idx] || {};
-    const a = n(r.length) * n(r.breadth) * 10.764;
-    setFloorsData(prev => prev.map((row, i) => i === idx ? { ...row, area: a > 0 ? parseFloat(a.toFixed(2)) : '' } : row));
-  }
+  // Area is computed inline on length/breadth change — no stale-closure bug
 
   // ── calculate ─────────────────────────────────────────────────────────────
   function handleCalculate() {
@@ -139,9 +135,12 @@ export default function PublicBOQCalculator() {
     saveDraft();
     try {
       const rateMap = buildRateMap([]);
+      // Auto-derive ceiling area from total floor area if not manually entered
+      const totalFloorM2 = floorsData.reduce((s, r) => s + (n(r.area) * 0.0929), 0);
+      const ceilingArea = n(plastering?.ceilingArea) > 0 ? plastering.ceilingArea : parseFloat(totalFloorM2.toFixed(2));
       const inputs = {
         floors: floorsData, foundation, plinthBeam, basement: {}, brickwork9, brickwork4,
-        plastering: { ...plastering, innerRows: brickwork4.map(r => ({ floorLabel: r.floorLabel, length: n(r.length) * 2, height: n(r.height) })) },
+        plastering: { ...plastering, ceilingArea, innerRows: [] }, // inner plastering auto-derived in engine
         sillLintel: {}, tileWork, doorsWindows, slabConcrete,
         staircase, others: mepOthers, addlWorks, pileRows: [],
       };
@@ -472,8 +471,20 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
                     {floorsData.map((r, i) => (
                       <tr key={i}>
                         <Td><strong>{r.floorLabel} Floor</strong></Td>
-                        <Td><Inp value={r.length} onChange={v => { updateRow(setFloorsData, i, 'length', v); setTimeout(() => calcFloorArea(i), 50); }} /></Td>
-                        <Td><Inp value={r.breadth} onChange={v => { updateRow(setFloorsData, i, 'breadth', v); setTimeout(() => calcFloorArea(i), 50); }} /></Td>
+                        <Td><Inp value={r.length} onChange={v => {
+                          setFloorsData(prev => prev.map((row, idx) => {
+                            if (idx !== i) return row;
+                            const area = (Number(v) || 0) * (Number(row.breadth) || 0) * 10.764;
+                            return { ...row, length: v, area: area > 0 ? parseFloat(area.toFixed(2)) : '' };
+                          }));
+                        }} /></Td>
+                        <Td><Inp value={r.breadth} onChange={v => {
+                          setFloorsData(prev => prev.map((row, idx) => {
+                            if (idx !== i) return row;
+                            const area = (Number(row.length) || 0) * (Number(v) || 0) * 10.764;
+                            return { ...row, breadth: v, area: area > 0 ? parseFloat(area.toFixed(2)) : '' };
+                          }));
+                        }} /></Td>
                         <Td><Inp value={r.area} readOnly w={110} /></Td>
                       </tr>
                     ))}
@@ -676,6 +687,7 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
                   ['Rate / Sq.ft', fc(result.ratePerSqft), '#0F172A', 'white'],
                   ['Total Area', `${fq(result.totalAreaSqft)} sqft`, '#EFF6FF', '#1E40AF'],
                   ['Foundation', fc(result.sectionTotals.foundation), '#F0FDF4', '#166534'],
+                  ['Steel', fc(result.sectionTotals.steel), '#FFF1F2', '#9F1239'],
                   ['Superstructure', fc(result.sectionTotals.superstructure), '#FAF5FF', '#7E22CE'],
                   ['Margin', `${result.marginPct}%`, '#FFF7ED', '#C2410C'],
                 ].map(([lbl, val, bg, col]) => (
