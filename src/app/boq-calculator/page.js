@@ -99,6 +99,28 @@ export default function PublicBOQCalculator() {
     } catch {}
   }
 
+  function resetAll() {
+    try { localStorage.removeItem(STORAGE_KEY); } catch {}
+    setInfo({ title: '', clientName: '', phone: '', email: '', address: '', floorConfig: 'G', marginPct: 12 });
+    setFloorsData([{ floorLabel: 'Ground', length: '', breadth: '', area: '' }]);
+    setFoundation([{ nos: 1, footingL: '', footingB: '', footingDepth: 1.5, pccThickness: 0.1, footingConcreteD: 0.5, colL: 0.3, colB: 0.3, colD: '', floorIdx: 0 }]);
+    setPlinthBeam([{ label: 'PB-1', length: '', breadth: 0.23, depth: 0.45 }]);
+    setSlabConcrete([{ floorLabel: 'Ground', beamL: '', beamB: 0.3, beamD: 0.4, slabArea: '', slabD: 0.125 }]);
+    setBrickwork9([{ floorLabel: 'Ground Floor', length: '', height: 3, doorOpens: [], windowOpens: [] }]);
+    setBrickwork4([]);
+    setTileWork({ flooringArea: '', bathroomFloorArea: '', parkingArea: '', kitchenWallArea: '', bathroomWallArea: '', skirtingLength: '', graniteArea: '' });
+    setDoorsWindows([{ type: 'main_door', nos: 1 }, { type: 'room_door', nos: 3 }, { type: 'pvc_door', nos: 2 }]);
+    setPlastering({ innerRows: [], ceilingArea: '' });
+    setMepOthers({ terraceArea: '' });
+    setAddlWorks([{ description: 'Underground Water Sump (5000L)', unit: 'Nos', quantity: 1, rate: 45000, _id: 1 }, { description: 'Septic Tank (2-chamber RCC)', unit: 'Nos', quantity: 1, rate: 35000, _id: 2 }]);
+    setStaircase({ width: 4, tread: 1, riser: 0.67, noOfSteps: 14, graniteArea: 12, handrailLength: 20, concreteL: 4, concreteB: 1.2, concreteD: 0.2 });
+    setResult(null);
+    setDemoLoaded(false);
+    setShowFeedback(false);
+    setFeedbackSent(false);
+    setStep(0);
+  }
+
   // ── floor sync ────────────────────────────────────────────────────────────
   useEffect(() => {
     const labels = FLOOR_LABELS[info.floorConfig] || ['Ground'];
@@ -370,6 +392,22 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
           )}
         </button>
         <p style={{ fontSize: 11, color: '#475569', marginTop: 8 }}>See a real completed BOQ instantly — no input needed</p>
+
+        {/* Show Start New button prominently after demo loads */}
+        {demoLoaded && (
+          <button
+            onClick={resetAll}
+            style={{
+              display: 'inline-flex', alignItems: 'center', gap: 8, marginTop: 12,
+              background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.25)',
+              borderRadius: 10, padding: '11px 24px', cursor: 'pointer',
+              color: 'white', fontSize: 14, fontWeight: 600,
+              transition: 'all 0.2s',
+            }}
+          >
+            ✏️ Start My Own BOQ Calculation
+          </button>
+        )}
       </div>
 
       {/* Progress bar */}
@@ -720,8 +758,8 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
                   style={{ background: '#25D366', color: 'white', border: 'none', borderRadius: 10, padding: '11px 22px', fontSize: 14, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
                   💬 WhatsApp for Expert Review
                 </a>
-                <button onClick={() => { setStep(0); setResult(null); setDemoLoaded(false); }} style={{ background: 'white', border: '1px solid #E2E8F0', borderRadius: 10, padding: '11px 18px', fontSize: 14, cursor: 'pointer', color: '#374151' }}>
-                  ↺ New Calculation
+                <button onClick={resetAll} style={{ background: 'white', border: '2px solid #E2E8F0', borderRadius: 10, padding: '11px 20px', fontSize: 14, fontWeight: 700, cursor: 'pointer', color: '#374151', display: 'flex', alignItems: 'center', gap: 6 }}>
+                  ✏️ Start New Project
                 </button>
               </div>
 
