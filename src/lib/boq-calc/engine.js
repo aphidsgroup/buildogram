@@ -288,14 +288,17 @@ export function computeBoq(inputs, rateMap, marginPct = 12) {
     compoundWallLength = 0,
     elevationArea      = 0,  // m² — auto from outer plaster if 0
     numBathrooms       = 0,
-    electricalPoints   = 0,  // Nos — auto (1 point per 15 sqft) if 0
+    electricalPoints   = 0,  // Nos — auto (1 point per 12 sqft) if 0
     numOHTanks         = 0,
     borewellDepth      = 0,  // RFT
     kitchenPlatformRM  = 0,  // RM
     bbsSteelOverride   = 0,  // kg — overrides empirical when > 0
     upvcWindowsSqft    = 0,  // manual UPVC sqft override
+    externalDevArea    = 0,  // m² of external development (driveway + paths)
     contingencyPct     = 5,
     prelimsPct         = 3,
+    architectFeePct    = 3,  // % of pre-GST civil total
+    gstPct             = 5,  // GST rate for residential construction
   } = premiumItems;
 
   const R  = rateMap;
@@ -454,6 +457,8 @@ export function computeBoq(inputs, rateMap, marginPct = 12) {
     mkItem(56, 'Site Works',   'Plan Approval / Building Permit & DTCP/CMDA Fees',        'Sqft', qApprovals,           R[56]?.rateAvg    || 38,   marginPct),
     mkItem(57, 'Finishes',     'Kitchen Platform — granite + SS sink + accessories',      'RM',   n(kitchenPlatformRM), R[57]?.rateAvg    || 30000,marginPct),
     mkItem(58, 'Finishes',     'MS Window Safety Grilles (fabricated + powder coated)',   'm²',   qMSGrilles,           R[58]?.rateAvg    || 1015, marginPct),
+    // External development — use entered area; auto-estimate 20% of ground floor footprint if blank
+    mkItem(59, 'External Dev', 'External Development — driveway, path, compound floor',  'm²',   n(externalDevArea) > 0 ? n(externalDevArea) : round2(totalAreaM2 / floors.length * 0.2), R[59]?.rateAvg || 850, marginPct),
   ];
 
   // Additional works (pass-through with custom rates)
@@ -488,7 +493,7 @@ export function computeBoq(inputs, rateMap, marginPct = 12) {
   const foundationItems = items.filter(i => i.sno <= 13);
   const steelItems      = items.filter(i => i.sno >= 44 && i.sno <= 47);
   const superItems      = items.filter(i => (i.sno >= 14 && i.sno <= 43) || i.sno === 48 || i.sno === 49);
-  const premiumLineItems= items.filter(i => i.sno >= 50 && i.sno <= 58);
+  const premiumLineItems= items.filter(i => i.sno >= 50 && i.sno <= 59);
 
   const foundationTotal = round2(foundationItems.reduce((s, i) => s + i.amount, 0));
   const steelTotal      = round2(steelItems.reduce((s, i) => s + i.amount, 0));
@@ -501,18 +506,30 @@ export function computeBoq(inputs, rateMap, marginPct = 12) {
   const buildingEstimate = round2(foundationTotal + steelTotal + superTotal + premiumTotal);
 
   // ── Provisionals — applied to base civil+premium total ──────────────
-  const baseForPrelims = round2(
+  const baseForPrelims  = round2(
     [...foundationItems, ...steelItems, ...superItems, ...premiumLineItems].reduce((s, i) => s + i.baseAmount, 0)
   );
-  const qPrelims       = round2(baseForPrelims * n(prelimsPct)   / 100);
-  const qContingency   = round2(baseForPrelims * n(contingencyPct) / 100);
-  const prelimsItem    = mkProvItem(90, 'Provisionals', `Contractor Preliminaries (${n(prelimsPct)}% of civil+premium base)`, 'LS', qPrelims,     mf);
-  const contingencyItem= mkProvItem(91, 'Provisionals', `Contingency & Escalation (${n(contingencyPct)}% of civil+premium base)`, 'LS', qContingency, mf);
-  const provisionalItems = [prelimsItem, contingencyItem];
-  const provTotal      = round2(provisionalItems.reduce((s, i) => s + i.amount, 0));
+  const qPrelims      = round2(baseForPrelims * n(prelimsPct)     / 100);
+  const qContingency  = round2(baseForPrelims * n(contingencyPct) / 100);
+  const qArchFees     = round2(baseForPrelims * n(architectFeePct) / 100);
+  const prelimsItem     = mkProvItem(90, 'Provisionals', `Contractor Preliminaries (${n(prelimsPct)}% of base)`,          'LS', qPrelims,     mf);
+  const contingencyItem = mkProvItem(91, 'Provisionals', `Contingency & Escalation (${n(contingencyPct)}% of base)`,      'LS', qContingency, mf);
+  const archFeesItem    = mkProvItem(60, 'Soft Costs',   `Architect + Structural Engineer Fees (${n(architectFeePct)}%)`, 'LS', qArchFees,    mf);
 
-  const grandTotal     = round2(buildingEstimate + provTotal + addlTotal + pileTotal);
-  const ratePerSqft    = totalAreaSqft > 0 ? round2(grandTotal / totalAreaSqft) : 0;
+  // GST: 5% on pre-tax subtotal (building estimate + all provisionals + addl works)
+  const preTaxSubtotal  = round2(buildingEstimate + (qPrelims + qContingency + qArchFees) * mf + addlTotal + pileTotal);
+  const qGST = round2(preTaxSubtotal * n(gstPct) / 100);
+  const gstItem = {
+    sno: 61, section: 'Taxes', description: `GST ${n(gstPct)}% on construction services`,
+    unit: 'LS', quantity: 1, rate: round2(qGST), baseAmount: round2(qGST),
+    amount: round2(qGST), marginPct: 0, isGST: true,
+  };
+
+  const provisionalItems = [prelimsItem, contingencyItem, archFeesItem, gstItem];
+  const provTotal   = round2(provisionalItems.reduce((s, i) => s + i.amount, 0));
+
+  const grandTotal  = round2(buildingEstimate + provTotal + addlTotal + pileTotal);
+  const ratePerSqft = totalAreaSqft > 0 ? round2(grandTotal / totalAreaSqft) : 0;
 
   // ── Margin variants ─────────────────────────────────────────────────
   const allMainItems = [...foundationItems, ...steelItems, ...superItems, ...premiumLineItems];
@@ -544,7 +561,8 @@ export function computeBoq(inputs, rateMap, marginPct = 12) {
       steel:           steelTotal,
       superstructure:  superTotal,
       premium:         premiumTotal,
-      provisionals:    provTotal,
+      provisionals:    round2(provisionalItems.filter(i => !i.isGST).reduce((s, i) => s + i.amount, 0)),
+      gst:             round2(qGST),
       additionalWorks: addlTotal,
       pileFoundation:  pileTotal,
     },

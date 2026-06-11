@@ -103,8 +103,11 @@ export async function GET() {
             kitchenPlatformRM:   4,           // RM
             bbsSteelOverride:  5068,          // kg — from actual BBS drawing
             upvcWindowsSqft:     0,           // auto from brickwork windows
+            externalDevArea:    22,           // m² driveway + garden path (auto ≈20% gf footprint)
             contingencyPct:      5,
             prelimsPct:          3,
+            architectFeePct:     3,           // 3% of civil base for arch + structural engineer
+            gstPct:              5,           // GST 5% on residential construction services
           },
           addlWorks: [
             { description: 'Underground Water Sump (5000L)',   unit: 'Nos', quantity: 1, rate: 45000 },
