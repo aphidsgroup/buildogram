@@ -151,7 +151,12 @@ export default function PublicBOQCalculator() {
     setLoadingDemo(true);
     try {
       const res = await fetch('/api/boq-calculator/demo');
-      if (!res.ok) { alert('Demo data not found. Please ensure the BOQ_Demo_Input_Kinathukadavu project is saved in the Ops workstation.'); setLoadingDemo(false); return; }
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        const titles = errJson.existingProjects?.map(p => p.title).join('\n• ') || 'none';
+        alert(`Demo project not found.\n\nProjects in DB:\n• ${titles}\n\nSave your project in Ops BOQ workstation with "Kinathukadavu" in the title.`);
+        setLoadingDemo(false); return;
+      }
       const demo = await res.json();
       const sec = demo.sections || {};
 
