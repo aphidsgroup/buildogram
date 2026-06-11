@@ -116,7 +116,7 @@ export default function PublicBOQCalculator() {
     setMepOthers({ terraceArea: '' });
     setAddlWorks([{ description: 'Underground Water Sump (5000L)', unit: 'Nos', quantity: 1, rate: 45000, _id: 1 }, { description: 'Septic Tank (2-chamber RCC)', unit: 'Nos', quantity: 1, rate: 35000, _id: 2 }]);
     setStaircase({ width: 4, tread: 1, riser: 0.67, noOfSteps: 14, graniteArea: 12, handrailLength: 20, concreteL: 4, concreteB: 1.2, concreteD: 0.2 });
-    setPremiumItems({ compoundWallLength: '', numBathrooms: 3, electricalPoints: '', numOHTanks: 1, borewellDepth: '', kitchenPlatformRM: '', bbsSteelOverride: '', upvcWindowsSqft: '', contingencyPct: 5, prelimsPct: 3 });
+    setPremiumItems({ compoundWallLength: '', numBathrooms: 3, electricalPoints: '', numOHTanks: 1, borewellDepth: '', kitchenPlatformRM: '', bbsSteelOverride: '', upvcWindowsSqft: '', externalDevArea: '', contingencyPct: 5, prelimsPct: 3, architectFeePct: 3, gstPct: 5 });
     setResult(null);
     setDemoLoaded(false);
     setShowFeedback(false);
@@ -702,6 +702,18 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
                     <Inp value={premiumItems.bbsSteelOverride} onChange={v => setPremiumItems(p => ({ ...p, bbsSteelOverride: v }))} placeholder="auto IS 456 estimate" w="100%" />
                     <span style={{ fontSize: 11, color: '#94A3B8' }}>Paste your BBS total to override empirical calculation</span>
                   </label>
+                  <label style={lbl_s}>External Development (m²)
+                    <Inp value={premiumItems.externalDevArea} onChange={v => setPremiumItems(p => ({ ...p, externalDevArea: v }))} placeholder="auto ≈20% of gf footprint" w="100%" />
+                    <span style={{ fontSize: 11, color: '#94A3B8' }}>Driveway, garden path, compound floor</span>
+                  </label>
+                  <label style={lbl_s}>Architect + Struct. Engineer Fees %
+                    <Inp value={premiumItems.architectFeePct} onChange={v => setPremiumItems(p => ({ ...p, architectFeePct: v }))} placeholder="3" w="100%" />
+                    <span style={{ fontSize: 11, color: '#94A3B8' }}>% of civil base (default 3%)</span>
+                  </label>
+                  <label style={lbl_s}>GST %
+                    <Inp value={premiumItems.gstPct} onChange={v => setPremiumItems(p => ({ ...p, gstPct: v }))} placeholder="5" w="100%" />
+                    <span style={{ fontSize: 11, color: '#94A3B8' }}>5% for residential under ₹45L; 12% above</span>
+                  </label>
                   <label style={lbl_s}>Contractor Prelims %
                     <Inp value={premiumItems.prelimsPct} onChange={v => setPremiumItems(p => ({ ...p, prelimsPct: v }))} w="100%" />
                   </label>
@@ -733,6 +745,7 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
                   ['Superstructure', fc(result.sectionTotals.superstructure), '#FAF5FF', '#7E22CE'],
                   ['Premium & Site', fc(result.sectionTotals.premium), '#FFF7ED', '#C2410C'],
                   ['Provisionals', fc(result.sectionTotals.provisionals), '#F0F9FF', '#0369A1'],
+                  ['GST (5%)', fc(result.sectionTotals.gst), '#FEFCE8', '#854D0E'],
                   ['Margin', `${result.marginPct}%`, '#F8FAFC', '#475569'],
                 ].map(([lbl, val, bg, col]) => (
                   <div key={lbl} style={{ background: bg, borderRadius: 14, padding: '14px 12px', border: '1px solid rgba(0,0,0,0.06)' }}>
