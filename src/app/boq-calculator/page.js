@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { buildRateMap } from '@/lib/boq-calc/rates';
+import { DEFAULT_RATES, buildRateMap } from '@/lib/boq-calc/rates';
 import { computeBoq } from '@/lib/boq-calc/engine';
 import { numberToWords } from '@/lib/boq-calc/numberToWords';
 
@@ -49,6 +49,8 @@ export default function PublicBOQCalculator() {
   const [feedbackSent, setFeedbackSent] = useState(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedback, setFeedback] = useState({ name: '', phone: '', email: '', rating: 5, comment: '' });
+  const [loadingDemo, setLoadingDemo] = useState(false);
+  const [demoLoaded, setDemoLoaded] = useState(false);
 
   // ── state ──
   const [info, setInfo] = useState({ title: '', clientName: '', phone: '', email: '', address: '', floorConfig: 'G', marginPct: 12 });
@@ -144,6 +146,185 @@ export default function PublicBOQCalculator() {
     setFeedbackSent(true);
   }
 
+  // ── Load demo data from Ops DB and auto-calculate ─────────────────────────
+  async function loadDemo() {
+    setLoadingDemo(true);
+    try {
+      const res = await fetch('/api/boq-calculator/demo');
+      if (!res.ok) { alert('Demo data not found. Please ensure the BOQ_Demo_Input_Kinathukadavu project is saved in the Ops workstation.'); setLoadingDemo(false); return; }
+      const demo = await res.json();
+      const sec = demo.sections || {};
+
+      // Populate info
+      setInfo({
+        title: demo.projectName || 'BOQ Demo — Kinathukadavu',
+        clientName: demo.clientName || 'Demo Client',
+        phone: '', email: '', address: demo.address || 'Kinathukadavu',
+        floorConfig: demo.floorConfig || 'G',
+        marginPct: demo.marginPct || 12,
+      });
+
+      // Populate all section states
+      if (sec.floors)       setFloorsData(sec.floors);
+      if (sec.foundation)   setFoundation(sec.foundation);
+      if (sec.plinthBeam)   setPlinthBeam(sec.plinthBeam);
+      if (sec.brickwork9)   setBrickwork9(sec.brickwork9);
+      if (sec.brickwork4)   setBrickwork4(sec.brickwork4);
+      if (sec.tileWork)     setTileWork(sec.tileWork);
+      if (sec.doorsWindows) setDoorsWindows(sec.doorsWindows);
+      if (sec.plastering)   setPlastering(sec.plastering || { innerRows: [], ceilingArea: '' });
+      if (sec.slabConcrete) setSlabConcrete(sec.slabConcrete);
+      if (sec.staircase)    setStaircase(sec.staircase);
+      if (sec.mepOthers)    setMepOthers(sec.mepOthers);
+      if (sec.addlWorks)    setAddlWorks(sec.addlWorks);
+
+      // Build rate map with any project overrides
+      const rateMap = buildRateMap(demo.rateOverrides || []);
+
+      // Run calculation immediately
+      const floors = sec.floors || floorsData;
+      const inputs = {
+        floors, foundation: sec.foundation || foundation, plinthBeam: sec.plinthBeam || plinthBeam,
+        basement: {}, brickwork9: sec.brickwork9 || brickwork9, brickwork4: sec.brickwork4 || brickwork4,
+        plastering: sec.plastering || { innerRows: [], ceilingArea: '' },
+        sillLintel: sec.sillLintel || {}, tileWork: sec.tileWork || tileWork,
+        doorsWindows: sec.doorsWindows || doorsWindows, slabConcrete: sec.slabConcrete || slabConcrete,
+        staircase: sec.staircase || staircase, others: sec.mepOthers || mepOthers,
+        addlWorks: sec.addlWorks || addlWorks, pileRows: sec.pileRows || [],
+      };
+      const res2 = computeBoq(inputs, rateMap, Number(demo.marginPct) || 12);
+      setResult(res2);
+      setStep(4);
+      setDemoLoaded(true);
+      setTimeout(() => setShowFeedback(true), 5000);
+    } catch (e) {
+      console.error('Demo load error:', e);
+      alert('Failed to load demo data: ' + e.message);
+    }
+    setLoadingDemo(false);
+  }
+
+  // ── Clean PDF export — opens a new window with formatted print HTML ────────
+  function handlePrintPDF() {
+    if (!result) return;
+    const fc = v => v != null ? '\u20B9' + Number(v).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) : '\u2014';
+    const fq = v => Number(v).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const sections = [...new Set(result.items.map(i => i.section))];
+
+    const itemRows = sections.map(sec => {
+      const sItems = result.items.filter(i => i.section === sec && i.quantity > 0);
+      if (!sItems.length) return '';
+      const secTotal = sItems.reduce((s, i) => s + i.amount, 0);
+      return `
+        <tr class="sec-hdr"><td colspan="6">\u25B8 ${sec}</td></tr>
+        ${sItems.map((item, idx) => `
+          <tr class="${idx % 2 === 0 ? 'even' : 'odd'}">
+            <td class="c" style="color:#94A3B8">${item.sno}</td>
+            <td>${item.description}</td>
+            <td class="c">${item.unit}</td>
+            <td class="r">${fq(item.quantity)}</td>
+            <td class="r" style="color:#64748B">${fq(item.rate)}</td>
+            <td class="r b">${fc(item.amount)}</td>
+          </tr>`).join('')}
+        <tr class="sec-tot"><td colspan="5" class="r">Section Total \u2014 ${sec}</td><td class="r b">${fc(secTotal)}</td></tr>
+      `;
+    }).join('');
+
+    const varRows = result.marginVariants ? `
+      <tr>${[5,8,10,12,15].map(mp => `<th ${mp===result.marginPct?'style="background:#FC6E20;color:white"':''}>${mp}% Margin</th>`).join('')}</tr>
+      <tr>${[5,8,10,12,15].map(mp => `<td class="c" ${mp===result.marginPct?'style="font-weight:900"':''}>${fc(result.marginVariants[mp]?.buildingEstimate)}</td>`).join('')}</tr>
+      <tr>${[5,8,10,12,15].map(mp => `<td class="c" style="font-size:9px;color:#94A3B8">${fc(result.marginVariants[mp]?.ratePerSqft)}/sqft</td>`).join('')}</tr>
+    ` : '';
+
+    const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>BOQ \u2014 ${info.title || 'Project'}</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',Arial,sans-serif;font-size:11px;color:#1a1a1a;background:white}
+.hdr{padding:14px 20px 10px;border-bottom:3px solid #FC6E20;display:flex;justify-content:space-between;align-items:flex-start}
+.logo{font-size:20px;font-weight:900;color:#0F172A}.logo span{color:#FC6E20}
+.logo-sub{font-size:9px;color:#64748B;margin-top:2px}
+.rpt{text-align:right}.rpt h1{font-size:13px;font-weight:800;color:#0F172A}.rpt p{font-size:9px;color:#64748B;margin-top:1px}
+.proj{padding:8px 20px;background:#F8FAFC;border-bottom:1px solid #E2E8F0;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.pi label{font-size:8px;font-weight:700;text-transform:uppercase;color:#94A3B8;letter-spacing:.5px;display:block}
+.pi span{font-size:11px;font-weight:600;color:#0F172A}
+.sum{padding:10px 20px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;border-bottom:1px solid #E2E8F0}
+.sc{background:#F8FAFC;border-radius:5px;padding:8px 10px;border:1px solid #E2E8F0}
+.sc.hl{background:#0F172A}.sc label{font-size:8px;font-weight:700;text-transform:uppercase;color:#94A3B8;letter-spacing:.5px;display:block;margin-bottom:3px}
+.sc.hl label{color:#475569}.sc span{font-size:15px;font-weight:900;color:#0F172A}.sc.hl span{color:#FC6E20}
+.msec{padding:8px 20px 10px;border-bottom:1px solid #E2E8F0}
+.msec h3{font-size:9px;font-weight:800;color:#374151;margin-bottom:5px;text-transform:uppercase;letter-spacing:.5px}
+.bsec{padding:10px 20px}
+.bsec h3{font-size:11px;font-weight:800;margin-bottom:6px;color:#0F172A}
+table{width:100%;border-collapse:collapse}
+th{background:#0F172A;color:white;padding:6px 7px;font-size:9.5px;font-weight:700;text-align:left}
+td{padding:4.5px 7px;border-bottom:1px solid #F1F5F9;font-size:10px;vertical-align:middle}
+tr.even{background:white}tr.odd{background:#FAFAFA}
+tr.sec-hdr td{background:#E2E8F0;font-weight:800;font-size:9.5px;color:#374151;text-transform:uppercase;letter-spacing:.3px;padding:4px 7px}
+tr.sec-tot td{background:#F1F5F9;font-weight:700;font-size:10px}
+tr.gtot td{background:#0F172A;color:white;font-weight:900;font-size:12px;padding:7px}
+tr.gtot td.org{color:#FC6E20}
+tr.wrd td{background:#1E293B;color:#94A3B8;font-style:italic;font-size:9px;padding:5px 7px}
+.c{text-align:center}.r{text-align:right}.b{font-weight:700}
+.mtbl th,.mtbl td{font-size:10px}
+.ftr{padding:8px 20px;border-top:1px solid #E2E8F0;margin-top:6px}
+.ftr p{font-size:8.5px;color:#94A3B8;line-height:1.6}
+.ftr strong{color:#64748B}
+.wm{text-align:center;padding:5px;font-size:8px;color:#CBD5E1}
+@media print{
+body{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+.bsec{page-break-inside:auto}
+table{page-break-inside:auto}
+tr{page-break-inside:avoid;page-break-after:auto}
+thead{display:table-header-group}
+}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div><div class="logo">Build<span>ogram</span></div><div class="logo-sub">Construction Intelligence Platform · Chennai</div></div>
+  <div class="rpt"><h1>BILL OF QUANTITIES</h1><p>COCENA Issue 35, Dec 2025 Schedule of Rates</p><p>Generated: ${new Date().toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'})}</p></div>
+</div>
+<div class="proj">
+  <div class="pi"><label>Project</label><span>${info.title||'\u2014'}</span></div>
+  <div class="pi"><label>Client</label><span>${info.clientName||'\u2014'}</span></div>
+  <div class="pi"><label>Address</label><span>${info.address||'\u2014'}</span></div>
+  <div class="pi"><label>Floor Config</label><span>${info.floorConfig||'G'}</span></div>
+  <div class="pi"><label>Total Built-up</label><span>${fq(result.totalAreaSqft)} sq.ft</span></div>
+  <div class="pi"><label>Contractor Margin</label><span>${result.marginPct}%</span></div>
+</div>
+<div class="sum">
+  <div class="sc hl"><label>Building Estimate</label><span>${fc(result.buildingEstimate)}</span></div>
+  <div class="sc"><label>Rate per Sq.ft</label><span>${fc(result.ratePerSqft)}</span></div>
+  <div class="sc"><label>Foundation</label><span>${fc(result.sectionTotals.foundation)}</span></div>
+  <div class="sc"><label>Superstructure</label><span>${fc(result.sectionTotals.superstructure)}</span></div>
+</div>
+${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity</h3><table class="mtbl"><thead>${varRows}</thead></table></div>` : ''}
+<div class="bsec">
+  <h3>Detailed Bill of Quantities \u2014 ${result.items.filter(i=>i.quantity>0).length} Line Items</h3>
+  <table>
+    <thead><tr><th style="width:28px">#</th><th>Description</th><th style="width:46px;text-align:center">Unit</th><th style="width:66px;text-align:right">Qty</th><th style="width:75px;text-align:right">Rate (\u20B9)</th><th style="width:86px;text-align:right">Amount (\u20B9)</th></tr></thead>
+    <tbody>${itemRows}</tbody>
+    <tfoot>
+      <tr class="gtot"><td colspan="5" class="r">GRAND TOTAL (incl. ${result.marginPct}% contractor margin)</td><td class="r org">${fc(result.buildingEstimate)}</td></tr>
+      <tr class="wrd"><td colspan="6">${numberToWords(result.buildingEstimate)}</td></tr>
+    </tfoot>
+  </table>
+</div>
+<div class="ftr"><p><strong>Disclaimer:</strong> This estimate is based on COCENA Issue 35, December 2025 Schedule of Rates for Chennai. Actual costs may vary \u00B115% depending on site conditions, material grades, labour availability, and contractor. This BOQ is indicative only and not a binding quotation. For a professional verified estimate, contact Buildogram at <strong>+91 95661 11222</strong> or <strong>info@buildogram.in</strong>.</p></div>
+<div class="wm">Generated by Buildogram BOQ Calculator \u00B7 www.buildogram.in \u00B7 Powered by COCENA Dec 2025 rates</div>
+<script>window.onload=function(){window.print();window.addEventListener('afterprint',function(){window.close();});}<\/script>
+</body></html>`;
+
+    const w = window.open('', '_blank', 'width=900,height=700');
+    if (!w) { alert('Please allow popups for this site to save the PDF.'); return; }
+    w.document.write(html);
+    w.document.close();
+  }
+
   const progressPct = ((step + 1) / STEPS.length) * 100;
 
   return (
@@ -159,7 +340,31 @@ export default function PublicBOQCalculator() {
         <p style={{ fontSize: 16, color: '#94A3B8', maxWidth: 560, margin: '0 auto 8px', lineHeight: 1.7 }}>
           Generate a detailed Bill of Quantities for your residential construction project — 44 standard line items, per-floor rate breakdowns, and margin sensitivity analysis.
         </p>
-        <p style={{ fontSize: 13, color: '#64748B' }}>Your data auto-saves in browser. No login required.</p>
+        <p style={{ fontSize: 13, color: '#64748B', marginBottom: 20 }}>Your data auto-saves in browser. No login required.</p>
+
+        {/* Demo Button */}
+        <button
+          onClick={loadDemo}
+          disabled={loadingDemo}
+          style={{
+            display: 'inline-flex', alignItems: 'center', gap: 10,
+            background: loadingDemo ? 'rgba(255,255,255,0.08)' : 'linear-gradient(135deg,rgba(252,110,32,0.22),rgba(255,179,71,0.22))',
+            border: '1px solid rgba(252,110,32,0.45)', borderRadius: 12,
+            padding: '13px 28px', cursor: loadingDemo ? 'not-allowed' : 'pointer',
+            color: 'white', fontSize: 15, fontWeight: 700,
+            boxShadow: '0 4px 20px rgba(252,110,32,0.25)',
+            transition: 'all 0.2s',
+          }}
+        >
+          {loadingDemo ? (
+            <><span style={{ fontSize: 18 }}>⏳</span> Loading Demo…</>
+          ) : demoLoaded ? (
+            <><span style={{ fontSize: 18 }}>✅</span> Demo Loaded — View Result</>
+          ) : (
+            <><span style={{ fontSize: 18 }}>📊</span> View Demo BOQ — Kinathukadavu Project</>
+          )}
+        </button>
+        <p style={{ fontSize: 11, color: '#475569', marginTop: 8 }}>See a real completed BOQ instantly — no input needed</p>
       </div>
 
       {/* Progress bar */}
@@ -500,15 +705,17 @@ export default function PublicBOQCalculator() {
 
               {/* Print + WA CTA */}
               <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 28 }}>
-                <button onClick={() => window.print()} style={{ background: '#0F172A', color: 'white', border: 'none', borderRadius: 10, padding: '11px 22px', fontSize: 14, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8 }}>
-                  🖨️ Print / Save PDF
+                <button
+                  onClick={handlePrintPDF}
+                  style={{ background: '#0F172A', color: 'white', border: 'none', borderRadius: 10, padding: '11px 22px', fontSize: 14, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
+                  🖨️ Save as PDF
                 </button>
                 <a href={`https://wa.me/919566111222?text=${encodeURIComponent(`Hi! I just generated a BOQ for my ${info.floorConfig} project using Buildogram's tool. Building estimate: ${fc(result.buildingEstimate)} (${result.marginPct}% margin). Can I get a professional review?`)}`}
                   target="_blank" rel="noopener noreferrer"
                   style={{ background: '#25D366', color: 'white', border: 'none', borderRadius: 10, padding: '11px 22px', fontSize: 14, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
                   💬 WhatsApp for Expert Review
                 </a>
-                <button onClick={() => { setStep(0); setResult(null); }} style={{ background: 'white', border: '1px solid #E2E8F0', borderRadius: 10, padding: '11px 18px', fontSize: 14, cursor: 'pointer', color: '#374151' }}>
+                <button onClick={() => { setStep(0); setResult(null); setDemoLoaded(false); }} style={{ background: 'white', border: '1px solid #E2E8F0', borderRadius: 10, padding: '11px 18px', fontSize: 14, cursor: 'pointer', color: '#374151' }}>
                   ↺ New Calculation
                 </button>
               </div>
