@@ -13,15 +13,15 @@ export const DEFAULT_RATES = [
   { sno: 1,  category: 'Earthwork',     description: 'Earth excavation for foundations (incl. loading & disposal)', unit: 'm³',   rateGFloor: 350,   rate1st: 350,   rate2nd: 350,   rate3rd: 350,   rateAvg: 350 },
   { sno: 2,  category: 'Earthwork',     description: 'Back-filling with excavated earth (compacted in layers)',      unit: 'm³',   rateGFloor: 180,   rate1st: 180,   rate2nd: 180,   rate3rd: 180,   rateAvg: 180 },
 
-  // ── CONCRETE ──────────────────────────────────────────────────────────
-  { sno: 3,  category: 'Concrete',      description: 'PCC M10 (1:4:8) plain concrete below footings',               unit: 'm³',   rateGFloor: 4800,  rate1st: 4800,  rate2nd: 4800,  rate3rd: 4800,  rateAvg: 4800 },
-  { sno: 4,  category: 'Concrete',      description: 'Isolated / Combined footing concrete M20 (1:1.5:3)',           unit: 'm³',   rateGFloor: 7200,  rate1st: 7200,  rate2nd: 7200,  rate3rd: 7200,  rateAvg: 7200 },
-  { sno: 5,  category: 'Concrete',      description: 'Column concrete M20 incl. formwork & reinforcement',           unit: 'm³',   rateGFloor: 12000, rate1st: 13500, rate2nd: 15000, rate3rd: 16500, rateAvg: 14250 },
-  { sno: 6,  category: 'Concrete',      description: 'Plinth beam / RSB / SB concrete M20 incl. formwork',          unit: 'm³',   rateGFloor: 9500,  rate1st: 9500,  rate2nd: 9500,  rate3rd: 9500,  rateAvg: 9500 },
-  { sno: 7,  category: 'Concrete',      description: 'Roof beam & slab M20 incl. formwork & reinforcement',          unit: 'm³',   rateGFloor: 11000, rate1st: 12500, rate2nd: 14000, rate3rd: 15500, rateAvg: 13250 },
-  { sno: 8,  category: 'Concrete',      description: 'Sill beam / Lintel beam concrete M20',                        unit: 'm³',   rateGFloor: 9000,  rate1st: 10000, rate2nd: 11000, rate3rd: 12000, rateAvg: 10500 },
-  { sno: 9,  category: 'Concrete',      description: 'Loft / Sunshade / Counter slab / Balcony downslab M20',        unit: 'm³',   rateGFloor: 10000, rate1st: 11500, rate2nd: 13000, rate3rd: 14500, rateAvg: 12250 },
-  { sno: 10, category: 'Concrete',      description: 'Staircase concrete M20 incl. formwork',                       unit: 'm³',   rateGFloor: 11000, rate1st: 12500, rate2nd: 14000, rate3rd: 15500, rateAvg: 13250 },
+  // ── CONCRETE (concrete + formwork only; reinforcement steel priced separately as SNO 45-48) ──
+  { sno: 3,  category: 'Concrete',      description: 'PCC M10 (1:4:8) plain concrete below footings',                                   unit: 'm³',   rateGFloor: 4800,  rate1st: 4800,  rate2nd: 4800,  rate3rd: 4800,  rateAvg: 4800 },
+  { sno: 4,  category: 'Concrete',      description: 'Isolated / Combined footing concrete M20 incl. formwork (no steel — see SNO 45)', unit: 'm³',   rateGFloor: 6800,  rate1st: 6800,  rate2nd: 6800,  rate3rd: 6800,  rateAvg: 6800 },
+  { sno: 5,  category: 'Concrete',      description: 'Column concrete M20 incl. formwork only (steel in SNO 45-48)',                    unit: 'm³',   rateGFloor: 8500,  rate1st: 9500,  rate2nd: 10500, rate3rd: 11500, rateAvg: 10000 },
+  { sno: 6,  category: 'Concrete',      description: 'Plinth beam / RSB / SB concrete M20 incl. formwork (no steel)',                   unit: 'm³',   rateGFloor: 8500,  rate1st: 8500,  rate2nd: 8500,  rate3rd: 8500,  rateAvg: 8500 },
+  { sno: 7,  category: 'Concrete',      description: 'Roof beam & slab M20 incl. formwork only (steel in SNO 47)',                      unit: 'm³',   rateGFloor: 7800,  rate1st: 8800,  rate2nd: 9800,  rate3rd: 10800, rateAvg: 9300 },
+  { sno: 8,  category: 'Concrete',      description: 'Sill beam / Lintel beam concrete M20 incl. formwork',                             unit: 'm³',   rateGFloor: 7500,  rate1st: 8300,  rate2nd: 9100,  rate3rd: 9900,  rateAvg: 8700 },
+  { sno: 9,  category: 'Concrete',      description: 'Loft / Sunshade / Counter slab / Balcony downslab M20 incl. formwork',            unit: 'm³',   rateGFloor: 8500,  rate1st: 9800,  rate2nd: 11100, rate3rd: 12400, rateAvg: 10450 },
+  { sno: 10, category: 'Concrete',      description: 'Staircase concrete M20 incl. formwork',                                           unit: 'm³',   rateGFloor: 9500,  rate1st: 10800, rate2nd: 12100, rate3rd: 13400, rateAvg: 11450 },
 
   // ── BRICKWORK ─────────────────────────────────────────────────────────
   { sno: 11, category: 'Brickwork',     description: 'Basement brickwork in CM 1:5 (below plinth)',                 unit: 'm³',   rateGFloor: 5200,  rate1st: 5200,  rate2nd: 5200,  rate3rd: 5200,  rateAvg: 5200 },
@@ -98,6 +98,11 @@ export const DEFAULT_RATES = [
   { sno: 56, category: 'Site Works',   description: 'Plan approval / building permit & DTCP/CMDA fees (per sqft BUA)',  unit: 'Sqft', rateGFloor: 38,   rate1st: 38,   rate2nd: 38,   rate3rd: 38,   rateAvg: 38 },
   { sno: 57, category: 'Finishes',     description: 'Kitchen platform — 20mm granite slab + SS sink + accessories (RM)', unit: 'RM', rateGFloor: 30000,rate1st: 30000,rate2nd: 30000,rate3rd: 30000,rateAvg: 30000 },
   { sno: 58, category: 'Finishes',     description: 'MS window safety grilles — fabricated + powder coated (m²)',       unit: 'm²',  rateGFloor: 980,  rate1st: 1010, rate2nd: 1040, rate3rd: 1070, rateAvg: 1015 },
+
+  // ── EXTERNAL DEVELOPMENT & SOFT COSTS ────────────────────────────────────
+  { sno: 59, category: 'External Dev',  description: 'External development — driveway, garden path, compound floor finish (m²)', unit: 'm²',  rateGFloor: 850,  rate1st: 850,  rate2nd: 850,  rate3rd: 850,  rateAvg: 850 },
+  { sno: 60, category: 'Soft Costs',   description: 'Architect + structural engineer fees (% of pre-GST civil total)',         unit: 'LS',  rateGFloor: 3,    rate1st: 3,    rate2nd: 3,    rate3rd: 3,    rateAvg: 3 },
+  { sno: 61, category: 'Taxes',        description: 'GST on construction services (5% applicable for residential < ₹45 L)',    unit: 'LS',  rateGFloor: 5,    rate1st: 5,    rate2nd: 5,    rate3rd: 5,    rateAvg: 5 },
 
   // ── PROVISIONALS ──────────────────────────────────────────────────────────
   // Rates stored as percentages; engine applies them against base building total
