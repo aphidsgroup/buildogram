@@ -97,20 +97,17 @@ export default function FloatingReelPlayer() {
       vimeoPlayerRef.current.on('volumechange', (data) => {
         setIsMuted(data.volume === 0);
       });
+
+      // Mark ready only once the video actually starts playing
+      vimeoPlayerRef.current.on('playing', () => {
+        setPlayerReady(true);
+      });
     }
   }, [loading, reel]);
 
   if (isHiddenRoute || isClosed || (!loading && !reel)) return null;
 
   const containerStyle = styles.visible;
-
-  if (loading) {
-    return (
-      <div className={`${styles.container} ${isMobile ? styles.mobile : styles.desktop} ${containerStyle}`}>
-        <div className={styles.skeleton} />
-      </div>
-    );
-  }
 
   const handleClose = (e) => {
     e.stopPropagation();
@@ -146,7 +143,7 @@ export default function FloatingReelPlayer() {
   const renderPlayer = () => {
     if (reel.provider === 'vimeo' || (reel.video_url && reel.video_url.includes('vimeo.com'))) {
       const videoId = reel.video_url.split('/').pop();
-      const iframeSrc = `https://player.vimeo.com/video/${videoId}?transparent=1&badge=0&autopause=0&autoplay=1&loop=1&muted=${isMuted ? 1 : 0}&controls=0&playsinline=1`;
+      const iframeSrc = `https://player.vimeo.com/video/${videoId}?transparent=1&badge=0&autopause=0&autoplay=1&loop=1&muted=${isMuted ? 1 : 0}&controls=0&playsinline=1&background=1`;
       return (
         <iframe
           ref={iframeRef}
@@ -155,7 +152,6 @@ export default function FloatingReelPlayer() {
           allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
           referrerPolicy="strict-origin-when-cross-origin"
           title={reel.title || "Buildogram Reel"}
-          onLoad={() => setPlayerReady(true)}
           className={styles.videoFrame}
         />
       );
@@ -171,7 +167,6 @@ export default function FloatingReelPlayer() {
         height="100%"
         playsinline={true}
         onStart={() => setPlayerReady(true)}
-        onReady={() => setPlayerReady(true)}
         onError={(e) => {
           console.error("ReactPlayer Error:", e);
           if (!isMuted) setIsMuted(true);
@@ -187,8 +182,11 @@ export default function FloatingReelPlayer() {
 
   return (
     <div className={`${styles.container} ${isMobile ? styles.mobile : styles.desktop} ${containerStyle}`}>
+      {/* Skeleton stays visible until playerReady */}
+      {!playerReady && <div className={styles.skeleton} />}
+
       {!loading && reel && (
-        <div className={styles.videoWrapper}>
+        <div className={`${styles.videoWrapper} ${playerReady ? styles.videoReady : styles.videoLoading}`}>
           {renderPlayer()}
 
           <button

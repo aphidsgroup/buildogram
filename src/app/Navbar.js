@@ -154,7 +154,7 @@ export default function Navbar() {
         />
       </Link>
 
-      <div className={`${styles.topActions} hide-mobile`}>
+      <div className={`${styles.topActions} hide-mobile`} style={{ flex: 1, justifyContent: 'center', margin: '0 2rem' }}>
         {MEGA_MENUS.map((menu, idx) => (
           <div key={idx} className={styles.navItemContainer}>
             <button className={styles.navLink}>
@@ -176,11 +176,10 @@ export default function Navbar() {
             </div>
           </div>
         ))}
+      </div>
         
-        <div className={styles.navItemContainer} style={{ marginLeft: 8, display: 'flex', gap: '8px' }}>
-          <Link href="/contact?type=construction" className="btn btn-primary" style={{ padding: '8px 18px', fontSize: '14px' }}>Start Project</Link>
-          <Link href="/login" className="btn" style={{ padding: '8px 18px', fontSize: '14px', background: 'transparent', border: '1px solid var(--border)', color: 'var(--secondary)' }}>Dashboard OS</Link>
-        </div>
+      <div className="hide-mobile" style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+        <Link href="/contact?type=construction" className="btn btn-primary" style={{ padding: '8px 18px', fontSize: '14px' }}>Start Project</Link>
       </div>
 
       <MobileMenuClient menus={MEGA_MENUS} />
