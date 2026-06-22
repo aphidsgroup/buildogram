@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { DEFAULT_RATES, buildRateMap } from '@/lib/boq-calc/rates';
 import { computeBoq } from '@/lib/boq-calc/engine';
+import { computeExcelBoq } from '@/lib/boq-calc/excel-engine';
 import { numberToWords } from '@/lib/boq-calc/numberToWords';
 
 // ── helpers ────────────────────────────────────────────────────────────────
@@ -53,12 +54,16 @@ export default function PublicBOQCalculator() {
   const [demoLoaded, setDemoLoaded] = useState(false);
 
   // ── state ──
+  const [calcMode, setCalcMode] = useState('excel'); // 'excel' or 'turnkey'
+  const [paintMode, setPaintMode] = useState('combined'); // 'combined' or 'detailed'
   const [info, setInfo] = useState({ title: '', clientName: '', phone: '', email: '', address: '', floorConfig: 'G', marginPct: 12 });
   const [floorsData, setFloorsData] = useState([{ floorLabel: 'Ground', length: '', breadth: '', area: '' }]);
 
   // Structure
   const [foundation, setFoundation] = useState([{ nos: 1, footingL: '', footingB: '', footingDepth: 1.5, pccThickness: 0.1, footingConcreteD: 0.5, colL: 0.3, colB: 0.3, colD: '', floorIdx: 0 }]);
   const [plinthBeam, setPlinthBeam] = useState([{ label: 'PB-1', length: '', breadth: 0.23, depth: 0.45 }]);
+  const [basement, setBasement] = useState({ netArea: '', brickL: '', brickB: '', brickD: '', plasterL: '', plasterD: '' });
+  const [sillLintel, setSillLintel] = useState({ sillLength: '', lintelLength: '' });
   const [slabConcrete, setSlabConcrete] = useState([{ floorLabel: 'Ground', beamL: '', beamB: 0.3, beamD: 0.4, slabArea: '', slabD: 0.125 }]);
   const [brickwork9, setBrickwork9] = useState([{ floorLabel: 'Ground Floor', length: '', height: 3, doorOpens: [], windowOpens: [] }]);
   const [brickwork4, setBrickwork4] = useState([]);
@@ -83,6 +88,8 @@ export default function PublicBOQCalculator() {
         if (d.floorsData) setFloorsData(d.floorsData);
         if (d.foundation) setFoundation(d.foundation);
         if (d.plinthBeam) setPlinthBeam(d.plinthBeam);
+        if (d.basement) setBasement(d.basement);
+        if (d.sillLintel) setSillLintel(d.sillLintel);
         if (d.slabConcrete) setSlabConcrete(d.slabConcrete);
         if (d.brickwork9) setBrickwork9(d.brickwork9);
         if (d.brickwork4) setBrickwork4(d.brickwork4);
@@ -97,7 +104,9 @@ export default function PublicBOQCalculator() {
 
   function saveDraft() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ info, floorsData, foundation, plinthBeam, slabConcrete, brickwork9, brickwork4, tileWork, doorsWindows, plastering, addlWorks, staircase, mepOthers, premiumItems }));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        info, floorsData, foundation, plinthBeam, basement, sillLintel, slabConcrete, brickwork9, brickwork4, tileWork, doorsWindows, plastering, addlWorks, staircase, mepOthers, premiumItems
+      }));
     } catch {}
   }
 
@@ -141,13 +150,20 @@ export default function PublicBOQCalculator() {
       const totalFloorM2 = floorsData.reduce((s, r) => s + (n(r.area) * 0.0929), 0);
       const ceilingArea  = n(plastering?.ceilingArea) > 0 ? plastering.ceilingArea : parseFloat(totalFloorM2.toFixed(2));
       const inputs = {
-        floors: floorsData, foundation, plinthBeam, basement: {}, brickwork9, brickwork4,
+        floors: floorsData, foundation, plinthBeam, basement, brickwork9, brickwork4,
         plastering: { ...plastering, ceilingArea, innerRows: [] },
-        sillLintel: {}, tileWork, doorsWindows, slabConcrete,
+        sillLintel, tileWork, doorsWindows, slabConcrete,
         staircase, others: mepOthers, addlWorks, pileRows: [],
         premiumItems,
       };
-      const res = computeBoq(inputs, rateMap, n(info.marginPct) || 12);
+      
+      let res;
+      if (calcMode === 'excel') {
+        res = computeExcelBoq(inputs);
+      } else {
+        res = computeBoq(inputs, rateMap, n(info.marginPct) || 12);
+      }
+      
       setResult(res);
       setStep(4);
       setTimeout(() => setShowFeedback(true), 3000);
@@ -197,6 +213,8 @@ export default function PublicBOQCalculator() {
       if (sec.floors)        setFloorsData(sec.floors);
       if (sec.foundation)    setFoundation(sec.foundation);
       if (sec.plinthBeam)    setPlinthBeam(sec.plinthBeam);
+      if (sec.basement)      setBasement(sec.basement);
+      if (sec.sillLintel)    setSillLintel(sec.sillLintel);
       if (sec.brickwork9)    setBrickwork9(sec.brickwork9);
       if (sec.brickwork4)    setBrickwork4(sec.brickwork4);
       if (sec.tileWork)      setTileWork(sec.tileWork);
@@ -217,15 +235,22 @@ export default function PublicBOQCalculator() {
       const ceilingAreaDemo  = Number((sec.plastering || {}).ceilingArea) > 0 ? (sec.plastering || {}).ceilingArea : parseFloat(totalFloorM2demo.toFixed(2));
       const inputs = {
         floors, foundation: sec.foundation || foundation, plinthBeam: sec.plinthBeam || plinthBeam,
-        basement: {}, brickwork9: sec.brickwork9 || brickwork9, brickwork4: sec.brickwork4 || brickwork4,
+        basement: sec.basement || basement, brickwork9: sec.brickwork9 || brickwork9, brickwork4: sec.brickwork4 || brickwork4,
         plastering: { ...(sec.plastering || {}), ceilingArea: ceilingAreaDemo, innerRows: [] },
-        sillLintel: sec.sillLintel || {}, tileWork: sec.tileWork || tileWork,
+        sillLintel: sec.sillLintel || sillLintel, tileWork: sec.tileWork || tileWork,
         doorsWindows: sec.doorsWindows || doorsWindows, slabConcrete: sec.slabConcrete || slabConcrete,
         staircase: sec.staircase || staircase, others: sec.mepOthers || mepOthers,
         addlWorks: sec.addlWorks || addlWorks, pileRows: sec.pileRows || [],
         premiumItems: sec.premiumItems || {},
       };
-      const res2 = computeBoq(inputs, rateMap, Number(demo.marginPct) || 12);
+      
+      let res2;
+      if (calcMode === 'excel') {
+        res2 = computeExcelBoq(inputs);
+      } else {
+        res2 = computeBoq(inputs, rateMap, Number(demo.marginPct) || 12);
+      }
+      
       setResult(res2);
       setStep(4);
       setDemoLoaded(true);
@@ -249,7 +274,7 @@ export default function PublicBOQCalculator() {
       if (!sItems.length) return '';
       const secTotal = sItems.reduce((s, i) => s + i.amount, 0);
       return `
-        <tr class="sec-hdr"><td colspan="6">\u25B8 ${sec}</td></tr>
+        <tr class="sec-hdr"><td colspan="8">\u25B8 ${sec}</td></tr>
         ${sItems.map((item, idx) => `
           <tr class="${idx % 2 === 0 ? 'even' : 'odd'}">
             <td class="c" style="color:#94A3B8">${item.sno}</td>
@@ -258,8 +283,10 @@ export default function PublicBOQCalculator() {
             <td class="r">${fq(item.quantity)}</td>
             <td class="r" style="color:#64748B">${fq(item.rate)}</td>
             <td class="r b">${fc(item.amount)}</td>
+            <td class="r" style="color:#92400E;background:#FFFBEB">${item.srcRate != null ? fq(item.srcRate) : '\u2014'}</td>
+            <td class="c" style="color:#92400E;background:#FFFBEB">${item.srcUnit || '\u2014'}</td>
           </tr>`).join('')}
-        <tr class="sec-tot"><td colspan="5" class="r">Section Total \u2014 ${sec}</td><td class="r b">${fc(secTotal)}</td></tr>
+        <tr class="sec-tot"><td colspan="7" class="r">Section Total \u2014 ${sec}</td><td class="r b">${fc(secTotal)}</td></tr>
       `;
     }).join('');
 
@@ -441,6 +468,18 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
             <div>
               <h2 style={sh}>📋 Project Information</h2>
               <p style={sp}>Tell us about your project. This helps personalise your BOQ report.</p>
+
+              <div style={{ display: 'flex', gap: 20, marginBottom: 20, padding: 16, background: '#F8FAFC', borderRadius: 12, border: '1px solid #E2E8F0' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontWeight: 600 }}>
+                  <input type="radio" name="calcMode" value="excel" checked={calcMode === 'excel'} onChange={() => setCalcMode('excel')} />
+                  Excel Compatibility Mode
+                </label>
+                <label style={{ display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer', fontWeight: 600 }}>
+                  <input type="radio" name="calcMode" value="turnkey" checked={calcMode === 'turnkey'} onChange={() => setCalcMode('turnkey')} />
+                  Turnkey Quote Mode
+                </label>
+              </div>
+
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 14 }}>
                 {[['Project Title', 'title', 'text', 'e.g. G+2 Residence — Adyar'],['Your Name', 'clientName', 'text', 'Mr. Rajan'],['Mobile', 'phone', 'tel', '+91 98765 43210'],['Email', 'email', 'email', 'you@email.com'],['Plot Address', 'address', 'text', 'No. 12, 2nd Street, Adyar']].map(([lbl, key, type, ph]) => (
                   <label key={key} style={lbl_s}>
@@ -635,7 +674,7 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
               <h3 style={sh3}>Doors & Windows</h3>
               <div style={{ overflowX: 'auto', marginBottom: 12 }}>
                 <table style={tbl}>
-                  <thead><tr><Th>Type</Th><Th>Nos</Th><Th></Th></tr></thead>
+                  <thead><tr><Th>Type</Th><Th>Nos</Th><Th>Width (ft)</Th><Th>Height (ft)</Th><Th></Th></tr></thead>
                   <tbody>
                     {doorsWindows.map((r, i) => (
                       <tr key={r._id || i}>
@@ -643,6 +682,8 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
                           {['main_door','room_door','pvc_door','pooja_door'].map(t => <option key={t} value={t}>{t.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}</option>)}
                         </Sel></Td>
                         <Td><Inp value={r.nos} onChange={v => updateRow(setDoorsWindows, i, 'nos', v)} w={80} min={1} /></Td>
+                        <Td><Inp value={r.widthFt} onChange={v => updateRow(setDoorsWindows, i, 'widthFt', v)} w={80} placeholder="Auto" /></Td>
+                        <Td><Inp value={r.heightFt} onChange={v => updateRow(setDoorsWindows, i, 'heightFt', v)} w={80} placeholder="Auto" /></Td>
                         <Td><DelBtn onClick={() => removeRow(setDoorsWindows, i)} /></Td>
                       </tr>
                     ))}
@@ -677,7 +718,8 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
               </label>
 
               {/* ── PREMIUM & SITE WORKS ── */}
-              <div style={{ marginTop: 32, background: 'linear-gradient(135deg,#FFF7ED,#FFFBF5)', border: '1px solid #FED7AA', borderRadius: 16, padding: '20px 18px' }}>
+              {calcMode === 'turnkey' && (
+                <div style={{ marginTop: 32, background: 'linear-gradient(135deg,#FFF7ED,#FFFBF5)', border: '1px solid #FED7AA', borderRadius: 16, padding: '20px 18px' }}>
                 <h3 style={{ fontSize: 15, fontWeight: 800, color: '#C2410C', margin: '0 0 4px' }}>🏆 Premium & Site Works</h3>
                 <p style={{ fontSize: 12, color: '#92400E', margin: '0 0 18px' }}>These items are needed for a full turnkey estimate (₹2,000+/sqft). Leave blank to skip any item.</p>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(200px,1fr))', gap: 14 }}>
@@ -722,6 +764,7 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
                   </label>
                 </div>
               </div>
+              )}
             </div>
           )}
 
@@ -737,17 +780,18 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
               {/* Summary cards */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(150px,1fr))', gap: 12, marginBottom: 28 }}>
                 {[
-                  ['Grand Total (turnkey)', fc(result.grandTotal || result.buildingEstimate), 'linear-gradient(135deg,#FFB347,#FC6E20)', 'white'],
+                  [`Grand Total (${result.mode === 'excel' ? 'Excel' : 'Turnkey'})`, fc(result.grandTotal || result.buildingEstimate), 'linear-gradient(135deg,#FFB347,#FC6E20)', 'white'],
                   ['Rate / Sq.ft', fc(result.ratePerSqft), '#0F172A', 'white'],
                   ['Total Area', `${fq(result.totalAreaSqft)} sqft`, '#EFF6FF', '#1E40AF'],
-                  ['Foundation', fc(result.sectionTotals.foundation), '#F0FDF4', '#166534'],
-                  ['Steel', fc(result.sectionTotals.steel), '#FFF1F2', '#9F1239'],
-                  ['Superstructure', fc(result.sectionTotals.superstructure), '#FAF5FF', '#7E22CE'],
-                  ['Premium & Site', fc(result.sectionTotals.premium), '#FFF7ED', '#C2410C'],
-                  ['Provisionals', fc(result.sectionTotals.provisionals), '#F0F9FF', '#0369A1'],
-                  ['GST (5%)', fc(result.sectionTotals.gst), '#FEFCE8', '#854D0E'],
-                  ['Margin', `${result.marginPct}%`, '#F8FAFC', '#475569'],
-                ].map(([lbl, val, bg, col]) => (
+                  ['Foundation', fc(result.sectionTotals?.foundation), '#F0FDF4', '#166534'],
+                  ['Steel', fc(result.sectionTotals?.steel), '#FFF1F2', '#9F1239'],
+                  ['Superstructure', fc(result.sectionTotals?.superstructure), '#FAF5FF', '#7E22CE'],
+                  ['Additional Works', fc(result.additionalTotal), '#FFF7ED', '#C2410C'],
+                  ['Premium & Site', fc(result.sectionTotals?.premium), '#FFF7ED', '#C2410C'],
+                  ['Provisionals', fc(result.sectionTotals?.provisionals), '#F0F9FF', '#0369A1'],
+                  ['GST (5%)', fc(result.sectionTotals?.gst), '#FEFCE8', '#854D0E'],
+                  ['Margin', `${result.marginPct || 12}%`, '#F8FAFC', '#475569'],
+                ].filter(([lbl, val]) => val !== '₹0' && val !== '—').map(([lbl, val, bg, col]) => (
                   <div key={lbl} style={{ background: bg, borderRadius: 14, padding: '14px 12px', border: '1px solid rgba(0,0,0,0.06)' }}>
                     <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, color: col, opacity: 0.75, marginBottom: 4 }}>{lbl}</div>
                     <div style={{ fontSize: 16, fontWeight: 900, color: col }}>{val}</div>
@@ -776,12 +820,14 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
               {/* Full BOQ table */}
               <h3 style={{ fontSize: 15, fontWeight: 800, color: '#0F172A', marginBottom: 12 }}>Detailed BOQ — {result.items.filter(i => i.quantity > 0).length} Line Items</h3>
               <div style={{ overflowX: 'auto', borderRadius: 12, border: '1px solid #E2E8F0', marginBottom: 24 }}>
-                <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 700 }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 860 }}>
                   <thead>
                     <tr style={{ background: '#0F172A' }}>
-                      {['#','Section','Description','Unit','Qty','Rate (₹)','Amount (₹)'].map(h => (
+                      {['#','Section','Description','Unit','Qty','Rate (\u20B9)','Amount (\u20B9)'].map(h => (
                         <th key={h} style={{ padding: '9px 10px', fontSize: 11, fontWeight: 700, textAlign: 'left', color: 'white', whiteSpace: 'nowrap' }}>{h}</th>
                       ))}
+                      <th style={{ padding: '9px 10px', fontSize: 11, fontWeight: 700, textAlign: 'right', color: '#FCD34D', whiteSpace: 'nowrap', background: '#1E293B' }}>COCENA Src</th>
+                      <th style={{ padding: '9px 10px', fontSize: 11, fontWeight: 700, textAlign: 'center', color: '#FCD34D', whiteSpace: 'nowrap', background: '#1E293B' }}>Src Unit</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -794,12 +840,18 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
                         <td style={{ padding: '7px 10px', fontSize: 12, textAlign: 'right' }}>{fq(item.quantity)}</td>
                         <td style={{ padding: '7px 10px', fontSize: 12, textAlign: 'right', color: '#64748B' }}>{fq(item.rate)}</td>
                         <td style={{ padding: '7px 10px', fontSize: 13, fontWeight: 700, textAlign: 'right', color: '#0F172A' }}>{fc(item.amount)}</td>
+                        <td style={{ padding: '7px 10px', fontSize: 11, textAlign: 'right', color: '#92400E', background: '#FFFBEB', whiteSpace: 'nowrap' }}>
+                          {item.srcRate != null ? fq(item.srcRate) : '—'}
+                        </td>
+                        <td style={{ padding: '7px 10px', fontSize: 11, textAlign: 'center', color: '#92400E', background: '#FFFBEB', fontWeight: 600, whiteSpace: 'nowrap' }}>
+                          {item.srcUnit || '—'}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
                   <tfoot>
                     <tr style={{ background: '#0F172A' }}>
-                      <td colSpan={6} style={{ padding: '12px 10px', fontSize: 14, fontWeight: 900, color: 'white', textAlign: 'right' }}>
+                      <td colSpan={8} style={{ padding: '12px 10px', fontSize: 14, fontWeight: 900, color: 'white', textAlign: 'right' }}>
                         GRAND TOTAL (incl. {result.marginPct}% margin)
                       </td>
                       <td style={{ padding: '12px 10px', fontSize: 17, fontWeight: 900, color: '#FC6E20', textAlign: 'right' }}>
@@ -807,7 +859,7 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
                       </td>
                     </tr>
                     <tr style={{ background: '#1E293B' }}>
-                      <td colSpan={7} style={{ padding: '10px', fontSize: 12, color: '#94A3B8', fontStyle: 'italic' }}>
+                      <td colSpan={9} style={{ padding: '10px', fontSize: 12, color: '#94A3B8', fontStyle: 'italic' }}>
                         {numberToWords(result.buildingEstimate)}
                       </td>
                     </tr>

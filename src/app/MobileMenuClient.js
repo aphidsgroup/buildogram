@@ -89,9 +89,6 @@ export default function MobileMenuClient({ menus }) {
                 <Link href="/contact?type=construction" onClick={close} className={`${styles.mobileLink} ${styles.mobileLinkPrimary}`}>
                   Start Your Project
                 </Link>
-                <Link href="/login" onClick={close} className={styles.mobileLinkOutline}>
-                  Open Dashboard OS
-                </Link>
               </div>
             </div>
           </motion.div>

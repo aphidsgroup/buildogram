@@ -39,8 +39,9 @@
  */
 
 // ── helpers ────────────────────────────────────────────────────────────────
-const n = (v) => Number(v) || 0;
-const round2 = (v) => Math.round(v * 100) / 100;
+import { computeExcelBoq } from './excel-engine.js';
+export const n = (v) => Number(v) || 0;
+export const round2 = (v) => Math.round(v * 100) / 100;
 
 function floorCount(floorConfig) {
   if (!floorConfig || floorConfig === 'G') return 1;
@@ -50,7 +51,7 @@ function floorCount(floorConfig) {
 
 // ── section calculators ────────────────────────────────────────────────────
 
-function calcEarthwork(foundation) {
+export function calcEarthwork(foundation) {
   let vol = 0;
   for (const r of (foundation || [])) {
     vol += n(r.footingL) * n(r.footingB) * n(r.footingDepth) * n(r.nos);
@@ -58,7 +59,7 @@ function calcEarthwork(foundation) {
   return round2(vol);
 }
 
-function calcPCC(foundation) {
+export function calcPCC(foundation) {
   let vol = 0;
   for (const r of (foundation || [])) {
     vol += n(r.footingL) * n(r.footingB) * n(r.pccThickness) * n(r.nos);
@@ -66,7 +67,7 @@ function calcPCC(foundation) {
   return round2(vol);
 }
 
-function calcFootingConcrete(foundation) {
+export function calcFootingConcrete(foundation) {
   let vol = 0;
   for (const r of (foundation || [])) {
     vol += n(r.footingL) * n(r.footingB) * n(r.footingConcreteD) * n(r.nos);
@@ -74,7 +75,7 @@ function calcFootingConcrete(foundation) {
   return round2(vol);
 }
 
-function calcColumnConcrete(foundation) {
+export function calcColumnConcrete(foundation) {
   const perFloor = {};
   for (const r of (foundation || [])) {
     const floorKey = n(r.floorIdx);
@@ -84,12 +85,12 @@ function calcColumnConcrete(foundation) {
   return perFloor;
 }
 
-function calcColumnConcreteTotal(foundation) {
+export function calcColumnConcreteTotal(foundation) {
   const pf = calcColumnConcrete(foundation);
   return round2(Object.values(pf).reduce((s, v) => s + v, 0));
 }
 
-function calcPlinthBeam(plinthBeam) {
+export function calcPlinthBeam(plinthBeam) {
   let vol = 0;
   for (const r of (plinthBeam || [])) {
     vol += n(r.length) * n(r.breadth) * n(r.depth);
@@ -97,42 +98,45 @@ function calcPlinthBeam(plinthBeam) {
   return round2(vol);
 }
 
-function calcBackfilling(excavation, pccVol, footingConcreteVol) {
+export function calcBackfilling(excavation, pccVol, footingConcreteVol) {
   return round2(Math.max(0, excavation - pccVol - footingConcreteVol));
 }
 
-function calcBasementBrickwork(basement) {
+export function calcBasementBrickwork(basement) {
   return round2(n(basement?.brickL) * n(basement?.brickB) * n(basement?.brickD));
 }
 
-function calcBasementPlastering(basement) {
+export function calcBasementPlastering(basement) {
   return round2(n(basement?.plasterL) * n(basement?.plasterD) * 2);
 }
 
-function calcMSandLayer(floors) {
+export function calcMSandLayer(floors) {
   const totalAreaSqft = (floors || []).reduce((s, r) => s + n(r.area), 0);
   const areaM2 = totalAreaSqft * 0.0929;
   return round2(areaM2 * 0.1);
 }
 
-function calcAntiTermite(floors) {
+export function calcAntiTermite(floors) {
   const totalAreaSqft = (floors || []).reduce((s, r) => s + n(r.area), 0);
   return round2(totalAreaSqft * 0.0929);
 }
 
-function calcFlooringPCC(floors) {
+export function calcFlooringPCC(floors) {
   const totalAreaSqft = (floors || []).reduce((s, r) => s + n(r.area), 0);
   return round2(totalAreaSqft * 0.0929);
 }
 
-function calcBasementFilling(basement, floors) {
+export function calcBasementFilling(basement, floors) {
+  if (basement?.netArea > 0 && basement?.plasterD > 0) {
+    return round2(n(basement.netArea) * n(basement.plasterD));
+  }
   const totalAreaSqft = (floors || []).reduce((s, r) => s + n(r.area), 0);
   const plinthAreaM2 = totalAreaSqft * 0.0929;
   const baseVol = n(basement?.brickL) * n(basement?.brickB) * n(basement?.brickD);
   return round2(Math.max(0, plinthAreaM2 * 0.6 - baseVol));
 }
 
-function calcBrickwork9(brickwork9) {
+export function calcBrickwork9(brickwork9) {
   let area = 0;
   for (const r of (brickwork9 || [])) {
     let openArea = 0;
@@ -143,7 +147,7 @@ function calcBrickwork9(brickwork9) {
   return round2(area);
 }
 
-function calcBrickwork4(brickwork4) {
+export function calcBrickwork4(brickwork4) {
   let area = 0;
   for (const r of (brickwork4 || [])) {
     let openArea = 0;
@@ -153,7 +157,7 @@ function calcBrickwork4(brickwork4) {
   return round2(area);
 }
 
-function calcOuterPlastering(brickwork9) {
+export function calcOuterPlastering(brickwork9) {
   let area = 0;
   for (const r of (brickwork9 || [])) {
     let openArea = 0;
@@ -164,7 +168,7 @@ function calcOuterPlastering(brickwork9) {
   return round2(area);
 }
 
-function calcInnerPlastering(plastering, brickwork9, brickwork4) {
+export function calcInnerPlastering(plastering, brickwork9, brickwork4) {
   if (plastering?.innerRows && plastering.innerRows.length > 0) {
     let area = 0;
     for (const r of plastering.innerRows) {
@@ -180,7 +184,7 @@ function calcInnerPlastering(plastering, brickwork9, brickwork4) {
   return round2((q9 + q4) * 1.2);
 }
 
-function calcSillLintelMisc(sillLintel, brickwork9) {
+export function calcSillLintelMisc(sillLintel, brickwork9) {
   const { sillLength = 0, lintelLength = 0, loftRows = [], sunshadeRows = [], counterSlabRows = [], balconyRows = [] } = sillLintel || {};
 
   let autoSill = 0, autoLintel = 0;
@@ -203,17 +207,17 @@ function calcSillLintelMisc(sillLintel, brickwork9) {
   };
 }
 
-function calcSlabConcrete(slabConcrete) {
+export function calcSlabConcrete(slabConcrete) {
   const perFloor = [];
   for (const r of (slabConcrete || [])) {
     const beamVol = n(r.beamL) * n(r.beamB) * n(r.beamD);
     const slabVol = n(r.slabArea) * n(r.slabD);
-    perFloor.push({ floorLabel: r.floorLabel, beamVol, slabVol, total: round2(beamVol + slabVol) });
+    perFloor.push({ floorLabel: r.floorLabel, beamVol, slabVol, total: round2(beamVol + slabVol), slabArea: n(r.slabArea) });
   }
   return perFloor;
 }
 
-function calcStaircase(staircase) {
+export function calcStaircase(staircase) {
   if (!staircase) return { brickVol: 0, graniteArea: 0, handrailLength: 0, concreteVol: 0 };
   const { width = 0, tread = 0, riser = 0, noOfSteps = 0, graniteArea = 0, handrailLength = 0, concreteL = 0, concreteB = 0, concreteD = 0 } = staircase;
   const brickVol    = round2((n(tread) * n(riser) / 2) * n(width) * n(noOfSteps));
@@ -226,7 +230,7 @@ function calcStaircase(staircase) {
   };
 }
 
-function calcWindowArea(brickwork9) {
+export function calcWindowArea(brickwork9) {
   let area = 0;
   for (const r of (brickwork9 || [])) {
     for (const w of (r.windowOpens || [])) area += n(w.L) * n(w.H) * n(w.nos);
@@ -305,35 +309,45 @@ export function computeBoq(inputs, rateMap, marginPct = 12) {
   const mf = 1 + marginPct / 100;
 
   // ── Quantities ──────────────────────────────────────────────────────
-  const totalAreaSqft = floors.reduce((s, r) => s + n(r.area), 0);
-  const totalAreaM2   = round2(totalAreaSqft * 0.0929);
+  const rawData = computeExcelBoq(inputs, { mode: 'raw' });
+  const q = rawData.quantities;
 
-  const qEarthExcav      = calcEarthwork(foundation);
-  const qPCC             = calcPCC(foundation);
-  const qFootingConc     = calcFootingConcrete(foundation);
-  const qColumnConc      = calcColumnConcreteTotal(foundation);
-  const qPlinthBeamVol   = calcPlinthBeam(plinthBeam);
+  const totalAreaSqft = q.totalAreaSqft;
+  const totalAreaM2   = q.totalAreaM2;
+
+  const cftToM3 = 35.3147;
+  const sqftToM2 = 10.7639;
+  const rftToRm = 3.2808;
+
+  const qEarthExcav      = round2(q.qEarthExcav / cftToM3);
+  const qPCC             = round2(q.qPCC / cftToM3);
+  const qFootingConc     = round2(q.qFootingConc / cftToM3);
+  const qColumnConc      = round2(q.qColumnConc / cftToM3);
+  const qPlinthBeamVol   = round2(q.qPlinthBeamVol / cftToM3);
   const qPlinthBeamConc  = qPlinthBeamVol;
-  const qBackfill        = calcBackfilling(qEarthExcav, qPCC, qFootingConc);
-  const qBasementBrick   = calcBasementBrickwork(basement);
-  const qBasementPlaster = calcBasementPlastering(basement);
-  const qBasementFill    = calcBasementFilling(basement, floors);
-  const qMSand           = calcMSandLayer(floors);
-  const qAntiTermite     = calcAntiTermite(floors);
-  const qFlooringPCC     = calcFlooringPCC(floors);
-  const qBrick9          = calcBrickwork9(brickwork9);
-  const qBrick4          = calcBrickwork4(brickwork4);
-  const qOuterPlaster    = calcOuterPlastering(brickwork9);
-  const qInnerPlaster    = calcInnerPlastering(plastering, brickwork9, brickwork4);
+  const qBackfill        = round2(q.qBackfill / cftToM3);
+  const qBasementBrick   = round2(q.qBasementBrick / cftToM3);
+  const qBasementPlaster = round2(q.qBasementPlaster / sqftToM2);
+  const qBasementFill    = round2(q.qBasementFill / cftToM3);
+  const qMSand           = round2(q.qMSand / cftToM3);
+  const qAntiTermite     = round2(q.qAntiTermite / sqftToM2);
+  const qFlooringPCC     = round2(q.qFlooringPCC / sqftToM2);
+  const qBrick9          = round2((q.qBrick9 / 0.75) / sqftToM2);
+  const qBrick4          = round2(q.qBrick4 / sqftToM2);
+  const qOuterPlaster    = round2(q.qOuterPlaster / sqftToM2);
+  const qInnerPlaster    = round2(q.qInnerPlaster / sqftToM2);
 
-  const qCeiling = n(plastering?.ceilingArea) > 0
-    ? round2(n(plastering.ceilingArea))
-    : totalAreaM2;
+  const qCeiling         = round2(q.qCeiling / sqftToM2);
 
-  const { sillLength, lintelLength, loftVol } = calcSillLintelMisc(sillLintel, brickwork9);
+  const { loftVol }  = calcSillLintelMisc(sillLintel, brickwork9);
   const slabData     = calcSlabConcrete(slabConcrete);
   const totalSlabVol = round2(slabData.reduce((s, r) => s + r.total, 0));
-  const stairData    = calcStaircase(staircase);
+  const stairData    = {
+    brickVol: round2(q.stairBrickVol / cftToM3),
+    graniteArea: round2(q.stairGraniteArea / sqftToM2),
+    handrailLength: round2(q.qSSHandrail / rftToRm),
+    concreteVol: round2(q.stairConcreteVol / cftToM3)
+  };
 
   // UPVC: take max of auto-derived (from brickwork openings) and manual override
   const qWindowAutoSqft = calcWindowArea(brickwork9);
@@ -357,18 +371,24 @@ export function computeBoq(inputs, rateMap, marginPct = 12) {
   }
 
   // Tile work
-  const { flooringArea = 0, bathroomFloorArea = 0, parkingArea = 0, kitchenWallArea = 0, bathroomWallArea = 0, skirtingLength = 0, graniteArea = 0 } = tileWork;
+  const flooringArea = round2(q.flooringArea / sqftToM2);
+  const bathroomFloorArea = round2(q.bathroomFloorArea / sqftToM2);
+  const parkingArea = round2(q.parkingArea / sqftToM2);
+  const kitchenWallArea = round2(q.kitchenWallArea / sqftToM2);
+  const bathroomWallArea = round2(q.bathroomWallArea / sqftToM2);
+  const skirtingLength = round2(q.skirtingLength / rftToRm);
+  const graniteArea = round2(q.graniteArea / sqftToM2);
 
   // Bathroom waterproofing
-  const qBathroomWaterproof = round2(n(bathroomFloorArea) * 1.3);
+  const qBathroomWaterproof = round2(bathroomFloorArea * 1.3);
 
   // MEP
   const totalBuiltupSqft = n(others.totalBuiltupArea || totalAreaSqft);
-  const terraceAreaM2    = round2(n(others.terraceArea) * 0.0929);
+  const terraceAreaM2    = round2(q.qTerraceSurkhi / sqftToM2);
 
   // Sill/lintel volumes
-  const sillVol   = round2(sillLength   * 0.23 * 0.15);
-  const lintelVol = round2(lintelLength * 0.23 * 0.20);
+  const sillVol   = round2((q.qSillLength / rftToRm) * 0.23 * 0.15);
+  const lintelVol = round2((q.qLintelLength / rftToRm) * 0.23 * 0.20);
 
   // Doors & Windows
   const mainDoors  = (doorsWindows || []).filter(r => r.type === 'main_door');
@@ -393,72 +413,72 @@ export function computeBoq(inputs, rateMap, marginPct = 12) {
   // ── Build line items ─────────────────────────────────────────────────
   const items = [
     // ── FOUNDATION SECTION ──
-    mkItem(1,  'Earthwork',    'Earth Excavation for Foundations',                          'm³',   qEarthExcav,          R[1]?.rateGFloor  || 0,     marginPct),
-    mkItem(2,  'Earthwork',    'PCC M10 (1:4:8) below Footings',                           'm³',   qPCC,                 R[3]?.rateGFloor  || 0,     marginPct),
-    mkItem(3,  'Concrete',     'Footing Concrete M20',                                     'm³',   qFootingConc,         R[4]?.rateGFloor  || 0,     marginPct),
-    mkItem(4,  'Concrete',     'Column Concrete M20 (all floors avg)',                     'm³',   qColumnConc,          R[5]?.rateAvg     || 0,     marginPct),
-    mkItem(5,  'Concrete',     'Plinth Beam Excavation',                                   'm³',   qPlinthBeamVol,       R[1]?.rateGFloor  || 0,     marginPct),
-    mkItem(6,  'Earthwork',    'Back-filling',                                             'm³',   qBackfill,            R[2]?.rateGFloor  || 0,     marginPct),
-    mkItem(7,  'Concrete',     'Plinth Beam / RSB / SB Concrete M20',                     'm³',   qPlinthBeamConc,      R[6]?.rateGFloor  || 0,     marginPct),
-    mkItem(8,  'Brickwork',    'Basement Brickwork',                                       'm³',   qBasementBrick,       R[11]?.rateGFloor || 0,     marginPct),
-    mkItem(9,  'Plastering',   'Basement Plastering (both faces)',                         'm²',   qBasementPlaster,     R[14]?.rateGFloor || 0,     marginPct),
-    mkItem(10, 'Ground Prep',  'Basement Filling (moorum / earth)',                        'm³',   qBasementFill,        R[42]?.rateGFloor || 0,     marginPct),
-    mkItem(11, 'Ground Prep',  'M-Sand 4\" Layer below Floor Slab',                       'm³',   qMSand,               R[39]?.rateGFloor || 0,     marginPct),
-    mkItem(12, 'Ground Prep',  'Anti-Termite Pre-Construction Treatment',                  'm²',   qAntiTermite,         R[40]?.rateGFloor || 0,     marginPct),
-    mkItem(13, 'Ground Prep',  'Flooring PCC M7.5 below Tiles',                           'm²',   qFlooringPCC,         R[41]?.rateGFloor || 0,     marginPct),
+    mkItem(1,  'Earthwork',    'Earth Excavation for Foundations',                          'm³',   qEarthExcav,          R[1]?.rateGFloor  || 0,     marginPct, R[1]),
+    mkItem(2,  'Earthwork',    'PCC M10 (1:4:8) below Footings',                           'm³',   qPCC,                 R[3]?.rateGFloor  || 0,     marginPct, R[3]),
+    mkItem(3,  'Concrete',     'Footing Concrete M20',                                     'm³',   qFootingConc,         R[4]?.rateGFloor  || 0,     marginPct, R[4]),
+    mkItem(4,  'Concrete',     'Column Concrete M20 (all floors avg)',                     'm³',   qColumnConc,          R[5]?.rateAvg     || 0,     marginPct, R[5]),
+    mkItem(5,  'Concrete',     'Plinth Beam Excavation',                                   'm³',   qPlinthBeamVol,       R[1]?.rateGFloor  || 0,     marginPct, R[1]),
+    mkItem(6,  'Earthwork',    'Back-filling',                                             'm³',   qBackfill,            R[2]?.rateGFloor  || 0,     marginPct, R[2]),
+    mkItem(7,  'Concrete',     'Plinth Beam / RSB / SB Concrete M20',                     'm³',   qPlinthBeamConc,      R[6]?.rateGFloor  || 0,     marginPct, R[6]),
+    mkItem(8,  'Brickwork',    'Basement Brickwork',                                       'm³',   qBasementBrick,       R[11]?.rateGFloor || 0,     marginPct, R[11]),
+    mkItem(9,  'Plastering',   'Basement Plastering (both faces)',                         'm²',   qBasementPlaster,     R[14]?.rateGFloor || 0,     marginPct, R[14]),
+    mkItem(10, 'Ground Prep',  'Basement Filling (moorum / earth)',                        'm³',   qBasementFill,        R[42]?.rateGFloor || 0,     marginPct, R[42]),
+    mkItem(11, 'Ground Prep',  'M-Sand 4\" Layer below Floor Slab',                       'm³',   qMSand,               R[39]?.rateGFloor || 0,     marginPct, R[39]),
+    mkItem(12, 'Ground Prep',  'Anti-Termite Pre-Construction Treatment',                  'm²',   qAntiTermite,         R[40]?.rateGFloor || 0,     marginPct, R[40]),
+    mkItem(13, 'Ground Prep',  'Flooring PCC M7.5 below Tiles',                           'm²',   qFlooringPCC,         R[41]?.rateGFloor || 0,     marginPct, R[41]),
 
     // ── STEEL & REINFORCEMENT ──
-    mkItem(44, 'Steel',        'Reinforcement Fe500D — Footings & Plinth Beam (incl 5% wastage)', 'kg', steel.foundationSteel, R[45]?.rateAvg || 78,   marginPct),
-    mkItem(45, 'Steel',        'Reinforcement Fe500D — Columns (incl 5% wastage)',                'kg', steel.columnSteel,     R[46]?.rateAvg || 86.5, marginPct),
-    mkItem(46, 'Steel',        'Reinforcement Fe500D — Roof Beams & Slabs (incl 5% wastage)',    'kg', steel.slabSteel,       R[47]?.rateAvg || 81,   marginPct),
-    mkItem(47, 'Steel',        'Binding Wire & Misc (1% of total steel)',                        'kg', steel.bindingWire,     R[48]?.rateAvg || 120,  marginPct),
+    mkItem(44, 'Steel',        'Reinforcement Fe500D — Footings & Plinth Beam (incl 5% wastage)', 'kg', steel.foundationSteel, R[45]?.rateAvg || 78,   marginPct, R[45]),
+    mkItem(45, 'Steel',        'Reinforcement Fe500D — Columns (incl 5% wastage)',                'kg', steel.columnSteel,     R[46]?.rateAvg || 86.5, marginPct, R[46]),
+    mkItem(46, 'Steel',        'Reinforcement Fe500D — Roof Beams & Slabs (incl 5% wastage)',    'kg', steel.slabSteel,       R[47]?.rateAvg || 81,   marginPct, R[47]),
+    mkItem(47, 'Steel',        'Binding Wire & Misc (1% of total steel)',                        'kg', steel.bindingWire,     R[48]?.rateAvg || 120,  marginPct, R[48]),
 
     // ── SUPERSTRUCTURE ──
-    mkItem(14, 'Brickwork',    '9\" Flyash Brick Wall',                                    'm²',   qBrick9,              R[12]?.rateAvg    || 0,    marginPct),
-    mkItem(15, 'Brickwork',    '4.5\" Flyash Brick Partition Wall',                        'm²',   qBrick4,              R[13]?.rateAvg    || 0,    marginPct),
-    mkItem(16, 'Plastering',   'Outer Wall Plastering 20mm',                               'm²',   qOuterPlaster,        R[15]?.rateAvg    || 0,    marginPct),
-    mkItem(17, 'Plastering',   'Inner Wall Plastering 12mm (both faces)',                  'm²',   qInnerPlaster,        R[16]?.rateAvg    || 0,    marginPct),
-    mkItem(18, 'Plastering',   'Ceiling Plastering 6mm',                                   'm²',   qCeiling,             R[17]?.rateAvg    || 0,    marginPct),
-    mkItem(19, 'Concrete',     'Sill Beam Concrete M20',                                   'm³',   sillVol,              R[8]?.rateAvg     || 0,    marginPct),
-    mkItem(20, 'Concrete',     'Lintel Beam Concrete M20',                                 'm³',   lintelVol,            R[8]?.rateAvg     || 0,    marginPct),
-    mkItem(21, 'Concrete',     'Loft / Sunshade / Counter Slab / Balcony',                'm³',   loftVol,              R[9]?.rateAvg     || 0,    marginPct),
-    mkItem(22, 'Concrete',     'Roof Beam & Slab Concrete M20',                           'm³',   totalSlabVol,         R[7]?.rateAvg     || 0,    marginPct),
-    mkItem(23, 'Tile Work',    'Main Floor Vitrified Tiles',                               'm²',   n(flooringArea),      R[18]?.rateAvg    || 0,    marginPct),
-    mkItem(24, 'Tile Work',    'Bathroom Floor Ceramic Tiles',                             'm²',   n(bathroomFloorArea), R[19]?.rateAvg    || 0,    marginPct),
-    mkItem(25, 'Tile Work',    'Parking / Balcony Anti-Skid Tiles',                        'm²',   n(parkingArea),       R[20]?.rateAvg    || 0,    marginPct),
-    mkItem(26, 'Tile Work',    'Kitchen Wall Ceramic Tiles',                               'm²',   n(kitchenWallArea),   R[21]?.rateAvg    || 0,    marginPct),
-    mkItem(27, 'Tile Work',    'Bathroom Wall Ceramic Tiles',                              'm²',   n(bathroomWallArea),  R[22]?.rateAvg    || 0,    marginPct),
-    mkItem(28, 'Tile Work',    'Skirting Tiles',                                           'RM',   n(skirtingLength),    R[23]?.rateAvg    || 0,    marginPct),
-    mkItem(29, 'Tile Work',    'Granite Countertop 20mm Polished',                         'm²',   n(graniteArea),       R[24]?.rateAvg    || 0,    marginPct),
-    mkItem(30, 'Doors & Windows', 'Main Door',                                            'Nos',  sumNos(mainDoors),    R[25]?.rateGFloor || 0,    marginPct),
-    mkItem(31, 'Doors & Windows', 'Room Door',                                            'Nos',  sumNos(roomDoors),    R[26]?.rateAvg    || 0,    marginPct),
-    mkItem(32, 'Doors & Windows', 'Bathroom PVC Door',                                    'Nos',  sumNos(pvcDoors),     R[27]?.rateGFloor || 0,    marginPct),
-    mkItem(33, 'Doors & Windows', 'Pooja Room Door',                                      'Nos',  sumNos(poojaDoors),   R[28]?.rateGFloor || 0,    marginPct),
-    mkItem(34, 'Doors & Windows', 'UPVC Windows',                                         'Sqft', qUPVC,                R[29]?.rateAvg    || 0,    marginPct),
-    mkItem(35, 'Painting',     'Inner Wall Painting (primer + putty + 2 coats acrylic)', 'm²',   qInnerPlaster,        R[30]?.rateAvg    || 0,    marginPct),
-    mkItem(36, 'Painting',     'Ceiling Painting (primer + 2 coats acrylic)',            'm²',   qCeiling,             R[31]?.rateAvg    || 0,    marginPct),
-    mkItem(37, 'Painting',     'Outer Wall Weatherproof Exterior Emulsion',               'm²',   qOuterPlaster,        R[32]?.rateAvg    || 0,    marginPct),
-    mkItem(38, 'Staircase',    'Staircase Brickwork (risers)',                            'm³',   stairData.brickVol,   R[33]?.rateAvg    || 0,    marginPct),
-    mkItem(39, 'Staircase',    'Granite Tread & Landing',                                 'm²',   stairData.graniteArea,R[34]?.rateAvg    || 0,    marginPct),
-    mkItem(40, 'Staircase',    'SS Handrail',                                             'RFT',  stairData.handrailLength, R[35]?.rateAvg || 0,   marginPct),
-    mkItem(41, 'Staircase',    'Staircase Concrete M20',                                  'm³',   stairData.concreteVol,R[10]?.rateAvg    || 0,    marginPct),
-    mkItem(42, 'MEP',          'Electrical Works (wiring, DB, conduit, points)',          'Sqft', totalBuiltupSqft,     R[36]?.rateAvg    || 135,  marginPct),
-    mkItem(43, 'MEP',          'Plumbing Works (CPVC supply, PVC waste)',                 'Sqft', totalBuiltupSqft,     R[37]?.rateAvg    || 105,  marginPct),
-    mkItem(48, 'MEP',          'Terrace Surkhi / Waterproofing',                          'm²',   terraceAreaM2,        R[38]?.rateAvg    || 0,    marginPct),
-    mkItem(49, 'Waterproofing','Bathroom Waterproofing (crystalline coating)',             'm²',   qBathroomWaterproof,  R[49]?.rateAvg    || 250,  marginPct),
+    mkItem(14, 'Brickwork',    '9\" Flyash Brick Wall',                                    'm²',   qBrick9,              R[12]?.rateAvg    || 0,    marginPct, R[12]),
+    mkItem(15, 'Brickwork',    '4.5\" Flyash Brick Partition Wall',                        'm²',   qBrick4,              R[13]?.rateAvg    || 0,    marginPct, R[13]),
+    mkItem(16, 'Plastering',   'Outer Wall Plastering 20mm',                               'm²',   qOuterPlaster,        R[15]?.rateAvg    || 0,    marginPct, R[15]),
+    mkItem(17, 'Plastering',   'Inner Wall Plastering 12mm (both faces)',                  'm²',   qInnerPlaster,        R[16]?.rateAvg    || 0,    marginPct, R[16]),
+    mkItem(18, 'Plastering',   'Ceiling Plastering 6mm',                                   'm²',   qCeiling,             R[17]?.rateAvg    || 0,    marginPct, R[17]),
+    mkItem(19, 'Concrete',     'Sill Beam Concrete M20',                                   'm³',   sillVol,              R[8]?.rateAvg     || 0,    marginPct, R[8]),
+    mkItem(20, 'Concrete',     'Lintel Beam Concrete M20',                                 'm³',   lintelVol,            R[8]?.rateAvg     || 0,    marginPct, R[8]),
+    mkItem(21, 'Concrete',     'Loft / Sunshade / Counter Slab / Balcony',                'm³',   loftVol,              R[9]?.rateAvg     || 0,    marginPct, R[9]),
+    mkItem(22, 'Concrete',     'Roof Beam & Slab Concrete M20',                           'm³',   totalSlabVol,         R[7]?.rateAvg     || 0,    marginPct, R[7]),
+    mkItem(23, 'Tile Work',    'Main Floor Vitrified Tiles',                               'm²',   n(flooringArea),      R[18]?.rateAvg    || 0,    marginPct, R[18]),
+    mkItem(24, 'Tile Work',    'Bathroom Floor Ceramic Tiles',                             'm²',   n(bathroomFloorArea), R[19]?.rateAvg    || 0,    marginPct, R[19]),
+    mkItem(25, 'Tile Work',    'Parking / Balcony Anti-Skid Tiles',                        'm²',   n(parkingArea),       R[20]?.rateAvg    || 0,    marginPct, R[20]),
+    mkItem(26, 'Tile Work',    'Kitchen Wall Ceramic Tiles',                               'm²',   n(kitchenWallArea),   R[21]?.rateAvg    || 0,    marginPct, R[21]),
+    mkItem(27, 'Tile Work',    'Bathroom Wall Ceramic Tiles',                              'm²',   n(bathroomWallArea),  R[22]?.rateAvg    || 0,    marginPct, R[22]),
+    mkItem(28, 'Tile Work',    'Skirting Tiles',                                           'RM',   n(skirtingLength),    R[23]?.rateAvg    || 0,    marginPct, R[23]),
+    mkItem(29, 'Tile Work',    'Granite Countertop 20mm Polished',                         'm²',   n(graniteArea),       R[24]?.rateAvg    || 0,    marginPct, R[24]),
+    mkItem(30, 'Doors & Windows', 'Main Door',                                            'Nos',  sumNos(mainDoors),    R[25]?.rateGFloor || 0,    marginPct, R[25]),
+    mkItem(31, 'Doors & Windows', 'Room Door',                                            'Nos',  sumNos(roomDoors),    R[26]?.rateAvg    || 0,    marginPct, R[26]),
+    mkItem(32, 'Doors & Windows', 'Bathroom PVC Door',                                    'Nos',  sumNos(pvcDoors),     R[27]?.rateGFloor || 0,    marginPct, R[27]),
+    mkItem(33, 'Doors & Windows', 'Pooja Room Door',                                      'Nos',  sumNos(poojaDoors),   R[28]?.rateGFloor || 0,    marginPct, R[28]),
+    mkItem(34, 'Doors & Windows', 'UPVC Windows',                                         'Sqft', qUPVC,                R[29]?.rateAvg    || 0,    marginPct, R[29]),
+    mkItem(35, 'Painting',     'Inner Wall Painting (primer + putty + 2 coats acrylic)', 'm²',   qInnerPlaster,        R[30]?.rateAvg    || 0,    marginPct, R[30]),
+    mkItem(36, 'Painting',     'Ceiling Painting (primer + 2 coats acrylic)',            'm²',   qCeiling,             R[31]?.rateAvg    || 0,    marginPct, R[31]),
+    mkItem(37, 'Painting',     'Outer Wall Weatherproof Exterior Emulsion',               'm²',   qOuterPlaster,        R[32]?.rateAvg    || 0,    marginPct, R[32]),
+    mkItem(38, 'Staircase',    'Staircase Brickwork (risers)',                            'm³',   stairData.brickVol,   R[33]?.rateAvg    || 0,    marginPct, R[33]),
+    mkItem(39, 'Staircase',    'Granite Tread & Landing',                                 'm²',   stairData.graniteArea,R[34]?.rateAvg    || 0,    marginPct, R[34]),
+    mkItem(40, 'Staircase',    'SS Handrail',                                             'RFT',  stairData.handrailLength, R[35]?.rateAvg || 0,   marginPct, R[35]),
+    mkItem(41, 'Staircase',    'Staircase Concrete M20',                                  'm³',   stairData.concreteVol,R[10]?.rateAvg    || 0,    marginPct, R[10]),
+    mkItem(42, 'MEP',          'Electrical Works (wiring, DB, conduit, points)',          'Sqft', totalBuiltupSqft,     R[36]?.rateAvg    || 135,  marginPct, R[36]),
+    mkItem(43, 'MEP',          'Plumbing Works (CPVC supply, PVC waste)',                 'Sqft', totalBuiltupSqft,     R[37]?.rateAvg    || 105,  marginPct, R[37]),
+    mkItem(48, 'MEP',          'Terrace Surkhi / Waterproofing',                          'm²',   terraceAreaM2,        R[38]?.rateAvg    || 0,    marginPct, R[38]),
+    mkItem(49, 'Waterproofing','Bathroom Waterproofing (crystalline coating)',             'm²',   qBathroomWaterproof,  R[49]?.rateAvg    || 250,  marginPct, R[49]),
 
     // ── PREMIUM & SITE WORKS ──
-    mkItem(50, 'Site Works',   'Compound Wall (9\" brick + plaster + RCC coping)',        'RM',   n(compoundWallLength),R[50]?.rateAvg    || 1800, marginPct),
-    mkItem(51, 'Elevation',    'Elevation / Façade — texture + stone / ACP accent',       'm²',   qElevation,           R[51]?.rateAvg    || 540,  marginPct),
-    mkItem(52, 'Electrical',   'Electrical Fixtures — fans, lights, switches (supply+fix)','Nos', qElecPoints,          R[52]?.rateAvg    || 1100, marginPct),
-    mkItem(53, 'Plumbing',     'Sanitaryware Set — EWC + wash-basin + CP fittings',       'Set',  n(numBathrooms),      R[53]?.rateAvg    || 42000,marginPct),
-    mkItem(54, 'Site Works',   'Overhead Water Tank (PVC 1000 L installed)',               'Nos',  n(numOHTanks),        R[54]?.rateAvg    || 24000,marginPct),
-    mkItem(55, 'Site Works',   'Borewell + Submersible Pump + GI Casing',                 'RFT',  n(borewellDepth),     R[55]?.rateAvg    || 700,  marginPct),
-    mkItem(56, 'Site Works',   'Plan Approval / Building Permit & DTCP/CMDA Fees',        'Sqft', qApprovals,           R[56]?.rateAvg    || 38,   marginPct),
-    mkItem(57, 'Finishes',     'Kitchen Platform — granite + SS sink + accessories',      'RM',   n(kitchenPlatformRM), R[57]?.rateAvg    || 30000,marginPct),
-    mkItem(58, 'Finishes',     'MS Window Safety Grilles (fabricated + powder coated)',   'm²',   qMSGrilles,           R[58]?.rateAvg    || 1015, marginPct),
+    mkItem(50, 'Site Works',   'Compound Wall (9\" brick + plaster + RCC coping)',        'RM',   n(compoundWallLength),R[50]?.rateAvg    || 1800, marginPct, R[50]),
+    mkItem(51, 'Elevation',    'Elevation / Façade — texture + stone / ACP accent',       'm²',   qElevation,           R[51]?.rateAvg    || 540,  marginPct, R[51]),
+    mkItem(52, 'Electrical',   'Electrical Fixtures — fans, lights, switches (supply+fix)','Nos', qElecPoints,          R[52]?.rateAvg    || 1100, marginPct, R[52]),
+    mkItem(53, 'Plumbing',     'Sanitaryware Set — EWC + wash-basin + CP fittings',       'Set',  n(numBathrooms),      R[53]?.rateAvg    || 42000,marginPct, R[53]),
+    mkItem(54, 'Site Works',   'Overhead Water Tank (PVC 1000 L installed)',               'Nos',  n(numOHTanks),        R[54]?.rateAvg    || 24000,marginPct, R[54]),
+    mkItem(55, 'Site Works',   'Borewell + Submersible Pump + GI Casing',                 'RFT',  n(borewellDepth),     R[55]?.rateAvg    || 700,  marginPct, R[55]),
+    mkItem(56, 'Site Works',   'Plan Approval / Building Permit & DTCP/CMDA Fees',        'Sqft', qApprovals,           R[56]?.rateAvg    || 38,   marginPct, R[56]),
+    mkItem(57, 'Finishes',     'Kitchen Platform — granite + SS sink + accessories',      'RM',   n(kitchenPlatformRM), R[57]?.rateAvg    || 30000,marginPct, R[57]),
+    mkItem(58, 'Finishes',     'MS Window Safety Grilles (fabricated + powder coated)',   'm²',   qMSGrilles,           R[58]?.rateAvg    || 1015, marginPct, R[58]),
     // External development — use entered area; auto-estimate 20% of ground floor footprint if blank
-    mkItem(59, 'External Dev', 'External Development — driveway, path, compound floor',  'm²',   n(externalDevArea) > 0 ? n(externalDevArea) : round2(totalAreaM2 / floors.length * 0.2), R[59]?.rateAvg || 850, marginPct),
+    mkItem(59, 'External Dev', 'External Development — driveway, path, compound floor',  'm²',   n(externalDevArea) > 0 ? n(externalDevArea) : round2(totalAreaM2 / floors.length * 0.2), R[59]?.rateAvg || 850, marginPct, R[59]),
   ];
 
   // Additional works (pass-through with custom rates)
@@ -579,7 +599,7 @@ export function computeBoq(inputs, rateMap, marginPct = 12) {
 /**
  * Helper to make a standard line item.
  */
-function mkItem(sno, section, description, unit, quantity, rate, marginPct) {
+function mkItem(sno, section, description, unit, quantity, rate, marginPct, rateObj) {
   const mf = 1 + marginPct / 100;
   const baseAmount = round2(quantity * rate);
   return {
@@ -587,11 +607,14 @@ function mkItem(sno, section, description, unit, quantity, rate, marginPct) {
     section,
     description,
     unit,
-    quantity: round2(quantity),
-    rate: round2(rate),
+    quantity:    round2(quantity),
+    rate:        round2(rate),
     baseAmount,
-    amount: round2(baseAmount * mf),
+    amount:      round2(baseAmount * mf),
     marginPct,
+    // Audit trail — populated when a rateObj from the rate map is passed
+    srcRate:     rateObj?.srcRate  ?? null,
+    srcUnit:     rateObj?.srcUnit  ?? null,
   };
 }
 
