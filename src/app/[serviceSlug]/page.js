@@ -5,6 +5,80 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { serviceHubs, serviceHubMap } from '@/data/seo/serviceHubs';
+import {
+  Building2, ClipboardList, ShoppingCart, Eye, FileCheck, Search,
+  HardHat, Ruler, Shield, Home, Users, Award, Zap, Package, Truck,
+  Activity, Shovel, Compass, FlaskConical, Camera, Map, Waves,
+  BrickWall, Gauge, Landmark, LayoutDashboard, Scale, Thermometer,
+  Workflow, PenTool, FileText, CheckCircle, Wrench, Hammer, Star,
+  Layers, MapPin, Mountain, Lightbulb, Factory, Warehouse, BookOpen,
+  Receipt, Timer, BarChart2, Scan, Network, Drill,
+} from 'lucide-react';
+
+const ICON_MAP = {
+  'design': PenTool,
+  'boq': ClipboardList,
+  'material': Package,
+  'supervision': Eye,
+  'audit': Shield,
+  'handover': FileCheck,
+  'building': Building2,
+  'home': Home,
+  'search': Search,
+  'hard-hat': HardHat,
+  'ruler': Ruler,
+  'users': Users,
+  'award': Award,
+  'zap': Zap,
+  'truck': Truck,
+  'activity': Activity,
+  'shovel': Shovel,
+  'compass': Compass,
+  'flask': FlaskConical,
+  'camera': Camera,
+  'map': Map,
+  'waves': Waves,
+  'brick': BrickWall,
+  'gauge': Gauge,
+  'landmark': Landmark,
+  'dashboard': LayoutDashboard,
+  'scale': Scale,
+  'thermometer': Thermometer,
+  'workflow': Workflow,
+  'file': FileText,
+  'check': CheckCircle,
+  'wrench': Wrench,
+  'hammer': Hammer,
+  'star': Star,
+  'layers': Layers,
+  'pin': MapPin,
+  'mountain': Mountain,
+  'lightbulb': Lightbulb,
+  'factory': Factory,
+  'warehouse': Warehouse,
+  'book': BookOpen,
+  'receipt': Receipt,
+  'timer': Timer,
+  'chart': BarChart2,
+  'scan': Scan,
+  'network': Network,
+  'drill': Drill,
+  'cart': ShoppingCart,
+};
+
+function ServiceIcon({ name, color }) {
+  const LucideIcon = (name && ICON_MAP[name]) || Building2;
+  return (
+    <div style={{
+      width: '52px', height: '52px', borderRadius: '14px',
+      background: color ? `${color}18` : 'rgba(252,110,32,0.1)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      marginBottom: '16px', flexShrink: 0,
+    }}>
+      <LucideIcon size={26} color={color || '#FC6E20'} />
+    </div>
+  );
+}
 
 // Generate static params for all hub slugs
 export async function generateStaticParams() {
@@ -231,7 +305,7 @@ export default async function ServiceHubPage({ params }) {
                     boxShadow: '0 2px 8px rgba(0,0,0,0.04)',
                     transition: 'transform 0.2s, box-shadow 0.2s',
                   }}>
-                    <div style={{ fontSize: '32px', marginBottom: '16px' }}>{item.icon}</div>
+                    <ServiceIcon name={item.icon} color={colors.accent} />
                     <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', marginBottom: '10px' }}>
                       {item.title}
                     </h3>
