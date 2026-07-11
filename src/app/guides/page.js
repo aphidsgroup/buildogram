@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { guides, guideCategories } from '@/data/seo/guides';
 
 export const metadata = generateSEOMetadata({
-title: 'Buildogram Guides | Construction, BOQ, Property & Maintenance Guides',
+  title: 'Buildogram Guides | Construction, BOQ, Property & Maintenance Guides',
   description: 'Expert guides for homeowners, landlords, and property investors. BOQ, construction cost, contractor selection, plan review, property records, rental, and maintenance.',
   path: '/guides',
 });
@@ -20,15 +20,15 @@ const categoryLabels = {
 };
 
 export default function GuidesHub() {
-  return ( <>
+  return (
     <>
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Guides & Resources</span>
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Guides &amp; Resources</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>
-            Construction & Property Guides for Indian Homeowners
+            Construction &amp; Property Guides for Indian Homeowners
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', maxWidth: '560px', lineHeight: 1.7 }}>
             Evidence-based, engineer-written guides to help you build, buy, rent, and maintain property with confidence.
@@ -62,8 +62,8 @@ export default function GuidesHub() {
           );
         })}
       </div>
-    </>
-    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Buildogram Guides","path":"/guides"}]} />
+
+      <BreadcrumbSchema items={[{ name: 'Home', path: '/' }, { name: 'Buildogram Guides', path: '/guides' }]} />
     </>
   );
 }

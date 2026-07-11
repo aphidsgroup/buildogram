@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { glossaryTerms } from '@/data/seo/glossary';
 
 export const metadata = generateSEOMetadata({
-title: 'Construction & Property Glossary | Buildogram',
+  title: 'Construction & Property Glossary | Buildogram',
   description: 'A comprehensive glossary of construction, structural, regulatory, and property terms for Indian homeowners. BOQ, RCC, PMC, FSI, UDS, and more — explained clearly.',
   path: '/glossary',
 });
@@ -23,7 +23,7 @@ const categoryLabels = {
 };
 
 export default function GlossaryHub() {
-  return ( <>
+  return (
     <>
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">
@@ -31,7 +31,7 @@ export default function GlossaryHub() {
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Glossary</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>
-            Construction & Property Glossary
+            Construction &amp; Property Glossary
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', maxWidth: '560px', lineHeight: 1.7 }}>
             Plain-language explanations of construction, engineering, regulatory, and property terms — written for Indian homeowners.
@@ -62,8 +62,8 @@ export default function GlossaryHub() {
           );
         })}
       </div>
-    </>
-    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Construction & Property Glossary","path":"/glossary"}]} />
+
+      <BreadcrumbSchema items={[{ name: 'Home', path: '/' }, { name: 'Construction & Property Glossary', path: '/glossary' }]} />
     </>
   );
 }

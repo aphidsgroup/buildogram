@@ -1,0 +1,246 @@
+import { EXCEL_RATES } from './rates.js';
+import {
+  n, round2,
+  calcEarthwork, calcPCC, calcFootingConcrete, calcColumnConcreteTotal,
+  calcPlinthBeam, calcBackfilling, calcBasementBrickwork, calcBasementPlastering,
+  calcBasementFilling, calcMSandLayer, calcAntiTermite, calcFlooringPCC,
+  calcBrickwork9, calcBrickwork4, calcOuterPlastering, calcInnerPlastering,
+  calcStaircase, calcSlabConcrete
+} from './engine.js';
+import { SQFT_PER_M2, CFT_PER_M3, RFT_PER_RM, BRICK9_CFT_PER_M2 } from './units.js';
+
+const EXCEL_ADDITIONAL_WORKS = [
+  { description: 'UG Sump',       amount: 90000  },
+  { description: 'Septic Tank',   amount: 70000  },
+  { description: 'OHT',           amount: 59500  },
+  { description: 'Compound Wall', amount: 274000 },
+  { description: 'Soakpit',       amount: 10000  },
+  { description: 'Ramp',          amount: 15000  },
+  { description: 'Setback PCC',   amount: 37620  },
+  { description: 'Gate',          amount: 56000  },
+];
+
+/**
+ * Helper to make a standard line item for Excel comparison mode.
+ */
+function mkExcelItem(sno, section, description, rateKey, qtyInOriginalUnit, exactValues = {}) {
+  const rateObj = EXCEL_RATES[rateKey];
+  const exact = exactValues[description] || {};
+  
+  const qty = (exact.qty !== undefined) ? exact.qty : round2(qtyInOriginalUnit);
+  const rate = (exact.rate !== undefined) ? exact.rate : (rateObj ? rateObj.rate : 0);
+  const baseAmount = (exact.amount !== undefined) ? exact.amount : round2(qty * rate);
+
+  if (!rateObj && exact.rate === undefined && exact.amount === undefined) {
+    console.warn(`Excel rate missing for key: ${rateKey}`);
+  }
+  
+  return {
+    sno,
+    section,
+    description,
+    unit: rateObj ? rateObj.unit : '-',
+    quantity: qty,
+    rate: round2(rate),
+    baseAmount,
+    amount: baseAmount,
+    marginPct: 0,
+    srcRate: rate,
+    srcUnit: rateObj ? rateObj.unit : '-',
+    isExcelMode: true
+  };
+}
+
+/**
+ * Calculate door area in sqft.
+ * Falls back to standard sizes if widthFt or heightFt are missing.
+ */
+function calcDoorAreaSqft(doorsList, defaultW, defaultH) {
+  let area = 0;
+  for (const d of (doorsList || [])) {
+    if (n(d.area) > 0) {
+      area += n(d.area);
+    } else {
+      const w = n(d.widthFt) > 0 ? n(d.widthFt) : defaultW;
+      const h = n(d.heightFt) > 0 ? n(d.heightFt) : defaultH;
+      area += w * h * n(d.nos);
+    }
+  }
+  return round2(area);
+}
+
+export function computeExcelBoq(inputs) {
+  const { foundation = [], plinthBeam = [], basement = {}, brickwork9 = [], brickwork4 = [], plastering = {}, doorsWindows = [], others = {}, tileWork = {}, slabConcrete = [], staircase = {}, premiumItems = {} } = inputs;
+
+  const { flooringArea = 0, skirtingLength = 0, bathroomFloorArea = 0, bathroomWallArea = 0, kitchenWallArea = 0, parkingArea = 0, graniteArea = 0 } = tileWork;
+
+  const totalAreaM2      = (inputs.floors || []).reduce((s, r) => s + n(r.area), 0) * 0.0929;
+  const totalAreaSqft    = (inputs.floors || []).reduce((s, r) => s + n(r.area), 0);
+
+  const exact = inputs.exactValues || {};
+  const _mkExcelItem = (sno, section, desc, key, qty) => mkExcelItem(sno, section, desc, key, qty, exact);
+
+  const qEarthExcav      = calcEarthwork(foundation);
+  const qPCC             = calcPCC(foundation);
+  const qFootingConc     = calcFootingConcrete(foundation);
+  const qColumnConc      = calcColumnConcreteTotal(foundation);
+  const qPlinthBeamVol   = calcPlinthBeam(plinthBeam);
+  const qBackfill        = calcBackfilling(qEarthExcav, qPCC, qFootingConc);
+  const qBasementBrick   = calcBasementBrickwork(basement);
+  const qBasementPlaster = calcBasementPlastering(basement);
+  const qBasementFill    = calcBasementFilling(basement, inputs.floors || []);
+  const qMSand           = calcMSandLayer(inputs.floors || []);
+  const qAntiTermite     = calcAntiTermite(inputs.floors || []);
+  const qFlooringPCC     = calcFlooringPCC(inputs.floors || []);
+
+  const qBrick9          = calcBrickwork9(brickwork9);
+  const qBrick4          = calcBrickwork4(brickwork4);
+  const qOuterPlaster    = n(plastering?.outerPlasterArea) > 0 ? round2(n(plastering.outerPlasterArea) * 0.0929) : calcOuterPlastering(brickwork9);
+  const qInnerPlaster    = n(plastering?.innerPlasterArea) > 0 ? round2(n(plastering.innerPlasterArea) * 0.0929) : calcInnerPlastering(plastering, brickwork9, brickwork4);
+  const qCeiling         = n(plastering?.ceilingArea) > 0 ? round2(n(plastering.ceilingArea)) : totalAreaM2;
+
+  let qSillLength = 0;
+  let qLintelLength = 0;
+  if (inputs.sillLintel) {
+    qSillLength = n(inputs.sillLintel.sillLength);
+    qLintelLength = n(inputs.sillLintel.lintelLength);
+  } else {
+    qLintelLength = qBrick9 + qBrick4;
+    qSillLength = qBrick9 + qBrick4;
+  }
+
+  const slabData         = calcSlabConcrete(slabConcrete);
+  const totalSlabAreaM2  = round2(slabData.reduce((s, r) => s + (n(r.slabArea) || 0), 0));
+  const stairData        = calcStaircase(staircase);
+
+  // Doors
+  const mainDoors  = (doorsWindows || []).filter(r => r.type === 'main_door');
+  const roomDoors  = (doorsWindows || []).filter(r => r.type === 'room_door');
+  const pvcDoors   = (doorsWindows || []).filter(r => r.type === 'pvc_door');
+  const poojaDoors = (doorsWindows || []).filter(r => r.type === 'pooja_door');
+  
+  const qMainDoorSqft  = calcDoorAreaSqft(mainDoors, 4.0, 7.0);
+  const qRoomDoorSqft  = calcDoorAreaSqft(roomDoors, 3.0, 7.0);
+  const qPoojaDoorSqft = calcDoorAreaSqft(poojaDoors, 3.5, 7.0);
+  const qPvcDoorSqft   = calcDoorAreaSqft(pvcDoors, 2.5, 7.0);
+
+  // Windows UPVC (already in sqft)
+  const qUPVC = n(premiumItems?.upvcWindowsSqft);
+  
+  const qSSHandrail = n(staircase?.handrailLength) * 3.28084; // m to rft
+
+  // 2. Build the exact 40 items of the Excel structure
+  const foundationItems = [
+    _mkExcelItem(1, 'Foundation', 'Earth excavation for footing', 'earthExcavation', qEarthExcav * CFT_PER_M3),
+    _mkExcelItem(2, 'Foundation', 'PCC 1:4:8 in foundation', 'pcc148', qPCC * CFT_PER_M3),
+    _mkExcelItem(3, 'Foundation', 'Footing Concrete M20', 'footingConcrete', qFootingConc * CFT_PER_M3),
+    _mkExcelItem(4, 'Foundation', 'Column Concrete M20', 'columnConcrete', qColumnConc * CFT_PER_M3),
+    _mkExcelItem(5, 'Foundation', 'Plinth Beam Excavation', 'plinthBeamExcavation', qPlinthBeamVol * CFT_PER_M3),
+    _mkExcelItem(6, 'Foundation', 'Back-Filling', 'backFilling', qBackfill * CFT_PER_M3),
+    _mkExcelItem(7, 'Foundation', 'Plinth Beam Concrete M20', 'plinthBeamConcrete', qPlinthBeamVol * CFT_PER_M3),
+    _mkExcelItem(8, 'Foundation', 'Basement Brickwork (Flyash)', 'basementBrickwork', qBasementBrick * CFT_PER_M3),
+    _mkExcelItem(9, 'Foundation', 'Basement Plastering (1:6)', 'basementPlastering', qBasementPlaster * SQFT_PER_M2),
+    _mkExcelItem(10, 'Foundation', 'Basement filling', 'basementFilling', qBasementFill * CFT_PER_M3),
+    _mkExcelItem(11, 'Foundation', 'Msand 4" layer above Gravel', 'msand4Layer', qMSand * CFT_PER_M3),
+    _mkExcelItem(12, 'Foundation', 'Anti Termite Treatment', 'antiTermite', qAntiTermite * SQFT_PER_M2),
+    _mkExcelItem(13, 'Foundation', 'Flooring PCC', 'flooringPCC', qFlooringPCC * SQFT_PER_M2),
+  ];
+
+  const superItems = [
+    _mkExcelItem(14, 'Superstructure', 'Brickwork-Flyash 9"', 'brickwork9', qBrick9 * BRICK9_CFT_PER_M2), // Special rule: m2 * 8.1224 = cft
+    _mkExcelItem(15, 'Superstructure', 'Brickwork-Flyash 4.5"', 'brickwork4', qBrick4 * SQFT_PER_M2),
+    _mkExcelItem(16, 'Superstructure', 'Wall Plastering -Outer (1:6)', 'outerPlastering', qOuterPlaster * SQFT_PER_M2),
+    _mkExcelItem(17, 'Superstructure', 'Wall Plastering -Inner (1:6)', 'innerPlastering', qInnerPlaster * SQFT_PER_M2),
+    _mkExcelItem(18, 'Superstructure', 'Ceiling Plastering (1:3)', 'ceilingPlastering', qCeiling * SQFT_PER_M2),
+    _mkExcelItem(19, 'Superstructure', 'Sill Beam', 'sillBeam', qSillLength * RFT_PER_RM),
+    _mkExcelItem(20, 'Superstructure', 'Lintel Beam', 'lintelBeam', qLintelLength * RFT_PER_RM),
+    _mkExcelItem(21, 'Superstructure', 'Loft,Sunshade,Counterslab,..', 'lumpSumConcrete', 1), // fixed lumpsum/derived
+    _mkExcelItem(22, 'Superstructure', 'Roof Beam,Roof Slab', 'roofBeamSlab', totalSlabAreaM2 * SQFT_PER_M2),
+    _mkExcelItem(23, 'Superstructure', 'Tile work-Flooring', 'flooringTile', n(flooringArea) * SQFT_PER_M2),
+    _mkExcelItem(24, 'Superstructure', 'Tile work-Skirting', 'skirting', n(skirtingLength) * RFT_PER_RM),
+    _mkExcelItem(25, 'Superstructure', 'Tile work-Bathroom Floor', 'bathroomFloorTile', n(bathroomFloorArea) * SQFT_PER_M2),
+    _mkExcelItem(26, 'Superstructure', 'Tile work-Bathroom Wall', 'bathroomWallTile', n(bathroomWallArea) * SQFT_PER_M2),
+    _mkExcelItem(27, 'Superstructure', 'Tile work-Kitchen wall', 'kitchenWallTile', n(kitchenWallArea) * SQFT_PER_M2),
+    _mkExcelItem(28, 'Superstructure', 'Tile work-Parking/Balcony', 'parkingTile', n(parkingArea) * SQFT_PER_M2),
+    _mkExcelItem(29, 'Superstructure', 'Granite-Countertop', 'graniteCountertop', n(graniteArea) * SQFT_PER_M2),
+    _mkExcelItem(30, 'Superstructure', 'Main Door-Teak', 'mainDoor', qMainDoorSqft),
+    _mkExcelItem(31, 'Superstructure', 'Room Door-Sal Frame&Flux Door', 'roomDoor', qRoomDoorSqft),
+    _mkExcelItem(32, 'Superstructure', 'Pooja Door-Teak Door', 'poojaDoor', qPoojaDoorSqft),
+    _mkExcelItem(33, 'Superstructure', 'Bathroom-PVC Door', 'bathroomPvcDoor', qPvcDoorSqft),
+    _mkExcelItem(34, 'Superstructure', 'Windows-UPVC', 'upvcWindows', qUPVC),
+    _mkExcelItem(35, 'Superstructure', 'Painting work-Inner Wall', 'innerWallPainting', qInnerPlaster * SQFT_PER_M2),
+    _mkExcelItem(36, 'Superstructure', 'Painting work-Inner Ceiling', 'innerCeilingPainting', qCeiling * SQFT_PER_M2),
+    _mkExcelItem(37, 'Superstructure', 'Painting work-Outer Wall', 'outerWallPainting', qOuterPlaster * SQFT_PER_M2),
+    _mkExcelItem(38, 'Superstructure', 'Staircase-Brickwork', 'staircaseBrickwork', stairData.brickVol * CFT_PER_M3),
+    _mkExcelItem(39, 'Superstructure', 'Staircase-Granitework', 'staircaseGranite', stairData.graniteArea * SQFT_PER_M2),
+    _mkExcelItem(40, 'Superstructure', 'Staircase-SS Handrail 304G', 'ssHandrail', qSSHandrail),
+    _mkExcelItem(41, 'Superstructure', 'Staircase-Concrete', 'staircaseConcrete', stairData.concreteVol * CFT_PER_M3),
+    _mkExcelItem(42, 'Superstructure', 'Electrical&Plumbing', 'electricalPlumbing', totalAreaSqft), // MEP typically per sqft of built-up
+    _mkExcelItem(43, 'Superstructure', 'Terrace surkhi', 'terraceSurkhi', n(others.terraceArea) > 0 ? n(others.terraceArea) : totalAreaSqft),
+  ];
+
+  const items = [...foundationItems, ...superItems];
+
+  // 3. Subtotals (Rates already include default margin in Excel mode)
+  const foundationBase = round2(foundationItems.reduce((sum, item) => sum + item.baseAmount, 0));
+  const foundationTotal = foundationBase; // No * 1.12 since rates are pre-margined
+  
+  const superstructureBase = round2(superItems.reduce((sum, item) => sum + item.baseAmount, 0));
+  const superstructureTotal = superstructureBase; // No * 1.12 since rates are pre-margined
+
+  const buildingEstimate = round2(foundationTotal + superstructureTotal);
+  const buildingRatePerSqft = totalAreaSqft > 0 ? round2(buildingEstimate / totalAreaSqft) : 0;
+
+  // 4. Additional Works
+  const additionalWorks = EXCEL_ADDITIONAL_WORKS.map((aw, i) => ({
+    sno: 40 + i,
+    section: 'Additional Works',
+    description: aw.description,
+    unit: 'LS',
+    quantity: 1,
+    rate: aw.amount,
+    baseAmount: aw.amount,
+    amount: aw.amount,
+    marginPct: 0,
+    isAdditional: true,
+    isExcelMode: true
+  }));
+  const additionalTotal = additionalWorks.reduce((sum, item) => sum + item.amount, 0);
+
+  // 5. Grand Totals
+  const grandTotal = round2(buildingEstimate + additionalTotal);
+  const grandRatePerSqft = totalAreaSqft > 0 ? round2(grandTotal / totalAreaSqft) : 0;
+
+  return {
+    items: [...items, ...additionalWorks],
+    foundationItems,
+    superItems,
+    additionalItems: additionalWorks,
+    
+    foundationBase,
+    foundationTotal,
+    superstructureBase,
+    superstructureTotal,
+    
+    sectionTotals: {
+      foundation: foundationTotal,
+      superstructure: superstructureTotal,
+      additionalWorks: additionalTotal,
+      steel: 0,
+      premium: 0,
+      provisionals: 0,
+      gst: 0,
+      pileFoundation: 0
+    },
+
+    buildingEstimate,
+    buildingRatePerSqft,
+    additionalTotal,
+    grandTotal,
+    grandRatePerSqft,
+    ratePerSqft: grandRatePerSqft, // standard key for page.js generic code
+    totalAreaSqft,
+    totalAreaM2,
+    mode: 'excel'
+  };
+}

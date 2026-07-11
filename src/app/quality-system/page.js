@@ -13,7 +13,7 @@ export const metadata = generateSEOMetadata({
 });
 
 const STEPS = [
-  { title: '1. Project Scope Mapping', desc: 'Our engineers map your project’s specific requirements against the comprehensive 2500+ BQS checkpoint framework to determine the applicable checks.' }, 
+  { title: '1. Project Scope Mapping', desc: 'Our engineers map your project\u2019s specific requirements against the comprehensive 2500+ BQS checkpoint framework to determine the applicable checks.' }, 
   { title: '2. Stage-Wise Inspections', desc: 'At critical milestones (Foundation, RCC, MEP, Waterproofing), a qualified civil engineer performs targeted inspections against the checklist.' }, 
   { title: '3. Proof Uploads & Remarks', desc: 'Observations are documented with photographic or measurement-based evidence, providing an honest record of field conditions.' }, 
   { title: '4. Rework & Issue Closure', desc: 'Failed checkpoints generate rework tickets. The contractor addresses the issue, and the engineer verifies closure before the stage is marked complete.' }, 
@@ -22,7 +22,7 @@ const STEPS = [
 
 const FAQS = [
   { question: 'Does BQS guarantee zero defects?', answer: 'No system can guarantee zero defects in construction. BQS provides an evidence-backed framework for tracking observations, enforcing structured stage-wise checks, and ensuring identified issues are properly closed out with documentation.' }, 
-  { question: 'Are all 2500+ checkpoints used on every project?', answer: 'No. The BQS is a vast framework covering everything from basic masonry to deep piling. Your project’s specific scope dictates which checklists are activated.' }, 
+  { question: 'Are all 2500+ checkpoints used on every project?', answer: 'No. The BQS is a vast framework covering everything from basic masonry to deep piling. Your project\u2019s specific scope dictates which checklists are activated.' }, 
   { question: 'Who performs the inspections?', answer: 'Inspections are led by independent, qualified civil and structural engineers from the Buildogram network.' }, 
   { question: 'Can I see the inspection results?', answer: 'Yes. Completed stage summaries and owner-visible proof records are automatically published to your secure Property Passport.' }
 ];
@@ -30,57 +30,83 @@ const FAQS = [
 export default function Page() { 
   return ( 
     <>
-      <main className="min-h-screen bg-slate-50 font-sans pb-24">
+      <main style={{ minHeight: '100vh', background: 'var(--bg)', paddingBottom: '96px' }}>
         
         {/* Hero Section */}
-        <section className="bg-slate-900 text-white pt-32 pb-20 px-4 md:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <div className="mb-4 text-orange-500 font-bold tracking-widest uppercase text-sm">Buildogram Quality System</div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight">Evidence-Backed Quality Tracking for Construction.</h1>
-            <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-8 font-medium">An operational framework of up to 2500+ potential checkpoints, ensuring stage-wise quality observations are documented, corrected, and stored permanently.</p>
-            <div className="flex justify-center gap-4">
-              <Link href="/contact" className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg transition-colors">Speak to an Engineer</Link>
+        <section style={{ background: 'var(--secondary)', color: 'white', padding: '128px 32px 80px', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.08) 0%, transparent 55%)' }} />
+          <div style={{ maxWidth: '896px', margin: '0 auto', textAlign: 'center', position: 'relative' }}>
+            <div style={{ marginBottom: '16px', color: 'var(--primary)', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', fontSize: '14px' }}>
+              Buildogram Quality System
+            </div>
+            <h1 style={{ color: 'white', fontSize: 'clamp(28px, 5vw, 56px)', lineHeight: 1.15, marginBottom: '24px', fontWeight: 900 }}>
+              Evidence-Backed Quality Tracking for Construction.
+            </h1>
+            <p style={{ fontSize: '20px', color: 'rgba(255,255,255,0.75)', maxWidth: '672px', margin: '0 auto 32px', fontWeight: 500, lineHeight: 1.6 }}>
+              An operational framework of up to 2500+ potential checkpoints, ensuring stage-wise quality observations are documented, corrected, and stored permanently.
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
+              <Link href="/contact" className="btn btn-primary btn-lg">Speak to an Engineer</Link>
             </div>
           </div>
         </section>
 
         {/* Content Section */}
-        <section className="py-16 px-4 md:px-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="mb-8 text-sm font-medium text-slate-500">
-              <Link href="/" className="hover:text-orange-500 transition-colors">Home</Link> / 
-              <span className="text-slate-900 ml-2">Buildogram Quality System (BQS)</span>
+        <section style={{ padding: '64px 32px' }}>
+          <div style={{ maxWidth: '896px', margin: '0 auto' }}>
+            <div style={{ marginBottom: '32px', fontSize: '14px', fontWeight: 500, color: 'var(--text-muted)' }}>
+              <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Home</Link>
+              {' / '}
+              <span style={{ color: 'var(--secondary)', marginLeft: '4px' }}>Buildogram Quality System (BQS)</span>
             </div>
             
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm mb-12">
-              <h2 className="text-2xl font-bold text-slate-900 mb-6">What is the Buildogram Quality System?</h2>
-              <div className="prose prose-slate max-w-none text-slate-600 space-y-4">
-                <p>The Buildogram Quality System (BQS) is an operational software layer used by our engineers to track field execution against defined standards. Rather than relying on generic promises of quality, BQS enforces <strong>evidence-backed accountability</strong>.</p>
-                <p>Engineers arrive at the site equipped with stage-specific checklists (e.g., Foundation, Masonry, MEP, Waterproofing). They document observations using photos, videos, and precise measurements. If an issue is flagged, a formal <strong>rework ticket</strong> is generated, requiring proof of correction before the stage is closed.</p>
-                <p>Ultimately, all verified checkpoint summaries are attached to your <Link href="/property-passport" className="text-orange-500 font-semibold hover:underline">Property Passport</Link>, creating a permanent digital twin of your home's construction history.</p>
+            <div style={{ background: 'var(--bg-card)', padding: '32px', borderRadius: 'var(--radius)', border: '1px solid var(--border)', boxShadow: 'var(--shadow)', marginBottom: '48px' }}>
+              <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '24px' }}>
+                What is the Buildogram Quality System?
+              </h2>
+              <div style={{ color: 'var(--text-muted)', lineHeight: '1.7' }}>
+                <p style={{ marginBottom: '16px' }}>
+                  The Buildogram Quality System (BQS) is an operational software layer used by our engineers to track field execution against defined standards. Rather than relying on generic promises of quality, BQS enforces <strong>evidence-backed accountability</strong>.
+                </p>
+                <p style={{ marginBottom: '16px' }}>
+                  Engineers arrive at the site equipped with stage-specific checklists (e.g., Foundation, Masonry, MEP, Waterproofing). They document observations using photos, videos, and precise measurements. If an issue is flagged, a formal <strong>rework ticket</strong> is generated, requiring proof of correction before the stage is closed.
+                </p>
+                <p>
+                  Ultimately, all verified checkpoint summaries are attached to your{' '}
+                  <Link href="/property-passport" style={{ color: 'var(--primary)', fontWeight: 600, textDecoration: 'none' }}>
+                    Property Passport
+                  </Link>
+                  , creating a permanent digital twin of your home&apos;s construction history.
+                </p>
               </div>
             </div>
 
-            <div className="mb-12">
+            <div style={{ marginBottom: '48px' }}>
               <ProcessSteps title="How The BQS Works" steps={STEPS} />
             </div>
 
-            <div className="mb-12">
+            <div style={{ marginBottom: '48px' }}>
               <FAQBlock title="Frequently Asked Questions" faqs={FAQS} />
             </div>
 
-            <div className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm mb-12">
-              <h2 className="text-xl font-bold text-slate-900 mb-4">Legal & Privacy Scope</h2>
-              <p className="text-slate-600 mb-4">Buildogram provides an engineer-led, evidence-based quality tracking system. We document observations and facilitate rework closure. The BQS does not constitute an absolute guarantee of structural safety or zero defects, but rather a best-in-class risk mitigation framework. Project-specific checklist scopes vary based on the scale, design, and agreed requirements.</p>
+            <div style={{ background: 'var(--bg-card)', padding: '32px', borderRadius: 'var(--radius)', border: '1px solid var(--border)', boxShadow: 'var(--shadow)', marginBottom: '48px' }}>
+              <h2 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '16px' }}>
+                Legal &amp; Privacy Scope
+              </h2>
+              <p style={{ color: 'var(--text-muted)', lineHeight: '1.7' }}>
+                Buildogram provides an engineer-led, evidence-based quality tracking system. We document observations and facilitate rework closure. The BQS does not constitute an absolute guarantee of structural safety or zero defects, but rather a best-in-class risk mitigation framework. Project-specific checklist scopes vary based on the scale, design, and agreed requirements.
+              </p>
             </div>
 
-            <div className="bg-orange-50 p-8 rounded-2xl border border-orange-200 mb-12">
-              <h2 className="text-lg font-bold text-orange-900 mb-4">Related Engineering Services</h2>
-              <div className="flex flex-wrap gap-3">
-                <Link href="/property-passport" className="bg-white px-4 py-2 rounded-lg border border-orange-200 text-sm font-bold text-slate-700 hover:border-orange-500 transition-colors">Property Passport OS</Link>
-                <Link href="/structural-audit-chennai" className="bg-white px-4 py-2 rounded-lg border border-orange-200 text-sm font-bold text-slate-700 hover:border-orange-500 transition-colors">Structural Audits</Link>
-                <Link href="/materials" className="bg-white px-4 py-2 rounded-lg border border-orange-200 text-sm font-bold text-slate-700 hover:border-orange-500 transition-colors">Material Verification</Link>
-                <Link href="/case-studies" className="bg-white px-4 py-2 rounded-lg border border-orange-200 text-sm font-bold text-slate-700 hover:border-orange-500 transition-colors">Proof & Case Studies</Link>
+            <div style={{ background: 'rgba(252,110,32,0.06)', padding: '32px', borderRadius: 'var(--radius)', border: '1px solid rgba(252,110,32,0.2)', marginBottom: '48px' }}>
+              <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '16px' }}>
+                Related Engineering Services
+              </h2>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
+                <Link href="/property-passport" style={{ background: 'var(--bg-card)', padding: '8px 16px', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(252,110,32,0.25)', fontSize: '14px', fontWeight: 700, color: 'var(--text)', textDecoration: 'none' }}>Property Passport OS</Link>
+                <Link href="/structural-audit-chennai" style={{ background: 'var(--bg-card)', padding: '8px 16px', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(252,110,32,0.25)', fontSize: '14px', fontWeight: 700, color: 'var(--text)', textDecoration: 'none' }}>Structural Audits</Link>
+                <Link href="/materials" style={{ background: 'var(--bg-card)', padding: '8px 16px', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(252,110,32,0.25)', fontSize: '14px', fontWeight: 700, color: 'var(--text)', textDecoration: 'none' }}>Material Verification</Link>
+                <Link href="/case-studies" style={{ background: 'var(--bg-card)', padding: '8px 16px', borderRadius: 'var(--radius-sm)', border: '1px solid rgba(252,110,32,0.25)', fontSize: '14px', fontWeight: 700, color: 'var(--text)', textDecoration: 'none' }}>Proof &amp; Case Studies</Link>
               </div>
             </div>
 
