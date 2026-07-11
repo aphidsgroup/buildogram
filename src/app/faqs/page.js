@@ -4,18 +4,18 @@ import Link from 'next/link';
 import { faqCategories } from '@/data/seo/faqs';
 
 export const metadata = generateSEOMetadata({
-title: 'Frequently Asked Questions | Buildogram',
+  title: 'Frequently Asked Questions | Buildogram',
   description: 'Answers to common questions about home construction, BOQ, contractor selection, quality inspection, property listings, Property Passport, and more.',
   path: '/faqs',
 });
 
 export default function FaqsHub() {
-  return ( <>
+  return (
     <>
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Help & FAQs</span>
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Help &amp; FAQs</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>
             Frequently Asked Questions
@@ -45,8 +45,8 @@ export default function FaqsHub() {
           <Link href="/contact" className="btn btn-primary btn-lg">Talk to an Engineer</Link>
         </div>
       </div>
-    </>
-    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Frequently Asked Questions","path":"/faqs"}]} />
+
+      <BreadcrumbSchema items={[{ name: 'Home', path: '/' }, { name: 'Frequently Asked Questions', path: '/faqs' }]} />
     </>
   );
 }

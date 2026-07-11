@@ -41,7 +41,7 @@ const FAQS = [
 ];
 
 export default function Page() {
-  const currentPath = '/page.js';
+  const currentPath = '/land-survey-chennai';
   const relatedLinks = getContextualLinks('survey', currentPath);
 
   return ( <>

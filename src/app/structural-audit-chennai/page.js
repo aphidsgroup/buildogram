@@ -41,7 +41,7 @@ const FAQS = [
 ];
 
 export default function Page() {
-  const currentPath = '/page.js';
+  const currentPath = '/structural-audit-chennai';
   const relatedLinks = getContextualLinks('audit', currentPath);
 
   return ( <>

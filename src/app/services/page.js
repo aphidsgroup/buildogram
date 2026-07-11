@@ -5,7 +5,7 @@ import { services } from '@/data/seo/services';
 
 export const metadata = generateSEOMetadata({
   title: "Services | Buildogram",
-  description: "Comprehensive services services. Buildogram is an AI-driven, engineer-led construction and property ecosystem offering BOQ review, structural audit, survey, testing, and piling.",
+  description: "Comprehensive construction and engineering services in Chennai. Buildogram is an AI-driven, engineer-led construction and property ecosystem offering BOQ review, structural audit, survey, testing, and piling.",
   path: "/services"
 });
 
