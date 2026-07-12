@@ -25,8 +25,9 @@ function mkExcelItem(sno, section, description, rateKey, qty, isExcelMode, rateM
   }
 
   const finalQty = round2(qty);
-  const finalRate = rateObj ? rateObj.rate : 0;
-  const baseAmount = qty * finalRate;
+  const finalRate = rateObj ? round2(rateObj.rate) : 0;
+  // Excel-faithful: each row amount = ROUND(qty,2) * ROUND(rate,2)
+  const baseAmount = round2(finalQty * finalRate);
 
   if (!rateObj) {
     console.warn(`Excel rate missing for key: ${rateKey}`);
@@ -38,7 +39,7 @@ function mkExcelItem(sno, section, description, rateKey, qty, isExcelMode, rateM
     description,
     unit: rateObj ? rateObj.unit : '-',
     quantity: finalQty,
-    rate: round2(finalRate),
+    rate: finalRate,
     baseAmount,
     amount: baseAmount,
     marginPct: 0,
