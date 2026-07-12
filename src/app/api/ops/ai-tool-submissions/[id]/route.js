@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 export async function PATCH(req, { params }) {
   await requirePermission('ops_admin');
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await req.json();
     const { lead_status } = body;
 

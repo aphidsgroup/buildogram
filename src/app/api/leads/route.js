@@ -1,21 +1,38 @@
 import { NextResponse } from 'next/server';
-import { getUserFromRequest } from '@/lib/auth';
-import { getLeads, addLead, updateLead, addLeadActivity } from '@/lib/storageProvider';
+import { getActiveUserFromRequest } from '@/lib/auth/currentUser';
+import { isOpsRole } from '@/lib/roles';
+import { getLeads, prisma, updateLead, addLeadActivity } from '@/lib/storageProvider';
 import { sendNotification } from '@/lib/notifications/notificationService';
+import { checkRateLimit } from '@/lib/security/rateLimit';
 
 export async function POST(req) {
+  const rateLimit = checkRateLimit(req, { namespace: 'lead-submit', limit: 10, windowMs: 60 * 60 * 1000 });
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { success: false, error: 'Too many submissions. Try again later.' },
+      { status: 429, headers: { 'Retry-After': String(rateLimit.retryAfter) } },
+    );
+  }
+
   try {
     const body = await req.json();
+    const leadType = body.leadType || body.lead_type || 'general';
+    const sourcePage = body.sourcePage || body.source_page || null;
+    const formData = body.formData || body.metadata || {};
+    const locality = body.locality || body.location || null;
+    const notes = body.notes || body.message || null;
+    const phone = String(body.phone || '').replace(/\D/g, '');
 
-    if (!body.name || (!body.phone && body.leadType !== 'ai')) {
+    if (!body.name || (!phone && leadType !== 'ai')) {
       return NextResponse.json({ success: false, error: 'Name and phone are required' }, { status: 400 });
     }
-
-    const leadType = body.leadType || 'general';
+    if (phone && !/^[6-9]\d{9}$/.test(phone)) {
+      return NextResponse.json({ success: false, error: 'Enter a valid 10-digit mobile number' }, { status: 400 });
+    }
     const attr = body.attribution || {};
     const attributionData = {
       first_landing_page: attr.first_landing_page || null,
-      conversion_page: attr.conversion_page || body.sourcePage || null,
+      conversion_page: attr.conversion_page || sourcePage,
       referrer: attr.referrer || null,
       utm_source: attr.utm_source || body.utmSource || null,
       utm_medium: attr.utm_medium || body.utmMedium || null,
@@ -30,23 +47,20 @@ export async function POST(req) {
     };
 
     // Route to new specialized tables if applicable
-    const { PrismaClient } = require('@prisma/client');
-    const prisma = new PrismaClient();
-
     let newLeadId = null;
 
     if (leadType === 'materials' || leadType === 'material_quote') {
       const res = await prisma.material_leads.create({
         data: {
           name: body.name,
-          phone: body.phone || '',
+          phone,
           email: body.email,
           city: 'Chennai',
-          locality: body.location,
-          material: body.formData?.materialType,
-          quantity: body.formData?.quantity,
-          source_page: body.sourcePage,
-          metadata: body.formData || {},
+          locality,
+          material: formData.materialType,
+          quantity: formData.quantity,
+          source_page: sourcePage,
+          metadata: formData,
           ...attributionData
         }
       });
@@ -55,14 +69,14 @@ export async function POST(req) {
       const res = await prisma.structural_audit_leads.create({
         data: {
           name: body.name,
-          phone: body.phone || '',
+          phone,
           email: body.email,
           city: 'Chennai',
-          locality: body.location,
-          audit_type: body.formData?.auditType,
-          concern: body.notes,
-          source_page: body.sourcePage,
-          metadata: body.formData || {},
+          locality,
+          audit_type: formData.auditType,
+          concern: notes,
+          source_page: sourcePage,
+          metadata: formData,
           ...attributionData
         }
       });
@@ -71,14 +85,14 @@ export async function POST(req) {
       const res = await prisma.survey_leads.create({
         data: {
           name: body.name,
-          phone: body.phone || '',
+          phone,
           email: body.email,
           city: 'Chennai',
-          locality: body.location,
-          survey_type: leadType === 'soil' ? 'Soil Testing' : body.formData?.surveyType,
-          source_page: body.sourcePage,
-          notes: body.notes,
-          metadata: body.formData || {},
+          locality,
+          survey_type: leadType === 'soil' ? 'Soil Testing' : formData.surveyType,
+          source_page: sourcePage,
+          notes,
+          metadata: formData,
           ...attributionData
         }
       });
@@ -87,14 +101,14 @@ export async function POST(req) {
       const res = await prisma.piling_leads.create({
         data: {
           name: body.name,
-          phone: body.phone || '',
+          phone,
           email: body.email,
           city: 'Chennai',
-          locality: body.location,
-          piling_type: body.formData?.pilingType,
-          source_page: body.sourcePage,
-          notes: body.notes,
-          metadata: body.formData || {},
+          locality,
+          piling_type: formData.pilingType,
+          source_page: sourcePage,
+          notes,
+          metadata: formData,
           ...attributionData
         }
       });
@@ -102,12 +116,12 @@ export async function POST(req) {
     } else if (leadType === 'ai') {
       const res = await prisma.ai_tool_submissions.create({
         data: {
-          tool_name: body.sourcePage ? body.sourcePage.split('/').pop() : 'unknown',
+          tool_name: sourcePage ? sourcePage.split('/').pop() : 'unknown',
           name: body.name,
-          phone: body.phone || '',
+          phone,
           email: body.email,
-          input_data: body.formData || {},
-          source_page: body.sourcePage,
+          input_data: formData,
+          source_page: sourcePage,
           ...attributionData
         }
       });
@@ -117,14 +131,16 @@ export async function POST(req) {
       const res = await prisma.leads.create({
         data: {
           name: body.name,
-          phone: body.phone || '',
+          phone,
           email: body.email,
           city: body.city || 'Chennai',
-          locality: body.location,
+          locality,
           lead_type: leadType,
           source: body.source || 'Website Form',
-          notes: body.notes,
-          metadata: body.formData || {},
+          notes,
+          message: notes,
+          source_page: sourcePage,
+          metadata: formData,
           status: 'new',
           ...attributionData
         }
@@ -138,14 +154,13 @@ export async function POST(req) {
     return NextResponse.json({ success: true, id: newLeadId, leadType: leadType });
   } catch (e) {
     console.error('[leads POST]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Unable to create lead' }, { status: 500 });
   }
 }
 
 export async function GET(req) {
-  // Mock login bypass logic: ops_admin can view leads
-  const u = getUserFromRequest(req);
-  if (!u || !['ops_admin', 'ops_pm', 'ops_engineer'].includes(u.role)) {
+  const u = await getActiveUserFromRequest(req);
+  if (!u || !isOpsRole(u.role)) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
   }
 
@@ -162,13 +177,13 @@ export async function GET(req) {
     return NextResponse.json({ success: true, leads });
   } catch (e) {
     console.error('[leads GET]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Unable to load leads' }, { status: 500 });
   }
 }
 
 export async function PATCH(req) {
-  const u = getUserFromRequest(req);
-  if (!u || !['ops_admin', 'ops_pm', 'ops_engineer'].includes(u.role)) {
+  const u = await getActiveUserFromRequest(req);
+  if (!u || !isOpsRole(u.role)) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
   }
 
@@ -197,6 +212,6 @@ export async function PATCH(req) {
     return NextResponse.json({ success: true });
   } catch (e) {
     console.error('[leads PATCH]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Unable to update lead' }, { status: 500 });
   }
 }

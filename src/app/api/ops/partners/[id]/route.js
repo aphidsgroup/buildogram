@@ -4,11 +4,11 @@ import prisma from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
-// ── GET single partner (ops detail) ──────────────────────────────────────
+// â”€â”€ GET single partner (ops detail) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export async function GET(request, { params }) {
   try {
     const partner = await prisma.partners.findUnique({
-      where: { id: params.id },
+      where: { id: (await params).id },
       include: {
         partner_gallery: { orderBy: { sort_order: 'asc' } },
         partner_videos: { orderBy: { sort_order: 'asc' } },
@@ -28,11 +28,11 @@ export async function GET(request, { params }) {
 
     return NextResponse.json({ success: true, partner });
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
 
-// ── PUT update partner (full update) ─────────────────────────────────────
+// â”€â”€ PUT update partner (full update) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export async function PUT(request, { params }) {
   await requirePermission('manage_partners');
   try {
@@ -40,7 +40,7 @@ export async function PUT(request, { params }) {
     if (!b.companyName || !b.category) return NextResponse.json({ success: false, message: 'companyName and category required' }, { status: 400 });
 
     const updated = await prisma.partners.update({
-      where: { id: params.id },
+      where: { id: (await params).id },
       data: {
         company_name: b.companyName,
         partner_type: b.category,
@@ -69,16 +69,16 @@ export async function PUT(request, { params }) {
 
     return NextResponse.json({ success: true, partner: updated });
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
 
-// ── DELETE soft-delete (deactivate) ──────────────────────────────────────
+// â”€â”€ DELETE soft-delete (deactivate) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export async function DELETE(request, { params }) {
   await requirePermission('manage_partners');
   try {
     await prisma.partners.update({
-      where: { id: params.id },
+      where: { id: (await params).id },
       data: {
         public_profile_enabled: false,
         verification_status: 'suspended'
@@ -86,6 +86,6 @@ export async function DELETE(request, { params }) {
     });
     return NextResponse.json({ success: true, message: 'Partner deactivated' });
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }

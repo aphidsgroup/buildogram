@@ -21,7 +21,7 @@ export async function GET(req) {
     return NextResponse.json({ success: true, data: reels });
   } catch (error) {
     console.error('[ops reels GET]', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -60,6 +60,6 @@ export async function POST(req) {
     return NextResponse.json({ success: true, data: reel });
   } catch (error) {
     console.error('[ops reels POST]', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -1,16 +1,30 @@
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { ok, fail } from '@/lib/apiAuth';
+import { checkRateLimit } from '@/lib/security/rateLimit';
+import { getActiveUserFromRequest } from '@/lib/auth/currentUser';
+import { isOpsRole } from '@/lib/roles';
 
 export const dynamic = 'force-dynamic';
 
-// POST — public enquiry form (no auth required)
+// POST â€” public enquiry form (no auth required)
 export async function POST(request) {
+  const rateLimit = checkRateLimit(request, { namespace: 'partner-enquiry', limit: 10, windowMs: 60 * 60 * 1000 });
+  if (!rateLimit.allowed) {
+    return NextResponse.json({ success: false, message: 'Too many submissions. Try again later.' }, {
+      status: 429,
+      headers: { 'Retry-After': String(rateLimit.retryAfter) },
+    });
+  }
+
   try {
     const b = await request.json();
+    const customerName = String(b.customerName || '').trim().slice(0, 120);
+    const phone = String(b.phone || '').replace(/\D/g, '');
+    const email = String(b.email || '').trim().toLowerCase().slice(0, 254);
 
-    if (!b.customerName || !b.phone) {
-      return fail('Name and phone are required', 400);
+    if (!customerName || !/^[6-9]\d{9}$/.test(phone) || (email && !/^\S+@\S+\.\S+$/.test(email))) {
+      return fail('Enter a valid name, phone, and email', 400);
     }
 
     // Resolve partner_id from slug if provided
@@ -36,8 +50,8 @@ export async function POST(request) {
         first_landing_page, conversion_page, referrer, utm_source, utm_medium,
         utm_campaign, utm_content, utm_term, gclid, session_id, device_type, page_category, attribution_json
       ) VALUES (
-        ${partnerId}, ${b.category || null}, ${b.customerName}, ${b.phone}, ${b.email || null},
-        ${b.requirement || null}, ${b.location || null}, ${b.message || null},
+        ${partnerId}, ${String(b.category || '').slice(0, 80) || null}, ${customerName}, ${phone}, ${email || null},
+        ${String(b.requirement || '').slice(0, 500) || null}, ${String(b.location || '').slice(0, 120) || null}, ${String(b.message || '').slice(0, 4000) || null},
         ${b.sourcePage || 'partner_profile'}, ${b.sourceType || 'web'}, 'new', 'partner_enquiry',
         ${attr.first_landing_page || null}, ${attr.conversion_page || b.sourcePage || null}, ${attr.referrer || null},
         ${attr.utm_source || null}, ${attr.utm_medium || null}, ${attr.utm_campaign || null},
@@ -63,11 +77,10 @@ export async function POST(request) {
 }
 
 
-// GET — ops admin sees all enquiries
+// GET â€” ops admin sees all enquiries
 export async function GET(request) {
-  const { getUserFromRequest } = await import('@/lib/auth');
-  const user = getUserFromRequest(request);
-  if (!user || !['ops_admin', 'ops_pm', 'ops_engineer'].includes(user.role)) {
+  const user = await getActiveUserFromRequest(request);
+  if (!user || !isOpsRole(user.role)) {
     return NextResponse.json({ success: false, message: 'Forbidden' }, { status: 403 });
   }
 
@@ -82,6 +95,6 @@ export async function GET(request) {
     `;
     return ok({ enquiries });
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }

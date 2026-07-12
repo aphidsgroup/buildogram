@@ -47,7 +47,7 @@ export async function GET(req) {
     return NextResponse.json({ success: true, records, totals });
   } catch (e) {
     console.error('[revenue GET]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -86,6 +86,6 @@ export async function POST(req) {
     return NextResponse.json({ success: true, record });
   } catch (e) {
     console.error('[revenue POST]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

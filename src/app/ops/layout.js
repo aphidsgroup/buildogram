@@ -78,7 +78,7 @@ export default function OpsLayout({ children }) {
                     '/ops/projects', '/ops/properties', '/ops/payments', '/ops/invoices',
                     '/ops/reports', '/ops/settings', '/ops/pipeline', '/ops/revenue',
                     '/ops/accounting', '/ops/cost-config', '/ops/pilot-readiness',
-                    '/ops/pilot-launch', '/ops/launch-checklist', '/ops/system-status',
+                    '/ops/launch-checklist', '/ops/system-status',
                     '/ops/notification-settings', '/ops/notification-rules',
                     '/ops/notification-queue', '/ops/whatsapp-templates',
                     '/ops/blog', '/ops/help', '/ops/reels', '/ops/exports',

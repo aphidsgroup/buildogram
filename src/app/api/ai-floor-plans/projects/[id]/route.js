@@ -8,7 +8,7 @@ export async function GET(req, { params }) {
     if (error) return error;
     
     const project = await db.ai_floor_plan_projects.findUnique({
-      where: { id: params.id },
+      where: { id: (await params).id },
       include: {
         versions: { orderBy: { created_at: 'desc' } }
       }
@@ -23,7 +23,7 @@ export async function GET(req, { params }) {
 
     return NextResponse.json(project);
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -34,20 +34,20 @@ export async function PATCH(req, { params }) {
     
     const body = await req.json();
 
-    const project = await db.ai_floor_plan_projects.findUnique({ where: { id: params.id } });
+    const project = await db.ai_floor_plan_projects.findUnique({ where: { id: (await params).id } });
     if (!project) return NextResponse.json({ error: 'Not found' }, { status: 404 });
     if (project.owner_user_id !== user.id && project.partner_id !== user.partner_id) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     const updated = await db.ai_floor_plan_projects.update({
-      where: { id: params.id },
+      where: { id: (await params).id },
       data: body
     });
 
     return NextResponse.json(updated);
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -56,15 +56,15 @@ export async function DELETE(req, { params }) {
     const { user, error } = requireAuth(req);
     if (error) return error;
 
-    const project = await db.ai_floor_plan_projects.findUnique({ where: { id: params.id } });
+    const project = await db.ai_floor_plan_projects.findUnique({ where: { id: (await params).id } });
     if (!project) return NextResponse.json({ error: 'Not found' }, { status: 404 });
     if (project.owner_user_id !== user.id && project.partner_id !== user.partner_id) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    await db.ai_floor_plan_projects.delete({ where: { id: params.id } });
+    await db.ai_floor_plan_projects.delete({ where: { id: (await params).id } });
     return NextResponse.json({ success: true });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

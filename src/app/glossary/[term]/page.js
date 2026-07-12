@@ -10,7 +10,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const term = glossaryMap[params.term];
+  const resolvedParams = await params;
+  const term = glossaryMap[resolvedParams.term];
   if (!term) return {};
   return {
     title: `${term.term} — Buildogram Construction Glossary`,
@@ -38,11 +39,12 @@ const breadcrumbSchema = (itemData) => ({
   ],
 });
 
-export default function GlossaryTermPage({ params }) {
-  const currentPath = `/glossary${params.term}`.replace('//', '/');
+export default async function GlossaryTermPage({ params }) {
+  const resolvedParams = await params;
+  const currentPath = `/glossary/${resolvedParams.term}`;
   const relatedLinks = getContextualLinks('service', currentPath);
 
-  const term = glossaryMap[params.term];
+  const term = glossaryMap[resolvedParams.term];
   if (!term) notFound();
 
   const categoryLabel = term.category.charAt(0).toUpperCase() + term.category.slice(1);

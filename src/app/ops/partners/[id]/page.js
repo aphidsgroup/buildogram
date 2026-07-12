@@ -1,9 +1,10 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { use, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function EditPartnerProfilePage({ params }) {
+  const { id } = use(params);
   const router = useRouter();
   const [partner, setPartner] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -16,7 +17,7 @@ export default function EditPartnerProfilePage({ params }) {
   ];
 
   useEffect(() => {
-    fetch(`/api/leads/${params.id}`)
+    fetch(`/api/leads/${id}`)
       .then(res => res.json())
       .then(data => {
         if (data.success && data.lead) {
@@ -50,7 +51,7 @@ export default function EditPartnerProfilePage({ params }) {
         }
         setLoading(false);
       });
-  }, [params.id]);
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -139,7 +140,7 @@ export default function EditPartnerProfilePage({ params }) {
     };
 
     try {
-      const res = await fetch(`/api/leads/${params.id}`, {
+      const res = await fetch(`/api/leads/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ metadata: updatedMetadata, name: formData.name, phone: formData.phone, email: formData.email, city: formData.location })

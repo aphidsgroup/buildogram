@@ -65,6 +65,6 @@ export async function POST(request) {
     return NextResponse.json(newItem, { status: 201 });
   } catch (error) {
     console.error('Error creating content calendar item:', error);
-    return NextResponse.json({ error: 'Failed to create item', details: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to create item', details: 'Request failed' }, { status: 500 });
   }
 }

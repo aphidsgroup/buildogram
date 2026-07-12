@@ -1,43 +1,48 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import { prisma } from '@/lib/storageProvider';
-import { signToken } from '@/lib/auth';
-
-const isDemo = process.env.APP_MODE === 'demo' || !process.env.DATABASE_URL;
+import { setAuthCookie, signToken } from '@/lib/auth';
+import { normalizeRole } from '@/lib/roles';
+import { checkRateLimit } from '@/lib/security/rateLimit';
 
 export async function POST(req) {
+  const rateLimit = checkRateLimit(req, { namespace: 'login', limit: 10, windowMs: 15 * 60 * 1000 });
+  if (!rateLimit.allowed) {
+    return NextResponse.json(
+      { error: 'Too many login attempts. Try again later.' },
+      { status: 429, headers: { 'Retry-After': String(rateLimit.retryAfter) } },
+    );
+  }
   const { email, password } = await req.json();
 
-  // DEMO CREDENTIALS BYPASS
-  if (isDemo && password === 'password123') {
-    let mockUser = null;
-    if (email === 'admin@buildogram.in') mockUser = { id: 'admin-1', name: 'Demo Admin', email, role: 'ops_admin' };
-    else if (email === 'partner@buildogram.in') mockUser = { id: 'partner-1', name: 'Demo Partner', email, role: 'partner_contractor' };
-    else if (email === 'client@buildogram.in') mockUser = { id: 'client-1', name: 'Demo Client', email, role: 'client' };
-
-    if (mockUser) {
-      const token = await signToken(mockUser);
-      const res = NextResponse.json({ user: mockUser });
-      res.cookies.set('buildogram_token', token, { httpOnly: true, maxAge: 60 * 60 * 24 * 7, path: '/' });
-      return res;
-    }
+  if (!email || !password) {
+    return NextResponse.json({ error: 'Email and password are required.' }, { status: 400 });
   }
-
-  if (isDemo) {
-    return NextResponse.json({ error: 'Invalid credentials. Use demo passwords.' }, { status: 401 });
+  if (!process.env.DATABASE_URL) {
+    console.error('Login unavailable: DATABASE_URL is not configured.');
+    return NextResponse.json({ error: 'Authentication service unavailable.' }, { status: 503 });
   }
 
   try {
-    const user = await prisma.users.findUnique({ where: { email } });
+    const normalizedEmail = String(email).trim().toLowerCase();
+    const user = await prisma.users.findUnique({ where: { email: normalizedEmail } });
     if (!user || !user.is_active || !(await bcrypt.compare(password, user.password_hash)))
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
       
-    const token = await signToken({ id: user.id, name: user.name, email: user.email, role: user.role, must_change_password: user.must_change_password });
-    const res = NextResponse.json({ user: { id: user.id, name: user.name, email: user.email, role: user.role, must_change_password: user.must_change_password } });
-    res.cookies.set('buildogram_token', token, { httpOnly: true, maxAge: 60 * 60 * 24 * 7, path: '/' });
-    return res;
+    const role = normalizeRole(user.role);
+    const safeUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role,
+      partner_id: user.partner_id || null,
+      must_change_password: user.must_change_password,
+    };
+    const token = await signToken(safeUser);
+    const res = NextResponse.json({ user: safeUser });
+    return setAuthCookie(res, token);
   } catch (error) {
-    console.error("Login Error:", error);
+    console.error('Login failed:', error?.name || 'unknown_error');
     return NextResponse.json({ error: 'Database connection failed.' }, { status: 500 });
   }
 }

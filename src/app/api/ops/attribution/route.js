@@ -65,6 +65,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Failed to fetch attribution:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

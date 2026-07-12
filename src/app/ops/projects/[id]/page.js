@@ -10,7 +10,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function OpsProjectDetailsPage({ params, searchParams }) {
-  const { id } = params;
+  const { id } = await params;
   const tab = searchParams.tab || "overview";
 
   const project = await prisma.projects.findUnique({

@@ -1,9 +1,9 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function PassportDetail({ params }) {
-  const { id } = params;
+  const { id } = use(params);
   const [passport, setPassport] = useState(null);
   const [loading, setLoading] = useState(true);
 

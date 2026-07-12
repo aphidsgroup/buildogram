@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 export async function GET(request, { params }) {
   try {
     const item = await prisma.content_calendar_items.findUnique({
-      where: { id: params.id },
+      where: { id: (await params).id },
     });
 
     if (!item) {
@@ -47,7 +47,7 @@ export async function PUT(request, { params }) {
     delete body.created_at;
 
     const updatedItem = await prisma.content_calendar_items.update({
-      where: { id: params.id },
+      where: { id: (await params).id },
       data: {
         ...body,
         updated_at: new Date()
@@ -57,7 +57,7 @@ export async function PUT(request, { params }) {
     return NextResponse.json(updatedItem);
   } catch (error) {
     console.error('Error updating content calendar item:', error);
-    return NextResponse.json({ error: 'Failed to update item', details: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to update item', details: 'Request failed' }, { status: 500 });
   }
 }
 
@@ -65,7 +65,7 @@ export async function DELETE(request, { params }) {
   await requirePermission('manage_content');
   try {
     await prisma.content_calendar_items.delete({
-      where: { id: params.id },
+      where: { id: (await params).id },
     });
 
     return NextResponse.json({ success: true });

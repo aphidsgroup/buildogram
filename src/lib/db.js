@@ -1,5 +1,9 @@
 import { neon } from '@neondatabase/serverless';
 
-const sql = neon(process.env.DATABASE_URL || 'postgres://placeholder:placeholder@localhost/placeholder');
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL is required.');
+}
+
+const sql = neon(process.env.DATABASE_URL);
 
 export default sql;

@@ -7,7 +7,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const cat = faqMap[params.category];
+  const resolvedParams = await params;
+  const cat = faqMap[resolvedParams.category];
   if (!cat) return {};
   return { title: cat.metaTitle, description: cat.metaDescription,
     alternates: { canonical: `https://buildogram.in/faqs/${cat.slug}` },
@@ -25,8 +26,9 @@ const breadcrumbSchema = (itemData) => ({
   ],
 });
 
-export default function FaqCategoryPage({ params }) {
-  const cat = faqMap[params.category];
+export default async function FaqCategoryPage({ params }) {
+  const resolvedParams = await params;
+  const cat = faqMap[resolvedParams.category];
   if (!cat) notFound();
 
   const faqSchema = {
@@ -86,7 +88,7 @@ export default function FaqCategoryPage({ params }) {
         <div style={{ marginTop: '60px', paddingTop: '40px', borderTop: '1px solid var(--border)' }}>
           <h2 style={{ fontSize: '18px', color: 'var(--secondary)', marginBottom: '20px' }}>Other FAQ Categories</h2>
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            {faqCategories.filter((c) => c.slug !== params.category).map((c) => (
+            {faqCategories.filter((c) => c.slug !== resolvedParams.category).map((c) => (
               <Link key={c.slug} href={`/faqs/${c.slug}`} className="btn btn-outline btn-sm">{c.title}</Link>
             ))}
           </div>

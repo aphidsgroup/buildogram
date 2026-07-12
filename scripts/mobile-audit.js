@@ -169,7 +169,9 @@ async function checkMobile(page, name, url) {
   console.log('  🔐 Logging in...');
   await authPage.goto(BASE + '/login', { waitUntil: 'networkidle' });
   await authPage.fill('input[type="email"], input[name="email"]', 'aphidsgroup@gmail.com');
-  await authPage.fill('input[type="password"], input[name="password"]', 'password123');
+  const auditPassword = process.env.AUDIT_PASSWORD;
+  if (!auditPassword) throw new Error('AUDIT_PASSWORD is required for authenticated mobile audits.');
+  await authPage.fill('input[type="password"], input[name="password"]', auditPassword);
   await authPage.click('button[type="submit"]');
   await authPage.waitForNavigation({ waitUntil: 'networkidle', timeout: 10000 }).catch(() => {});
   console.log(`  → Navigated to: ${authPage.url()}\n`);

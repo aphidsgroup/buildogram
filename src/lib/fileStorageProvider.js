@@ -7,7 +7,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-const isDemo = process.env.APP_MODE === 'demo' || !process.env.FILE_STORAGE_PROVIDER;
+const isDemo = process.env.APP_MODE === 'demo' && process.env.NODE_ENV !== 'production';
 
 /**
  * Uploads a file buffer to the configured storage provider.

@@ -98,6 +98,6 @@ export async function POST(req) {
     return NextResponse.json({ success: true, projectId: project.id, projectCode: project.project_code });
   } catch (error) {
     console.error("Conversion error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

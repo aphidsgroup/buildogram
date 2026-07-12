@@ -10,7 +10,7 @@ export async function PUT(req, { params }) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
   }
 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const b = await req.json();
@@ -45,6 +45,6 @@ export async function PUT(req, { params }) {
     return NextResponse.json({ success: true, record });
   } catch (e) {
     console.error('[revenue PUT]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

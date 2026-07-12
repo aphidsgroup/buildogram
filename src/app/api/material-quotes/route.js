@@ -50,7 +50,7 @@ export async function POST(request) {
     console.error('[material-quotes POST]', e.message);
     return NextResponse.json({
       success: false,
-      message: e.message,
+      message: 'Internal server error',
       fallback: 'Quote recorded in client cache only'
     }, { status: 500 });
   }
@@ -76,6 +76,6 @@ export async function GET(request) {
     }
     return ok({ quotes });
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message, quotes: [] }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error', quotes: [] }, { status: 500 });
   }
 }

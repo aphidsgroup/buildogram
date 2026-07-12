@@ -1,21 +1,24 @@
-// Edge-compatible JWT auth (used by middleware)
-// For API routes, use the full 'jsonwebtoken' via verifyTokenNode
+import jwt from 'jsonwebtoken';
 
-const SECRET = process.env.JWT_SECRET || 'buildogram_super_secret_jwt_key_2024_chennai_caas_platform';
+const JWT_ISSUER = 'buildogram';
+const JWT_AUDIENCE = 'buildogram-web';
+const SESSION_MAX_AGE_SECONDS = 60 * 60 * 8;
 
-function base64UrlDecode(str) {
-  const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
-  const padded = base64.padEnd(base64.length + (4 - base64.length % 4) % 4, '=');
-  return atob(padded);
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret.length < 32) {
+    throw new Error('JWT_SECRET must be configured with at least 32 characters.');
+  }
+  return secret;
 }
 
 export function verifyToken(token) {
   try {
-    const parts = token.split('.');
-    if (parts.length !== 3) return null;
-    const payload = JSON.parse(base64UrlDecode(parts[1]));
-    if (payload.exp && Date.now() / 1000 > payload.exp) return null;
-    return payload;
+    return jwt.verify(token, getJwtSecret(), {
+      algorithms: ['HS256'],
+      issuer: JWT_ISSUER,
+      audience: JWT_AUDIENCE,
+    });
   } catch { return null; }
 }
 
@@ -32,13 +35,36 @@ export function getUserFromRequest(request) {
 
 // Full JWT ops used in API routes only (Node.js runtime)
 export async function signToken(payload) {
-  const { default: jwt } = await import('jsonwebtoken');
-  return jwt.sign(payload, SECRET, { expiresIn: '7d' });
+  return jwt.sign(payload, getJwtSecret(), {
+    algorithm: 'HS256',
+    expiresIn: SESSION_MAX_AGE_SECONDS,
+    issuer: JWT_ISSUER,
+    audience: JWT_AUDIENCE,
+  });
 }
 
 export async function verifyTokenNode(token) {
-  try {
-    const { default: jwt } = await import('jsonwebtoken');
-    return jwt.verify(token, SECRET);
-  } catch { return null; }
+  return verifyToken(token);
+}
+
+export function setAuthCookie(response, token) {
+  response.cookies.set('buildogram_token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: SESSION_MAX_AGE_SECONDS,
+    path: '/',
+  });
+  return response;
+}
+
+export function clearAuthCookie(response) {
+  response.cookies.set('buildogram_token', '', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 0,
+    path: '/',
+  });
+  return response;
 }

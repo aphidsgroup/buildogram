@@ -4,7 +4,7 @@ import { roleCan } from '@/lib/permissions';
 import { redirect } from 'next/navigation';
 
 export default async function InvoicePrintPage({ params }) {
-  const { id } = params;
+  const { id } = await params;
   
   // Auth check must be done at page level for static rendering (though this is dynamic)
   // But we can't use `req` directly in Server Components easily without passing headers.

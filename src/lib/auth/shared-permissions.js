@@ -10,12 +10,19 @@ export const rolePermissions = {
     'manage_partners',
     'view_passports',
     'manage_passports',
+    'view_reports',
+    'manage_notification_queue',
+    'send_whatsapp_message',
   ],
   ops_finance: [
     'view_finance',
     'manage_finance',
     'view_projects',
     'view_partners',
+    'view_revenue',
+    'manage_revenue',
+    'manage_invoices',
+    'view_reports',
   ],
   ops_engineer: [
     'view_projects',
@@ -23,6 +30,7 @@ export const rolePermissions = {
     'view_passports',
     'view_bqs',
     'manage_bqs',
+    'view_reports',
   ],
   ops_content: [
     'view_content',
@@ -38,6 +46,7 @@ export const rolePermissions = {
     'view_leads',
   ],
   client_user: [
+    'access_client_portal',
     'view_projects',
     'view_passports',
   ],

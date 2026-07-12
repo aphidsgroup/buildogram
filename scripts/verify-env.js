@@ -1,9 +1,8 @@
-// scripts/verify-env.js
 const fs = require('fs');
 const path = require('path');
 
 function verifyEnv() {
-  console.log('🔍 Running V2 Production Environment Verification...');
+  console.log('Running environment verification...');
   
   const requiredKeys = [
     'DATABASE_URL',
@@ -13,7 +12,7 @@ function verifyEnv() {
     'OPS_ADMIN_PHONE'
   ];
 
-  let missing = [];
+  const missing = [];
 
   // Try to load from .env.local if not present in process.env
   try {
@@ -31,19 +30,48 @@ function verifyEnv() {
     console.warn('⚠️ Could not parse .env.local', e.message);
   }
 
-  requiredKeys.forEach(key => {
-    if (!process.env[key]) {
-      missing.push(key);
-    }
+  requiredKeys.forEach((key) => {
+    if (!process.env[key]?.trim()) missing.push(key);
   });
 
-  if (missing.length > 0) {
-    console.warn('\n⚠️ WARNING: Missing Environment Variables:');
-    missing.forEach(m => console.warn(`   - ${m}`));
-    console.warn('\nSome features (AI, WhatsApp, Payments) will operate in fallback/safe mode.\n');
-  } else {
-    console.log('✅ Environment verified successfully. All modules are fully enabled.\n');
+  const isProduction =
+    process.env.NODE_ENV === 'production' ||
+    process.env.VERCEL_ENV === 'production' ||
+    process.env.APP_MODE === 'production';
+
+  const errors = [];
+  if (isProduction && process.env.APP_MODE === 'demo') {
+    errors.push('APP_MODE=demo is forbidden in production.');
   }
+
+  const jwtSecret = process.env.JWT_SECRET || '';
+  if (jwtSecret && jwtSecret.length < 32) {
+    errors.push('JWT_SECRET must contain at least 32 characters.');
+  }
+  if (jwtSecret.includes('buildogram_super_secret') || jwtSecret.includes('replace-me')) {
+    errors.push('JWT_SECRET still contains a known development placeholder.');
+  }
+
+  const databaseUrl = process.env.DATABASE_URL || '';
+  if (databaseUrl.includes('placeholder') || databaseUrl.includes('user:password@')) {
+    errors.push('DATABASE_URL still contains a placeholder credential.');
+  }
+
+  if (missing.length) {
+    errors.push(`Missing required environment variables: ${missing.join(', ')}`);
+  }
+
+  if (errors.length) {
+    const message = `Environment verification failed:\n- ${errors.join('\n- ')}`;
+    if (isProduction) {
+      console.error(message);
+      process.exit(1);
+    }
+    console.warn(`${message}\nDevelopment may continue only with explicit local configuration.`);
+    return;
+  }
+
+  console.log('Environment verified successfully.');
 }
 
 verifyEnv();

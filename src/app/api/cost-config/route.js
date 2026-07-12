@@ -7,7 +7,7 @@ export async function GET(req) {
     const configs = await sql`SELECT * FROM cost_config ORDER BY city, spec_level`;
     return NextResponse.json({ configs });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -24,6 +24,6 @@ export async function PUT(req) {
     `;
     return NextResponse.json({ config: config[0] });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

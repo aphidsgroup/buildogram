@@ -16,7 +16,7 @@ export async function GET(request) {
     const boqs = rows.map(r => ({ id: r.id, title: r.title, packageType: r.package_type, totalInternalCost: r.total_internal_cost, totalClientQuote: r.total_client_quote, estimatedProfit: r.estimated_profit, status: r.status, itemCount: r.item_count, createdAt: r.created_at }));
     return ok({ boqs });
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -34,6 +34,6 @@ export async function POST(request) {
       RETURNING id, title`;
     return ok({ boq: { id: row.id, title: row.title } }, 201);
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }

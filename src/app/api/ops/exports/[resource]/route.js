@@ -23,7 +23,7 @@ function jsonToCsv(jsonArray) {
 
 export async function GET(request, { params }) {
   try {
-    const resource = params.resource;
+    const resource = (await params).resource;
     const { searchParams } = new URL(request.url);
     const format = searchParams.get('format') || 'json';
 
@@ -103,7 +103,7 @@ export async function GET(request, { params }) {
 
   } catch (error) {
     if (error.message === 'Unauthorized' || error.message === 'Forbidden') {
-      return NextResponse.json({ error: error.message }, { status: error.message === 'Unauthorized' ? 401 : 403 });
+      return NextResponse.json({ error: 'Internal server error' }, { status: error.message === 'Unauthorized' ? 401 : 403 });
     }
     console.error('Export error:', error);
     return NextResponse.json({ error: 'Failed to process export request' }, { status: 500 });

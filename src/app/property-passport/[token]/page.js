@@ -11,7 +11,7 @@ export const metadata = {
 };
 
 export default async function PropertyPassportOwnerView({ params }) {
-  const { token } = params;
+  const { token } = await params;
 
   const passport = await prisma.property_passports.findUnique({
     where: { share_token: token },

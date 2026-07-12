@@ -10,7 +10,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const guide = guideMap[params.slug];
+  const resolvedParams = await params;
+  const guide = guideMap[resolvedParams.slug];
   if (!guide) return {};
   return {
     title: guide.metaTitle,
@@ -50,11 +51,12 @@ const breadcrumbSchema = (itemData) => ({
   ],
 });
 
-export default function GuidePage({ params }) {
-  const currentPath = `/guides${params.slug}`.replace('//', '/');
+export default async function GuidePage({ params }) {
+  const resolvedParams = await params;
+  const currentPath = `/guides/${resolvedParams.slug}`;
   const relatedLinks = getContextualLinks('service', currentPath);
 
-  const guide = guideMap[params.slug];
+  const guide = guideMap[resolvedParams.slug];
   if (!guide) notFound();
 
   const categoryLabel = guide.category.charAt(0).toUpperCase() + guide.category.slice(1).replace(/-/g, ' ');

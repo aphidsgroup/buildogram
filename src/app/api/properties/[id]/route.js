@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
 
-/* ─── GET — Single property ───────────────────────────────── */
+/* â”€â”€â”€ GET â€” Single property â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export async function GET(req, { params }) {
   const u = getUserFromRequest(req);
   if (!u || !['ops_admin', 'ops_pm', 'ops_engineer'].includes(u.role)) {
@@ -13,16 +13,16 @@ export async function GET(req, { params }) {
       SELECT p.*, u.name AS assigned_name
       FROM properties p
       LEFT JOIN users u ON u.id = p.assigned_to
-      WHERE p.id = ${params.id}
+      WHERE p.id = ${(await params).id}
     `;
     if (!property) return NextResponse.json({ success: false, error: 'Not found' }, { status: 404 });
     return NextResponse.json({ success: true, property });
   } catch (e) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 
-/* ─── PUT — Update property ──────────────────────────────── */
+/* â”€â”€â”€ PUT â€” Update property â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export async function PUT(req, { params }) {
   const u = getUserFromRequest(req);
   if (!u || !['ops_admin', 'ops_pm'].includes(u.role)) {
@@ -42,7 +42,7 @@ export async function PUT(req, { params }) {
     let completeness = null;
     if (anyFlagSent) {
       // Fetch current values, merge with update
-      const [current] = await sql`SELECT * FROM properties WHERE id = ${params.id}`;
+      const [current] = await sql`SELECT * FROM properties WHERE id = ${(await params).id}`;
       const merged = { ...current, ...b };
       completeness = Math.round((flags.filter(f => merged[f]).length / flags.length) * 100);
     }
@@ -76,12 +76,12 @@ export async function PUT(req, { params }) {
         assigned_to         = COALESCE(${b.assigned_to ?? null}, assigned_to),
         passport_sections_data = COALESCE(${b.passport_sections_data ? JSON.stringify(b.passport_sections_data) : null}::jsonb, passport_sections_data),
         updated_at          = NOW()
-      WHERE id = ${params.id}
+      WHERE id = ${(await params).id}
       RETURNING *
     `;
     return NextResponse.json({ success: true, property: updated });
   } catch (e) {
     console.error('[properties PUT]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

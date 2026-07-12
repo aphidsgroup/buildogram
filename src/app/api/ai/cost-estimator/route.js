@@ -1,8 +1,13 @@
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { generateCostEstimate } from '@/lib/ai';
+import { checkRateLimit } from '@/lib/security/rateLimit';
 
 export async function POST(req) {
+  const rateLimit = checkRateLimit(req, { namespace: 'ai-cost-estimator', limit: 8, windowMs: 60 * 60 * 1000 });
+  if (!rateLimit.allowed) {
+    return NextResponse.json({ success: false, error: 'Too many requests' }, { status: 429 });
+  }
   try {
     const body = await req.json();
     const {
@@ -10,6 +15,11 @@ export async function POST(req) {
       construction_type, spec_level, parking_required, basement_required, lift_required,
       interior_scope, expected_start, message
     } = body;
+    const normalizedPhone = String(phone || '').replace(/\D/g, '');
+    const plotArea = Number(plot_area_sqft);
+    if (!name || !/^[6-9]\d{9}$/.test(normalizedPhone) || !Number.isFinite(plotArea) || plotArea < 100 || plotArea > 100000) {
+      return NextResponse.json({ success: false, error: 'Valid name, phone and plot area are required' }, { status: 400 });
+    }
 
     // 1. Attempt LLM AI Generation
     const aiRes = await generateCostEstimate(body);
@@ -22,7 +32,7 @@ export async function POST(req) {
       outputJson.fallback_used = false;
     } else {
       // 2. Deterministic Fallback Logic (Mocking AI since no key configured or failed)
-      const area = Number(plot_area_sqft) || 1200;
+      const area = plotArea;
       
       // Base rates
       let baseRate = 2200; // standard
@@ -100,8 +110,8 @@ export async function POST(req) {
         name, phone, email, city, locality, plot_area_sqft, floors, spec_level, 
         lead_type, source_page, status, message, metadata
       ) VALUES (
-        ${name}, ${phone}, ${email || null}, ${city || 'Chennai'}, ${locality || null}, 
-        ${area}, ${floors}, ${spec_level}, 
+        ${String(name).slice(0, 160)}, ${normalizedPhone}, ${email || null}, ${city || 'Chennai'}, ${locality || null},
+        ${plotArea}, ${floors}, ${spec_level},
         'construction', '/cost-estimator', 'new', ${message || null}, ${JSON.stringify(metadata)}
       )
       RETURNING id

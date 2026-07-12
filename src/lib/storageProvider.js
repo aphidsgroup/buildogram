@@ -6,7 +6,7 @@ const globalForPrisma = global;
 const prisma = globalForPrisma.prisma || new PrismaClient();
 if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
 
-const isDemo = process.env.APP_MODE === 'demo' || !process.env.DATABASE_URL;
+const isDemo = process.env.APP_MODE === 'demo' && process.env.NODE_ENV !== 'production';
 
 export async function getLeads(filters = {}) {
   if (isDemo) {
@@ -20,30 +20,34 @@ export async function getLeads(filters = {}) {
 
   // Production Mode: Prisma
   const where = {};
-  if (filters.leadType && filters.leadType !== 'all') where.leadType = filters.leadType;
+  if (filters.leadType && filters.leadType !== 'all') where.lead_type = filters.leadType;
   if (filters.status && filters.status !== 'all') where.status = filters.status;
-  if (filters.pipelineStage && filters.pipelineStage !== 'all') where.pipelineStage = filters.pipelineStage;
+  if (filters.pipelineStage && filters.pipelineStage !== 'all') where.status = filters.pipelineStage;
   if (filters.priority && filters.priority !== 'all') where.priority = filters.priority;
 
-  const leads = await prisma.lead.findMany({
+  const leads = await prisma.leads.findMany({
     where,
-    orderBy: { createdAt: 'desc' },
+    orderBy: { created_at: 'desc' },
     include: {
-      activityLog: { orderBy: { timestamp: 'asc' } },
-      followUps: { orderBy: { followUpDate: 'asc' } }
+      lead_activities: { orderBy: { created_at: 'asc' } },
     }
   });
 
   // Map to the same format as demo
   return leads.map(l => ({
     ...l,
-    formData: l.formData ? JSON.parse(l.formData) : {},
-    nextFollowUpDate: l.nextFollowUpDate ? l.nextFollowUpDate.toISOString() : null,
-    createdAt: l.createdAt.toISOString(),
-    updatedAt: l.updatedAt.toISOString(),
-    activityLog: l.activityLog.map(a => ({
+    leadType: l.lead_type,
+    pipelineStage: l.status,
+    assignedTo: l.assigned_to,
+    formData: l.metadata || {},
+    nextFollowUpDate: l.follow_up_date ? l.follow_up_date.toISOString() : null,
+    createdAt: l.created_at?.toISOString() || null,
+    updatedAt: l.updated_at?.toISOString() || null,
+    activityLog: l.lead_activities.map(a => ({
       ...a,
-      timestamp: a.timestamp.toISOString()
+      action: a.activity_type,
+      note: a.description,
+      timestamp: a.created_at?.toISOString() || null,
     }))
   }));
 }
@@ -54,19 +58,25 @@ export async function addLead(leadData) {
   }
 
   // Production Mode: Prisma
-  const { formData, ...rest } = leadData;
-  const newLead = await prisma.lead.create({
+  const newLead = await prisma.leads.create({
     data: {
-      ...rest,
-      formData: formData ? JSON.stringify(formData) : null,
-      pipelineStage: 'New',
-      status: 'New',
+      name: leadData.name,
+      phone: leadData.phone,
+      email: leadData.email || null,
+      city: leadData.city || 'Chennai',
+      locality: leadData.locality || leadData.location || null,
+      lead_type: leadData.leadType || 'general',
+      source: leadData.source || 'Website Form',
+      status: 'new',
       priority: determinePriority(leadData.leadType),
-      activityLog: {
+      message: leadData.message || leadData.notes || null,
+      source_page: leadData.sourcePage || null,
+      metadata: leadData.formData || {},
+      lead_activities: {
         create: {
-          action: 'Lead Created',
-          note: `Submitted via ${leadData.source || 'Website Form'}`,
-          user: 'System'
+          activity_type: 'lead_created',
+          title: 'Lead Created',
+          description: `Submitted via ${leadData.source || 'Website Form'}`,
         }
       }
     }
@@ -81,36 +91,32 @@ export async function updateLead(id, updates, currentUser = 'System') {
 
   // Production Mode: Prisma
   const { pipelineStage, status, priority, assignedTo, nextFollowUpDate } = updates;
-  const lead = await prisma.lead.findUnique({ where: { id } });
+  const lead = await prisma.leads.findUnique({ where: { id } });
   if (!lead) return null;
 
   const data = {};
   if (status !== undefined) data.status = status;
   if (priority !== undefined) data.priority = priority;
-  if (pipelineStage !== undefined) {
-    data.pipelineStage = pipelineStage;
-    if (['Converted', 'Won'].includes(pipelineStage)) data.status = 'Won';
-    if (['Lost'].includes(pipelineStage)) data.status = 'Lost';
-  }
-  if (assignedTo !== undefined) data.assignedTo = assignedTo;
-  if (nextFollowUpDate !== undefined) data.nextFollowUpDate = nextFollowUpDate ? new Date(nextFollowUpDate) : null;
+  if (pipelineStage !== undefined) data.status = pipelineStage;
+  if (assignedTo !== undefined) data.assigned_to = assignedTo || null;
+  if (nextFollowUpDate !== undefined) data.follow_up_date = nextFollowUpDate ? new Date(nextFollowUpDate) : null;
 
   const newLogEntries = [];
-  if (pipelineStage && pipelineStage !== lead.pipelineStage) {
-    newLogEntries.push({ action: 'Stage Updated', note: `Moved from ${lead.pipelineStage} to ${pipelineStage}`, user: currentUser });
+  if (pipelineStage && pipelineStage !== lead.status) {
+    newLogEntries.push({ activity_type: 'stage_updated', title: 'Stage Updated', description: `Moved from ${lead.status} to ${pipelineStage}` });
   }
-  if (assignedTo && assignedTo !== lead.assignedTo) {
-    newLogEntries.push({ action: 'Assigned', note: `Assigned to ${assignedTo}`, user: currentUser });
+  if (assignedTo && assignedTo !== lead.assigned_to) {
+    newLogEntries.push({ activity_type: 'assigned', title: 'Assigned', description: `Assigned by ${currentUser}` });
   }
-  if (nextFollowUpDate && nextFollowUpDate !== (lead.nextFollowUpDate ? lead.nextFollowUpDate.toISOString() : null)) {
-    newLogEntries.push({ action: 'Follow-up Scheduled', note: `Follow-up set for ${new Date(nextFollowUpDate).toLocaleDateString('en-IN')}`, user: currentUser });
+  if (nextFollowUpDate && nextFollowUpDate !== (lead.follow_up_date ? lead.follow_up_date.toISOString() : null)) {
+    newLogEntries.push({ activity_type: 'follow_up_scheduled', title: 'Follow-up Scheduled', description: `Follow-up set for ${new Date(nextFollowUpDate).toLocaleDateString('en-IN')}` });
   }
 
-  const updatedLead = await prisma.lead.update({
+  const updatedLead = await prisma.leads.update({
     where: { id },
     data: {
       ...data,
-      activityLog: {
+      lead_activities: {
         create: newLogEntries
       }
     }
@@ -124,12 +130,12 @@ export async function addLeadActivity(id, action, note, user = 'System') {
     return demoStorage.addLeadActivity(id, action, note, user);
   }
 
-  return await prisma.activityLog.create({
+  return await prisma.lead_activities.create({
     data: {
-      leadId: id,
-      action,
-      note,
-      user
+      lead_id: id,
+      activity_type: String(action || 'note_added').toLowerCase().replace(/\s+/g, '_'),
+      title: action || 'Note Added',
+      description: note,
     }
   });
 }
@@ -160,12 +166,8 @@ const createProxy = (modelName, demoCrud) => ({
 
 export const projectRequirements = createProxy('projectRequirement', demoStorage.demoRequirements);
 export const boqReviews = createProxy('boqReview', demoStorage.demoBoqReviews);
-export const materialQuoteRequests = createProxy('materialQuoteRequest', demoStorage.demoMaterialQuotes);
-export const supplierQuotes = createProxy('supplierQuote', demoStorage.demoSupplierQuotes);
 export const partnerMatches = createProxy('partnerMatch', demoStorage.demoPartnerMatches);
 export const proposals = createProxy('proposal', demoStorage.demoProposals);
-export const proposalLineItems = createProxy('proposalLineItem', demoStorage.demoProposalLineItems);
 export const documentAssets = createProxy('documentAsset', demoStorage.demoDocumentAssets);
-export const systemAuditLogs = createProxy('systemAuditLog', demoStorage.demoSystemAuditLogs);
 
 export { prisma };

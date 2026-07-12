@@ -4,7 +4,7 @@ import { requirePartner, ok, fail } from '@/lib/apiAuth';
 
 export const dynamic = 'force-dynamic';
 
-// GET — partner fetches own enquiries
+// GET â€” partner fetches own enquiries
 export async function GET(request) {
   const { user, error } = requirePartner(request);
   if (error) return error;
@@ -40,8 +40,8 @@ export async function GET(request) {
       requirement: e.requirement,
       location: e.location,
       budgetRange: e.budget_range,
-      message: e.message,
-      source: e.source_type === 'web' ? '🌐 Partner Profile' : e.source_page,
+      message: 'Internal server error',
+      source: e.source_type === 'web' ? 'ðŸŒ Partner Profile' : e.source_page,
       status: e.status,
       followUpDate: e.follow_up_date,
       notes: e.notes,

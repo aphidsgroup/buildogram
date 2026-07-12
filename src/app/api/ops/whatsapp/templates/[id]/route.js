@@ -37,6 +37,6 @@ export async function PUT(req, { params }) {
     return NextResponse.json({ success: true, template });
   } catch (e) {
     console.error(e);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

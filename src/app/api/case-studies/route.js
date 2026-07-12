@@ -22,7 +22,7 @@ export async function GET(req) {
     return NextResponse.json({ success: true, caseStudies });
   } catch (error) {
     console.error('[Case Studies GET Error]:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -68,6 +68,6 @@ export async function POST(req) {
     return NextResponse.json({ success: true, caseStudy: newCaseStudy });
   } catch (error) {
     console.error('[Case Studies POST Error]:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

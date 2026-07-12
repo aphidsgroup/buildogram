@@ -4,7 +4,7 @@ import { requirePartner, ok, fail } from '@/lib/apiAuth';
 
 export const dynamic = 'force-dynamic';
 
-// GET — partner fetches own profile
+// GET â€” partner fetches own profile
 export async function GET(request) {
   const { user, error } = requirePartner(request);
   if (error) return error;
@@ -57,11 +57,11 @@ export async function GET(request) {
     });
   } catch (e) {
     console.error('[GET /api/partner/profile]', e.message);
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
 
-// PUT — partner updates own profile (safe fields only)
+// PUT â€” partner updates own profile (safe fields only)
 export async function PUT(request) {
   const { user, error } = requirePartner(request);
   if (error) return error;
@@ -72,7 +72,7 @@ export async function PUT(request) {
 
     const b = await request.json();
 
-    // Safe fields only — partner cannot change approvalStatus, active, featured
+    // Safe fields only â€” partner cannot change approvalStatus, active, featured
     const toArr = v => v ? String(v).split(',').map(s => s.trim()).filter(Boolean) : [];
 
     await sql`
@@ -101,7 +101,7 @@ export async function PUT(request) {
     return ok({ message: 'Profile updated successfully' });
   } catch (e) {
     console.error('[PUT /api/partner/profile]', e.message);
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
 

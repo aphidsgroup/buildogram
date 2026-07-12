@@ -4,7 +4,7 @@ import { requireAuth, requireOps, ok, fail } from '@/lib/apiAuth';
 
 export const dynamic = 'force-dynamic';
 
-// PATCH /api/issues/[id] — update issue status, priority, resolution
+// PATCH /api/issues/[id] â€” update issue status, priority, resolution
 export async function PATCH(req, { params }) {
   const { user, error } = requireAuth(req);
   if (error) return error;
@@ -21,7 +21,7 @@ export async function PATCH(req, { params }) {
 
     if (Object.keys(updates).length === 0) return fail('No valid fields to update');
 
-    // Build SQL update dynamically (safe — only whitelisted fields)
+    // Build SQL update dynamically (safe â€” only whitelisted fields)
     const fields = Object.keys(updates);
     let query = 'UPDATE issues SET ';
     const values = [];
@@ -37,8 +37,8 @@ export async function PATCH(req, { params }) {
     if (!updated) return fail('Issue not found', 404);
     return ok({ issue: updated });
   } catch (e) {
-    // Graceful fallback — localStorage handles it on the client
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    // Graceful fallback â€” localStorage handles it on the client
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -52,6 +52,6 @@ export async function GET(req, { params }) {
     if (!issue) return fail('Issue not found', 404);
     return ok({ issue });
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }

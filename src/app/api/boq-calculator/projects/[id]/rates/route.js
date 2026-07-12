@@ -11,7 +11,7 @@ export async function PUT(req, { params }) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { id } = params;
+  const { id } = await params;
   try {
     const { rates } = await req.json();
     if (!Array.isArray(rates)) return NextResponse.json({ error: 'rates array required' }, { status: 400 });

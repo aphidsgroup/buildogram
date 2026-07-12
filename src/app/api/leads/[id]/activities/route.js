@@ -8,7 +8,7 @@ export async function GET(req, { params }) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
   }
 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const activities = await sql`
@@ -22,7 +22,7 @@ export async function GET(req, { params }) {
     return NextResponse.json({ success: true, activities });
   } catch (e) {
     console.error('[activities GET]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -32,7 +32,7 @@ export async function POST(req, { params }) {
     return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
   }
 
-  const { id } = params;
+  const { id } = await params;
 
   try {
     const b = await req.json();
@@ -58,6 +58,6 @@ export async function POST(req, { params }) {
     return NextResponse.json({ success: true, activity });
   } catch (e) {
     console.error('[activities POST]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

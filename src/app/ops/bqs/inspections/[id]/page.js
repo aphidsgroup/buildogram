@@ -1,8 +1,9 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function BqsInspectionDetail({ params }) {
+  const { id } = use(params);
   const [inspection, setInspection] = useState(null);
   const [loading, setLoading] = useState(true);
   const [passports, setPassports] = useState([]);
@@ -14,11 +15,11 @@ export default function BqsInspectionDetail({ params }) {
   useEffect(() => {
     fetchInspection();
     fetchPassports();
-  }, [params.id]);
+  }, [id]);
 
   const fetchInspection = async () => {
     try {
-      const res = await fetch(`/api/ops/bqs/inspections/${params.id}`);
+      const res = await fetch(`/api/ops/bqs/inspections/${id}`);
       const data = await res.json();
       if (data.success) {
         setInspection(data.inspection);
@@ -44,7 +45,7 @@ export default function BqsInspectionDetail({ params }) {
 
   const updateResult = async (resultId, updatePayload) => {
     try {
-      const res = await fetch(`/api/ops/bqs/inspections/${params.id}/results`, {
+      const res = await fetch(`/api/ops/bqs/inspections/${id}/results`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ result_id: resultId, ...updatePayload })
@@ -58,7 +59,7 @@ export default function BqsInspectionDetail({ params }) {
   const handleCreateRework = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`/api/ops/bqs/inspections/${params.id}/rework`, {
+      const res = await fetch(`/api/ops/bqs/inspections/${id}/rework`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -79,7 +80,7 @@ export default function BqsInspectionDetail({ params }) {
 
   const closeRework = async (reworkId) => {
     try {
-      const res = await fetch(`/api/ops/bqs/inspections/${params.id}/rework`, {
+      const res = await fetch(`/api/ops/bqs/inspections/${id}/rework`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ rework_id: reworkId, status: 'verified_closed' })
@@ -92,7 +93,7 @@ export default function BqsInspectionDetail({ params }) {
 
   const linkPassport = async (passportId) => {
     try {
-      await fetch(`/api/ops/bqs/inspections/${params.id}`, {
+      await fetch(`/api/ops/bqs/inspections/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ passport_id: passportId })
@@ -111,7 +112,7 @@ export default function BqsInspectionDetail({ params }) {
       return;
     }
     try {
-      await fetch(`/api/ops/bqs/inspections/${params.id}`, {
+      await fetch(`/api/ops/bqs/inspections/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: 'completed' })

@@ -5,8 +5,7 @@ export async function sendEmail({ to, subject, body, html }) {
   const apiKey = process.env.RESEND_API_KEY;
 
   if (!apiKey) {
-    console.log('[EMAIL SKIPPED] RESEND_API_KEY not configured.');
-    console.log(`To: ${to}\nSubject: ${subject}\nBody:\n${body || html}`);
+    console.warn('[EMAIL SKIPPED] RESEND_API_KEY not configured. Message content was not logged.');
     return { sent: false, reason: 'not_configured' };
   }
 
@@ -25,7 +24,7 @@ export async function sendEmail({ to, subject, body, html }) {
       return { sent: false, reason: error.message };
     }
 
-    console.log(`Email successfully sent to ${to} via Resend. ID: ${data.id}`);
+    console.log(`Email successfully sent via Resend. ID: ${data.id}`);
     return { sent: true, data };
   } catch (error) {
     console.error('Email send failed (Exception):', error);

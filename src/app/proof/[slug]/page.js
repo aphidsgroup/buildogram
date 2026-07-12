@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }) {
   const prisma = new PrismaClient();
-  const { slug } = params;
+  const { slug } = await params;
   
   const proof = await prisma.proof_assets.findUnique({
     where: { slug }
@@ -29,11 +29,12 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ProofDetailPage({ params }) {
-  const currentPath = `/proof${params.slug}`.replace('//', '/');
+  const resolvedParams = await params;
+  const currentPath = `/proof/${resolvedParams.slug}`;
   const relatedLinks = getContextualLinks('proof', currentPath);
 
   const prisma = new PrismaClient();
-  const { slug } = params;
+  const { slug } = await params;
 
   const proof = await prisma.proof_assets.findUnique({
     where: { slug }

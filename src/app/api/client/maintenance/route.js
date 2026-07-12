@@ -21,6 +21,6 @@ export async function GET(req) {
     return NextResponse.json({ success: true, leads });
   } catch (e) {
     console.error('[client maintenance GET]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

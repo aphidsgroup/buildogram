@@ -10,7 +10,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const svc = services.find((s) => s.slug === params.slug);
+  const resolvedParams = await params;
+  const svc = services.find((s) => s.slug === resolvedParams.slug);
   if (!svc) return {};
   return {
     title: svc.metaTitle,
@@ -41,11 +42,12 @@ const breadcrumbSchema = (itemData) => ({
   ],
 });
 
-export default function ServicePage({ params }) {
-  const currentPath = `/services${params.slug}`.replace('//', '/');
+export default async function ServicePage({ params }) {
+  const resolvedParams = await params;
+  const currentPath = `/services/${resolvedParams.slug}`;
   const relatedLinks = getContextualLinks('service', currentPath);
 
-  const svc = services.find((s) => s.slug === params.slug);
+  const svc = services.find((s) => s.slug === resolvedParams.slug);
   if (!svc) notFound();
 
   return (
