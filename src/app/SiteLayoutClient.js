@@ -3,6 +3,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
+import BackToTop from '@/components/BackToTop';
 
 export default function SiteLayoutClient({ children }) {
   const pathname = usePathname();
@@ -25,14 +26,11 @@ export default function SiteLayoutClient({ children }) {
   return (
     <>
       {!isDashboard && <Navbar />}
-      {/* 
-        Removed style={{ paddingTop: '72px' }} since Navbar is position: sticky 
-        This eliminates the white gap between header and hero sections.
-      */}
       <main>
         {children}
       </main>
       {!isDashboard && <Footer />}
+      {!isDashboard && <BackToTop />}
     </>
   );
 }
