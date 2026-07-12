@@ -344,9 +344,5 @@ INSERT INTO cost_config (city, spec_level, rate_per_sqft_min, rate_per_sqft_max)
   ('Madurai', 'premium', 2100, 3000)
 ON CONFLICT DO NOTHING;
 
--- Seed: Default Ops Admin
-INSERT INTO users (name, email, phone, password_hash, role) VALUES
-  ('Buildogram Admin', 'admin@buildogram.in', '9999999999',
-   '$2b$10$rQnVMqRGKJLFqOLVLQIFuO5GQqBpRk3kKkMpGdPHjk1EGiGgPGMkK', -- password: Admin@1234
-   'ops_admin')
-ON CONFLICT (email) DO NOTHING;
+-- Administrative users are created separately through prisma/seed.js.
+-- Never place password hashes or default credentials in schema migrations.

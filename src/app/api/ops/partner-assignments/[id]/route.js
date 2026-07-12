@@ -8,7 +8,7 @@ export async function PATCH(request, { params }) {
     const { status, partner_feedback } = await request.json();
 
     const updated = await prisma.partner_lead_assignments.update({
-      where: { id: params.id },
+      where: { id: (await params).id },
       data: {
         ...(status && { status }),
         ...(partner_feedback && { partner_feedback })

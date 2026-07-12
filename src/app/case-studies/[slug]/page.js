@@ -12,10 +12,11 @@ const prisma = new PrismaClient();
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }) {
+  const resolvedParams = await params;
   let caseStudy = null;
   try {
     caseStudy = await prisma.case_studies.findUnique({
-      where: { slug: params.slug }
+      where: { slug: resolvedParams.slug }
     });
   } catch (err) {
     console.error('generateMetadata error:', err);
@@ -31,13 +32,14 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function CaseStudyDetailPage({ params }) {
-  const currentPath = `/case-studies${params.slug}`.replace('//', '/');
+  const resolvedParams = await params;
+  const currentPath = `/case-studies/${resolvedParams.slug}`;
   const relatedLinks = getContextualLinks('case_study', currentPath);
 
   let caseStudy = null;
   try {
     caseStudy = await prisma.case_studies.findUnique({
-      where: { slug: params.slug }
+      where: { slug: resolvedParams.slug }
     });
   } catch (err) {
     console.error('Failed to fetch case study during build:', err);

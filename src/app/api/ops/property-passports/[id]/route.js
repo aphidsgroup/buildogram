@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 
 export async function GET(req, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
 
     const passport = await prisma.property_passports.findUnique({
       where: { id },
@@ -39,7 +39,7 @@ export async function GET(req, { params }) {
 export async function PATCH(req, { params }) {
   await requirePermission('manage_passports');
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await req.json();
 
     const passport = await prisma.property_passports.update({

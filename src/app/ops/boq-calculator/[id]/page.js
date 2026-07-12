@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { use, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { DEFAULT_RATES } from '@/lib/boq-calc/rates';
 import { numberToWords } from '@/lib/boq-calc/numberToWords';
@@ -598,7 +598,7 @@ function SectionBOQResult({ result, project }) {
 // ── MAIN WORKSTATION PAGE ─────────────────────────────────────────────────
 
 export default function BOQWorkstationPage({ params }) {
-  const { id } = params;
+  const { id } = use(params);
   const [project, setProject]     = useState(null);
   const [loading, setLoading]     = useState(true);
   const [saving, setSaving]       = useState(false);

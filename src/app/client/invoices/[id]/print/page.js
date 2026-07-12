@@ -1,8 +1,8 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 
 export default function ClientInvoicePrintPage({ params }) {
-  const { id } = params;
+  const { id } = use(params);
   const [invoice, setInvoice] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

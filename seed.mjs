@@ -7,7 +7,13 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const connectionString = process.env.DATABASE_URL || 'postgresql://neondb_owner:npg_DfqJe86pAMyT@ep-empty-waterfall-ao1eruvv-pooler.c-2.ap-southeast-1.aws.neon.tech/neondb?sslmode=require';
+const connectionString = process.env.DATABASE_URL;
+const adminPassword = process.env.SEED_ADMIN_PASSWORD;
+
+if (!connectionString) throw new Error('DATABASE_URL is required.');
+if (!adminPassword || adminPassword.length < 12) {
+  throw new Error('SEED_ADMIN_PASSWORD with at least 12 characters is required.');
+}
 
 async function seed() {
   const client = new Client({ connectionString });
@@ -39,7 +45,7 @@ async function seed() {
     console.log('✓ cost config seeded');
 
     console.log('Seeding admin user...');
-    const hash = await bcrypt.hash('Admin@1234', 10);
+    const hash = await bcrypt.hash(adminPassword, 12);
     await client.query(`DELETE FROM users WHERE email='admin@buildogram.in'`);
     await client.query(`
       INSERT INTO users(name,email,phone,password_hash,role) 
@@ -48,7 +54,7 @@ async function seed() {
     console.log('✓ admin user created');
     
     console.log('\n✅ Database setup complete!');
-    console.log('Login: admin@buildogram.in / Admin@1234');
+    console.log('Admin account seeded. The password was not printed.');
   } catch (error) {
     console.error('Error during setup:', error);
   } finally {

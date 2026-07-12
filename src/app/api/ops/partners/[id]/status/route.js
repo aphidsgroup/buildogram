@@ -5,7 +5,7 @@ import { requireOps, ok, fail } from '@/lib/apiAuth';
 
 export const dynamic = 'force-dynamic';
 
-// PATCH — update approval_status, active, or featured
+// PATCH â€” update approval_status, active, or featured
 export async function PATCH(request, { params }) {
   await requirePermission('manage_partners');
   const { user, error } = requireOps(request);
@@ -66,6 +66,6 @@ export async function PATCH(request, { params }) {
 
     return ok({ message: 'Status updated', id, ...updates });
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }

@@ -40,7 +40,7 @@ export async function PATCH(req, { params }) {
     return NextResponse.json({ success: true, data: reel });
   } catch (error) {
     console.error('[ops reels PATCH]', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -60,6 +60,6 @@ export async function DELETE(req, { params }) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('[ops reels DELETE]', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

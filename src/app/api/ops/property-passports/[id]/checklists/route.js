@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma";
 export async function POST(req, { params }) {
   await requirePermission('manage_passports');
   try {
-    const { id } = params;
+    const { id } = await params;
     const body = await req.json();
 
     const checklist = await prisma.property_passport_checklists.create({

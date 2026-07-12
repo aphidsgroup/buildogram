@@ -89,7 +89,7 @@ export default function OpsDashboard() {
           <p className={styles.bannerSub}>Comprehensive overview of revenue, operations, and ecosystem health.</p>
         </div>
         <div>
-          <Link href="/ops/pilot-launch" className={styles.pilotBtn}>
+          <Link href="/ops/launch-checklist" className={styles.pilotBtn}>
             🚀 Open Pilot Launch Control
           </Link>
         </div>

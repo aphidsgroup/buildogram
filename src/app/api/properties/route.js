@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
 
-/* ─── GET — List all properties with filters ──────────────── */
+/* â”€â”€â”€ GET â€” List all properties with filters â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export async function GET(req) {
   const u = getUserFromRequest(req);
   if (!u || !['ops_admin', 'ops_pm', 'ops_engineer'].includes(u.role)) {
@@ -47,11 +47,11 @@ export async function GET(req) {
     return NextResponse.json({ success: true, properties });
   } catch (e) {
     console.error('[properties GET]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 
-/* ─── POST — Create new property record ───────────────────── */
+/* â”€â”€â”€ POST â€” Create new property record â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 export async function POST(req) {
   const u = getUserFromRequest(req);
   if (!u || !['ops_admin', 'ops_pm'].includes(u.role)) {
@@ -108,6 +108,6 @@ export async function POST(req) {
     return NextResponse.json({ success: true, property });
   } catch (e) {
     console.error('[properties POST]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

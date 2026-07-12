@@ -37,7 +37,7 @@ export async function GET(req, { params }) {
 
     return NextResponse.json({ success: true, documents });
   } catch (e) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -75,6 +75,6 @@ export async function POST(req, { params }) {
 
     return NextResponse.json({ success: true, document: doc });
   } catch (e) {
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

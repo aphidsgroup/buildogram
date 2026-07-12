@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(req, { params }) {
   try {
-    const slug = params.slug;
+    const slug = (await params).slug;
     
     // Fetch the specific partner by slug, or fallback to id if slug is not present but id matches
     const [partner] = await sql`

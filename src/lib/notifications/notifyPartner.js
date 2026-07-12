@@ -21,7 +21,5 @@ export async function notifyPartner(partner, data) {
     `
   });
 
-  console.log(`[NOTIFY PARTNER] -> ${email}`);
-  console.log(`Type: ${data.type}`);
-  console.log(`Message: ${data.message}`);
+  console.log(`[NOTIFY PARTNER] Sent notification type: ${data.type || 'general'}`);
 }

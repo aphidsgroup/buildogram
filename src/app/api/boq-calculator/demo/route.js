@@ -138,6 +138,6 @@ export async function GET() {
     });
   } catch (err) {
     console.error('[demo API]', err);
-    return Response.json({ error: 'Failed to load demo data', detail: err.message }, { status: 500 });
+    return Response.json({ error: 'Failed to load demo data' }, { status: 500 });
   }
 }

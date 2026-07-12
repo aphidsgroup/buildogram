@@ -14,7 +14,7 @@ export async function GET(request) {
     const requests = rows.map(r => ({ id: r.id, projectId: r.project_id, projectName: r.project_name, materialName: r.material_name, quantity: r.quantity, unit: r.unit, requiredDate: r.required_date, priority: r.priority, status: r.status, vendorQuoteStatus: r.vendor_quote_status, bestRateRequest: r.best_rate_request, notes: r.notes, createdAt: r.created_at }));
     return ok({ requests });
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -32,6 +32,6 @@ export async function POST(request) {
       RETURNING id, material_name`;
     return ok({ request: { id: row.id, materialName: row.material_name } }, 201);
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }

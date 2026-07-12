@@ -12,7 +12,7 @@ export async function POST(req, { params }) {
   try {
     const adminUser = await requirePermission('manage_users');
 
-    const userId = params.id;
+    const userId = (await params).id;
 
     const tempPassword = generateTempPassword();
     const hash = await bcrypt.hash(tempPassword, 10);
@@ -36,7 +36,7 @@ export async function POST(req, { params }) {
     });
 
   } catch (error) {
-    if (error.message.startsWith('Forbidden') || error.message === 'Unauthorized') return NextResponse.json({ error: error.message }, { status: 403 });
+    if (error.message.startsWith('Forbidden') || error.message === 'Unauthorized') return NextResponse.json({ error: 'Internal server error' }, { status: 403 });
     console.error("Reset Password Error:", error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }

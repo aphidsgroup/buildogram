@@ -14,7 +14,7 @@ export const metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function ClientProjectViewPage({ params }) {
-  const { token } = params;
+  const { token } = await params;
 
   const project = await prisma.projects.findUnique({
     where: { share_token: token },

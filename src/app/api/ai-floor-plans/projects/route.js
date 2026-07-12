@@ -25,7 +25,7 @@ export async function GET(req) {
     return NextResponse.json(projects);
   } catch (error) {
     console.error('Error fetching AI projects:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -75,6 +75,6 @@ export async function POST(req) {
     return NextResponse.json(newProject);
   } catch (error) {
     console.error('Error creating AI project:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

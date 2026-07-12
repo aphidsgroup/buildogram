@@ -3,7 +3,7 @@ import { getUserFromRequest } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 
 export default async function PlanReviewPrintPage({ params }) {
-  const { id } = params;
+  const { id } = await params;
 
   // We do not require request object if we can't easily pass it in an App Router page without cookies()
   // Wait, in Next.js 13+ App router, page components can use cookies() directly, but this is easier with the DB if we just rely on the API or make it public with obfuscated IDs.

@@ -8,7 +8,7 @@ export async function POST(req, { params }) {
     if (error) return error;
 
     const project = await db.ai_floor_plan_projects.findUnique({
-      where: { id: params.id },
+      where: { id: (await params).id },
       include: {
         versions: {
           where: { id: req.body?.selectedVersionId || undefined }, // if we want to attach a specific version
@@ -53,6 +53,6 @@ export async function POST(req, { params }) {
     return NextResponse.json({ success: true, leadId: lead.id });
   } catch (error) {
     console.error('Error requesting review:', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
 
-// ── GET all partners (ops view — includes all statuses) ───────────────────
+// â”€â”€ GET all partners (ops view â€” includes all statuses) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -66,11 +66,11 @@ export async function GET(request) {
     return NextResponse.json({ success: true, partners: mapped });
   } catch (e) {
     console.error('[GET /api/ops/partners]', e.message);
-    return NextResponse.json({ success: false, message: 'Database error: ' + e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
 
-// ── POST create partner ───────────────────────────────────────────────────
+// â”€â”€ POST create partner â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export async function POST(request) {
   await requirePermission('manage_partners');
   try {
@@ -117,7 +117,7 @@ export async function POST(request) {
     return NextResponse.json({ success: true, partner: { id: partner.id, slug: partner.slug, companyName: partner.company_name } }, { status: 201 });
   } catch (e) {
     console.error('[POST /api/ops/partners]', e.message);
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
 

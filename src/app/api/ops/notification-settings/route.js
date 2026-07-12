@@ -17,7 +17,7 @@ export async function GET(req) {
     const [settings] = await sql`SELECT * FROM notification_settings LIMIT 1`;
     return NextResponse.json({ success: true, settings });
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -49,6 +49,6 @@ export async function PUT(req) {
 
     return NextResponse.json({ success: true, settings });
   } catch (e) {
-    return NextResponse.json({ error: e.message }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -6,7 +6,7 @@ import { roleCan } from '@/lib/permissions';
 
 export async function POST(req, { params }) {
   await requirePermission('manage_notification_rules');
-  const { id } = params;
+  const { id } = await params;
   const u = getUserFromRequest(req);
   
   // Must have send_whatsapp_message permission

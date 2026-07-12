@@ -29,7 +29,7 @@ export function getMockTemplates(projectInput) {
     summary: {
       builtUpArea: builtUp * floorCount,
       carpetArea: Math.round(builtUp * floorCount * 0.78),
-      estimatedConstructionCostRange: \`Rs \${Math.round(builtUp * floorCount * 1800 / 100000)}L – Rs \${Math.round(builtUp * floorCount * 2200 / 100000)}L\`,
+      estimatedConstructionCostRange: `Rs ${Math.round(builtUp * floorCount * 1800 / 100000)}L – Rs ${Math.round(builtUp * floorCount * 2200 / 100000)}L`,
       designNotes: [desc,
         'External dimensions shown. Walls drawn to scale.',
         'Wet areas grouped for plumbing economy.'],

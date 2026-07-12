@@ -28,8 +28,9 @@ export default function LoginPage() {
       }
 
       const role = data.user.role;
-      if (['ops_admin', 'ops_pm', 'ops_engineer'].includes(role)) router.push('/ops/dashboard');
-      else if (['partner', 'partner_contractor', 'partner_supplier'].includes(role)) router.push('/partner/dashboard');
+      if (['super_admin', 'ops_admin', 'ops_pm', 'ops_finance', 'ops_engineer', 'ops_content'].includes(role)) router.push('/ops/dashboard');
+      else if (['partner_admin', 'partner_user'].includes(role)) router.push('/partner/dashboard');
+      else if (['supplier_admin', 'supplier_user'].includes(role)) router.push('/supplier/dashboard');
       else router.push('/client/dashboard');
     } catch (e) { setError('Network error. Please try again.'); }
     finally { setLoading(false); }
@@ -75,16 +76,6 @@ export default function LoginPage() {
           </Link>
         </div>
         
-        {process.env.NODE_ENV !== 'production' || process.env.NEXT_PUBLIC_SHOW_DEMO_CREDENTIALS === 'true' ? (
-          <div className={styles.demoBox}>
-            <p style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 700, marginBottom: '8px' }}>Demo Credentials (password: password123)</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-              <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Admin: admin@buildogram.in</p>
-              <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Partner: partner@buildogram.in</p>
-              <p style={{ fontSize: '13px', color: 'var(--text-muted)', margin: 0 }}>Client: client@buildogram.in</p>
-            </div>
-          </div>
-        ) : null}
       </AnimatedSection>
     </div>
   );

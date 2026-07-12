@@ -1,2 +1,14 @@
+import { NextResponse } from 'next/server';
 import { requirePermission } from '@/lib/auth/permissions';
-﻿import { NextResponse } from 'next/server'; import { PrismaClient } from '@prisma/client'; const prisma = new PrismaClient(); export async function GET() { try { const d = await prisma.piling_leads.findMany({ orderBy:{created_at:'desc'}, take:500 }); return NextResponse.json({success:true,data:d}); } catch(e){ return NextResponse.json({success:false,error:e.message},{status:500}); }}
+import prisma from '@/lib/prisma';
+
+export async function GET() {
+  try {
+    await requirePermission('view_leads');
+    const data = await prisma.piling_leads.findMany({ orderBy: { created_at: 'desc' }, take: 500 });
+    return NextResponse.json({ success: true, data });
+  } catch (error) {
+    const status = error.message === 'Unauthorized' ? 401 : error.message.startsWith('Forbidden') ? 403 : 500;
+    return NextResponse.json({ success: false, error: status === 500 ? 'Internal server error' : error.message }, { status });
+  }
+}

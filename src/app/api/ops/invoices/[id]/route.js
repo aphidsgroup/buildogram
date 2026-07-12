@@ -6,7 +6,7 @@ import { roleCan } from '@/lib/permissions';
 
 export async function PUT(req, { params }) {
   await requirePermission('manage_finance');
-  const { id } = params;
+  const { id } = await params;
   const u = getUserFromRequest(req);
   
   if (!u || !roleCan(u.role, 'manage_invoices')) {

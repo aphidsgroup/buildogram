@@ -1,6 +1,8 @@
 import 'server-only';
 import { cookies } from 'next/headers';
 import { verifyTokenNode } from '@/lib/auth';
+import sql from '@/lib/db';
+import { normalizeRole } from '@/lib/roles';
 import { hasPermission } from './shared-permissions';
 export { rolePermissions, hasPermission } from './shared-permissions';
 
@@ -8,7 +10,15 @@ export async function getCurrentUser() {
   const cookieStore = await cookies();
   const token = cookieStore.get('buildogram_token');
   if (!token?.value) return null;
-  return await verifyTokenNode(token.value);
+  const payload = await verifyTokenNode(token.value);
+  if (!payload?.id) return null;
+  const [user] = await sql`
+    SELECT id, name, email, role, partner_id, must_change_password
+    FROM users
+    WHERE id = ${payload.id} AND is_active = true
+    LIMIT 1
+  `;
+  return user ? { ...user, role: normalizeRole(user.role) } : null;
 }
 
 export async function requirePermission(permission) {

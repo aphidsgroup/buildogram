@@ -1995,3 +1995,97 @@ model boq_export_log {
 
   @@index([project_id], map: "idx_boq_export_log_project")
 }
+
+model projectRequirement {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  leadId            String   @map("lead_id") @db.Uuid
+  requirementType   String?  @map("requirement_type")
+  projectLocation   String?  @map("project_location")
+  currentStage      String?  @map("current_stage") @default("Requirement Collected")
+  plotSize          String?  @map("plot_size")
+  budgetRange       String?  @map("budget_range")
+  scopeSummary      String?  @map("scope_summary")
+  createdBy         String?  @map("created_by") @db.Uuid
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@index([leadId], map: "idx_project_requirements_lead")
+  @@map("project_requirements")
+}
+
+model boqReview {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  leadId            String   @map("lead_id") @db.Uuid
+  reviewStatus      String   @default("under_review") @map("review_status")
+  projectType       String?  @map("project_type")
+  builtUpArea       String?  @map("built_up_area")
+  drawingStatus     String?  @map("drawing_status")
+  boqStatus         String?  @map("boq_status")
+  engineerSummary   String?  @map("engineer_summary")
+  riskItems         String?  @map("risk_items")
+  missingItems      String?  @map("missing_items")
+  costObservation   String?  @map("cost_observation")
+  reviewNotes       String?  @map("review_notes")
+  createdBy         String?  @map("created_by") @db.Uuid
+  createdAt         DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt         DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@index([leadId], map: "idx_boq_reviews_lead")
+  @@map("boq_reviews")
+}
+
+model proposal {
+  id              String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  leadId          String   @map("lead_id") @db.Uuid
+  title           String
+  proposalType    String?  @map("proposal_type")
+  proposalStatus  String   @default("draft") @map("proposal_status")
+  summary         String?
+  scopeOfWork     String?  @map("scope_of_work")
+  estimatedValue  String?  @map("estimated_value")
+  timeline        String?
+  paymentTerms    String?  @map("payment_terms")
+  exclusions      String?
+  createdBy       String?  @map("created_by") @db.Uuid
+  createdAt       DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt       DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@index([leadId], map: "idx_proposals_lead")
+  @@map("proposals")
+}
+
+model documentAsset {
+  id               String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  leadId           String   @map("lead_id") @db.Uuid
+  requirementId    String?  @map("requirement_id") @db.Uuid
+  documentType     String   @map("document_type")
+  fileName         String   @map("file_name")
+  originalName     String   @map("original_name")
+  mimeType         String   @map("mime_type")
+  fileSize         Int      @map("file_size")
+  fileUrl          String   @map("file_url")
+  storageKey       String   @map("storage_key")
+  visibility       String   @default("ops_only")
+  status           String   @default("uploaded")
+  uploadedByUserId String   @map("uploaded_by_user_id") @db.Uuid
+  createdAt        DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@index([leadId], map: "idx_lead_document_assets_lead")
+  @@map("lead_document_assets")
+}
+
+model partnerMatch {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  leadId      String   @map("lead_id") @db.Uuid
+  partnerId   String   @map("partner_id") @db.Uuid
+  partnerType String?  @map("partner_type")
+  matchStatus String   @default("shortlisted") @map("match_status")
+  createdBy   String?  @map("created_by") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime @default(now()) @map("updated_at") @db.Timestamptz(6)
+
+  @@unique([leadId, partnerId], map: "uq_partner_matches_lead_partner")
+  @@index([leadId], map: "idx_partner_matches_lead")
+  @@map("partner_matches")
+}

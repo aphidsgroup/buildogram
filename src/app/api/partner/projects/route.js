@@ -22,7 +22,7 @@ export async function GET(request) {
     return ok({ projects });
   } catch (e) {
     console.error('[GET /api/partner/projects]', e.message);
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -40,6 +40,6 @@ export async function POST(request) {
       RETURNING *`;
     return ok({ project: { id: row.id, projectName: row.project_name } }, 201);
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }

@@ -35,7 +35,7 @@ export async function GET(req) {
 
     return NextResponse.json({ users: usersList });
   } catch (error) {
-    if (error.message.startsWith('Forbidden') || error.message === 'Unauthorized') return NextResponse.json({ error: error.message }, { status: 403 });
+    if (error.message.startsWith('Forbidden') || error.message === 'Unauthorized') return NextResponse.json({ error: 'Internal server error' }, { status: 403 });
     console.error("Fetch Users Error:", error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
@@ -87,7 +87,7 @@ export async function POST(req) {
     });
 
   } catch (error) {
-    if (error.message.startsWith('Forbidden') || error.message === 'Unauthorized') return NextResponse.json({ error: error.message }, { status: 403 });
+    if (error.message.startsWith('Forbidden') || error.message === 'Unauthorized') return NextResponse.json({ error: 'Internal server error' }, { status: 403 });
     console.error("Create User Error:", error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }

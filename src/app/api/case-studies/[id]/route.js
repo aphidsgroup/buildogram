@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 
 export async function GET(req, { params }) {
   try {
-    const { id } = params;
+    const { id } = await params;
     const caseStudy = await prisma.case_studies.findUnique({
       where: { id }
     });
@@ -18,7 +18,7 @@ export async function GET(req, { params }) {
     return NextResponse.json({ success: true, caseStudy });
   } catch (error) {
     console.error('[Case Studies GET by ID Error]:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -29,7 +29,7 @@ export async function PATCH(req, { params }) {
   }
 
   try {
-    const { id } = params;
+    const { id } = await params;
     const data = await req.json();
 
     const updatedCaseStudy = await prisma.case_studies.update({
@@ -43,7 +43,7 @@ export async function PATCH(req, { params }) {
     return NextResponse.json({ success: true, caseStudy: updatedCaseStudy });
   } catch (error) {
     console.error('[Case Studies PATCH Error]:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -54,7 +54,7 @@ export async function DELETE(req, { params }) {
   }
 
   try {
-    const { id } = params;
+    const { id } = await params;
     await prisma.case_studies.delete({
       where: { id }
     });
@@ -62,6 +62,6 @@ export async function DELETE(req, { params }) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('[Case Studies DELETE Error]:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

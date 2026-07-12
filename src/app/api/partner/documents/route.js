@@ -14,7 +14,7 @@ export async function GET(request) {
     const documents = rows.map(r => ({ id: r.id, projectId: r.project_id, projectName: r.project_name, documentName: r.document_name, documentType: r.document_type, fileUrl: r.file_url, status: r.status, version: r.version, uploadedDate: r.uploaded_date, createdAt: r.created_at }));
     return ok({ documents });
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }
 
@@ -32,6 +32,6 @@ export async function POST(request) {
       RETURNING id, document_name`;
     return ok({ document: { id: row.id, documentName: row.document_name } }, 201);
   } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Internal server error' }, { status: 500 });
   }
 }

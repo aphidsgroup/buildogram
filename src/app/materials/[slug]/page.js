@@ -12,7 +12,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const mat = materialMap[params.slug];
+  const resolvedParams = await params;
+  const mat = materialMap[resolvedParams.slug];
   if (!mat) return {};
   return { title: mat.metaTitle, description: mat.metaDescription,
     alternates: { canonical: `https://buildogram.in/materials/${mat.slug}` },
@@ -40,11 +41,12 @@ const breadcrumbSchema = (itemData) => ({
   ],
 });
 
-export default function MaterialPage({ params }) {
-  const currentPath = `/materials${params.slug}`.replace('//', '/');
+export default async function MaterialPage({ params }) {
+  const resolvedParams = await params;
+  const currentPath = `/materials/${resolvedParams.slug}`;
   const relatedLinks = getContextualLinks('material', currentPath);
 
-  const mat = materialMap[params.slug];
+  const mat = materialMap[resolvedParams.slug];
   if (!mat) notFound();
 
   return (

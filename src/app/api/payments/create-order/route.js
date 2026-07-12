@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
-import { getUserFromRequest } from '@/lib/auth';
+import { getActiveUserFromRequest } from '@/lib/auth/currentUser';
+import { isOpsRole, ROLES } from '@/lib/roles';
 import Razorpay from 'razorpay';
 
 export async function POST(req) {
-  const u = getUserFromRequest(req);
+  const u = await getActiveUserFromRequest(req);
   if (!u) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
   try {
@@ -12,8 +13,11 @@ export async function POST(req) {
     if (!invoice_id) return NextResponse.json({ error: 'Invoice ID required' }, { status: 400 });
 
     // Fetch invoice and ensure it belongs to the user if they are a client
+    if (u.role !== ROLES.CLIENT_USER && !isOpsRole(u.role)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
     let query = sql`SELECT * FROM invoice_records WHERE id = ${invoice_id}`;
-    if (u.role === 'client') {
+    if (u.role === ROLES.CLIENT_USER) {
       query = sql`SELECT * FROM invoice_records WHERE id = ${invoice_id} AND metadata->>'client_user_id' = ${u.id}`;
     }
     const [invoice] = await query;
@@ -36,7 +40,7 @@ export async function POST(req) {
     const rzpOrder = await rzp.orders.create({
       amount: Math.round(amountDue * 100),
       currency: 'INR',
-      receipt: `inv_${invoice.invoice_number}`,
+      receipt: `inv_${invoice.invoice_number}`.slice(0, 40),
     });
 
     // Store in DB
@@ -50,12 +54,12 @@ export async function POST(req) {
 
     return NextResponse.json({
       success: true,
-      order: paymentOrder,
+      order: { id: paymentOrder.id, amount: paymentOrder.amount, currency: paymentOrder.currency },
       razorpay_order_id: rzpOrder.id,
       razorpay_key_id: process.env.RAZORPAY_KEY_ID
     });
   } catch (e) {
-    console.error('Payment Create Order Error:', e);
-    return NextResponse.json({ error: e.message }, { status: 500 });
+    console.error('Payment order creation failed:', e?.name || 'unknown_error');
+    return NextResponse.json({ error: 'Unable to create payment order' }, { status: 500 });
   }
 }

@@ -7,7 +7,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
-  const comp = comparisonMap[params.slug];
+  const resolvedParams = await params;
+  const comp = comparisonMap[resolvedParams.slug];
   if (!comp) return {};
   return { title: comp.metaTitle, description: comp.metaDescription,
     alternates: { canonical: `https://buildogram.in/compare/${comp.slug}` },
@@ -25,8 +26,9 @@ const breadcrumbSchema = (itemData) => ({
   ],
 });
 
-export default function ComparisonPage({ params }) {
-  const comp = comparisonMap[params.slug];
+export default async function ComparisonPage({ params }) {
+  const resolvedParams = await params;
+  const comp = comparisonMap[resolvedParams.slug];
   if (!comp) notFound();
 
   return (

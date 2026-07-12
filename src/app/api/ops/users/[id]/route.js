@@ -6,7 +6,7 @@ export async function PATCH(req, { params }) {
   try {
     const adminUser = await requirePermission('manage_users');
 
-    const userId = params.id;
+    const userId = (await params).id;
     const data = await req.json();
     
     // Ensure we don't allow password updates here. That has its own endpoint.
@@ -26,7 +26,7 @@ export async function PATCH(req, { params }) {
 
     return NextResponse.json({ success: true, user: updatedUser });
   } catch (error) {
-    if (error.message.startsWith('Forbidden') || error.message === 'Unauthorized') return NextResponse.json({ error: error.message }, { status: 403 });
+    if (error.message.startsWith('Forbidden') || error.message === 'Unauthorized') return NextResponse.json({ error: 'Internal server error' }, { status: 403 });
     console.error("Update User Error:", error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
@@ -36,7 +36,7 @@ export async function DELETE(req, { params }) {
   try {
     const adminUser = await requirePermission('manage_users');
 
-    const userId = params.id;
+    const userId = (await params).id;
     
     // Don't let an admin delete themselves
     if (adminUser.id === userId) {
@@ -51,7 +51,7 @@ export async function DELETE(req, { params }) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    if (error.message.startsWith('Forbidden') || error.message === 'Unauthorized') return NextResponse.json({ error: error.message }, { status: 403 });
+    if (error.message.startsWith('Forbidden') || error.message === 'Unauthorized') return NextResponse.json({ error: 'Internal server error' }, { status: 403 });
     console.error("Delete User Error:", error);
     // If foreign key constraint fails, return a friendly message
     if (error.code === 'P2003') {

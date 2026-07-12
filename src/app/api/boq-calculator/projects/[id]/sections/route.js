@@ -11,7 +11,7 @@ export async function PUT(req, { params }) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  const { id } = params;
+  const { id } = await params;
   try {
     const { section_key, data_json } = await req.json();
     if (!section_key) return NextResponse.json({ error: 'section_key required' }, { status: 400 });

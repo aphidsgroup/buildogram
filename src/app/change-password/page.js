@@ -8,7 +8,7 @@ export default function ChangePasswordPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
-  const [form, setForm] = useState({ password: '', confirmPassword: '' });
+  const [form, setForm] = useState({ currentPassword: '', password: '', confirmPassword: '' });
 
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
@@ -40,8 +40,9 @@ export default function ChangePasswordPage() {
       // Navigate to the appropriate dashboard
       setTimeout(() => {
         const role = data.user.role;
-        if (['ops_admin', 'ops_pm', 'ops_engineer'].includes(role)) router.push('/ops/dashboard');
-        else if (['partner', 'partner_contractor', 'partner_supplier'].includes(role)) router.push('/partner/dashboard');
+        if (['super_admin', 'ops_admin', 'ops_pm', 'ops_finance', 'ops_engineer', 'ops_content'].includes(role)) router.push('/ops/dashboard');
+        else if (['partner_admin', 'partner_user'].includes(role)) router.push('/partner/dashboard');
+        else if (['supplier_admin', 'supplier_user'].includes(role)) router.push('/supplier/dashboard');
         else router.push('/client/dashboard');
       }, 1000);
       
@@ -67,6 +68,17 @@ export default function ChangePasswordPage() {
         ) : (
           <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             <div className="input-group">
+              <label>Current Password</label>
+              <input
+                className="input"
+                type="password"
+                autoComplete="current-password"
+                value={form.currentPassword}
+                onChange={e => set('currentPassword', e.target.value)}
+                required
+              />
+            </div>
+            <div className="input-group">
               <label>New Password</label>
               <input 
                 className="input" 
@@ -75,7 +87,8 @@ export default function ChangePasswordPage() {
                 value={form.password} 
                 onChange={e => set('password', e.target.value)} 
                 required 
-                minLength={8}
+                minLength={12}
+                autoComplete="new-password"
               />
             </div>
             
@@ -88,7 +101,8 @@ export default function ChangePasswordPage() {
                 value={form.confirmPassword} 
                 onChange={e => set('confirmPassword', e.target.value)} 
                 required 
-                minLength={8}
+                minLength={12}
+                autoComplete="new-password"
               />
             </div>
             

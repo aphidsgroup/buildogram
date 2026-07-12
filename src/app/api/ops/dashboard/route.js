@@ -246,6 +246,6 @@ export async function GET(req) {
 
   } catch (e) {
     console.error('[ops dashboard GET]', e.message, e.stack);
-    return NextResponse.json({ success: false, error: e.message, stack: e.stack }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Internal server error' }, { status: 500 });
   }
 }

@@ -17,7 +17,7 @@ export async function GET(req, { params }) {
   const user = requireOps(req);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const { id } = params;
+  const { id } = await params;
   try {
     const project = await prisma.boq_project.findUnique({
       where: { id },
@@ -39,7 +39,7 @@ export async function PATCH(req, { params }) {
   const user = requireOps(req);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const { id } = params;
+  const { id } = await params;
   try {
     const body = await req.json();
     const { title, client_name, client_phone, client_email, plot_address, floor_config, total_builtup, margin_pct, status, notes } = body;
@@ -71,7 +71,7 @@ export async function DELETE(req, { params }) {
   const user = requireOps(req);
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const { id } = params;
+  const { id } = await params;
   try {
     await prisma.boq_project.delete({ where: { id } });
     return NextResponse.json({ ok: true });

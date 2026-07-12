@@ -7,7 +7,7 @@
 import { NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth';
 
-const OPS_ROLES = ['ops_admin', 'ops_pm', 'ops_engineer'];
+const OPS_ROLES = ['super_admin', 'ops_admin', 'ops_pm', 'ops_engineer'];
 
 /**
  * Require any authenticated user.
@@ -55,7 +55,7 @@ export function requireOps(request) {
  * Require ops_admin specifically.
  */
 export function requireAdmin(request) {
-  return requireRole(request, ['ops_admin']);
+  return requireRole(request, ['super_admin', 'ops_admin']);
 }
 
 /**
@@ -63,7 +63,7 @@ export function requireAdmin(request) {
  * Also checks that user has a partner_id set (passed in as param when needed).
  */
 export function requirePartner(request) {
-  return requireRole(request, ['partner']);
+  return requireRole(request, ['partner_admin', 'partner_user']);
 }
 
 /**

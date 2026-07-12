@@ -4,7 +4,7 @@ import { getUserFromRequest } from '@/lib/auth';
 import { roleCan } from '@/lib/permissions';
 
 export async function GET(req, { params }) {
-  const { id } = params;
+  const { id } = await params;
   const u = getUserFromRequest(req);
   
   if (!u || !roleCan(u.role, 'access_client_portal')) {
