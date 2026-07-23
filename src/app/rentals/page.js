@@ -3,7 +3,8 @@ import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import sql from '@/lib/db';
 
-export const revalidate = 60; // ISR cache
+// Force dynamic rendering: rentals require live DB — skip pre-rendering at build time
+export const dynamic = 'force-dynamic';
 
 export const metadata = generateSEOMetadata({
 title: 'Verified Rentals in Chennai | Buildogram Property Passport™',
