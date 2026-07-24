@@ -78,6 +78,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        {/* Phase 5 perf: preconnect to critical third-party origins */}
+        {/* Belt-and-suspenders alongside next.config.mjs Link response headers */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://res.cloudinary.com" />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+        <link rel="dns-prefetch" href="https://ui-avatars.com" />
         <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
       </head>
       <body className={`${spaceGrotesk.variable} ${beVietnamPro.variable} ${dmSerifText.variable}`} suppressHydrationWarning>
