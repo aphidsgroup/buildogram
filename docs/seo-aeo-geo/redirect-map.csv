@@ -1,0 +1,17 @@
+old_url,destination_url,reason,redirect_type,sitemap_action,implementation_status,priority
+/house-construction-chennai,/home-construction-chennai,Keyword cannibalization — near-identical intent. Consolidate to primary,301,Remove /house-construction-chennai from sitemap,PROPOSED — needs content decision,HIGH
+/residential-construction-chennai,/home-construction-chennai,Near-duplicate of home construction intent,301,Remove from sitemap,PROPOSED — alternative: keep with distinct G+1/G+2 focus,MEDIUM
+/end-to-end-construction-support-chennai,/home-construction-chennai,Currently 404 — not in services.js. Add to services.js OR redirect,301,Remove dead entry from sitemap,URGENT — currently 404 in sitemap,CRITICAL
+/boq-review-chennai,/boq-audit,Currently 404. /boq-audit is the canonical BOQ lead-gen page,301,Remove dead entry from sitemap,URGENT — currently 404 in sitemap,CRITICAL
+/structural-plan-review-chennai,/plan-review,Currently 404 — /plan-review exists as the plan review page,301,Remove dead entry from sitemap,URGENT — currently 404 in sitemap,CRITICAL
+/steel-construction-chennai,/services/house-construction,Currently 404 — add to services.js (has real demand) OR redirect to nearest,301,Remove dead entry from sitemap,URGENT — currently 404 in sitemap,CRITICAL
+/peb-building-contractors-chennai,/services/house-construction,Currently 404 — add to services.js (has real demand) OR redirect,301,Remove dead entry from sitemap,URGENT — currently 404 in sitemap,CRITICAL
+/industrial-shed-construction-chennai,/services/house-construction,Currently 404 — add to services.js (has real demand) OR redirect,301,Remove dead entry from sitemap,URGENT — currently 404 in sitemap,CRITICAL
+/apartment-structural-audit-chennai,/structural-audit-chennai,Currently 404 — add to services.js OR redirect to structural audit hub,301,Remove dead entry from sitemap,URGENT — currently 404 in sitemap,CRITICAL
+/build/home-construction,/home-construction-chennai,Duplicate intent to [serviceSlug] page. /build/* are thin wrappers,301,Remove from sitemap,PROPOSED — review /build audience first,MEDIUM
+/build/villa-construction,/[serviceSlug] villa page,Duplicate intent,301,Remove from sitemap,PROPOSED,MEDIUM
+/build/renovation,/renovation-contractors-chennai,Duplicate intent,301,Remove from sitemap,PROPOSED,LOW
+/services/house-construction,/home-construction-chennai OR keep as canonical,/services/* pages compete with [serviceSlug] pages for same keywords,Canonical or 301,Review,PROPOSED — add canonical pointing to [serviceSlug],MEDIUM
+/services/residential-construction,/residential-construction-chennai OR /home-construction-chennai,Cannibalization,Canonical,Review,PROPOSED,MEDIUM
+/why-vs-aggregators,Keep as [serviceSlug] — remove DUPLICATE from sitemap static list,Appears twice in sitemap (static entry + [serviceSlug] dynamic),Remove duplicate only,Remove static entry,PENDING,HIGH
+/why-vs-mason,Keep as [serviceSlug] — remove DUPLICATE from sitemap static list,Appears twice in sitemap,Remove duplicate only,Remove static entry,PENDING,HIGH

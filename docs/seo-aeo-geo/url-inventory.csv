@@ -1,0 +1,76 @@
+url,page_type,title_current,h1_current,primary_intent,funnel_stage,content_depth,action
+/,homepage,Buildogram | Engineer-Led Construction Support Chennai,Expert Home Construction Support in Chennai,Brand/awareness,Awareness,Rich,Keep
+/about,about,About Buildogram,About Buildogram,Brand/trust,Awareness,Partial,Improve
+/contact,contact,Contact Buildogram,Contact Us,Lead gen,Conversion,Basic,Improve
+/how-it-works,explainer,How Buildogram Works,How It Works,Education,Consideration,Partial,Improve
+/services,services hub,Construction & Engineering Services,Services,Navigation,Awareness,Hub,Keep
+/quality-system,methodology,Buildogram Quality System,Quality System,Trust/proof,Consideration,Partial,Improve
+/property-passport,product,Property Passport,Property Passport,Product education,Consideration,Partial,Improve
+/boq-audit,lead gen,BOQ Audit Chennai,BOQ Audit,Transactional,Conversion,Partial,Improve
+/cost-estimator,tool,Construction Cost Estimator,Cost Estimator,Transactional,Consideration,Tool,Keep
+/plan-review,lead gen,Plan Review,Plan Review,Transactional,Conversion,Partial,Improve
+/construction-in-chennai,hub,Construction in Chennai,Construction in Chennai,Commercial,Awareness,Partial,Improve - pillar hub
+/build,hub,Build with Buildogram,Build,Navigation,Awareness,Hub,Review
+/build/home-construction,service,Home Construction,Home Construction,Commercial,Consideration,Partial,Review - vs [serviceSlug]
+/build/villa-construction,service,Villa Construction,Villa Construction,Commercial,Consideration,Partial,Review - vs [serviceSlug]
+/build/renovation,service,Renovation,Renovation,Commercial,Consideration,Partial,Review - vs [serviceSlug]
+/partners,directory,Verified Construction Partners,Partners,Commercial/trust,Consideration,Partial,Improve
+/partners/directory,directory,Partner Directory,Partner Directory,Commercial,Consideration,Partial,Improve
+/partners/register,lead gen,Register as Partner,Partner Registration,Partner acquisition,Conversion,Form,Keep
+/blog,hub,Blog,Blog,Content/authority,Awareness,Hub,Keep
+/materials,hub,Construction Materials,Materials,Commercial/informational,Consideration,Hub,Improve
+/materials/cement,material,Cement,Cement,Informational/commercial,Consideration,Partial,Improve
+/materials/tmt-steel,material,TMT Steel,TMT Steel,Informational/commercial,Consideration,Partial,Improve
+/materials/msand-psand,material,M-Sand & P-Sand,M-Sand,Informational/commercial,Consideration,Partial,Improve
+/materials/bricks-aac-blocks,material,Bricks & AAC Blocks,Bricks,Informational/commercial,Consideration,Partial,Improve
+/materials/rmc,material,Ready Mix Concrete,RMC,Informational/commercial,Consideration,Partial,Improve
+/materials/waterproofing,material,Waterproofing Materials,Waterproofing,Informational/commercial,Consideration,Partial,Improve
+/materials/electrical-plumbing,material,Electrical & Plumbing,Electrical,Informational,Consideration,Partial,Improve
+/materials/fabrication-steel,material,Fabrication Steel,Fabrication Steel,Informational/commercial,Consideration,Partial,Improve
+/guides,hub,Construction Guides,Guides,Informational,Awareness,Hub,Keep
+/glossary,hub,Construction Glossary,Glossary,Informational,Awareness,Hub,Keep
+/faqs,hub,Frequently Asked Questions,FAQs,Informational,Awareness,Hub,Keep
+/compare,hub,Comparison Guides,Compare,Informational,Consideration,Hub,Keep
+/locations/chennai,hub,Chennai Construction Services,Chennai,Local/commercial,Awareness,Hub,Improve
+/ai-tools,hub,AI Construction Tools,AI Tools,Product/tool,Consideration,Hub,Keep
+/ai-construction-cost-estimator,tool,AI Cost Estimator,AI Cost Estimator,Transactional,Consideration,Tool,Keep
+/ai-boq-checker,tool,AI BOQ Checker,AI BOQ Checker,Transactional,Consideration,Tool,Keep
+/ai-contractor-quote-analyzer,tool,AI Quote Analyzer,AI Quote Analyzer,Transactional,Consideration,Tool,Keep
+/ai-floor-plan-creator,tool,AI Floor Plan Creator,AI Floor Plan Creator,Transactional,Consideration,Tool,Keep
+/ai-structural-audit-intake,tool,AI Structural Audit Intake,AI Structural Audit,Transactional,Consideration,Tool,Keep
+/join-as-partner,lead gen,Join as Partner,Join as Partner,Partner acquisition,Conversion,Form,Keep
+/specifications,reference,Construction Specifications,Specifications,Informational,Awareness,Reference,Review
+/warranty-and-maintenance,info,Warranty & Maintenance,Warranty,Trust,Post-conversion,Partial,Improve
+/case-studies,hub,Case Studies,Case Studies,Trust/social proof,Consideration,Hub,Improve - add real content
+/resources,hub,Resources,Resources,Content,Awareness,Hub,Keep
+/privacy-policy,legal,Privacy Policy,Privacy Policy,Legal,—,Complete,Keep
+/terms,legal,Terms of Service,Terms,Legal,—,Complete,Keep
+/disclaimer,legal,Disclaimer,Disclaimer,Legal,—,Complete,Keep
+/[serviceSlug]/home-construction-chennai,service,[serviceSlug] dynamic,Expert Home Construction Support in Chennai,Commercial/local,Conversion,Rich,Keep - monitor quality
+/[serviceSlug]/structural-audit-chennai,service,[serviceSlug] dynamic,Structural Audit Chennai,Commercial/local,Conversion,Rich,Keep
+/[serviceSlug]/soil-testing-chennai,service,[serviceSlug] dynamic,Soil Testing Chennai,Commercial/local,Conversion,Rich,Keep
+/[serviceSlug]/ndt-testing-chennai,service,[serviceSlug] dynamic,NDT Testing Chennai,Commercial/local,Conversion,Rich,Keep
+/[serviceSlug]/pile-foundation-contractors-chennai,service,[serviceSlug] dynamic,Pile Foundation Chennai,Commercial/local,Conversion,Rich,Keep
+/services/house-construction,service,House Construction,House Construction Chennai,Commercial,Conversion,Rich,Canonicalize to [serviceSlug] or redirect
+/services/villa-construction,service,Villa Construction,Villa Construction Chennai,Commercial,Conversion,Rich,Review for cannibalization
+/locations/chennai/[area],locality,Chennai [area] Construction,Construction in [area],Local,Conversion,Varies,Quality-gate required
+/locations/chennai/[area]/[service],locality+service,Service in [area] Chennai,Service in [area],Local,Conversion,Likely thin,Manual review - 616 pages
+/compare/buildogram-vs-contractor,comparison,Buildogram vs Contractor,Buildogram vs Contractor,Informational,Consideration,Rich,Keep
+/glossary/boq,glossary,BOQ Definition,What is BOQ,Informational,Awareness,Medium,Keep
+/guides/what-is-boq-in-construction,guide,What is BOQ,What is BOQ in Construction,Informational,Awareness,Rich,Keep
+/partners/architects,category,Architects in Chennai,Architects,Commercial,Consideration,Partial,Keep
+/partners/builders,category,Builders in Chennai,Builders,Commercial,Consideration,Partial,Keep
+/maintenance,service,Maintenance,Maintenance,Commercial,Post-conversion,Partial,Keep
+/properties,hub,Properties,Properties (→ external),Navigation,—,Minimal,Review - redirects externally
+/ai-material-estimator,tool,AI Material Estimator,AI Material Estimator,Transactional,Consideration,Tool,Keep
+/rentals,listing,Verified Rentals Chennai,Rentals,Commercial,Consideration,Dynamic,Keep (force-dynamic)
+/boq-calculator,tool,BOQ Calculator,BOQ Calculator,Transactional,Consideration,Tool,Keep
+/quality-system,methodology,Quality System,Quality System,Trust,Consideration,Partial,Improve - methodology detail
+/partner-os,product,Partner Operating System,Partner OS,Product/portal,Awareness,Partial,Keep
+/end-to-end-construction-support-chennai,service,MISSING — 404,—,Commercial,—,—,ADD to services.js or redirect
+/boq-review-chennai,service,MISSING — 404,—,Commercial,—,—,ADD to services.js or redirect to /boq-audit
+/structural-plan-review-chennai,service,MISSING — 404,—,Commercial,—,—,ADD to services.js or redirect to /plan-review
+/steel-construction-chennai,service,MISSING — 404,—,Commercial,—,—,ADD to services.js or redirect
+/peb-building-contractors-chennai,service,MISSING — 404,—,Commercial,—,—,ADD to services.js or redirect
+/industrial-shed-construction-chennai,service,MISSING — 404,—,Commercial,—,—,ADD to services.js or redirect
+/apartment-structural-audit-chennai,service,MISSING — 404,—,Commercial,—,—,ADD to services.js or redirect
