@@ -1,0 +1,10 @@
+source_url,destination_url,type,hops,reason,internal_links_updated,sitemap_status,implemented_in
+/villa-construction,/build/villa-construction,301,1,"Broken sitewide nav link; closest canonical villa page",Navbar.js,never in sitemap,next.config.mjs
+/apartment-structural-audit-chennai,/structural-audit-chennai,301,1,"Page never created; pillar audit page covers apartment intent; nav item removed",Navbar.js (item removed),never in sitemap,next.config.mjs
+/material-quotes,/materials/request-quote,301,1,"Broken sitewide nav link; real quote-request route",Navbar.js,never in sitemap,next.config.mjs
+/materials/ready-mix-concrete,/materials/rmc,301,1,"Legacy slug; physical RMC page is canonical",Navbar.js + excluded from sitemap materialRoutes,removed from sitemap,next.config.mjs
+/steel-fabrication-contractors-chennai,/steel-construction-chennai,301,1,"serviceHubs entry with no renderer (404 in sitemap); steel construction page covers fabrication intent",data/seo/localServices.js internal links,removed from sitemap,next.config.mjs
+/warehouse-steel-building-chennai,/industrial-shed-construction-chennai,301,1,"serviceHubs entry with no renderer; industrial shed page covers warehouse intent",data/seo/localServices.js internal links,removed from sitemap,next.config.mjs
+/factory-shed-construction-chennai,/industrial-shed-construction-chennai,301,1,"serviceHubs entry with no renderer; same intent cluster",none found,removed from sitemap,next.config.mjs
+/verified-contractors-chennai,/partners/contractors,301,1,"Broken link on /locations; contractors partner page is closest canonical",locations/page.js,never in sitemap,next.config.mjs
+NOTE: No pages were deleted. No URL redirects to the homepage. All redirects verified one-hop (no chain: no destination above appears as a source).,,,,,,,
