@@ -171,9 +171,9 @@ export default function DirectoryClient({ initialPartners = [] }) {
 
         {/* Section Title */}
         <div style={{ marginBottom: '24px', textAlign: 'center' }}>
-          <h2 style={{ fontSize: '28px', fontWeight: 800, color: '#1E293B', marginBottom: '8px' }}>Verified Partner Listings</h2>
+          <h2 style={{ fontSize: '28px', fontWeight: 800, color: '#1E293B', marginBottom: '8px' }}>Partner Listings</h2>
           <p style={{ fontSize: '15px', color: '#64748B' }}>
-            Showing <strong style={{ color: '#1E293B' }}>{visible.length}</strong> verified partner{visible.length !== 1 ? 's' : ''}
+            Showing <strong style={{ color: '#1E293B' }}>{visible.length}</strong> listed partner{visible.length !== 1 ? 's' : ''}
             {filter !== 'all' && ` in ${filter}`}
           </p>
         </div>

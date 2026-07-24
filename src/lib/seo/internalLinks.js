@@ -3,7 +3,7 @@
 export const CLUSTERS = {
   construction: [
     { label: 'Home Construction in Chennai', href: '/home-construction-chennai', description: 'Engineer-led home building services.' },
-    { label: 'Verified Builders', href: '/builders-in-chennai', description: 'Find top construction companies and contractors.' },
+    { label: 'Builders', href: '/builders-in-chennai', description: 'Find top construction companies and contractors.' },
     { label: 'BOQ & Plan Review', href: '/boq-review-chennai', description: 'Audit your construction plans and estimates.' },
     { label: 'Contractor Quote Review', href: '/contractor-quote-review-chennai', description: 'Find hidden costs in builder quotes.' },
     { label: 'Site Supervision', href: '/site-supervision-chennai', description: 'Expert engineering oversight for your site.' },
@@ -45,12 +45,12 @@ export const CLUSTERS = {
     { label: 'Case Studies', href: '/case-studies', description: 'Detailed breakdowns of completed projects.' },
     { label: 'Field Proof', href: '/proof', description: 'Real updates from our engineers on site.' },
     { label: 'Quality System', href: '/quality-system', description: 'The strict standards we enforce.' },
-    { label: 'Verified Partners', href: '/partners', description: 'The best architects and builders in Chennai.' },
+    { label: 'Partners', href: '/partners', description: 'The best architects and builders in Chennai.' },
     { label: 'Chennai Service Hub', href: '/locations/chennai', description: 'Our hyper-local ecosystem footprint.' },
     { label: 'Property Passport', href: '/property-passport', description: 'Secure digital handover records.' }
   ],
   partner: [
-    { label: 'Partner Network', href: '/partners', description: 'Find verified professionals.' },
+    { label: 'Partner Network', href: '/partners', description: 'Find professionals in our network.' },
     { label: 'Join as Partner', href: '/join-as-partner', description: 'Apply to join Buildogram\'s trusted network.' },
     { label: 'Partner OS', href: '/partner-os', description: 'The operating system for modern builders.' },
     { label: 'Architects', href: '/partners/architects', description: 'Design experts and structural engineers.' },

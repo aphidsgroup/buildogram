@@ -25,7 +25,7 @@ const CATEGORIES = [
 
 const HOW_IT_WORKS = [
   { step: '1', icon: '📋', title: 'BOQ Extraction', desc: 'We extract your material quantities from your approved BOQ. Every line item — bags, bars, loads — is identified.' },
-  { step: '2', icon: '📞', title: 'Live Supplier Quotes', desc: 'We obtain same-day quotes from our verified supplier network at Broadway and Mannady wholesale pricing.' },
+  { step: '2', icon: '📞', title: 'Live Supplier Quotes', desc: 'We obtain same-day quotes from our supplier network at Broadway and Mannady wholesale pricing.' },
   { step: '3', icon: '🚛', title: 'Authenticated Delivery', desc: 'Delivery trucks weighed at certified weighbridges. MTC documents verified before unloading on your site.' },
 ];
 
@@ -37,9 +37,9 @@ const TRUST_ITEMS = [
 ];
 
 const FAQS = [
-  { question: 'Does Buildogram sell materials directly to me?', answer: 'We connect you with our verified supplier network and facilitate procurement — either by placing orders on your behalf or by providing supplier contacts for direct purchase. Our role is to verify material quality and ensure fair pricing, not to be a retailer.' },
+  { question: 'Does Buildogram sell materials directly to me?', answer: 'We connect you with our supplier network and facilitate procurement — either by placing orders on your behalf or by providing supplier contacts for direct purchase. Our role is to verify material quality and ensure fair pricing, not to be a retailer.' },
   { question: 'How do Buildogram\'s material prices compare to market rates?', answer: 'Our network sources at wholesale market rates from hubs like Broadway and Mannady. Savings versus retail vary by material, brand, quantity and delivery location — each quote shows the actual rate offered.' },
-  { question: 'Can I visit the supplier before placing an order?', answer: 'Yes. We can arrange site visits to our verified supplier warehouses in Chennai. This is especially useful before your first order to build trust with the supplier.' },
+  { question: 'Can I visit the supplier before placing an order?', answer: 'Yes. We can arrange site visits to our supplier warehouses in Chennai. This is especially useful before your first order to build trust with the supplier.' },
   { question: 'What are Manufacturer Test Certificates (MTCs) and why do they matter?', answer: 'An MTC is a quality certification issued by the manufacturer confirming the batch of material meets the specified grade (e.g., Fe500D for TMT steel, OPC 53 for cement). It includes test data on tensile strength, yield strength, chemical composition, and more. Without MTC verification, you cannot be sure you received what you paid for.' },
   { question: 'How long does material delivery take after ordering?', answer: 'Cement and M-sand: same day or next day in Chennai. TMT steel: 1–3 days depending on quantity. RMC: scheduled delivery window. Tiles and finishing materials: 3–7 days depending on stock.' },
 ];

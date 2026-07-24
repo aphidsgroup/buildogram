@@ -10,6 +10,10 @@ The sandbox cannot deploy (owner approval + push required) and cannot run `next 
 
 ---
 
+## 0. Readiness pass 3 applied (2026-07-25)
+
+Owner corrections 1–10 implemented before preview deployment: engineer wording neutralised, screening implication removed, drone/regulatory wording corrected, market-data wording neutralised, BQS/QC numbers removed, turnaround made scope-confirmed, **locality soil/flood/foundation/cost claims conservatively remediated (highest priority)**, NAP defect in locality schema fixed, register restructured into 5 sections. Full scan table in `19-…md` §15. §6 below must now additionally confirm the absence of `screened`, `vetted`, `qualified structural engineer`, `2500+`, `up to 2,500+`, categorical locality soil/flood statements and locality ₹/sqft figures in rendered production HTML.
+
 ## 1. Deployment gate — must pass BEFORE pushing
 
 Run on the owner machine, in order:
@@ -66,8 +70,8 @@ For each of the 8 sources (see `07-content-pruning-and-redirect-map.csv`): `curl
 
 ## 6. ⏳ Claims scan (post-deploy, rendered HTML incl. JSON-LD/FAQ schema)
 
-Grep rendered HTML of: homepage, `/about`, `/end-to-end-construction-support-chennai`, `/locations/chennai`, `/structural-audit-chennai`, `/boq-review-chennai`, `/materials`, one partner category page, for:
-`500+ Projects` · `₹12.8Cr` · `₹2.1Cr` · `₹50Cr+` · `18%` savings · `10-Year Warranty` · `8–15%` · `starts around ₹10,000` · `certified pilots` · `Verified Partner Network` · `vetted` · `screened` · `certified structural engineers` · `licensed structural engineers`.
+Grep rendered HTML of: homepage, `/about`, `/end-to-end-construction-support-chennai`, `/locations/chennai`, **3 locality pages e.g. `/locations/chennai/velachery`, `/locations/chennai/adyar`, `/locations/chennai/pallikaranai`**, `/construction-in-chennai`, `/structural-audit-chennai`, `/boq-review-chennai`, `/quality-system`, `/materials`, one partner category page, for:
+`500+ Projects` · `₹12.8Cr` · `₹2.1Cr` · `₹50Cr+` · `18%` savings · `10-Year Warranty` · `8–15%` · `starts around ₹10,000` · `certified pilots` · `Verified Partner Network` · `vetted` · `screened` · `certified structural engineers` · `licensed structural engineers` · `qualified structural engineers` · `2500+` · `up to 2,500+` · `500+ QC` · `pile foundations are mandatory` · `prone to flooding` · locality `₹…/sqft` figures · `+91-XXXXXXXXXX` · `600000` · `info@buildogram.in`.
 Pass: zero hits (source-level scans already at zero; this confirms no stale cache/ISR remnants).
 
 ## 7. ⏳ Domain & encoding scan (post-deploy)

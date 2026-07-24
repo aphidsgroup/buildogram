@@ -85,20 +85,20 @@ export default async function AreaPage({ params }) {
             </p>
           </div>
 
-          {area.costRange && (
-            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '32px' }}>
-              <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '10px', padding: '16px 24px', minWidth: '180px' }}>
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Construction Cost</div>
-                <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--primary)' }}>₹{area.costRange.min.toLocaleString('en-IN')}–{area.costRange.max.toLocaleString('en-IN')}</div>
-                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{area.costRange.unit} · {area.costRange.currency}</div>
-              </div>
-              <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '10px', padding: '16px 24px', minWidth: '180px' }}>
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Flood Risk</div>
-                <div style={{ fontSize: '18px', fontWeight: 800, color: area.floodRisk === 'High' ? '#DC2626' : area.floodRisk?.includes('Moderate') ? '#D97706' : '#16A34A' }}>{area.floodRisk || 'Low'}</div>
-                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Site-specific assessment recommended</div>
-              </div>
+          {/* SEO P0 (2026-07-25): locality cost figures and flood-risk ratings removed —
+              unsourced categorical claims. Replaced with site-specific due-diligence guidance. */}
+          <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '32px' }}>
+            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '10px', padding: '16px 24px', minWidth: '260px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Construction Cost</div>
+              <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--primary)' }}>Project-specific</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Depends on specification, structural design and site conditions — request a written estimate.</div>
             </div>
-          )}
+            <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '10px', padding: '16px 24px', minWidth: '260px' }}>
+              <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Site Due Diligence</div>
+              <div style={{ fontSize: '15px', fontWeight: 700, color: 'var(--secondary)' }}>Verify per plot</div>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Site-level drainage, road level and historical waterlogging should be verified during due diligence.</div>
+            </div>
+          </div>
 
           {/* Hero description */}
           <p style={{ fontSize: '17px', color: '#334155', lineHeight: 1.8, maxWidth: '780px', marginBottom: '40px' }}>
@@ -122,17 +122,16 @@ export default async function AreaPage({ params }) {
                 <p style={{ fontSize: '13px', color: '#64748B', lineHeight: 1.7, marginTop: '8px' }}>{area.approvalNotes}</p>
               </div>
               <div>
-                <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', marginBottom: '6px' }}>Flood Risk</h3>
-                <p style={{ fontSize: '14px', color: area.floodRisk === 'High' ? '#DC2626' : area.floodRisk?.startsWith('Moderate') ? '#D97706' : '#16A34A', fontWeight: 600 }}>
+                <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', marginBottom: '6px' }}>Drainage & Waterlogging</h3>
+                <p style={{ fontSize: '14px', color: '#475569', lineHeight: 1.7 }}>
                   {area.floodRisk}
                 </p>
               </div>
               <div>
-                <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', marginBottom: '6px' }}>Estimated Construction Cost</h3>
-                <p style={{ fontSize: '14px', color: '#FC6E20', fontWeight: 700 }}>
-                  ₹{area.costRange.min.toLocaleString('en-IN')} – ₹{area.costRange.max.toLocaleString('en-IN')} per sqft
+                <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', marginBottom: '6px' }}>Construction Cost</h3>
+                <p style={{ fontSize: '14px', color: '#475569', lineHeight: 1.7 }}>
+                  Cost depends on specification, structural design, number of floors and site conditions. Buildogram does not publish a fixed locality rate — request a project-specific estimate with a written scope and assumptions.
                 </p>
-                <p style={{ fontSize: '12px', color: '#94A3B8', marginTop: '4px' }}>Estimate only. Varies with specification and floor count.</p>
               </div>
             </div>
 

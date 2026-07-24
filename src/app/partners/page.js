@@ -6,7 +6,7 @@ import prisma from '@/lib/prisma';
 import { safeDbCall } from '@/lib/db/safePrisma';
 
 export const metadata = generateSEOMetadata({
-  title: 'Find Top Verified Builders, Contractors & Suppliers in Chennai | Buildogram',
+  title: 'Find Builders, Contractors & Suppliers in Chennai | Buildogram',
   description: 'Browse Buildogram\'s directory of verified construction partners, builders, architects, material suppliers, and more in Chennai.',
   path: '/partners',
 });

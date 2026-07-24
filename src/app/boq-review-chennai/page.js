@@ -110,7 +110,7 @@ export default function BOQReviewPage() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '16px' }}>
             {[
               { icon: '📐', title: 'Quantity Take-Off Verification', desc: 'Every quantity is derived from your drawings. Concrete volume, steel weight, brickwork area, flooring area — all checked against actual drawing dimensions.' },
-              { icon: '💰', title: 'Rate Benchmarking', desc: 'All rates are compared against current Chennai market: cement ₹380–410/bag, TMT steel ₹65,000–72,000/MT, M-sand ₹35–45/cft, RMC M25 ₹5,200–5,800/m³.' },
+              { icon: '💰', title: 'Rate Benchmarking', desc: 'All rates are compared against project inputs and available Chennai market references for cement, TMT steel, M-sand and RMC. Benchmarks are dated and stated with their assumptions in your report.' },
               { icon: '📋', title: 'Specification Audit', desc: 'Every line is checked for specificity. Vague specs like "cement" or "TMT bars" without grade/brand are flagged as substitution risks.' },
               { icon: '🔍', title: 'Margin Analysis', desc: 'We identify where contractor margins exceed industry norms and separate genuine cost items from inflated overhead allocation.' },
               { icon: '📝', title: 'Contract Compliance', desc: 'We check whether the BOQ matches any specification schedule or scope of work document attached to the contract.' },
@@ -158,7 +158,7 @@ export default function BOQReviewPage() {
             <h2 style={{ fontSize: '22px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '16px' }}>What You Receive</h2>
             <ul style={{ paddingLeft: '20px', color: '#555', lineHeight: 2, fontSize: '15px' }}>
               <li>Marked-up BOQ PDF with per-line comments</li>
-              <li>Benchmarked rate sheet (current Chennai market)</li>
+              <li>Benchmarked rate sheet (dated, with sources and assumptions stated)</li>
               <li>Prioritised negotiation brief</li>
               <li>True cost estimate vs. quoted cost</li>
               <li>Specification risk flags</li>

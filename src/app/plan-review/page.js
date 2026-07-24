@@ -5,7 +5,7 @@ import FAQBlock from '@/components/seo/FAQBlock';
 
 export const metadata = generateSEOMetadata({
   title: 'Architectural Plan Review in Chennai | Structural Safety Check | Buildogram',
-  description: 'Get your floor plans reviewed by qualified structural engineers in Chennai. Spatial flow, vastu, ventilation, IS code compliance and structural grid analysis.',
+  description: 'Independent floor plan review coordinated with structural engineering professionals in Chennai. Spatial flow, vastu, ventilation, IS code compliance and structural grid analysis.',
   path: '/plan-review',
 });
 

@@ -179,7 +179,7 @@ export default async function PartnerProfilePage({ params }) {
           <div>
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '10px' }}>
               <span style={{ background: `${catColor}15`, color: catColor, padding: '4px 12px', borderRadius: '99px', fontSize: '12px', fontWeight: 700 }}>{partner.partner_type?.replace(/_/g, ' ')}</span>
-              <span style={{ background: '#DCFCE7', color: '#166534', padding: '4px 12px', borderRadius: '99px', fontSize: '12px', fontWeight: 700 }}>✅ Verified Partner</span>
+              <span style={{ background: '#DCFCE7', color: '#166534', padding: '4px 12px', borderRadius: '99px', fontSize: '12px', fontWeight: 700 }}>Listed Partner</span>
               {partner.featured && <span style={{ background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', padding: '4px 12px', borderRadius: '99px', fontSize: '12px', fontWeight: 700 }}>⭐ Featured</span>}
             </div>
             <h1 style={{ fontSize: 'clamp(22px,3vw,32px)', fontWeight: 900, color: '#1E293B', margin: '0 0 8px' }}>{partner.company_name}</h1>

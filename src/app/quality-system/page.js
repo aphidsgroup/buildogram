@@ -10,12 +10,12 @@ import EngineerCredibility from '@/components/seo/EngineerCredibility';
 
 export const metadata = generateSEOMetadata({ 
   title: 'Buildogram Quality System (BQS) | Stage-Wise Construction Quality Verification', 
-  description: 'The Buildogram Quality System provides up to 2,500+ engineer-led inspection checkpoints across every construction stage. Independent verification. Evidence-backed. Recorded in your Property Passport.', 
+  description: 'The Buildogram Quality System provides structured, engineer-led inspection checkpoints across every construction stage. Independent verification. Evidence-backed. Recorded in your Property Passport.', 
   path: '/quality-system' 
 });
 
 const STEPS = [
-  { title: '1. Project Scope Mapping', desc: 'Our engineers map your project\u2019s specific requirements against the comprehensive 2500+ BQS checkpoint framework to determine the applicable checks.' }, 
+  { title: '1. Project Scope Mapping', desc: 'Our engineers map your project\u2019s specific requirements against the BQS checkpoint framework to determine the applicable checks.' }, 
   { title: '2. Stage-Wise Inspections', desc: 'At critical milestones (Foundation, RCC, MEP, Waterproofing), a qualified civil engineer performs targeted inspections against the checklist.' }, 
   { title: '3. Proof Uploads & Remarks', desc: 'Observations are documented with photographic or measurement-based evidence, providing an honest record of field conditions.' }, 
   { title: '4. Rework & Issue Closure', desc: 'Failed checkpoints generate rework tickets. The contractor addresses the issue, and the engineer verifies closure before the stage is marked complete.' }, 
@@ -24,14 +24,14 @@ const STEPS = [
 
 const FAQS = [
   { question: 'Does BQS guarantee zero defects?', answer: 'No system can guarantee zero defects in construction. BQS provides an evidence-backed framework for tracking observations, enforcing structured stage-wise checks, and ensuring identified issues are properly closed out with documentation.' }, 
-  { question: 'Are all 2500+ checkpoints used on every project?', answer: 'No. The BQS is a vast framework covering everything from basic masonry to deep piling. Your project\u2019s specific scope dictates which checklists are activated.' }, 
+  { question: 'Are all BQS checkpoints used on every project?', answer: 'No. The BQS is a vast framework covering everything from basic masonry to deep piling. Your project\u2019s specific scope dictates which checklists are activated.' }, 
   { question: 'Who performs the inspections?', answer: 'Inspections are led by independent, qualified civil and structural engineers from the Buildogram network.' }, 
   { question: 'Can I see the inspection results?', answer: 'Yes. Completed stage summaries and owner-visible proof records are automatically published to your secure Property Passport.' }
 ];
 
 const howToSchema = generateHowToSchema({
   name: 'How the Buildogram Quality System (BQS) Works',
-  description: 'A stage-wise, evidence-backed construction quality framework with up to 2500+ checkpoints, carried out by independent qualified engineers.',
+  description: 'A stage-wise, evidence-backed construction quality framework of documented inspection checkpoints, carried out by independent structural engineering professionals.',
   url: 'https://www.buildogram.in/quality-system',
   steps: STEPS.map(s => ({ name: s.title, text: s.desc })),
 });
@@ -56,7 +56,7 @@ export default function Page() {
               Evidence-Backed Quality Tracking for Construction.
             </h1>
             <p style={{ fontSize: '20px', color: 'rgba(255,255,255,0.75)', maxWidth: '672px', margin: '0 auto 32px', fontWeight: 500, lineHeight: 1.6 }}>
-              An operational framework of up to 2500+ potential checkpoints, ensuring stage-wise quality observations are documented, corrected, and stored permanently.
+              An operational framework of documented inspection checkpoints, ensuring stage-wise quality observations are documented, corrected, and stored permanently.
             </p>
             <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
               <Link href="/contact" className="btn btn-primary btn-lg">Speak to an Engineer</Link>
@@ -149,7 +149,7 @@ export default function Page() {
               "@type": "LocalBusiness",
               "name": "Buildogram"
             },
-            "description": "An evidence-backed construction quality framework providing up to 2500+ checklists, stage-wise engineer inspections, and property passport integration.",
+            "description": "An evidence-backed construction quality framework providing structured quality checklists, stage-wise engineer inspections, and property passport integration.",
             "areaServed": "Chennai",
             "serviceType": "Construction Quality Inspection"
           })

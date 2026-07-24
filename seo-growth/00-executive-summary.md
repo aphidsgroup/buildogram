@@ -1,5 +1,10 @@
 # 00 — Executive Summary: Buildogram Organic Search System
 
+## READINESS PASS 3 (2026-07-25) — owner corrections 1–10 applied
+
+Highest-priority action completed: **unsourced locality soil, flood, foundation and cost statements are no longer publicly live.** 28 area records (+26 legacy localities) had soil type, soil notes and flood-risk ratings replaced with site-specific due-diligence wording; 23 prescriptive engineering sentences (plinth heights, pile/raft prescriptions) were removed; locality ₹/sqft figures were removed from pages, FAQs and LocalBusiness schema; and the `/construction-in-chennai` hub's "Pile foundations are mandatory" claim and per-locality soil notes were rewritten. All 28 area pages still clear the indexability gate. Alongside this: all screening implication removed (124 replacements), engineer wording neutralised to "structural engineering professionals", drone/regulatory wording corrected, market-data wording neutralised, all BQS/QC numbers removed (including the logically invalid "up to 2,500+"), turnaround made scope-confirmed, and a NAP defect fixed (locality schema was emitting a placeholder phone and postcode on every locality page). Register restructured into 5 sections; deployment gates reclassified. All scans zero; tests 21/21. **Remaining gate: `npm run lint && npm test && npm run build` on the owner machine, then preview deploy.**
+
+
 Date: 2026-07-25 · Phase One (diagnosis) complete · **P0 implemented same day (see below)** · Branch: `seo/buildogram-organic-growth-system`
 
 ## DEPLOYMENT-READINESS UPDATE (2026-07-25, third pass)

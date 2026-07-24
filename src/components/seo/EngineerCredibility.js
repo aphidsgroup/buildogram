@@ -22,7 +22,7 @@ const CREDENTIALS = [
     icon: '🏗️',
     label: 'Engineer-Led',
     value: 'Owner-Side',
-    detail: 'Qualified structural engineers on the Buildogram review team',
+    detail: 'Structural engineering professionals on the Buildogram review team',
   },
   {
     icon: '📋',
@@ -39,14 +39,14 @@ const CREDENTIALS = [
   {
     icon: '✅',
     label: 'Review Turnaround',
-    value: '3–5 days',
-    detail: 'Structural and BOQ reviews typically completed within 3–5 working days',
+    value: 'Confirmed per project',
+    detail: 'The expected turnaround is confirmed after reviewing the project scope, documents and required deliverables',
   },
 ];
 
 const METHODOLOGY = [
-  'All technical reviews are performed by a qualified structural engineer — not AI tools or junior analysts',
-  'Every rate in a BOQ review is benchmarked against current Chennai market data',
+  'All technical reviews are performed by a structural engineering professional — not AI tools or junior analysts',
+  'Every rate in a BOQ review is benchmarked against project inputs and available Chennai market references',
   'Structural plan reviews reference the applicable IS codes — IS 456:2000, IS 1893:2016, IS 875 Parts 1–3',
   'We declare our role clearly: Buildogram is an independent engineering oversight service, not a contractor',
   'Client data and project documents are stored securely and never shared with third parties without consent',
@@ -69,7 +69,7 @@ export default function EngineerCredibility({ service = '', compact = false }) {
         <p style={{ margin: 0, fontSize: '14px', color: '#555', lineHeight: 1.7 }}>
           <strong style={{ color: 'var(--secondary)' }}>About Buildogram{service ? ` — ${service}` : ''}:</strong>{' '}
           An engineer-led construction intelligence platform in Chennai. All technical reviews are performed by
-          qualified structural engineers with IS code expertise — not AI tools or junior analysts.{' '}
+          structural engineering professionals with IS code expertise — not AI tools or junior analysts.{' '}
           <a href="/quality-system" style={{ color: 'var(--primary)', fontWeight: 600 }}>Our methodology →</a>
         </p>
       </aside>
@@ -89,7 +89,7 @@ export default function EngineerCredibility({ service = '', compact = false }) {
           Why Trust Buildogram{service ? ` for ${service}` : ''}
         </h2>
         <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '15px', lineHeight: 1.7, maxWidth: '600px' }}>
-          Our reviews are performed by practising structural engineers — not marketers, AI tools, or junior
+          Our reviews are performed by structural engineering professionals — not marketers, AI tools, or junior
           analysts. Here is what backs our technical recommendations.
         </p>
       </div>

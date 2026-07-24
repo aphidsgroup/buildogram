@@ -348,7 +348,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 7. VERIFIED PARTNER NETWORK ─────────────────── */}
+      {/* ── 7. PARTNER NETWORK ─────────────────── */}
       <section className="fullBleedSection" style={{ padding: '100px 0', background: 'white' }}>
         <div className="sectionInner">
           <AnimatedSection>

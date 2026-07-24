@@ -31,7 +31,7 @@ export default function HowItWorksClient() {
       checks: ['Mandatory Soil SBC lab testing reports', '100% CMDA & DTCP code-compliance checks', 'Locked material specs sheet signed per page']
     },
     active: {
-      title: 'Phase 2: Active Construction & 500+ QC Checks',
+      title: 'Phase 2: Active Construction & Stage-wise QC Checks',
       tagline: 'Tech-enabled progress tracking, certified quality checks, and milestone-linked payment flow.',
       icon: '🏗️',
       steps: [

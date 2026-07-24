@@ -71,7 +71,7 @@ Buildogram Engineering Team`
     body: (data) => `Hi ${data.name},
 
 We have received your request for ${data.materialType}.
-We are currently routing this to our verified supplier network to get you the most transparent and competitive rate.
+We are currently routing this to our supplier network to get you the most transparent and competitive rate.
 
 We will share the quotes with you shortly.
 
@@ -87,7 +87,7 @@ Buildogram Procurement Team`
     subject: 'Buildogram Partner Application Received',
     body: (data) => `Hi ${data.name},
 
-Thank you for applying to join the Buildogram Verified Partner Network as a ${data.partnerType}.
+Thank you for applying to join the Buildogram Partner Network as a ${data.partnerType}.
 
 To maintain the quality of our ecosystem, every profile undergoes an engineering review. Our team will contact you shortly to verify your past projects, credentials, and service areas.
 

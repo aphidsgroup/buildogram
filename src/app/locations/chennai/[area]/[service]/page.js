@@ -80,8 +80,8 @@ export default async function ServiceAreaPage({ params }) {
             {[
               { label: 'Region', value: area.region },
               { label: 'Approval Body', value: area.approvalBody },
-              { label: 'Flood Risk', value: area.floodRisk },
-              { label: 'Cost Range', value: `₹${area.costRange.min.toLocaleString('en-IN')}–₹${area.costRange.max.toLocaleString('en-IN')}/sqft` },
+              { label: 'Site Due Diligence', value: 'Verify drainage and road level per plot' },
+              { label: 'Cost', value: 'Project-specific — request a written estimate' },
             ].map(item => (
               <div key={item.label} style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '12px 16px', minWidth: '180px' }}>
                 <div style={{ fontSize: '11px', color: '#94A3B8', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '4px' }}>{item.label}</div>

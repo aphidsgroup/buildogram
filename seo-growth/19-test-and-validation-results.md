@@ -113,3 +113,25 @@ Acceptance: build completes; static generation output shows the six dynamic fami
 - Secrets audit of all branch commits (`git log --name-only`): no .env/credential/pem/google files committed.
 - Redirect-conflict audit: no vercel.json; middleware matcher (`/ops /partner /client /project /property-passport`) does not intersect any redirect source; next.config redirects are the single redirect source of truth.
 - Git identity configured; LFS hook warning during commits is benign (no LFS-tracked assets touched).
+
+
+## 15. Readiness pass 3 — post-correction scan report (2026-07-25)
+
+Scope: `src/app`, `src/components`, `src/data`, `src/lib`, excluding authenticated dashboards (`/ops`, `/admin`, `/client`, `/partner`, `/supplier`).
+
+| # | Scan | Replacements made | Remaining matches |
+| --- | --- | --- | --- |
+| 1 | verified / screened / vetted partner wording | 10 (pass 2) + 51 + 57 + 6 = **124** | **0** |
+| 2 | Buildogram-team engineer qualification claims | **15** | **0** (5 educational/legal references intentionally retained) |
+| 3 | drone certification claim | **1** | **0** |
+| 4 | "current Chennai market data" / "updated monthly" | **10** | **0** undated (2 dated "July 2026" instances retained) |
+| 5 | BQS/QC numeric claims (incl. invalid "up to 2500+") | **10** | **0** |
+| 6 | "3–5 working days" turnaround assertions | **2** | 2 unrelated (a process-step label and a photo-listing SLA — not review turnaround) |
+| 7 | locality soil / flood / foundation / cost claims | **28+28+28+26 field rewrites, 23 sentence removals, 8 render/schema/FAQ blocks, 12 hub notes** | **0** categorical |
+| 8 | legacy unsupported stats (500+/₹12.8Cr/18%/8–15%) | 0 new (cleared in P0) | **0** |
+| 9 | NAP placeholders (XXXXXXXX / 600000 / info@) | **1 block** | **0** |
+| 10 | public `buildogram.com` | 0 new | **0** (2 documented internal/test remainders) |
+| 11 | mojibake | 0 new | **0** |
+
+Locality indexability re-check: replicated the generator's word-count gate — **28/28 area pages still pass** the 150-unique-word threshold after content removal, so no page silently drops to `noindex` or leaves the sitemap.
+Tests: **21/21 pass**. Syntax: `node --check` clean on all files modified in this pass.

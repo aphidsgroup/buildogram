@@ -12,17 +12,19 @@ export function generateLocalBusinessSchema(area) {
     '@type': 'LocalBusiness',
     '@id': `${BASE_URL}/locations/chennai/${area.slug}`,
     name: `Buildogram — Home Construction Support in ${area.name}`,
-    description: `Engineer-led home construction support in ${area.name}, Chennai. BOQ reviews, verified builders, site supervision, and material sourcing.`,
+    description: `Engineer-led home construction support in ${area.name}, Chennai. BOQ reviews, partner network listings, site supervision, and material sourcing.`,
     url: `${BASE_URL}/locations/chennai/${area.slug}`,
-    telephone: '+91-XXXXXXXXXX',
-    email: 'info@buildogram.in',
+    telephone: '+919360232456',
+    email: 'hello@buildogram.in',
     address: {
       '@type': 'PostalAddress',
-      addressLocality: area.name,
+      streetAddress: 'No.35, 7th Floor, Awfis Space, Centre Point 3, Poonamallee High Road, Manapakkam',
+      addressLocality: 'Chennai',
       addressRegion: 'Tamil Nadu',
       addressCountry: 'IN',
-      postalCode: '600000',
+      postalCode: '600089',
     },
+    areaServed: { '@type': 'Place', name: `${area.name}, Chennai` },
     geo: area.coordinates
       ? {
           '@type': 'GeoCoordinates',
@@ -44,7 +46,6 @@ export function generateLocalBusinessSchema(area) {
         { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Construction Material Sourcing' } },
       ],
     },
-    priceRange: `₹${area.costRange.min.toLocaleString('en-IN')}–₹${area.costRange.max.toLocaleString('en-IN')} per sqft`,
     sameAs: ['https://www.buildogram.in'],
   };
 }

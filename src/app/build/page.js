@@ -20,14 +20,14 @@ const services = [
 
 const proofPoints = [
   { icon: '📊', title: 'Transparent BOQ', desc: 'Every item, rate and quantity declared upfront. No hidden costs.' },
-  { icon: '✅', title: 'BQS™ Quality Checks', desc: '2500+ evidence-backed checks at every construction stage.' },
+  { icon: '✅', title: 'BQS™ Quality Checks', desc: 'Evidence-backed, stage-wise quality checks throughout construction.' },
   { icon: '🧱', title: 'Material Verification', desc: 'Brand, grade, test certificate and delivery photo for every material.' },
   { icon: '📸', title: 'Progress Proof', desc: 'Daily/weekly photo and video updates on your project app.' },
   { icon: '🛂', title: 'Property Passport', desc: 'Permanent digital record of your property from Day 1.' },
   { icon: '🔒', title: 'Warranty Coverage', desc: 'Structural and waterproofing warranty backed by documentation.' },
 ];
 
-const stats = [['Chennai', 'Primary Market'], ['Transparent', 'BOQ Policy'], ['2500+', 'Quality Checks'], ['100%', 'Proof-Based']];
+const stats = [['Chennai', 'Primary Market'], ['Transparent', 'BOQ Policy'], ['Stage-wise', 'Quality Checks'], ['100%', 'Proof-Based']];
 
 export default function BuildPage() {
   return ( <>

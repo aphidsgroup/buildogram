@@ -38,7 +38,7 @@ export const BRAND = {
 
   // GEO / llms.txt / schema entity description (approved 2026-07-24):
   entityDescription:
-    'Buildogram is a Chennai-based engineer-led construction intelligence and property assurance ecosystem. It provides independent BOQ and plan review, construction-cost intelligence, verified partner coordination, stage-wise quality verification, material traceability and permanent digital property documentation. Construction work is executed by appointed construction partners unless a signed contract expressly identifies Buildogram as the principal contractor.',
+    'Buildogram is a Chennai-based engineer-led construction intelligence and property assurance ecosystem. It provides independent BOQ and plan review, construction-cost intelligence, partner network coordination, stage-wise quality verification, material traceability and permanent digital property documentation. Construction work is executed by appointed construction partners unless a signed contract expressly identifies Buildogram as the principal contractor.',
 
   // ── Role Clarity (DECISIONS RESOLVED 2026-07-24) ─────────────────────────
   // DECISION-2 (RESOLVED): Buildogram is an independent engineering review,

@@ -5,7 +5,7 @@ import EngineerCredibility from '@/components/seo/EngineerCredibility';
 
 export const metadata = generateSEOMetadata({
   title: 'Structural Plan Review in Chennai | IS Code Compliance | Buildogram',
-  description: 'Independent structural drawing review by qualified engineers in Chennai. IS 456, IS 1893 compliance, rebar check, foundation adequacy and load analysis. 5-day turnaround.',
+  description: 'Independent structural drawing review coordinated with structural engineering professionals in Chennai. IS 456, IS 1893 compliance, rebar check, foundation adequacy and load analysis. 5-day turnaround.',
   path: '/structural-plan-review-chennai',
 });
 
@@ -21,7 +21,7 @@ const faqSchema = generateFAQSchema([
 
 const serviceSchema = generateServiceSchema({
   name: 'Structural Plan Review Chennai',
-  description: 'Independent IS-code compliance review of structural drawings by qualified engineers — IS 456, IS 1893, foundation adequacy, rebar schedule and load analysis.',
+  description: 'Independent IS-code compliance review of structural drawings coordinated with structural engineering professionals — IS 456, IS 1893, foundation adequacy, rebar schedule and load analysis.',
   url: '/structural-plan-review-chennai',
   category: 'Structural Engineering Review',
 });

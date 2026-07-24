@@ -197,7 +197,7 @@ export default function Page() {
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
             {[
               { icon: '🏛️', text: '320+ audits facilitated' },
-              { icon: '✅', text: 'Qualified structural engineers' },
+              { icon: '✅', text: 'Structural engineering professionals' },
               { icon: '📋', text: 'CMDA-accepted reports' },
             ].map((s) => (
               <span
@@ -249,7 +249,7 @@ export default function Page() {
           >
             <span style={{ fontSize: '16px' }}>⚠️</span>
             <p style={{ margin: 0, fontSize: '13px', color: '#78350F', lineHeight: 1.6 }}>
-              AI outputs are advisory. Every audit brief is reviewed by a qualified structural engineer before being acted upon.
+              AI outputs are advisory. Every audit brief is reviewed by a structural engineering professional before being acted upon.
             </p>
           </div>
           <div
@@ -428,7 +428,7 @@ export default function Page() {
           >
             {[
               { step: '01', title: 'AI Prepares Brief', desc: 'Your inputs are structured into a technical audit brief with recommended tests and priority level.' },
-              { step: '02', title: 'Engineer Reviews', desc: 'A qualified structural engineer reviews the AI brief, adds professional context, and contacts you within 24 hours.' },
+              { step: '02', title: 'Engineer Reviews', desc: 'A structural engineering professional reviews the AI brief, adds professional context, and contacts you within 24 hours.' },
               { step: '03', title: 'Site Visit Scheduled', desc: 'We schedule the site visit at your convenience with the appropriate testing equipment.' },
               { step: '04', title: 'Report Delivered', desc: 'Full written audit report with findings, photos, and remediation recommendations within 5–7 working days.' },
             ].map((s) => (

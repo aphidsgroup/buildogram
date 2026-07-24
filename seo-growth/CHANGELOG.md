@@ -1,5 +1,19 @@
 # SEO Growth System — CHANGELOG
 
+## 2026-07-25 — Readiness pass 3 (owner corrections 1–10, pre-preview-deploy)
+
+**Item 7 (priority) — locality safety claims remediated.** 28 areas × soilType/soilNote/floodRisk neutralised; 26 legacy localities × soilNote; 23 prescriptive sentences (plinth heights, pile/raft prescriptions, waterproofing directives, marsh/water-table statements) removed from constructionTips across 12 entries; locality cost card, flood badge, area+service chips, generator cost FAQ and LocalBusiness `priceRange` removed; `/construction-in-chennai` "Pile foundations are mandatory", flood-zone locality list and 12 per-locality soil notes rewritten. All 28 area pages still clear the 150-word indexability gate (verified).
+**Item 1** — "qualified structural engineers" removed from every Buildogram-team/service claim → "structural engineering professionals" / "structural engineering review coordination". Educational and legal guidance advising users to consult a licensed/registered engineer intentionally retained.
+**Item 2** — screening implication fully removed (`screened`, `vetted`, plus 51 further "verified contractor/supplier/builder network" instances found in data files, the locality generator template, directory UI, notification template and brand positioning) → Buildogram Partner Network / Listed Professionals / listed partner.
+**Item 3** — drone wording replaced with regulatory-responsibility formulation.
+**Item 4** — "current Chennai market data" / "updated monthly" → "project inputs and available Chennai market references"; undated rate strips removed; dated instances (July 2026) retained.
+**Item 5** — all BQS/QC numbers removed, including the logically invalid "up to 2,500+" → "structured quality checkpoints" / "documented inspection checkpoints".
+**Item 6** — "3–5 working days" turnaround replaced with scope-confirmed wording in the credibility component and plan-review FAQ.
+**Item 9 (NAP)** — defect found and fixed: locality LocalBusiness schema emitted placeholder telephone `+91-XXXXXXXXXX`, postalCode `600000` and a second email; now aligned to the single published NAP with street address and areaServed.
+**Items 8+10** — register restructured into 5 sections (`register_section` column, 30 entries incl. new CL26–CL30); deployment gates reclassified across NEEDS-OWNER-VERIFICATION Sections 2/3/4.
+**Scans after changes:** verified/screened/vetted 0 · engineer-qualification claims 0 (educational retained) · certified pilots 0 · undated market-data 0 · BQS/QC numbers 0 · old stats 0 · NAP placeholders 0 · public buildogram.com 0 · mojibake 0. Tests 21/21. Syntax checks on all modified files pass. Build/lint remain owner-machine gates.
+
+
 ## 2026-07-25 — Deployment-readiness phase (post-P0, pre-deploy)
 
 - Partner wording tightened per owner directive: all public "screened"/"vetted"/"Engineer-Screened" wording (10 instances) replaced with neutral Partner Network terms; missed "Verified Contractors in Chennai" H1 fixed. Register CL24.

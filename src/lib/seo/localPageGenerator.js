@@ -42,9 +42,9 @@ export function generateAreaPage(areaSlug) {
       zone: 'GCC / CMDA',
       approvalBody: 'Greater Chennai Corporation (GCC) / CMDA',
       desc: loc.desc,
-      soilType: 'Varies by zone. Site testing recommended.',
+      soilType: 'Ground conditions vary within the locality. Confirm with a project-specific soil investigation.',
       soilNote: loc.soilNote,
-      floodRisk: 'Moderate (verify site-specifically)',
+      floodRisk: 'Site-specific: verify drainage, road level and historical waterlogging conditions during project due diligence.',
       constructionTips: loc.constructionTips,
       approvalNotes: 'Building plan approval required from local authority. Verify jurisdiction before commencing work.',
       costRange: { min: 1700, max: 2600, currency: 'INR', unit: 'per sqft' },
@@ -69,7 +69,7 @@ export function generateAreaPage(areaSlug) {
     commercialSuitability: area.region.toLowerCase().includes('commercial') ? 'well-suited for commercial development' : 'primarily a residential zone',
   };
 
-  const title = `Home Construction in ${area.name}, Chennai | Verified Builders | Buildogram`;
+  const title = `Home Construction in ${area.name}, Chennai | Partner Network | Buildogram`;
   const description = `Planning home construction in ${area.name}, Chennai? Buildogram provides BOQ reviews, verified local builders, site supervision, and material sourcing with engineer-led transparency.`;
   const h1 = `Home Construction in ${area.name}, Chennai`;
 
@@ -82,7 +82,7 @@ export function generateAreaPage(areaSlug) {
   const faqs = [
     {
       q: `What is the construction cost per sqft in ${area.name}?`,
-      a: `Home construction costs in ${area.name} range from ₹${area.costRange.min.toLocaleString('en-IN')}–₹${area.costRange.max.toLocaleString('en-IN')} per sqft depending on specification. Basic builds use standard materials; premium builds include higher concrete grades, quality tiles, and full interior finishing. Contact Buildogram for a detailed project estimate.`,
+      a: `Construction cost in ${area.name} depends on specification level, structural design, number of floors, site conditions and finish choices. Buildogram does not publish a fixed locality rate — request a project-specific estimate with a written scope and assumptions.`,
     },
     {
       q: `What approval body governs construction in ${area.name}?`,
@@ -93,8 +93,8 @@ export function generateAreaPage(areaSlug) {
       a: area.soilNote,
     },
     {
-      q: `How do I find a verified builder in ${area.name}?`,
-      a: `Buildogram\'s verified contractor network includes builders with proven project histories in ${area.name} and surrounding ${area.nearbyAreas.slice(0, 3).join(', ')}. All contractors undergo engineering and reference verification before listing.`,
+      q: `How do I find a builder in ${area.name}?`,
+      a: `The Buildogram Partner Network lists construction professionals and service providers covering ${area.name} and surrounding ${area.nearbyAreas.slice(0, 3).join(', ')}. Review each listing and confirm credentials directly before appointing a contractor.`,
     },
     {
       q: `What are the main construction challenges in ${area.name}?`,
@@ -110,7 +110,7 @@ export function generateAreaPage(areaSlug) {
     { text: 'BOQ Audit Tool', href: '/boq-audit' },
     { text: 'Construction Cost Estimator', href: '/cost-estimator' },
     { text: 'AI Floor Plan Creator', href: '/ai-floor-plan-creator' },
-    { text: 'Verified Builder Directory', href: '/partners/directory' },
+    { text: 'Partner Directory', href: '/partners/directory' },
     { text: 'All Chennai Locations', href: '/locations/chennai' },
     ...area.nearbyAreas.slice(0, 3).map(n => ({
       text: `Construction in ${n}`,

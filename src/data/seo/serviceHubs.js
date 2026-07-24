@@ -23,7 +23,7 @@ export const serviceHubs = [
     whatWeDo: [
       { icon: 'design', title: 'Design Coordination', desc: 'We coordinate your architect and structural engineer — ensuring drawings are complete, structurally sound, and buildable before you hand them to a contractor.' },
       { icon: 'boq', title: 'BOQ & Quote Review', desc: 'We audit every contractor quote line by line — checking rates, quantities, specifications, and missing items before you sign.' },
-      { icon: 'material', title: 'Material Sourcing', desc: 'We connect you with verified suppliers for cement, TMT steel, M-sand, blocks, and finishes — at transparent market rates.' },
+      { icon: 'material', title: 'Material Sourcing', desc: 'We connect you with suppliers in our network for cement, TMT steel, M-sand, blocks, and finishes — at transparent market rates.' },
       { icon: 'supervision', title: 'Site Supervision', desc: 'Engineer-led milestone inspections at every structural stage — with photographic quality reports, concrete grade verification, and deficiency tracking.' },
       { icon: 'audit', title: 'Structural Audit', desc: 'Crack inspection, corrosion assessment, settlement analysis, and structural health reporting for existing or under-construction buildings.' },
       { icon: 'handover', title: 'Handover Documentation', desc: 'Your Property Passport: all drawings, invoices, material records, warranties, and maintenance guides — permanently organised and accessible.' },
@@ -194,7 +194,7 @@ export const serviceHubs = [
     ],
     faqs: [
       { q: 'What is a PEB (Pre-Engineered Building)?', a: 'PEB is a factory-manufactured steel building system where primary frames, secondary members, and cladding are pre-designed and fabricated to specific dimensions. It is ideal for warehouses, factories, and large commercial structures requiring long clear spans.' },
-      { q: 'How much does a PEB building cost in Chennai?', a: 'A basic industrial shed typically ranges from ₹800–₹1,400/sqft (structure + cladding, excluding foundation and civil works). Premium systems with insulated panels, crane rails, or mezzanine floors add significant cost. Always get a scope-specific quote.' },
+      { q: 'How much does a PEB building cost in Chennai?', a: 'Indicative ranges only — not a dated quotation; confirm current pricing with a project-specific quote. A basic industrial shed typically ranges from ₹800–₹1,400/sqft (structure + cladding, excluding foundation and civil works). Premium systems with insulated panels, crane rails, or mezzanine floors add significant cost. Always get a scope-specific quote.' },
       { q: 'What foundation is needed for a PEB building?', a: 'PEB structures require isolated footings at column positions with precisely cast anchor bolts. Foundation design depends on column reactions from the PEB design and the safe bearing capacity of the local soil.' },
       { q: 'How long does PEB erection take in Chennai?', a: 'For a standard 10,000–20,000 sqft industrial shed, PEB erection typically takes 4–8 weeks once fabrication is complete. Total project timeline from design to handover is typically 12–20 weeks.' },
       { q: 'How do I compare PEB suppliers in Chennai?', a: 'Key factors: steel grade used (IS 2062 Grade E350 or higher for primary frames), MTC availability, erection team qualifications, warranty terms (15–25 years structural, 10–15 years panel), and local project references. Buildogram makes this comparison systematic.' },
@@ -277,7 +277,7 @@ export const serviceHubs = [
     faqs: [
       { q: 'What are the main types of industrial shed construction in Chennai?', a: 'Three main options: (1) RCC frame shed — durable, high fire resistance, slow to build. (2) PEB system — fast erection, cost-efficient for large spans. (3) Conventional steel frame — flexible design, local fabrication possible. Buildogram recommends the right approach for your specific project.' },
       { q: 'What approvals are needed for an industrial shed in Chennai?', a: 'Typically required: building plan approval from GCC/CMDA, factory license (from TNPC for manufacturing use), fire NOC for buildings above certain size, and environmental clearance for specified industries. Buildogram helps map the specific approvals needed.' },
-      { q: 'How much does an industrial shed cost per sqft in Chennai?', a: 'Basic single-span steel shed (without civil works): ₹500–₹900/sqft. Full PEB with cladding, flooring, and utility connections: ₹1,000–₹1,600/sqft. RCC frame shed: ₹1,400–₹2,000/sqft. Costs vary with span, height, crane requirements, and finish specification.' },
+      { q: 'How much does an industrial shed cost per sqft in Chennai?', a: 'Indicative ranges only — not a dated quotation; confirm current pricing with a project-specific quote. Basic single-span steel shed (without civil works): ₹500–₹900/sqft. Full PEB with cladding, flooring, and utility connections: ₹1,000–₹1,600/sqft. RCC frame shed: ₹1,400–₹2,000/sqft. Costs vary with span, height, crane requirements, and finish specification.' },
       { q: 'What is the construction timeline for an industrial shed in Chennai?', a: 'PEB sheds: 4–8 weeks erection after fabrication (total 12–20 weeks). Conventional steel: 8–14 weeks. RCC frame sheds: 4–8 months depending on size. Civil and finishing work adds to all timelines.' },
       { q: 'What floor loading capacity is standard for industrial sheds?', a: 'Standard light industrial floor loading is 5–10 kN/mÂ². Heavy manufacturing or rack storage may require 20–50 kN/mÂ² or higher. Floor slab thickness, reinforcement, and sub-base design must match the actual load. Buildogram coordinates floor slab design with your structural engineer.' },
     ],
@@ -388,10 +388,10 @@ export const serviceHubs = [
       { name: 'Services', item: '/services' },
       { name: 'BOQ Review', item: '/boq-review-chennai' },
     ],
-    intro: `A contractor\'s Bill of Quantities (BOQ) is one of the most important documents in your construction project — and most property owners in Chennai sign it without understanding what it contains. Buildogram\'s engineers audit your BOQ line by line: verifying quantities, benchmarking rates against current Chennai market data, identifying missing items, and flagging specification gaps before you commit.`,
+    intro: `A contractor\'s Bill of Quantities (BOQ) is one of the most important documents in your construction project — and most property owners in Chennai sign it without understanding what it contains. Buildogram\'s engineers audit your BOQ line by line: verifying quantities, benchmarking rates against project inputs and available Chennai market references, identifying missing items, and flagging specification gaps before you commit.`,
     whatWeDo: [
       { icon: 'building', title: 'Line-Item Audit', desc: 'Every material quantity, labour rate, and item specification is audited against engineering norms and market data.' },
-      { icon: 'building', title: 'Rate Benchmarking', desc: 'Rates are compared to current Chennai market data — cement, TMT steel, labour, sub-contractor items.' },
+      { icon: 'building', title: 'Rate Benchmarking', desc: 'Rates are compared against project inputs and available Chennai market references — cement, TMT steel, labour, sub-contractor items.' },
       { icon: 'building', title: 'Missing Item Detection', desc: 'Identify commonly missing items: compound wall, bore well, septic tank, overhead tank, approval fees, GST.' },
       { icon: 'building', title: 'Specification Clarity', desc: 'Flag vague specifications: "standard quality tiles", "approved brand cement", "PCC" without mix design.' },
       { icon: 'receipt', title: 'Hidden Cost Risk Flags', desc: 'Identify items that are likely to generate cost escalation claims mid-project.' },
@@ -409,7 +409,7 @@ export const serviceHubs = [
       { text: 'Contractor Quote Review', href: '/contractor-quote-review-chennai' },
       { text: 'Construction Cost Estimator', href: '/cost-estimator' },
       { text: 'Plan Review', href: '/plan-review' },
-      { text: 'Find Verified Builders', href: '/partners/directory' },
+      { text: 'Find Builders', href: '/partners/directory' },
     ],
     areaSlug: null,
   },
@@ -432,7 +432,7 @@ export const serviceHubs = [
     intro: `Contractor quotes in Chennai come in all formats — package rate per sqft, item-wise lump sums, or detailed BOQs. Whatever format your quote is in, Buildogram\'s engineers can review it against current market rates, identify missing items, flag specification gaps, and give you the information you need to negotiate effectively.`,
     whatWeDo: [
       { icon: 'building', title: 'Quote Normalisation', desc: 'Convert any quote format into a structured, comparable format for systematic audit.' },
-      { icon: 'building', title: 'Rate Benchmarking', desc: 'Compare quoted rates for materials, labour, and sub-contractor items against current Chennai market data.' },
+      { icon: 'building', title: 'Rate Benchmarking', desc: 'Compare quoted rates for materials, labour, and sub-contractor items against project inputs and available Chennai market references.' },
       { icon: 'building', title: 'Missing Item Check', desc: 'Check for commonly excluded items: compound wall, bore well, soil testing, approval fees, utility connections.' },
       { icon: 'building', title: 'Specification Gap Flags', desc: 'Identify vague or ambiguous specifications that leave room for quality compromise later.' },
       { icon: 'building', title: 'Risk Summary', desc: 'Highlight high-risk items and payment structure concerns before you sign.' },
@@ -565,7 +565,7 @@ export const serviceHubs = [
       { q: 'What regulatory approvals are needed for a factory in Chennai?', a: 'Typical approvals: building plan (GCC/CMDA/DTCP depending on location), factory license (Factories Act, Tamil Nadu), fire NOC, consent to establish from TNPCB (if manufacturing activity), and EB power connection. Buildogram maps the required approvals for your specific industry and location.' },
       { q: 'What structural type is best for a factory in Chennai?', a: 'Depends on span and process: PEB is fastest and most economical for single-span factories with moderate crane loads. RCC is preferred for heavy process industries requiring high fire resistance or very heavy floor loads. Conventional steel offers flexibility for complex layouts. Buildogram recommends after understanding your production requirements.' },
       { q: 'How is a factory shed different from a warehouse in terms of structural requirements?', a: 'Factories typically have higher floor load requirements (machinery), crane girder integration, more complex MEP (three-phase power, compressed air, effluent drainage), higher ventilation requirements, and stricter fire safety needs compared to standard warehouses.' },
-      { q: 'What is the typical cost to build a factory shed in Chennai?', a: 'A basic PEB factory shed (without MEP): ₹800–₹1,400/sqft. RCC frame factory: ₹1,400–₹2,200/sqft. With full MEP, heavy floor slabs, and crane girders, total project cost increases significantly. Buildogram provides scope-specific cost estimates after understanding your requirements.' },
+      { q: 'What is the typical cost to build a factory shed in Chennai?', a: 'Indicative ranges only — not a dated quotation; confirm current pricing with a project-specific quote. A basic PEB factory shed (without MEP): ₹800–₹1,400/sqft. RCC frame factory: ₹1,400–₹2,200/sqft. With full MEP, heavy floor slabs, and crane girders, total project cost increases significantly. Buildogram provides scope-specific cost estimates after understanding your requirements.' },
       { q: 'How long does factory shed construction take in Chennai?', a: 'Typical timeline: PEB factory 12–20 weeks from design to handover. RCC factory 4–8 months. MEP, finishing, and regulatory approvals add to the base construction timeline.' },
     ],
     relatedLinks: [

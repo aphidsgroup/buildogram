@@ -139,7 +139,7 @@ export const DEMO_PARTNERS_FULL = [
     companyName: 'BuildMart Direct',
     category: 'Material Supplier',
     shortDescription: 'Direct-to-site construction material supply at wholesale prices — cement, steel, bricks, tiles, and more.',
-    fullDescription: `BuildMart Direct is Chennai's leading construction material distributor, supplying projects across Tamil Nadu since 2005. We work directly with manufacturers like UltraTech, Tata Tiscon, Ramco, and Cera to provide genuine materials at wholesale rates.\n\nOur fleet of 20+ delivery vehicles ensures timely delivery to your construction site. We offer credit terms for verified contractors and builders.`,
+    fullDescription: `BuildMart Direct is Chennai's leading construction material distributor, supplying projects across Tamil Nadu since 2005. We work directly with manufacturers like UltraTech, Tata Tiscon, Ramco, and Cera to provide genuine materials at wholesale rates.\n\nOur fleet of 20+ delivery vehicles ensures timely delivery to your construction site. We offer credit terms for contractors in our network and builders.`,
     logoUrl: 'https://ui-avatars.com/api/?name=BuildMart&background=D97706&color=fff&size=128&bold=true',
     coverUrl: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1200&q=80',
     location: 'Ambattur, Chennai',

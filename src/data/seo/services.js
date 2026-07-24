@@ -556,7 +556,7 @@ export const services = [
     whoFor: ['Anyone planning a construction project in the next year', 'Those who received a quote and want to validate it', 'NRIs planning construction in Chennai'],
     whatWeDo: [
       { title: 'Scope-Based Cost Estimate', desc: 'Estimate based on your plot area, floors, and specification level.' },
-      { title: 'Rate Benchmarking', desc: 'Current Chennai market rates for all major construction items.' },
+      { title: 'Rate Benchmarking', desc: 'Chennai market references (dated in your report) for all major construction items.' },
       { title: 'Specification Impact Analysis', desc: 'How choosing different materials affects your total cost.' },
       { title: 'BOQ Structure Guidance', desc: 'Understand what a good BOQ should include for your project.' },
       { title: 'Contractor Quote Comparison', desc: 'If you have quotes — help you compare them accurately.' },

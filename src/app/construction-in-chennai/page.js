@@ -10,25 +10,25 @@ export const metadata = generateSEOMetadata({
 });
 
 const CHALLENGES = [
-  { icon: '🌊', title: 'Coastal Corrosion (ECR / OMR)', desc: 'Salt-laden sea breeze causes chloride-induced corrosion in rebar. Coastal Chennai zones require CRS (Corrosion Resistant Steel) and higher concrete cover depths per IS 456.' },
-  { icon: '🌱', title: 'Expansive Clay (Velachery / Adyar)', desc: 'Marine clay deposits in low-lying areas have extremely low SBC (50–80 kN/m²). Pile foundations are mandatory. Shallow footings on clay risk differential settlement and structural cracking.' },
-  { icon: '🌧️', title: 'Monsoon Flooding Risk', desc: 'Plinth height planning is critical. Areas like Porur, Koyambedu, and Perambur have flood-prone zones. CMDA mandates minimum plinth heights in flood-risk areas. Drainage planning during design prevents post-construction flooding.' },
+  { icon: '🌊', title: 'Coastal Corrosion (ECR / OMR)', desc: 'Proximity to the coast can increase chloride exposure and corrosion risk in reinforcement. Durability measures such as corrosion-resistant steel and concrete cover should be specified by the project structural engineer with reference to IS 456 and site-specific exposure conditions.' },
+  { icon: '🌱', title: 'Expansive Clay (Velachery / Adyar)', desc: 'Ground conditions vary significantly across Chennai and within individual localities. Safe bearing capacity and the appropriate foundation type must be established by a project-specific soil investigation and structural design, not by locality assumptions.' },
+  { icon: '🌧️', title: 'Monsoon Flooding Risk', desc: 'Site-level drainage, road level and historical waterlogging conditions should be verified during project due diligence, and plinth levels set by the project design team in line with the applicable local authority requirements. Early drainage planning prevents post-construction flooding.' },
   { icon: '📋', title: 'CMDA Approval Complexity', desc: 'FSI (Floor Space Index), setback rules, and height restrictions vary dramatically by zone (Residential, Commercial, Mixed Use). Incorrect drawings lead to rejection delays or demolition orders after construction.' },
 ];
 
 const AREAS = [
-  { name: 'OMR (Old Mahabalipuram Road)', slug: 'omr', note: 'IT corridor zone, sandy/mixed soil, CRS steel recommended' },
-  { name: 'ECR (East Coast Road)', slug: 'ecr', note: 'Coastal zone, marine sand, high corrosion risk' },
-  { name: 'Anna Nagar', slug: 'anna-nagar', note: 'Established zone, mixed soil, CMDA setback compliance critical' },
-  { name: 'Velachery', slug: 'velachery', note: 'Marine clay, pile foundation mandatory, flood zone planning needed' },
-  { name: 'Tambaram', slug: 'tambaram', note: 'Hard rock near surface, high SBC, good for all foundation types' },
-  { name: 'Porur', slug: 'porur', note: 'Mixed residential zone, medium clay, moderate SBC' },
-  { name: 'Adyar', slug: 'adyar', note: 'Coastal proximity, clay soil, waterproofing critical' },
-  { name: 'Nungambakkam', slug: 'nungambakkam', note: 'Central Chennai, stiff soil, heritage zone restrictions' },
-  { name: 'T Nagar', slug: 't-nagar', note: 'Dense commercial zone, strict CMDA oversight' },
-  { name: 'Guindy', slug: 'guindy', note: 'Industrial-to-residential transition, mixed soil' },
-  { name: 'Sholinganallur', slug: 'sholinganallur', note: 'OMR tech hub, newer layouts, mixed soil profiles' },
-  { name: 'Chromepet', slug: 'chromepet', note: 'Hard ground, good drainage, southern suburbs' },
+  { name: 'OMR (Old Mahabalipuram Road)', slug: 'omr', note: 'IT corridor zone, site-specific soil investigation recommended' },
+  { name: 'ECR (East Coast Road)', slug: 'ecr', note: 'Coastal zone, site-specific soil investigation recommended' },
+  { name: 'Anna Nagar', slug: 'anna-nagar', note: 'Established zone, CMDA setback compliance critical, site-specific soil investigation recommended' },
+  { name: 'Velachery', slug: 'velachery', note: 'Established residential zone, site-specific soil investigation recommended' },
+  { name: 'Tambaram', slug: 'tambaram', note: 'Site-specific soil investigation recommended' },
+  { name: 'Porur', slug: 'porur', note: 'Mixed residential zone, moderate SBC, site-specific soil investigation recommended' },
+  { name: 'Adyar', slug: 'adyar', note: 'Coastal proximity, site-specific soil investigation recommended' },
+  { name: 'Nungambakkam', slug: 'nungambakkam', note: 'Central Chennai, heritage zone restrictions, site-specific soil investigation recommended' },
+  { name: 'T Nagar', slug: 't-nagar', note: 'Dense commercial zone, strict CMDA oversight, site-specific soil investigation recommended' },
+  { name: 'Guindy', slug: 'guindy', note: 'Industrial-to-residential transition, site-specific soil investigation recommended' },
+  { name: 'Sholinganallur', slug: 'sholinganallur', note: 'OMR tech hub, newer layouts, site-specific soil investigation recommended' },
+  { name: 'Chromepet', slug: 'chromepet', note: 'Hard ground, good drainage, southern suburbs, site-specific soil investigation recommended' },
 ];
 
 const SERVICES = [

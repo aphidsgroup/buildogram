@@ -143,7 +143,7 @@ export const faqCategories = [
       { q: 'What are the benefits of being a Buildogram partner?', a: 'Partners receive: platform visibility, lead access, digital project showcase, content/reel collaboration opportunities, and access to the Buildogram material supply network.' },
       { q: 'Is there a fee to join the partner network?', a: 'Contact Buildogram directly for current partner program fee structure and terms.' },
       { q: 'How does Buildogram verify partners?', a: 'We review past project history, professional credentials, client references, and conduct a capability assessment. Partners are onboarded after verification.' },
-      { q: 'Can a contractor get construction projects through Buildogram?', a: 'Yes. Verified contractors in our network receive referrals for projects where their specialization and capacity matches homeowner requirements.' },
+      { q: 'Can a contractor get construction projects through Buildogram?', a: 'Yes. Contractors in our network in our network receive referrals for projects where their specialization and capacity matches homeowner requirements.' },
       { q: 'How does the material supply network work for partners?', a: 'Buildogram connects material suppliers with construction projects, providing verified demand and delivery verification. Suppliers can reach a qualified buyer base through the platform.' },
     ],
   },
