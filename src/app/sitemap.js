@@ -69,9 +69,13 @@ export default async function sitemap() {
     { url: `${baseUrl}/renovation-contractors-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/site-supervision-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/turnkey-construction-chennai`, priority: 0.9, changeFrequency: 'weekly' },
-    // NOTE: end-to-end-construction-support-chennai, boq-review-chennai, structural-plan-review-chennai,
-    // steel-construction-chennai, peb-building-contractors-chennai, industrial-shed-construction-chennai
-    // are 404 (not in services.js). Removed from sitemap until pages are created. (Phase 2 fix)
+    // Phase 3: pages created — restored to sitemap (were removed in Phase 2 as 404s)
+    { url: `${baseUrl}/end-to-end-construction-support-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/boq-review-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/structural-plan-review-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/steel-construction-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/peb-building-contractors-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    { url: `${baseUrl}/industrial-shed-construction-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/contractor-quote-review-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/construction-cost-estimation-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     // Structural Audit & NDT
