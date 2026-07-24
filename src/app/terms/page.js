@@ -98,7 +98,7 @@ Listing a partner or coordinating communications does not mean Buildogram automa
     title: '7. No Agency, Partnership, or Joint Venture',
     content: `Listing, recommending, verifying, introducing, coordinating, or communicating with a partner on the Buildogram platform does not by itself create an employment, legal partnership, joint venture, franchise, agency, or subcontracting relationship, nor does it provide authority for the partner to bind Buildogram.
 
-The exact relationship in a specific project is governed strictly by the signed project documents. Companies listed on the platform are "appointed execution partners," "independent contractors," "verified partners," or "selected service providers" depending on the actual relationship, not automatically "Buildogram contractors."`,
+The exact relationship in a specific project is governed strictly by the signed project documents. Companies listed on the platform are "appointed execution partners," "independent contractors," "partners," or "selected service providers" depending on the actual relationship, not automatically "Buildogram contractors."`,
   },
   {
     id: 'partner-verification',
@@ -131,7 +131,7 @@ The exact relationship in a specific project is governed strictly by the signed 
   {
     id: 'termination',
     title: '12. Termination',
-    content: 'Buildogram reserves the right to suspend or terminate your account at any time, with or without notice, if we have reason to believe you have violated these Terms of Service. You may terminate your account at any time by contacting us at support@buildogram.com.',
+    content: 'Buildogram reserves the right to suspend or terminate your account at any time, with or without notice, if we have reason to believe you have violated these Terms of Service. You may terminate your account at any time by contacting us at hello@buildogram.in.',
   },
 ];
 
@@ -168,7 +168,7 @@ export default function Terms() {
       <div className="container" style={{ maxWidth: '860px', padding: '56px 24px 80px' }}>
         <p style={{ color: 'var(--text-muted)', fontSize: '15px', lineHeight: 1.8, marginBottom: '48px', padding: '20px 24px', background: 'var(--bg-card2)', borderRadius: 'var(--radius)', borderLeft: '4px solid var(--primary)' }}>
           These Terms of Service govern your use of the Buildogram platform. Please read them carefully. By using our services, you agree to be bound by these terms. For questions, contact us at{' '}
-          <a href="mailto:support@buildogram.com" style={{ color: 'var(--primary)' }}>support@buildogram.com</a>.
+          <a href="mailto:hello@buildogram.in" style={{ color: 'var(--primary)' }}>hello@buildogram.in</a>.
         </p>
 
         {sections.map((section) => (

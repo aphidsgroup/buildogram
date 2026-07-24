@@ -32,7 +32,7 @@ const sections = [
     content: `We use the information we collect to:
 
 • Facilitate engineering-led coordination — providing BOQ reviews, structural audit assessments, material quotes, and site supervision reports based on your project data.
-• Connect you with verified partners and suppliers that match your project requirements.
+• Connect you with partners and suppliers that match your project requirements.
 • Send you project updates, milestone notifications, and service-related communications.
 • Manage your digital Property Passport — storing construction documentation, test reports, and handover documents securely.
 • Improve our platform — analysing usage patterns to enhance features, fix issues, and personalise your experience.
@@ -41,7 +41,7 @@ const sections = [
   {
     id: 'information-sharing',
     title: '3. Information Sharing with Partners',
-    content: 'We may share relevant project details (location, type, budget, requirements) with verified partners and suppliers within the Buildogram network to fulfil your service requests — such as material quotes, contractor matching, or structural audit coordination. Partners are bound by confidentiality agreements and may only use your data to fulfil the specific service requested. We do not sell, rent, or trade your personal data to third parties for marketing purposes.',
+    content: 'We may share relevant project details (location, type, budget, requirements) with partners and suppliers within the Buildogram network to fulfil your service requests — such as material quotes, contractor matching, or structural audit coordination. Partners are bound by confidentiality agreements and may only use your data to fulfil the specific service requested. We do not sell, rent, or trade your personal data to third parties for marketing purposes.',
   },
   {
     id: 'cookies-analytics',
@@ -64,7 +64,7 @@ const sections = [
 • **Portability**: Request your project data in a portable format (PDF, JSON).
 • **Objection**: Object to certain types of processing, such as marketing communications.
 
-To exercise any of these rights, contact us at privacy@buildogram.com. We will respond within 30 days.`,
+To exercise any of these rights, contact us at hello@buildogram.in. We will respond within 30 days.`,
   },
   {
     id: 'third-party-services',
@@ -74,7 +74,7 @@ To exercise any of these rights, contact us at privacy@buildogram.com. We will r
   {
     id: 'childrens-privacy',
     title: '8. Children\'s Privacy',
-    content: 'The Buildogram platform is not intended for use by individuals under the age of 18. We do not knowingly collect personal information from minors. If you believe a child has provided us with personal information, please contact us immediately at privacy@buildogram.com and we will take steps to delete such information.',
+    content: 'The Buildogram platform is not intended for use by individuals under the age of 18. We do not knowingly collect personal information from minors. If you believe a child has provided us with personal information, please contact us immediately at hello@buildogram.in and we will take steps to delete such information.',
   },
   {
     id: 'data-retention',
@@ -121,7 +121,7 @@ export default function PrivacyPolicy() {
       <div className="container" style={{ maxWidth: '860px', padding: '56px 24px 80px' }}>
         <p style={{ color: 'var(--text-muted)', fontSize: '15px', lineHeight: 1.8, marginBottom: '48px', padding: '20px 24px', background: 'var(--bg-card2)', borderRadius: 'var(--radius)', borderLeft: '4px solid var(--primary)' }}>
           Your privacy matters to us. This policy explains exactly what data we collect, how we use it, who we share it with, and what rights you have. If you have any questions, contact us at{' '}
-          <a href="mailto:privacy@buildogram.com" style={{ color: 'var(--primary)' }}>privacy@buildogram.com</a>.
+          <a href="mailto:hello@buildogram.in" style={{ color: 'var(--primary)' }}>hello@buildogram.in</a>.
         </p>
 
         {sections.map((section) => (
@@ -136,7 +136,7 @@ export default function PrivacyPolicy() {
         {/* Contact CTA */}
         <div style={{ marginTop: '56px', padding: '32px', background: 'var(--bg-card2)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--border)', textAlign: 'center' }}>
           <h3 style={{ fontSize: '18px', color: 'var(--secondary)', marginBottom: '8px' }}>Privacy Questions?</h3>
-          <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '6px' }}>Email us at <a href="mailto:privacy@buildogram.com" style={{ color: 'var(--primary)' }}>privacy@buildogram.com</a></p>
+          <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '6px' }}>Email us at <a href="mailto:hello@buildogram.in" style={{ color: 'var(--primary)' }}>hello@buildogram.in</a></p>
           <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>We respond within 30 business days.</p>
           <Link href="/contact" className="btn btn-primary">Contact Us</Link>
         </div>

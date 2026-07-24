@@ -53,7 +53,7 @@ export function renderTemplate(templateBody, lead) {
     issue_category: m.issue_category ? m.issue_category.replace('_', ' ') : 'maintenance',
     material_items: m.materials_required || 'materials',
     status: lead.status || '',
-    portal_link: `https://app.buildogram.com/client/dashboard` // Safe generic fallback
+    portal_link: `https://www.buildogram.in/client/dashboard` // Client portal on the production domain
   };
 
   return templateBody.replace(/\{\{([a-zA-Z0-9_]+)\}\}/g, (match, key) => {

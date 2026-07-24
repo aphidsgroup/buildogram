@@ -5,7 +5,7 @@
 
 export function buildTrackingUrl(baseUrl, params = {}) {
   try {
-    const url = new URL(baseUrl, process.env.NEXT_PUBLIC_SITE_URL || 'https://buildogram.com');
+    const url = new URL(baseUrl, process.env.NEXT_PUBLIC_SITE_URL || 'https://www.buildogram.in');
     
     if (params.source) url.searchParams.set('utm_source', params.source);
     if (params.medium) url.searchParams.set('utm_medium', params.medium);
