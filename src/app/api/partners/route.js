@@ -16,7 +16,7 @@ export async function GET(request) {
         SELECT p.*, 
           COALESCE((SELECT COUNT(*)::int FROM partner_enquiries pe WHERE pe.partner_id = p.id), 0) as enquiry_count
         FROM partners p
-        WHERE p.approval_status = 'Approved' AND p.active = true
+        WHERE p.approval_status = 'Approved' AND p.active = true AND p.slug NOT LIKE 'demo-%'
           AND p.category = ${category} AND p.featured = true
         ORDER BY p.featured DESC, p.created_at DESC LIMIT 100
       `;
@@ -25,7 +25,7 @@ export async function GET(request) {
         SELECT p.*,
           COALESCE((SELECT COUNT(*)::int FROM partner_enquiries pe WHERE pe.partner_id = p.id), 0) as enquiry_count
         FROM partners p
-        WHERE p.approval_status = 'Approved' AND p.active = true
+        WHERE p.approval_status = 'Approved' AND p.active = true AND p.slug NOT LIKE 'demo-%'
           AND p.category = ${category}
         ORDER BY p.featured DESC, p.created_at DESC LIMIT 100
       `;
@@ -34,7 +34,7 @@ export async function GET(request) {
         SELECT p.*,
           COALESCE((SELECT COUNT(*)::int FROM partner_enquiries pe WHERE pe.partner_id = p.id), 0) as enquiry_count
         FROM partners p
-        WHERE p.approval_status = 'Approved' AND p.active = true
+        WHERE p.approval_status = 'Approved' AND p.active = true AND p.slug NOT LIKE 'demo-%'
         ORDER BY p.featured DESC, p.created_at DESC LIMIT 100
       `;
     }

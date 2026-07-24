@@ -252,6 +252,12 @@ const DEMO_PARTNERS = [
 ];
 
 export async function GET(request) {
+  // SEO P0 (2026-07-25): demo seeding disabled unless explicitly enabled.
+  // Prevents fictional partners (fake RERA/ISO/CREDAI credentials) reaching production.
+  if (process.env.ENABLE_DEMO_SEED !== 'true') {
+    return NextResponse.json({ error: 'Demo partner seed is disabled. Set ENABLE_DEMO_SEED=true to run.' }, { status: 403 });
+  }
+
   const { user, error } = requireAdmin(request);
   if (error) return error;
 

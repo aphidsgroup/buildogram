@@ -11,7 +11,7 @@ export async function GET(request, { params }) {
   try {
     const [partner] = await sql`
       SELECT * FROM partners
-      WHERE slug = ${slug} AND approval_status = 'Approved' AND active = true
+      WHERE slug = ${slug} AND approval_status = 'Approved' AND active = true AND slug NOT LIKE 'demo-%'
       LIMIT 1
     `;
 
