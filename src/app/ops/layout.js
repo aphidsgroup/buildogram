@@ -26,6 +26,7 @@ const OPS_NAV = [
   { href: '/ops/accounting',  icon: '🧮', label: 'Accounting', requiredPerm: 'manage_revenue' },
   { href: '/ops/exports',       icon: '💾', label: 'Exports & Backup', requiredPerm: 'view_reports' },
   { href: '/ops/boq-calculator', icon: '🧮', label: 'BOQ Calculator' },
+  { href: '/ops/seo',            icon: '🔍', label: 'SEO & Rankings' },
   { href: '/ops/settings',       icon: '⚙️', label: 'Settings' },
 ];
 
@@ -82,7 +83,7 @@ export default function OpsLayout({ children }) {
                     '/ops/notification-settings', '/ops/notification-rules',
                     '/ops/notification-queue', '/ops/whatsapp-templates',
                     '/ops/blog', '/ops/help', '/ops/reels', '/ops/exports',
-                    '/ops/boq-calculator',
+                    '/ops/boq-calculator', '/ops/seo',
                   ];
 
                   if (!builtRoutes.includes(href)) {
