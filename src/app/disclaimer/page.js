@@ -2,6 +2,11 @@ import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 
+/*
+  PROVISIONAL LEGAL DRAFT — requires approval by qualified Indian legal counsel. 
+  Do not remove this marker until written approval is recorded.
+*/
+
 export const metadata = generateSEOMetadata({
   title: 'Legal Disclaimer | Buildogram',
   description: 'Read the legal disclaimer for Buildogram. Understand the nature of our platform services, partner agreements, material pricing estimates, and limitations of liability.',
@@ -12,47 +17,47 @@ const sections = [
   {
     id: 'nature-of-services',
     title: '1. Nature of Our Services',
-    content: 'Buildogram is an engineering-led coordination and construction companion platform — not a direct construction execution company. We provide BOQ documentation, contractor quote reviews, partner discovery, material sourcing support, structural audit facilitation, and digital project monitoring. We act as an intermediary and advisory body between property owners and verified independent partners, contractors, suppliers, and engineers.',
+    content: 'Buildogram is an independent, engineer-led Advisory, Construction Intelligence, Coordination, and Property Assurance Consultant — not a direct construction execution company. We provide plan and BOQ review, cost and quotation comparison, construction planning, partner identification and coordination, progress monitoring, stage-wise quality observations, and documentation. We act as an intermediary and advisory body. Construction execution is performed by separately appointed execution partners.',
   },
   {
     id: 'execution-responsibility',
     title: '2. Execution Responsibility',
-    content: 'The final execution responsibility, site safety, structural integrity, workmanship quality, and project delivery timelines depend solely on the independent contractors, builders, vendors, and engineers you choose to engage through or outside of our platform. Any legal agreements, financial transactions, or contracts for actual construction or service execution are strictly between the property owner and the respective partner or contractor. Buildogram is not a party to these agreements.',
+    content: 'The final execution responsibility, site safety, structural integrity, workmanship quality, and project delivery timelines depend solely on the independent contractors, builders, vendors, and engineers you choose to engage. Any legal agreements, financial transactions, or contracts for actual construction or service execution are strictly between the property owner and the respective partner or contractor. Buildogram is not a party to these execution agreements and does not automatically assume the role of principal contractor or developer.',
   },
   {
     id: 'material-pricing',
-    title: '3. Material Pricing & Estimates',
-    content: 'Material prices and construction cost estimates provided through our platform are indicative figures based on current market rates at the time of generation. Actual prices may vary based on supplier terms, geographic location, logistics costs, market fluctuations, order timing, and material grade specifications. We recommend obtaining fresh quotes from suppliers before finalizing procurement decisions. Buildogram is not responsible for price changes after an estimate is issued.',
+    title: '3. Cost Estimates & Pricing',
+    content: 'BOQs, estimates, package comparisons, rate analyses, and cost forecasts prepared or displayed by Buildogram are based on the drawings, specifications, measurements, assumptions, quotations, market inputs, and site information available at the time of preparation. They are intended to support planning and comparison and are not an unconditional guarantee of the final construction cost. Buildogram does not guarantee zero cost overruns. Actual prices may vary based on client-requested changes, concealed site conditions, statutory requirements, and market fluctuations.',
   },
   {
     id: 'structural-advice',
-    title: '4. Structural & Engineering Advice',
-    content: 'While our platform involves qualified civil and structural engineers, information provided through AI tools, BOQ calculators, and online reports is for guidance purposes only. For any final structural decision — including foundation type, beam sizing, pile depth, or retrofit design — you must engage a licensed structural engineer who physically visits and assesses your site. No digital report or AI-generated estimate substitutes for a formal engineering stamp.',
+    title: '4. Limitation of Review and Advice',
+    content: 'Buildogram’s review and advisory services depend on the information supplied, access provided, construction stage visible during the visit, and scope purchased. A site visit or quality report is not continuous supervision, a certification of every concealed element, a structural-design certification, a guarantee against future defects, or a replacement for approvals by licensed professionals or authorities.',
   },
   {
     id: 'partner-verification',
     title: '5. Partner Verification',
-    content: 'Buildogram verifies partner credentials including RERA registration, professional licenses, past project references, and documentation to the best of our ability. However, we do not guarantee the ongoing performance, quality of work, financial solvency, or conduct of any independent partner listed on our platform. Property owners are strongly advised to independently verify credentials, inspect past projects, and obtain written agreements with performance guarantees before engaging any partner.',
+    content: 'Partner verification means that Buildogram reviewed selected credentials, documents, or project information according to its published verification methodology as of the stated verification date. Verification is not a guarantee of future performance, financial capacity, regulatory compliance, workmanship, availability, or project outcome. Property owners are strongly advised to independently verify credentials and obtain written agreements with performance guarantees before engaging any partner.',
   },
   {
-    id: 'property-information',
-    title: '6. Property Listing Information',
-    content: 'Information regarding properties listed via Buildogram or connected portals (including but not limited to RealPropRealty and ToLetBoard) is provided by the property owners or agents and has not been independently verified by Buildogram in all cases. All property details, pricing, legal status, encumbrances, and approvals should be independently verified by the user with the appropriate legal and government authorities before making any financial or legal commitments.',
+    id: 'site-safety',
+    title: '6. Site Safety',
+    content: 'The appointed construction contractor must retain full statutory and operational responsibility for labour control, construction methods, temporary works, tools and machinery, personal protective equipment, site security, accident prevention, and day-to-day site safety. Buildogram’s site visits, reports, or observations do not assume continuous safety supervision unless a signed contract expressly creates that obligation.',
   },
   {
     id: 'ai-tools',
     title: '7. AI Tools & Automated Estimates',
-    content: 'AI-powered tools available on our platform (including the AI BOQ Checker, AI Cost Estimator, AI Material Estimator, and AI Structural Audit Intake) generate indicative estimates based on trained models and input data provided by the user. These outputs are preliminary in nature and should be treated as starting points for further professional review — not as final engineering or financial assessments. Accuracy depends heavily on the completeness and correctness of user inputs.',
+    content: 'AI-powered tools available on our platform generate indicative estimates based on trained models and input data provided by the user. These outputs are preliminary in nature and should be treated as starting points for further professional review — not as final engineering or financial assessments. Accuracy depends heavily on the completeness and correctness of user inputs.',
   },
   {
     id: 'intellectual-property',
     title: '8. Intellectual Property',
-    content: 'All content on the Buildogram platform — including BOQ templates, engineering checklists, articles, guides, and software tools — is the intellectual property of Buildogram and its licensors. You may not reproduce, distribute, or create derivative works from our content without explicit written permission. Property Passport documents generated for your project are issued for your personal use and may not be shared, sold, or transferred without authorization.',
+    content: 'All content on the Buildogram platform — including BOQ templates, engineering checklists, articles, guides, and software tools — is the intellectual property of Buildogram and its licensors. You may not reproduce, distribute, or create derivative works from our content without explicit written permission.',
   },
   {
     id: 'limitation-of-liability',
     title: '9. Limitation of Liability',
-    content: 'To the maximum extent permitted by applicable law, Buildogram\'s total liability arising from or related to your use of our platform is limited to the total fees you have paid to Buildogram in the three months preceding the claim. Buildogram shall not be liable for any indirect, incidental, consequential, or punitive damages including loss of profits, data, or business opportunity — even if we have been advised of the possibility of such damages.',
+    content: 'To the maximum extent permitted by applicable law, Buildogram\'s total liability arising from or related to your use of our platform is limited to the total fees you have paid to Buildogram in the three months preceding the claim. Buildogram shall not be liable for any indirect, incidental, consequential, or punitive damages including loss of profits, data, or business opportunity — even if we have been advised of the possibility of such damages. Buildogram remains responsible only for performing its own expressly contracted advisory services with reasonable professional care.',
   },
   {
     id: 'governing-law',

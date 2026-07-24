@@ -6,7 +6,7 @@ export const services = [
     slug: 'house-construction',
     title: 'House Construction Services in Chennai',
     metaTitle: 'House Construction Services in Chennai | Buildogram',
-    metaDescription: 'Build your dream home in Chennai with Buildogram\'s engineer-led, transparent house construction service. Itemized BOQ, milestone tracking, 10-year warranty.',
+    metaDescription: 'Build your dream home in Chennai with Buildogram\'s engineer-led, transparent house construction service. Itemized BOQ, milestone tracking, 10-Year Partner-Backed Structural Warranty.',
     heroTitle: 'House Construction in Chennai',
     heroSubtitle: 'Engineer-led, transparent, proof-based home building from foundation to handover.',
     heroTag: 'Construction Services',
@@ -409,7 +409,7 @@ export const services = [
       { title: 'Resale-Oriented Layout Guidance', desc: 'Design advice to maximize future resale attractiveness.' },
       { title: 'Full Documentation Build', desc: 'Structural drawings, test reports, and material records from day one.' },
       { title: 'Property Passport at Handover', desc: 'Digital property record that transfers to future buyers.' },
-      { title: 'Structural Warranty', desc: '10-year warranty that adds buyer confidence and justifies premium pricing.' },
+      { title: 'Structural Warranty', desc: '10-Year Partner-Backed Structural Warranty that adds buyer confidence and justifies premium pricing.' },
       { title: '360° Resale Listing Support', desc: 'Buildogram marketplace listing with 360° tour when you are ready to sell.' },
     ],
     process: [
@@ -439,7 +439,7 @@ export const services = [
     heroSubtitle: 'Hand us your plot. Receive your completed home. One team, full accountability, zero surprises.',
     heroTag: 'Turnkey Services',
     icon: '🔑',
-    intro: `Turnkey construction means one contract, one point of responsibility, and one team managing your entire project from design to handover. Buildogram\'s turnkey service covers architectural design, structural engineering, material procurement, construction, finishing, and handover — all backed by an itemized BOQ and a 10-year structural warranty.`,
+    intro: `Turnkey construction means Coordinated Execution Contracts, one point of responsibility, and one team managing your entire project from design to handover. Buildogram\'s turnkey service covers architectural design, structural engineering, material procurement, construction, finishing, and handover — all backed by an itemized BOQ and a 10-year structural warranty.`,
     whoFor: ['Homeowners who want single-point responsibility', 'NRIs and busy professionals who cannot manage multiple vendors', 'Investors who want a complete, ready-to-use or ready-to-sell property'],
     whatWeDo: [
       { title: 'End-to-End Project Management', desc: 'One point of contact from design to handover.' },

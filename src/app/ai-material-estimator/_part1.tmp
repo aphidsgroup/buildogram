@@ -1,0 +1,36 @@
+﻿import { generateSEOMetadata } from '@/lib/seo/metadata';
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
+import Link from 'next/link';
+import MaterialEstimatorClient from './MaterialEstimatorClient';
+
+export const metadata = generateSEOMetadata({
+  title: 'AI Material Requirement Estimator Chennai | Cement, Steel, Bricks | Buildogram',
+  description: 'Calculate exact material quantities for your Chennai construction project. AI-estimated cement bags, steel MT, brick count and more. Updated July 2026.',
+  path: '/ai-material-estimator',
+});
+
+const EXAMPLES = [
+  { id: 1, scenario: 'Ground Floor Slab — 1,200 sqft', tag: 'Residential', color: '#EFF6FF', border: '#BFDBFE', tagColor: '#1D4ED8', items: [{ label: 'M20 Cement', value: '380 bags', icon: '🏗️' }, { label: 'Fe500D TMT Steel', value: '3.2 MT', icon: '⚙️' }, { label: 'Fly-ash Brick', value: '14,200 Nos', icon: '🧱' }, { label: 'River Sand', value: '620 cft', icon: '⛏️' }, { label: 'M-Sand', value: '480 cft', icon: '🪨' }] },
+  { id: 2, scenario: 'G+1 Duplex 2,400 sqft — Foundation Only', tag: 'Foundation', color: '#F0FDF4', border: '#BBF7D0', tagColor: '#15803D', items: [{ label: 'M20 Cement', value: '68 bags', icon: '🏗️' }, { label: 'Fe500D TMT Steel', value: '0.9 MT', icon: '⚙️' }, { label: 'PCC Concrete', value: '42 cft', icon: '🪨' }, { label: 'Back-fill Soil', value: '480 cft', icon: '⛏️' }] },
+  { id: 3, scenario: 'G+1 Duplex 2,400 sqft — Full Build', tag: 'Full Build', color: '#FFF7ED', border: '#FED7AA', tagColor: '#C2410C', items: [{ label: 'M20/M25 Cement', value: '820 bags', icon: '🏗️' }, { label: 'Fe500D TMT Steel', value: '7.4 MT', icon: '⚙️' }, { label: 'Fly-ash Brick', value: '32,000 Nos', icon: '🧱' }, { label: 'Flooring Tiles', value: '2,580 sqft', icon: '🪟' }] },
+  { id: 4, scenario: 'Compound Wall — 100 RM, 5ft Height', tag: 'Civil', color: '#FDF4FF', border: '#E9D5FF', tagColor: '#7E22CE', items: [{ label: 'Cement', value: '42 bags', icon: '🏗️' }, { label: 'Fly-ash Brick', value: '8,400 Nos', icon: '🧱' }, { label: 'TMT Steel', value: '180 kg', icon: '⚙️' }, { label: 'PCC Base', value: '28 cft', icon: '🪨' }] },
+  { id: 5, scenario: 'Bathroom Waterproofing — 3 Nos x 40 sqft', tag: 'Waterproofing', color: '#F0F9FF', border: '#BAE6FD', tagColor: '#0369A1', items: [{ label: 'DR Fixit Primer', value: '6 kg', icon: '🪣' }, { label: 'Waterproofing Compound', value: '18 kg', icon: '🛡️' }, { label: 'Cement', value: '4 bags', icon: '🏗️' }, { label: 'Mesh', value: '120 sqft', icon: '🕸️' }] },
+];
+
+const MATERIAL_CATEGORIES = [
+  { icon: '🏗️', title: 'Structural Materials', items: ['OPC/PPC Cement', 'Fe500D TMT Steel', 'M20/M25 Concrete', 'Coarse Aggregates'] },
+  { icon: '🧱', title: 'Masonry', items: ['Fly-ash Bricks', 'Red Burnt Bricks', 'AAC Blocks', 'Hollow Concrete Blocks'] },
+  { icon: '🛡️', title: 'Waterproofing', items: ['DR Fixit Compound', 'Primer Coat', 'Fibre Mesh', 'Crystalline Admix'] },
+  { icon: '🪟', title: 'Flooring & Tiling', items: ['Vitrified Tiles', 'Ceramic Tiles', 'Granite Slabs', 'Tile Adhesive & Grout'] },
+  { icon: '🚪', title: 'Doors & Windows', items: ['Teak Wood Frames', 'UPVC Windows', 'Flush Doors', 'Steel Door Frames'] },
+  { icon: '⚡', title: 'MEP', items: ['CPVC Plumbing Pipes', 'PVC Conduits', 'Junction Boxes', 'Sanitary Fittings'] },
+  { icon: '🎨', title: 'Finishing', items: ['Exterior Paint', 'Interior Emulsion', 'Wall Putty', 'Primer Coat'] },
+  { icon: '⛏️', title: 'Sand & Aggregates', items: ['River Sand', 'M-Sand', '20mm Jelly', '12mm Jelly', 'P-Sand'] },
+];
+
+const FAQS = [
+  { question: 'How does the AI calculate material quantities?', answer: "The AI uses IS code formulas calibrated against Buildogram's database of completed projects across Chennai. For concrete items, it applies M20/M25 mix designs per IS 456:2000. For masonry, it applies standard fly-ash brick dimensions (230x110x75mm) with mortar joint and wastage factors baked in." },
+  { question: 'Are these procurement quantities or BOQ quantities?', answer: 'These are procurement quantities — inclusive of standard wastage factors: 5–10% for cement, 3–5% for steel, and 8–12% for bricks. They are designed to help you plan material orders rather than serve as contract BOQ line items. For formal BOQ, use our AI BOQ Checker.' },
+  { question: 'Can I use this for planning material purchases from vendors?', answer: "Absolutely. After getting your estimate, you can use Buildogram's material procurement service to source cement (Ultratech, ACC, Ramco), steel (Kamdhenu, JSPL, SAIL), and other items at negotiated wholesale rates — shipped directly to your construction site in Chennai." },
+  { question: 'Does it account for different IS grades?', answer: 'Yes. Select M20 or M25 concrete grade and Fe415/Fe500D steel grade to get grade-appropriate quantity estimates. Higher-grade concrete requires different water:cement ratios which affects cement bag count per cubic metre of concrete placed.' },
+];

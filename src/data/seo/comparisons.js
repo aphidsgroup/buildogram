@@ -32,7 +32,7 @@ export const comparisons = [
     intro: 'Two common approaches to managing home construction in Chennai — PMC and Turnkey — serve different needs. Here is a clear comparison to help you decide.',
     table: [
       { feature: 'Your role', contractor: 'PMC: You manage the contractor; PMC supervises', buildogram: 'Turnkey: One team manages everything for you' },
-      { feature: 'Contractor relationship', contractor: 'PMC: You have a separate contractor contract', buildogram: 'Turnkey: You have one contract with the builder' },
+      { feature: 'Contractor relationship', contractor: 'PMC: You have a separate contractor contract', buildogram: 'Turnkey: You have Coordinated Execution Contracts with the builder' },
       { feature: 'Single point of responsibility', contractor: 'PMC: Multiple parties (your contractor + PMC)', buildogram: 'Turnkey: Single team, single contract' },
       { feature: 'Suitable for', contractor: 'PMC: Those who already have a trusted contractor', buildogram: 'Turnkey: Those who want one team, zero coordination effort' },
       { feature: 'Cost management', contractor: 'PMC: You negotiate contractor cost directly', buildogram: 'Turnkey: All costs in one BOQ' },

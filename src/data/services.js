@@ -339,7 +339,7 @@ export const SERVICES = [
   {
     slug: "contractor-quote-review-chennai",
     title: "Contractor Quote Review in Chennai | Engineer-Led Quote Analysis | Buildogram",
-    metaDescription: "Buildogram Contractor Quote Review in Chennai - engineer-led, AI-driven construction support in Chennai.",
+    metaDescription: "Verified Execution Partner Quote Review in Chennai - engineer-led, AI-driven construction support in Chennai.",
     h1: "Contractor Quote Review in Chennai",
     heroSubtitle: '',
     heroTag: "",
