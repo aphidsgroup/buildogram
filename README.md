@@ -1,36 +1,53 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Buildogram
 
-## Getting Started
+Chennai-focused construction ecosystem platform: public marketplace/SEO site, AI-powered lead-gen tools (BOQ checker, cost estimator, floor plan creator, and more), a BOQ calculator, and role-based dashboards for Ops/Admin, Partners, Suppliers, and Clients.
 
-First, run the development server:
+## Stack
+
+- **Framework:** Next.js 16 (App Router, JavaScript, CSS Modules)
+- **Database:** Neon Serverless PostgreSQL via Prisma 6 + raw SQL (`src/lib/db`)
+- **Media:** Cloudinary
+- **Payments:** Razorpay (order create, checkout verify, webhook)
+- **Email:** Resend · **Auth:** JWT + bcrypt · **Deploy:** Vercel
+
+## Getting started
 
 ```bash
+npm install
+cp .env.example .env.local   # fill in values
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`npm run dev` runs `scripts/verify-env.js` first and warns about missing keys.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Key scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Script | Purpose |
+| --- | --- |
+| `npm run dev` / `build` / `start` | Standard Next.js lifecycle (with env verification) |
+| `npm test` | Unit tests (BOQ engine, payment signature verification) |
+| `npm run test:launch` | Launch/SEO smoke test |
+| `npm run test:security` | Security smoke test |
+| `npm run test:performance` | Performance smoke test |
+| `npm run test:leads` | Lead-routing smoke test |
+| `npm run seed:admin` | Seed the admin user |
 
-## Learn More
+## Project layout
 
-To learn more about Next.js, take a look at the following resources:
+- `src/app` — routes: public pages, AI tools, `/ops`, `/partner`, `/client`, `/api/*`
+- `src/lib` — domain logic (`boq-calc`, `payments`, `auth`, `notifications`, `seo`, …)
+- `src/components` — shared UI
+- `prisma/` + `migrations/` — schema and SQL migrations
+- `tests/` — unit tests (Node built-in test runner)
+- `docs/` — launch checklists, runbooks, production readiness
+- `scratch/` — untracked local experiments and legacy one-off scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Security notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `src/middleware.js` protects `/ops`, `/partner`, `/client`, `/project`, `/property-passport` routes; `/api/ops/*` routes enforce `requireAdmin` individually.
+- Never commit `.env*` (except `.env.example`) or `google-credentials.json` — both are gitignored.
+- Razorpay signatures are verified via `src/lib/payments/signature.js` (timing-safe HMAC comparison).
 
-## Deploy on Vercel
+## Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See `docs/BUILDOGRAM_PRODUCTION_READINESS.md` and `DEPLOYMENT_RUNBOOK.md`. Push to `master` → Vercel builds and deploys.

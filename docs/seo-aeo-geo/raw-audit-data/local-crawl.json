@@ -1,0 +1,352 @@
+{
+  "indexableUrls": 46,
+  "brokenLinks": 4,
+  "duplicateTitles": 0,
+  "duplicateH1s": 0,
+  "thinPages": 0,
+  "schemaErrors": 0,
+  "pages": [
+    {
+      "url": "http://localhost:3000",
+      "status": 200,
+      "indexable": true,
+      "title": "Buildogram | Engineer-Led Construction Intelligence â€” Chennai",
+      "h1": "AI-Driven Construction Intelligence,<br/><span class=\"page-module___8aEwW__heroAccent\"> <!-- -->Engineer-Led from Idea to Handover.</span>"
+    },
+    {
+      "url": "http://localhost:3000/home-construction-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Home Construction Support in Chennai | Engineer-Led Building | Buildogram",
+      "h1": "Expert Home Construction Support in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/end-to-end-construction-support-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "End-to-End Construction Support in Chennai | Buildogram",
+      "h1": "End-to-End Construction Support in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/builders-in-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Builders in Chennai | Compare Verified Construction Partners | Buildogram",
+      "h1": "Verified Builders in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/construction-company-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Construction Company in Chennai | Verified Builders &amp; BOQ Review | Buildogram",
+      "h1": "Construction Company in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/villa-construction",
+      "status": 404,
+      "error": "Broken link"
+    },
+    {
+      "url": "http://localhost:3000/turnkey-construction-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "End-to-End Construction in Chennai | Partner-Executed, Buildogram-Coordinated | Buildogram",
+      "h1": "End-to-End Construction in Chennai — Coordinated by Buildogram, Executed by Verified Partners"
+    },
+    {
+      "url": "http://localhost:3000/residential-construction-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Residential Construction in Chennai | G+1 G+2 Houses | Buildogram",
+      "h1": "Residential Construction in Chennai — G+1, G+2 &amp; Villas"
+    },
+    {
+      "url": "http://localhost:3000/commercial-construction-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Commercial Construction in Chennai | Verified Contractors | Buildogram",
+      "h1": "Commercial Construction in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/renovation-contractors-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Renovation Contractors in Chennai | Structural-Safe Home Renovation | Buildogram",
+      "h1": "Structurally Safe Home Renovation in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/boq-review-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "BOQ Review &amp; Audit in Chennai | Contractor Quote Check | Buildogram",
+      "h1": "BOQ Review &amp; Audit in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/contractor-quote-review-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Contractor Quote Review in Chennai | Engineer-Led Quote Analysis | Buildogram",
+      "h1": "Contractor Quote Review in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/construction-cost-estimation-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Construction Cost Estimation in Chennai | Engineer-Led Budget Planning | Buildogram",
+      "h1": "Construction Cost Estimation in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/structural-plan-review-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Structural Plan Review in Chennai | IS Code Compliance | Buildogram",
+      "h1": "Structural Plan Review in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/plan-review",
+      "status": 200,
+      "indexable": true,
+      "title": "Architectural Plan Review in Chennai | Structural Safety Check | Buildogram",
+      "h1": "Get Your Floor Plans Reviewed by Structural Engineers"
+    },
+    {
+      "url": "http://localhost:3000/site-supervision-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Site Supervision Services in Chennai | Engineer-Led Construction Monitoring | Buildogram",
+      "h1": "Engineer-Led Site Supervision in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/construction-project-management-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Construction Project Management in Chennai | Buildogram",
+      "h1": "Construction Project Management in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/steel-construction-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Steel Structure Construction in Chennai | Structural Steel Buildings | Buildogram",
+      "h1": "Steel Structure Construction in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/peb-building-contractors-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "PEB Building Contractors in Chennai | Pre-Engineered Buildings | Buildogram",
+      "h1": "PEB Building Contractors in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/industrial-shed-construction-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Industrial Shed Construction in Chennai | Factory Shed Builders | Buildogram",
+      "h1": "Industrial Shed Construction in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/materials",
+      "status": 200,
+      "indexable": true,
+      "title": "Construction Materials in Chennai | Wholesale Cement, Steel, Sand | Buildogram",
+      "h1": "Source Authentic Construction Materials at Wholesale Rates"
+    },
+    {
+      "url": "http://localhost:3000/materials/cement",
+      "status": 200,
+      "indexable": true,
+      "title": "Cement | Buildogram",
+      "h1": "Engineer-Verified Cement in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/materials/tmt-steel",
+      "status": 200,
+      "indexable": true,
+      "title": "TMT Steel Bars for Construction in Chennai | Fe500D &amp; Fe550D",
+      "h1": "Engineer-Verified TMT Steel in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/materials/msand-psand",
+      "status": 200,
+      "indexable": true,
+      "title": "M-Sand &amp; P-Sand in Chennai | River Sand Alternatives",
+      "h1": "M-Sand &amp; P-Sand in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/materials/bricks-aac-blocks",
+      "status": 200,
+      "indexable": true,
+      "title": "Bricks &amp; AAC Blocks in Chennai | Fly Ash &amp; Red Bricks",
+      "h1": "Bricks &amp; AAC Blocks in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/materials/ready-mix-concrete",
+      "status": 404,
+      "error": "Broken link"
+    },
+    {
+      "url": "http://localhost:3000/materials/waterproofing",
+      "status": 200,
+      "indexable": true,
+      "title": "Waterproofing Materials &amp; Chemicals in Chennai | Roof &amp; Basement",
+      "h1": "Waterproofing Materials &amp; Chemicals in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/materials/electrical",
+      "status": 200,
+      "indexable": true,
+      "title": "Electrical Materials &amp; Wires in Chennai | FRLS Cables",
+      "h1": "Electrical Wires &amp; Materials in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/materials/plumbing",
+      "status": 200,
+      "indexable": true,
+      "title": "Plumbing Materials &amp; Pipes in Chennai | CPVC, UPVC, SWR",
+      "h1": "Plumbing Pipes &amp; Materials in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/materials/fabrication-steel",
+      "status": 200,
+      "indexable": true,
+      "title": "Fabrication Steel in Chennai | PEB &amp; Structural Sections",
+      "h1": "Fabrication &amp; Structural Steel in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/materials/piling-foundation-materials",
+      "status": 200,
+      "indexable": true,
+      "title": "Piling &amp; Foundation Materials Chennai | Casing, Bentonite | Buildogram",
+      "h1": "Piling &amp; Foundation Materials in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/materials/finishing-materials",
+      "status": 200,
+      "indexable": true,
+      "title": "Finishing Materials Chennai | Tiles, Paint, Hardware &amp; Fixtures | Buildogram",
+      "h1": "Finishing Materials in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/material-quotes",
+      "status": 404,
+      "error": "Broken link"
+    },
+    {
+      "url": "http://localhost:3000/structural-audit-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Structural Audit Services in Chennai | NDT &amp; Health Monitoring",
+      "h1": "Certified Structural Audit Services in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/building-structural-audit-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Building Structural Audit in Chennai | Full Structural Assessment | Buildogram",
+      "h1": "Building Structural Audit in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/commercial-structural-audit-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Commercial Building Structural Audit Chennai | Office &amp; Retail Audit | Buildogram",
+      "h1": "Commercial Building Structural Audit in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/apartment-structural-audit-chennai",
+      "status": 404,
+      "error": "Broken link"
+    },
+    {
+      "url": "http://localhost:3000/old-building-structural-audit-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Old Building Structural Audit in Chennai | Renovation Safety Check",
+      "h1": "Old Building Structural Audit in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/building-crack-inspection-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Building Crack Inspection in Chennai | Structural Engineers",
+      "h1": "Building Crack Inspection in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/ndt-testing-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "NDT Testing Services in Chennai | Non-Destructive Concrete Testing | Buildogram",
+      "h1": "Non-Destructive Testing for Buildings in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/rebound-hammer-test-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Rebound Hammer Test in Chennai | NDT Concrete Strength Check",
+      "h1": "Rebound Hammer Test in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/upv-test-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "UPV Test in Chennai | Ultrasonic Pulse Velocity for Concrete",
+      "h1": "Ultrasonic Pulse Velocity (UPV) Test in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/rebar-scanning-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Rebar Scanning in Chennai | Cover Meter Test &amp; Concrete Scanning",
+      "h1": "Rebar Scanning &amp; Cover Meter Testing in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/core-test-concrete-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Concrete Core Testing in Chennai | NABL Accredited NDT",
+      "h1": "Concrete Core Testing Services in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/land-survey-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Land Surveyors in Chennai | DGPS, Total Station &amp; FMB Sketch",
+      "h1": "Precision Land Surveying in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/topographic-survey-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Topographic Survey in Chennai | Precision Plot Measurement",
+      "h1": "Topographic Survey in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/dgps-survey-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "DGPS Survey in Chennai | Satellite-Guided Land Measurement",
+      "h1": "DGPS Survey Services in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/drone-survey-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Drone Survey in Chennai | Aerial Photogrammetry Mapping",
+      "h1": "Drone Survey &amp; Photogrammetry in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/construction-layout-marking-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Construction Layout Marking in Chennai | Total Station Setting Out",
+      "h1": "Construction Layout Marking in Chennai"
+    },
+    {
+      "url": "http://localhost:3000/soil-testing-chennai",
+      "status": 200,
+      "indexable": true,
+      "title": "Soil Testing in Chennai | SBC &amp; Geotechnical Investigation | Buildogram",
+      "h1": "Geotechnical Soil Testing in Chennai"
+    }
+  ]
+}

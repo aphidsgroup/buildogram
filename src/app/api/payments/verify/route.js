@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
-import crypto from 'crypto';
+import { verifyPaymentSignature } from '@/lib/payments/signature';
 import { triggerNotificationEvent } from '@/lib/notifications';
 export async function POST(req) {
   try {
@@ -9,12 +9,12 @@ export async function POST(req) {
     const secret = process.env.RAZORPAY_KEY_SECRET;
     if (!secret) return NextResponse.json({ error: 'Server misconfigured' }, { status: 500 });
 
-    const generatedSignature = crypto
-      .createHmac('sha256', secret)
-      .update(razorpay_order_id + '|' + razorpay_payment_id)
-      .digest('hex');
-
-    if (generatedSignature !== razorpay_signature) {
+    if (!verifyPaymentSignature({
+      orderId: razorpay_order_id,
+      paymentId: razorpay_payment_id,
+      signature: razorpay_signature,
+      secret,
+    })) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
 

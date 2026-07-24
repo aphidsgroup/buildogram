@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
 import sql from '@/lib/db';
+import { verifyWebhookSignature } from '@/lib/payments/signature';
 
 export async function POST(req) {
   try {
@@ -12,8 +12,7 @@ export async function POST(req) {
       return NextResponse.json({ error: 'Webhook misconfigured or missing signature' }, { status: 400 });
     }
 
-    const expectedSignature = crypto.createHmac('sha256', secret).update(rawBody).digest('hex');
-    if (expectedSignature !== signature) {
+    if (!verifyWebhookSignature({ rawBody, signature, secret })) {
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
 

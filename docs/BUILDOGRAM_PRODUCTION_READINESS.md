@@ -12,7 +12,7 @@ This document defines the production hosting guidelines and architecture require
 ## 2. Environment Variables
 Ensure all variables listed in `.env.example` are populated in the production environment.
 - *Critical:* Ensure `DEMO_SEED_CONFIRM` is explicitly missing or set to `false` in production.
-- *Critical:* Ensure `OPENAI_API_KEY` is present, otherwise the Cost Estimator fallback system will trigger.
+- *Critical:* Ensure `AI_PROVIDER`, `AI_API_KEY`, and `AI_MODEL` are set (see `src/lib/ai.js`), otherwise the Cost Estimator fallback system will trigger.
 
 ## 3. Scheduled Jobs (Cron)
 - No external cron services are strictly required for the V1 release. However, if automated daily WhatsApp summaries are enabled in the future, configure a Vercel Cron Job targeting a new `/api/cron/daily-summary` endpoint.

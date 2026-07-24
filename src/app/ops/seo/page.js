@@ -4,7 +4,9 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 export default function SeoDashboard() {
   const [gscData, setGscData] = useState(null);
+  const [gscMeta, setGscMeta] = useState(null);
   const [rankings, setRankings] = useState([]);
+  const [rankingsMeta, setRankingsMeta] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -12,8 +14,14 @@ export default function SeoDashboard() {
       fetch('/api/ops/seo/gsc').then(r => r.json()).catch(() => ({ success: false })),
       fetch('/api/ops/seo/rankings').then(r => r.json()).catch(() => ({ success: false }))
     ]).then(([gscRes, rankRes]) => {
-      if (gscRes.success) setGscData(gscRes.data);
-      if (rankRes.success) setRankings(rankRes.data);
+      if (gscRes.success) {
+        setGscData(gscRes.data);
+        setGscMeta(gscRes.meta);
+      }
+      if (rankRes.success) {
+        setRankings(rankRes.data);
+        setRankingsMeta(rankRes.meta);
+      }
       setLoading(false);
     });
   }, []);
@@ -25,12 +33,23 @@ export default function SeoDashboard() {
       <div className="mb-8 border-b pb-4 border-slate-200 flex justify-between items-end">
         <div>
           <h2 className="text-3xl font-bold text-slate-900">SEO & Organic Rankings OS</h2>
-          <p className="text-slate-500 mt-1">Real-time organic performance from Google Search Console and live SERP trackers.</p>
+          <p className="text-slate-500 mt-1">On-demand Google ranking snapshots and most recently available Search Console data.</p>
         </div>
       </div>
 
-      {gscData && (
+      {gscData && gscMeta && (
         <>
+          <div className="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6 text-sm text-slate-600 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div><span className="font-semibold">Last API Fetch:</span> {new Date(gscMeta.lastFetchTimestamp).toLocaleString()}</div>
+            <div><span className="font-semibold">Newest Data Date:</span> {gscMeta.newestDataDate}</div>
+            <div><span className="font-semibold">Preliminary Data:</span> {gscMeta.isPreliminary ? 'Yes' : 'No'}</div>
+            <div><span className="font-semibold">Property:</span> {gscMeta.propertyQueried}</div>
+            <div><span className="font-semibold">Date Range:</span> {gscMeta.dateRange}</div>
+            <div><span className="font-semibold">Filters:</span> Country: {gscMeta.filters.country} | Device: {gscMeta.filters.device}</div>
+            <div><span className="font-semibold">API State:</span> <span className={gscMeta.apiState === 'success' ? 'text-emerald-600' : 'text-red-600'}>{gscMeta.apiState}</span></div>
+            <div><span className="font-semibold">Cache State:</span> {gscMeta.cachedState}</div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             <div className="bg-white p-6 rounded-xl border border-orange-200 shadow-sm">
               <p className="text-sm font-semibold text-orange-600 uppercase">Total Clicks (30d)</p>
@@ -77,18 +96,28 @@ export default function SeoDashboard() {
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-        {/* Serper Live Rank Tracker */}
+        {/* Serper Snapshot Tracker */}
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="p-6 border-b border-slate-200 flex justify-between items-center bg-slate-50">
-            <h3 className="font-bold text-lg text-slate-800">Live Rank Tracker</h3>
-            <span className="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-bold">Serper.dev Live</span>
+            <h3 className="font-bold text-lg text-slate-800">Rank Tracking Snapshot</h3>
+            <span className="text-xs bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-bold">On-Demand Snapshot</span>
           </div>
+          
+          {rankingsMeta && (
+            <div className="bg-slate-100 px-6 py-3 border-b border-slate-200 text-xs text-slate-600 grid grid-cols-2 md:grid-cols-3 gap-2">
+               <div><span className="font-semibold">Time:</span> {new Date(rankingsMeta.lastFetchTimestamp).toLocaleTimeString()}</div>
+               <div><span className="font-semibold">Loc:</span> {rankingsMeta.location}</div>
+               <div><span className="font-semibold">Dev:</span> {rankingsMeta.device}</div>
+            </div>
+          )}
+
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm text-slate-600">
               <thead className="border-b border-slate-200 bg-white">
                 <tr>
-                  <th className="p-4 font-semibold">Target Keyword (Chennai)</th>
-                  <th className="p-4 font-semibold text-center">Google Position</th>
+                  <th className="p-4 font-semibold">Target Keyword</th>
+                  <th className="p-4 font-semibold text-center">Position</th>
+                  <th className="p-4 font-semibold">Details</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
@@ -101,19 +130,24 @@ export default function SeoDashboard() {
                           <span className={`inline-flex items-center justify-center w-8 h-8 rounded-full font-bold text-white ${rank.position <= 3 ? 'bg-emerald-500' : rank.position <= 10 ? 'bg-orange-500' : 'bg-slate-400'}`}>
                             {rank.position}
                           </span>
-                          <span className="text-[10px] text-slate-400 mt-1 truncate max-w-[150px]" title={rank.url}>
-                            {rank.url ? new URL(rank.url).pathname : ''}
-                          </span>
                         </div>
                       ) : (
-                        <span className="text-slate-400">Not in top 100</span>
+                        <span className="text-slate-400">N/A</span>
                       )}
+                    </td>
+                    <td className="p-4 text-xs">
+                      {rank.url ? (
+                        <div className="truncate max-w-[150px] text-blue-600" title={rank.url}>{new URL(rank.url).pathname}</div>
+                      ) : (
+                         <div className="text-slate-400">Not in top 100</div>
+                      )}
+                      {rank.previousSnapshot && <div className="text-slate-500 mt-1">Prev: {rank.previousSnapshot}</div>}
                     </td>
                   </tr>
                 ))}
                 {rankings.length === 0 && (
                   <tr>
-                    <td colSpan="2" className="p-8 text-center text-slate-500">No ranking data available.</td>
+                    <td colSpan="3" className="p-8 text-center text-slate-500">No ranking data available.</td>
                   </tr>
                 )}
               </tbody>

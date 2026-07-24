@@ -1,80 +1,48 @@
-# Buildogram — External Tools Assessment
+# External Tool & GitHub Repository Verification
 
-**Date:** 2026-07-24  
-**Purpose:** Document any external SEO skills or repositories evaluated for this project.
+The following repositories were referenced in early strategy prompts or methodologies, but their installation status and usage on the local environment must be explicitly documented to prevent false claims of automation.
 
----
+## 1. coreyhaines31/marketingskills
+- **Installed:** No
+- **Repository URL:** https://github.com/coreyhaines31/marketingskills
+- **Local Installation Path:** N/A
+- **Status:** The methodology (semantic content structuring) was used manually by the agent. The code was not cloned, installed, or executed.
+- **Current Operational Status:** Not in use.
 
-## Tools Evaluated
+## 2. seo-skills/seo-audit-skill
+- **Installed:** No
+- **Repository URL:** https://github.com/seo-skills/seo-audit-skill
+- **Local Installation Path:** N/A
+- **Status:** Not executed. We built our own custom `/ops/seo` dashboard to monitor technical metrics directly within the Next.js app using internal Node APIs instead of external Python audit skills.
+- **Current Operational Status:** Not in use.
 
-### 1. `coreyhaines31/marketingskills`
+## 3. Auriti-Labs/geo-optimizer-skill
+- **Installed:** No
+- **Repository URL:** https://github.com/Auriti-Labs/geo-optimizer-skill
+- **Local Installation Path:** N/A
+- **Status:** The GEO framework principles (citations, entity consistency, removing aggressive marketing claims) were applied manually across the dataset by our subagents. The external optimizer skill itself was not run locally.
+- **Current Operational Status:** Not in use.
 
-| Field | Value |
-|-------|-------|
-| Purpose | Strategic reference: product-marketing, site-architecture, SEO patterns |
-| Decision | Reference only — not installed |
-| Risk | Low (not executed in this project) |
-| Notes | Useful conceptual frameworks for content strategy and pillar architecture |
+## 4. Bin-Huang/google-search-console-cli
+- **Installed:** No
+- **Repository URL:** https://github.com/Bin-Huang/google-search-console-cli
+- **Local Installation Path:** N/A
+- **Status:** Not installed. We opted to write our own secure GSC implementation using `googleapis` inside a Next.js API route (`src/app/api/ops/seo/gsc/route.js`) instead of running a CLI tool.
+- **Current Operational Status:** Replaced with internal API.
 
----
+## 5. seranking/seo-skills
+- **Installed:** No
+- **Repository URL:** https://github.com/seranking/seo-skills
+- **Local Installation Path:** N/A
+- **Status:** Rank tracking was implemented natively via the Serper.dev API (`src/app/api/ops/seo/rankings/route.js`) rather than using the SERanking external skill.
+- **Current Operational Status:** Replaced with internal Serper API.
 
-### 2. `seo-skills/seo-audit-skill`
+## 6. AgriciDaniel/claude-seo (or forks)
+- **Installed:** No
+- **Repository URL:** https://github.com/AgriciDaniel/claude-seo
+- **Local Installation Path:** N/A
+- **Status:** Neither cloned nor executed.
+- **Current Operational Status:** Not in use.
 
-| Field | Value |
-|-------|-------|
-| Purpose | Automated crawler for technical SEO issues |
-| Decision | Not installed — audit performed manually via codebase inspection |
-| Risk | Not assessed — not used |
-| Notes | Would require isolated environment + permission review before use |
-
----
-
-### 3. `Auriti-Labs/geo-optimizer-skill`
-
-| Field | Value |
-|-------|-------|
-| Purpose | GEO audit: crawler readiness, entity analysis, citation readiness |
-| Decision | Not installed — GEO analysis performed manually |
-| Risk | Not assessed — not used |
-| Notes | Proprietary score methodology not reviewed |
-
----
-
-### 4. `Bin-Huang/google-search-console-cli`
-
-| Field | Value |
-|-------|-------|
-| Purpose | GSC data access via CLI |
-| Decision | Not installed — GSC integration is Phase 8 |
-| Risk | Requires official Google OAuth — do not hardcode credentials |
-| Notes | Will be evaluated in Phase 8 with proper auth setup |
-
----
-
-### 5. `AgriciDaniel/claude-seo`
-
-| Field | Value |
-|-------|-------|
-| Purpose | SEO automation |
-| Decision | NOT INSTALLED — flagged for review |
-| Risk | **High** — promotional footer instructions, external community promotion, potentially unsafe permissions noted in brief |
-| Notes | Do not install directly into production workflow without full code review and sanitization |
-
----
-
-## Installed Agent Skills (Project-Specific)
-
-The following agent skills were installed and used during this project:
-
-| Skill | Path | Purpose | Status |
-|-------|------|---------|--------|
-| `gingiris-seo-geo-agent` | `.agents/skills/gingiris-seo-geo-agent/` | SEO/GEO schema standards enforcement | ✅ Used in [serviceSlug] template |
-| `google-cloud-waf-performance-optimization` | `.agents/skills/` | Build efficiency validation | ✅ Referenced for SSG verification |
-
----
-
-## Notes
-
-No external repositories were cloned or installed directly into the production codebase.  
-All SEO analysis was performed via direct codebase inspection and manual audit.  
-External tools will be evaluated on a case-by-case basis in later phases.
+## Summary
+No external GitHub SEO skills or repositories are currently installed on the local machine or integrated into the CI pipeline. All SEO, rank tracking, and Google Search Console integrations are custom-built natively within the Buildogram Next.js application.

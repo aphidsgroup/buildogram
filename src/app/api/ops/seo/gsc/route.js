@@ -2,18 +2,17 @@ import { NextResponse } from 'next/server';
 import { google } from 'googleapis';
 
 export async function GET() {
+  const fetchTimestamp = new Date().toISOString();
+  
   try {
-    // 1. Authenticate with Google
     let auth;
     if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
-      // Use raw JSON from env (Vercel)
       const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
       auth = new google.auth.GoogleAuth({
         credentials,
         scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
       });
     } else {
-      // Use file path from GOOGLE_APPLICATION_CREDENTIALS (Local)
       auth = new google.auth.GoogleAuth({
         scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
       });
@@ -24,20 +23,15 @@ export async function GET() {
       auth: auth,
     });
 
-    const siteUrl = process.env.GSC_SITE_URL;
-    if (!siteUrl) {
-      throw new Error('GSC_SITE_URL environment variable is missing');
-    }
+    const siteUrl = process.env.GSC_SITE_URL || 'https://buildogram.in';
 
-    // Get dates for the last 30 days
     const endDate = new Date();
-    endDate.setDate(endDate.getDate() - 3); // GSC data is usually delayed by 2-3 days
+    endDate.setDate(endDate.getDate() - 3); 
     const startDate = new Date();
     startDate.setDate(endDate.getDate() - 30);
 
     const formatDate = (date) => date.toISOString().split('T')[0];
 
-    // Query 1: Data grouped by Date (for the chart)
     const dateQueryRes = await searchconsole.searchanalytics.query({
       siteUrl: siteUrl,
       requestBody: {
@@ -48,7 +42,6 @@ export async function GET() {
       },
     });
 
-    // Query 2: Data grouped by Query (for top keywords table)
     const queryRes = await searchconsole.searchanalytics.query({
       siteUrl: siteUrl,
       requestBody: {
@@ -59,7 +52,6 @@ export async function GET() {
       },
     });
 
-    // Format the response
     const dailyData = (dateQueryRes.data.rows || []).map(row => ({
       date: row.keys[0],
       clicks: row.clicks,
@@ -68,7 +60,6 @@ export async function GET() {
       position: row.position
     }));
 
-    // Sort chronologically
     dailyData.sort((a, b) => new Date(a.date) - new Date(b.date));
 
     const topQueries = (queryRes.data.rows || []).map(row => ({
@@ -79,7 +70,6 @@ export async function GET() {
       position: row.position
     }));
 
-    // Calculate totals
     const totals = dailyData.reduce((acc, curr) => {
       acc.clicks += curr.clicks;
       acc.impressions += curr.impressions;
@@ -95,6 +85,16 @@ export async function GET() {
 
     return NextResponse.json({
       success: true,
+      meta: {
+        lastFetchTimestamp: fetchTimestamp,
+        newestDataDate: formatDate(endDate),
+        isPreliminary: false,
+        propertyQueried: siteUrl,
+        dateRange: `${formatDate(startDate)} to ${formatDate(endDate)}`,
+        filters: { country: 'all', device: 'all' },
+        apiState: 'success',
+        cachedState: 'live'
+      },
       data: {
         daily: dailyData,
         queries: topQueries,
@@ -111,7 +111,11 @@ export async function GET() {
     console.error('GSC API Error:', error);
     return NextResponse.json({ 
       success: false, 
-      error: error.message 
+      meta: {
+        lastFetchTimestamp: fetchTimestamp,
+        apiState: 'failure',
+        error: error.message
+      }
     }, { status: 500 });
   }
 }
