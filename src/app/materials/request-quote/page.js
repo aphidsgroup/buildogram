@@ -109,7 +109,7 @@ export default function RequestQuotePage() {
             <span>🔒</span> 100% Data Privacy
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#475569', fontSize: '14px', fontWeight: 600 }}>
-            <span>✅</span> Screened Suppliers
+            <span>✅</span> Supplier Network
           </div>
         </div>
       </div>

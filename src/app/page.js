@@ -20,7 +20,7 @@ const HOW_IT_WORKS = [
   { step: '01', title: 'Concept & Feasibility', desc: 'Map your plot, budget, soil conditions, approval authority, and construction type before any commitment.' },
   { step: '02', title: 'Design & Structural Review', desc: 'Independent review of architectural and structural drawings — catching under-design, compliance gaps, and value engineering opportunities.' },
   { step: '03', title: 'BOQ & Contractor Audit', desc: 'Line-by-line audit of every contractor quote — rates, quantities, specifications, and hidden exclusions — before you sign.' },
-  { step: '04', title: 'Contractor & Material Match', desc: 'Connect with screened contractors and suppliers with transparent material pricing and MTC compliance.' },
+  { step: '04', title: 'Contractor & Material Match', desc: 'Connect with contractors and suppliers from our partner network, with transparent material pricing and MTC compliance.' },
   { step: '05', title: 'Site Supervision & Quality Checks', desc: 'Engineer-led milestone inspections at every structural stage — concrete grades, rebar, waterproofing — with photographic reports.' },
   { step: '06', title: 'Property Passport Handover', desc: 'All drawings, invoices, material records, warranties, and maintenance guides — compiled into your permanent digital Property Passport.' },
 ];
@@ -355,7 +355,7 @@ export default function Home() {
             <SectionHeader
               eyebrow="Trusted Professionals"
               title="Partner Network."
-              description="Find engineers, contractors, architects, and suppliers screened by our team before joining the network."
+              description="Find engineers, contractors, architects, and suppliers listed in the Buildogram construction partner network."
             />
           </AnimatedSection>
 

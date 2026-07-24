@@ -8,6 +8,7 @@ import { getContextualLinks } from '@/lib/seo/internalLinks';
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }) {
+  params = await params; // Next 16: params is a Promise
   const prisma = new PrismaClient();
   const { slug } = params;
   
@@ -29,6 +30,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ProofDetailPage({ params }) {
+  params = await params; // Next 16: params is a Promise
   const currentPath = `/proof${params.slug}`.replace('//', '/');
   const relatedLinks = getContextualLinks('proof', currentPath);
 

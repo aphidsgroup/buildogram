@@ -3,7 +3,7 @@ import Link from 'next/link';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
-  title: 'Builders in Chennai | Engineer-Screened Construction Partners | Buildogram',
+  title: 'Builders in Chennai | Construction Partner Network | Buildogram',
   description: 'Find RERA-registered, engineer-approved builders in Chennai. Buildogram verifies past projects, structural compliance, and warranty documentation before listing any builder.',
   path: '/partners/builders',
 });
@@ -44,7 +44,7 @@ export default function BuildersPage() {
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Builders in Chennai</h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>
-            Builders in our network are screened by our team against the criteria below before they can appear in the directory.
+            The criteria below describe what we ask builders to provide when joining the Buildogram partner directory.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/join-as-partner" className="btn btn-primary btn-lg">Join as a Builder</Link>
@@ -59,7 +59,7 @@ export default function BuildersPage() {
         <section style={{ marginBottom: '64px' }}>
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
             <div className="tag" style={{ marginBottom: '12px' }}>Our Vetting Process</div>
-            <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', color: 'var(--secondary)' }}>What We Screen Builders For</h2>
+            <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', color: 'var(--secondary)' }}>Listing Criteria for Builders</h2>
             <p style={{ color: 'var(--text-muted)', maxWidth: '580px', margin: '12px auto 0', fontSize: '15px' }}>We check every builder against 4 non-negotiable criteria before they can appear in our directory.</p>
           </div>
           <div className="grid-2" style={{ gap: '20px' }}>
@@ -118,7 +118,7 @@ export default function BuildersPage() {
           <div className="card" style={{ background: 'rgba(252,110,32,0.04)', border: '1px solid rgba(252,110,32,0.15)', textAlign: 'center', padding: '36px' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>🔍</div>
             <h3 style={{ fontSize: '20px', color: 'var(--secondary)', marginBottom: '8px' }}>Find a Builder</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>Tell us your project requirements and we'll match you with 2–3 vetted builders.</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>Tell us your project requirements and we'll match you with 2–3 builders from our partner network.</p>
             <Link href="/contact?type=partner-match" className="btn btn-primary">Find My Builder</Link>
           </div>
           <div className="card" style={{ background: 'var(--secondary)', border: 'none', textAlign: 'center', padding: '36px' }}>

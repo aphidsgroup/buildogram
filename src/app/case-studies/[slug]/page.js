@@ -12,6 +12,7 @@ const prisma = new PrismaClient();
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }) {
+  params = await params; // Next 16: params is a Promise
   let caseStudy = null;
   try {
     caseStudy = await prisma.case_studies.findUnique({
@@ -31,6 +32,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function CaseStudyDetailPage({ params }) {
+  params = await params; // Next 16: params is a Promise
   const currentPath = `/case-studies${params.slug}`.replace('//', '/');
   const relatedLinks = getContextualLinks('case_study', currentPath);
 
