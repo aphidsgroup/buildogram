@@ -1,6 +1,10 @@
 # 00 — Executive Summary: Buildogram Organic Search System
 
-Date: 2026-07-25 · Phase One (diagnosis) complete · Branch: `seo/buildogram-organic-growth-system`
+Date: 2026-07-25 · Phase One (diagnosis) complete · **P0 implemented same day (see below)** · Branch: `seo/buildogram-organic-growth-system`
+
+## P0 STATUS UPDATE (2026-07-25, post-implementation)
+
+All P0 items are implemented on the branch across 6 commits (910d16a…c2d3662): 8 one-hop redirects, zero remaining internal 404 links, sitemap cleaned (404s out, duplicates deduped), wrong domains fixed, encoding repaired (including the corrupted site-wide title tag), all owner-decided claim removals applied (register CL01–CL23), and demo partner data hard-blocked from every public surface. **A ninth-order discovery during implementation: a Next 16 async-`params` bug was 404ing six entire dynamic route families (~85 sitemap URLs — all /services/, /guides/, /glossary/, /faqs/, /compare/ and dynamic /materials/ pages) in production. Fixed.** Validation: 21/21 tests, 0 broken links, all scans clean; production build must be run on the owner's machine (sandbox limitation — see `19-test-and-validation-results.md` §12). Remaining owner actions are listed in `NEEDS-OWNER-VERIFICATION.md` §15–23.
 
 ## Current organic position
 

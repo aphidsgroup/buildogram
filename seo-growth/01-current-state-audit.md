@@ -1,5 +1,7 @@
 # 01 — Current State Audit
 
+> **P0 UPDATE (2026-07-25):** Findings P0-1 through P0-6 below are now FIXED on the branch, plus a larger discovery made during implementation: six data-driven dynamic route families (`/services/[slug]`, `/guides/[slug]`, `/glossary/[term]`, `/faqs/[category]`, `/compare/[slug]`, dynamic `/materials/[slug]`, and `/partners/[slug]`) were 404ing in production because `params` was accessed synchronously (Next 16 requires `await params`) — roughly 85 sitemap URLs affected, all fixed. Additional broken links found and fixed: `/verified-contractors-chennai`, `/build/commercial-construction`, `/build/interiors`, `/build/pmc`, `/services/cost-estimator`. Robots AI-crawl policy ratified by owner (OAI-SearchBot allowed; GPTBot/CCBot blocked as training opt-out). See CHANGELOG and `19-test-and-validation-results.md`.
+
 Date: 2026-07-25 · Auditor: Claude (Cowork session) · Branch: `seo/buildogram-organic-growth-system`
 Method: full repository inspection + live crawls of `https://www.buildogram.in` (robots.txt, homepage, service pages, suspected-404 URLs). GSC/GA4 not yet connected in this environment — all traffic fields in the inventory are pending first-party data.
 
