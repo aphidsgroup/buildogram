@@ -1,0 +1,1157 @@
+{
+  "version": 1,
+  "skills": {
+    "ab-testing": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/ab-testing/SKILL.md",
+      "computedHash": "4ea04d576507f4a683e6203737c33993fb36add719f628b7200649a9cb87b5fe"
+    },
+    "ad-creative": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/ad-creative/SKILL.md",
+      "computedHash": "df7b2b5d85fda0b83d02880b930b6f51292194b708f6e2b67a800a445ca88c13"
+    },
+    "ads": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/ads/SKILL.md",
+      "computedHash": "c48e96ad74d2442d839cf85427b730e14771fd4dc0b547c2451a3ab5a762a4b1"
+    },
+    "agent-platform-alert-configuration": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/agent-platform-alert-configuration/SKILL.md",
+      "computedHash": "1d0b231bf64da6f5f1ef630f6f729e14ff30e5403161185f8d81a2fed514c470"
+    },
+    "agent-platform-deploy": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/agent-platform-deploy/SKILL.md",
+      "computedHash": "068547c63c23beeba3997a4b08459d2a5e39dddb07985cb4efaeaa3dd93ce8c6"
+    },
+    "agent-platform-endpoint-management": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/agent-platform-endpoint-management/SKILL.md",
+      "computedHash": "a29cb2beba930c03eea63433b7c3c47d202013df07552a31d967dcccbcd80b66"
+    },
+    "agent-platform-eval-flywheel": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/agent-platform-eval-flywheel/SKILL.md",
+      "computedHash": "04592407d614d47f640cc807d996e5e13d1978f3920b10d5338b8b0c2f79ebde"
+    },
+    "agent-platform-inference": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/agent-platform-inference/SKILL.md",
+      "computedHash": "c2ce1cb025e194ac8b75b4b3d464b0d2606b8daaef60b3b1ac0a6dbb1490d7f9"
+    },
+    "agent-platform-migrate-from-ai-studio": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/agent-platform-migrate-from-ai-studio/SKILL.md",
+      "computedHash": "ffc6227d79e684f4f8773e1f8cf8482e3117c904d476bd5ac0382d9a06035a6e"
+    },
+    "agent-platform-model-registry": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/agent-platform-model-registry/SKILL.md",
+      "computedHash": "30cc45f23d196215417f7017e6e9a912944135ef834138c46791f58290d9a182"
+    },
+    "agent-platform-prompt-management": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/agent-platform-prompt-management/SKILL.md",
+      "computedHash": "a4c30870225d3660c37c06f8b0394ac0ccb00e6b0e79733fd07f85ee4b0557ae"
+    },
+    "agent-platform-rag-engine-management": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/agent-platform-rag-engine-management/SKILL.md",
+      "computedHash": "2b71616d4f7a78a3ee0d7c0d86366f4a6fc71bca20af13dc95818602b2c14274"
+    },
+    "agent-platform-skill-registry": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/agent-platform-skill-registry/SKILL.md",
+      "computedHash": "1a2dbbad0a242389364ec2a397346f1244bb39fbd6eb8eff8151c4f9cbc82a19"
+    },
+    "agent-platform-tuning": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/agent-platform-tuning/SKILL.md",
+      "computedHash": "6604cf892722314d034bfe0dfad8e18c8098740d3f886416002ae9630ebf7f3a"
+    },
+    "agent-platform-tuning-management": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/agent-platform-tuning-management/SKILL.md",
+      "computedHash": "abdccd12d69eb52414a9be1a9d8abc62efedd86876e49fc65056e30c93d92227"
+    },
+    "agent-workflow-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/agent-workflow-playbook/SKILL.md",
+      "computedHash": "c96a3c94319bfcb31104d753faf03b51be9282e5a772faea90ca82cc62652856"
+    },
+    "ai-launch-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/ai-launch-playbook/SKILL.md",
+      "computedHash": "ff1376199eb111cb872c0a76f1370ab9906151c26d619c10eb4d8c636c560d86"
+    },
+    "ai-product-launch": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/ai-product-launch/SKILL.md",
+      "computedHash": "3f86c7f40c2dea3a9842467a2c32c8e5548c68ac3dc3cbb01954c858d033e55a"
+    },
+    "ai-seo": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/ai-seo/SKILL.md",
+      "computedHash": "9e9ea19c98f59261b7ee45c81edbce64b4011b597e1b67b37b6679e13e864448"
+    },
+    "alloydb-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/alloydb-basics/SKILL.md",
+      "computedHash": "ed66bd25a682b8680c158f6b56f1674fe007d0f0e7305bba48133a686e641a07"
+    },
+    "analytics": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/analytics/SKILL.md",
+      "computedHash": "0746ff2fcdd0e74db43934487c0003265d7fe46dd232b3e17dbc3bcaf7aab850"
+    },
+    "aso": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/aso/SKILL.md",
+      "computedHash": "4d62e3140773159b279b00810c8f46048333d91dfb6114cc0d3667ed1a7ed5f9"
+    },
+    "aso-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/aso-playbook/SKILL.md",
+      "computedHash": "43c72e94153f56484fc6e2c36d4d2a8a0c38797c53468c1c5d873bd46943a8a0"
+    },
+    "b2b-marketing-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/b2b-marketing-playbook/SKILL.md",
+      "computedHash": "0d38e3994e56b08091d575cffc24fbf2872c6257ed673692472bfff169f280f2"
+    },
+    "bigquery-ai-ml": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/bigquery-ai-ml/SKILL.md",
+      "computedHash": "f2526cd7850f1d5280e7c03f1a0eb79dab7f70ebb9af93c8ad62fb6902af62d1"
+    },
+    "bigquery-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/bigquery-basics/SKILL.md",
+      "computedHash": "176742174399f90772abd88988dbbf7a7844ba5e288a2631b718293280d91f12"
+    },
+    "bigquery-bigframes": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/bigquery-bigframes/SKILL.md",
+      "computedHash": "89f18032da2ab3ac4da76b68d869979e1b7e0060267af505a365eac62df1e975"
+    },
+    "bigtable-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/bigtable-basics/SKILL.md",
+      "computedHash": "f7450f8453daabf1490d96204d97844f3a376c77a56c4512b1bb3441cc24e7de"
+    },
+    "churn-prevention": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/churn-prevention/SKILL.md",
+      "computedHash": "3a087f28bb3ae7864a5b832a6966c31246ddc00ec910e4332f7cf02c628c236d"
+    },
+    "cloud-logging-query-generation": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/cloud-logging-query-generation/SKILL.md",
+      "computedHash": "ca65f85f22e203bd4af90303aaa79a10dcae0f00becc8b2afe0fa7024da2dd37"
+    },
+    "cloud-monitoring-metric-selection": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/cloud-monitoring-metric-selection/SKILL.md",
+      "computedHash": "80381c3f55b39a250ddb4acb28f1063a9034917bb155518818c14d81b1101d09"
+    },
+    "cloud-run-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/cloud-run-basics/SKILL.md",
+      "computedHash": "4a17df0968878e379a9f96c69d497877b9f5ac582e0271597df7c20c05d3fa85"
+    },
+    "cloud-sql-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/cloud-sql-basics/SKILL.md",
+      "computedHash": "7762b85133e732378119a3c6a57f5b71e22b1d5afcf4f4dcfada66c7ab7b2a9e"
+    },
+    "co-marketing": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/co-marketing/SKILL.md",
+      "computedHash": "4551fc47821100ee18eb39165ab0b3b9c41ff756eff7f5c67ce82368b26fa9e6"
+    },
+    "cold-email": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/cold-email/SKILL.md",
+      "computedHash": "a92d0fc0d4740d751716d0fa123851deecc12d56d6f30515ffc051f312362503"
+    },
+    "community-ambassador-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/community-ambassador-playbook/SKILL.md",
+      "computedHash": "58ce323f9d42bcadb122cc84c5e7a1fc9fdafb6c1aef84481226ef24d8a11a3d"
+    },
+    "community-building-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/community-building-playbook/SKILL.md",
+      "computedHash": "2730f74e4d250fa9f7d89291be0eaf2077dcfc336caa6ba4a0e7a40322d45dc2"
+    },
+    "community-marketing": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/community-marketing/SKILL.md",
+      "computedHash": "497b172d05ce2b8de9297bbee02b71bb78e219c2a698f999f3ea23cffc284a14"
+    },
+    "competitor-profiling": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/competitor-profiling/SKILL.md",
+      "computedHash": "0e30672d0729bf38b6977ef95210b9912a20ba66ee8a9faade4be7483fbb5472"
+    },
+    "competitor-research-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/competitor-research-playbook/SKILL.md",
+      "computedHash": "263942a9fc894ebd51a374a5d2bbff19e3a0aceb1dd6b5b27f723ba45331ab64"
+    },
+    "competitors": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/competitors/SKILL.md",
+      "computedHash": "28d933d676811df76d1c59ccbb99d8768b107ac9f17a721a67dd5a239847984e"
+    },
+    "content-strategy": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/content-strategy/SKILL.md",
+      "computedHash": "1b337a892b4aaa0665a6af0d6ffcdc77fd728c3c34e25b6e3ff474105d4c0b69"
+    },
+    "copy-editing": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/copy-editing/SKILL.md",
+      "computedHash": "b70d360d6d7e49adf84d595c62103583787008e16acb7b4b4b9c449dbbb768d9"
+    },
+    "copywriting": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/copywriting/SKILL.md",
+      "computedHash": "cb9761b92e140cd68c1de6397c51dd9952da198382abfdbf26589ef26f6572b4"
+    },
+    "cro": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/cro/SKILL.md",
+      "computedHash": "de0b62824a4e18aad09536611e6ce94ffc5a655b354776fd69ba9b8876a26e6b"
+    },
+    "customer-research": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/customer-research/SKILL.md",
+      "computedHash": "fe1206af3520f39f23cd44c727e3981f92d5e965b4370f9543ca502c5e52523b"
+    },
+    "data-manager-api-audience-ingestion": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ads/data-manager-api-audience-ingestion/SKILL.md",
+      "computedHash": "606b6ec5a15d0e4c944954d5834e3e93d1e52c140f30fc101dbe2b4166620a05"
+    },
+    "data-manager-api-event-ingestion": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ads/data-manager-api-event-ingestion/SKILL.md",
+      "computedHash": "da7389626c89496676223bab608f40f5a6da58e7b54e3ba93bf77e031754736b"
+    },
+    "data-manager-api-setup": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ads/data-manager-api-setup/SKILL.md",
+      "computedHash": "4fad884efe0d34cc278dda3f429dfffac7ae47e02255cb31c6c6d971e2faf072"
+    },
+    "datalineage-bigquery-asset-impact-analysis": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/datalineage-bigquery-asset-impact-analysis/SKILL.md",
+      "computedHash": "52004bcf7a6c95532ac1cd4f0e4e2b8400ff412aaf69aba5237f9f0164ff2308"
+    },
+    "datalineage-summary": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/datalineage-summary/SKILL.md",
+      "computedHash": "00e18e95777223b3741e027e163cc01d6f2806ea14ecbc9812c8aaea7806885c"
+    },
+    "detection-engineering-coverage-evaluation": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/detection-engineering-coverage-evaluation/SKILL.md",
+      "computedHash": "54b8ef19b1f388285189f07d754a905b26768d919801c68fda659d01a7445f02"
+    },
+    "developer-marketing-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/developer-marketing-playbook/SKILL.md",
+      "computedHash": "2c03aaa339953536a95fa0fa6e93fe5c75722cceb0c6e283f0aa3b108ecb157b"
+    },
+    "devrel-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/devrel-playbook/SKILL.md",
+      "computedHash": "7f783095d1c1f161c233047f291363c45673a1ed6f260757d8fd9f84ef07d3a3"
+    },
+    "directory-submissions": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/directory-submissions/SKILL.md",
+      "computedHash": "c35a0f39c1fb25a56241cb9f59d0eae9bad33d1c3e55c76ec51ebea9e79a788a"
+    },
+    "emails": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/emails/SKILL.md",
+      "computedHash": "24be312d773945dda1d21b52fa172a523e9cb005cb3b700fe81f787980d5381c"
+    },
+    "firebase-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/firebase-basics/SKILL.md",
+      "computedHash": "d1405737206acd07c7b3f131b05a2d9d5082928c276c0d47c97a93758e3dd5dd"
+    },
+    "free-tools": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/free-tools/SKILL.md",
+      "computedHash": "0266eedaea37e19e4c9e2f1cc7ef6cdc8c7ee0726c6f2b5837a061c6ac7f9376"
+    },
+    "gcloud": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gcloud/SKILL.md",
+      "computedHash": "d57bf553d06ffec6ae0cb178c5b19c7a66d7de2f93ed2ca20840121d110428d3"
+    },
+    "gemini-agents-api": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gemini-agents-api/SKILL.md",
+      "computedHash": "1e04a3c8e6180b8defb4d57f8ba00c319059683d59add19f94cb0896baeed31c"
+    },
+    "gemini-api": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gemini-api/SKILL.md",
+      "computedHash": "cd379cd57639ff5dab90574e4a89e62182f55cf764592b1d37ec70e1585d6920"
+    },
+    "gemini-interactions-api": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gemini-interactions-api/SKILL.md",
+      "computedHash": "9126883162daad697d628d328a70f073c0261d5d824ea3963697164dba42a80a"
+    },
+    "gemini-live-api": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gemini-live-api/SKILL.md",
+      "computedHash": "3f3c3086efba5b0477315fc5d0b47f494ad82a592f678c5bec6cb7fda2126fb5"
+    },
+    "gingiris-aso-growth": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gingiris-aso-growth/SKILL.md",
+      "computedHash": "24ed6fb766c0d2816f6d8d3df4973bf88bb23dd3935237477f78dfddb31b956b"
+    },
+    "gingiris-b2b-growth": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gingiris-b2b-growth/SKILL.md",
+      "computedHash": "5ace8457207da98218a022312309b9f8fe29c2e40e9b31ea2432c1d646b69b69"
+    },
+    "gingiris-github-star-growth": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gingiris-github-star-growth/SKILL.md",
+      "computedHash": "35c31ce29423556c3f6e2b7e42aaced1b02fef8bbb51319e5effc050f567214f"
+    },
+    "gingiris-go-global": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gingiris-go-global/SKILL.md",
+      "computedHash": "51ace5a31ebf422940e744adb75170da5043aa391de7984532df0b824896ad3a"
+    },
+    "gingiris-growth-finder": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gingiris-growth-finder/SKILL.md",
+      "computedHash": "b78d5b7c802a0ea239614ca07a82072538616e5b42a4e28cb8308a1d626a7f63"
+    },
+    "gingiris-kol-outreach": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gingiris-kol-outreach/SKILL.md",
+      "computedHash": "dfd52b34cbbe71a52b8e4bbff1d595f4184a4c19913a16d96ca20418b9b26c85"
+    },
+    "gingiris-launch": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gingiris-launch/SKILL.md",
+      "computedHash": "c1ea88a55252951c44b85f83fe98d61f5a05aa4540c3cd8a198963bf9fad57cf"
+    },
+    "gingiris-opensource": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gingiris-opensource/SKILL.md",
+      "computedHash": "6f36f911139f28c372bc73391c429d30e93e5692bcb1c0396b565b1022507842"
+    },
+    "gingiris-seo-geo": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gingiris-seo-geo/SKILL.md",
+      "computedHash": "541b7537ee5ce0607e4221eed73fb70bec7941a3371a38d0cccf13f65a616152"
+    },
+    "gingiris-seo-geo-agent": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gingiris-seo-geo-agent/SKILL.md",
+      "computedHash": "491ae8d16e0aa91a689c6edc2931c6b518d195ce7db8cf0351d2eed775883d43"
+    },
+    "gingiris-twitter-agent-ops": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gingiris-twitter-agent-ops/SKILL.md",
+      "computedHash": "ebbc779a52175044fb7bc9c1c65d92afd6be1716909d2604c278ff1fc37c5b9c"
+    },
+    "gingiris-ugc-matrix": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gingiris-ugc-matrix/SKILL.md",
+      "computedHash": "e0c0b17a7d1d89c754554e00dc0e521f5874b23fdcdbcd5f5ece8c56110262f3"
+    },
+    "gingiris-user-interview": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gingiris-user-interview/SKILL.md",
+      "computedHash": "dbbaddd1a7d3081b15e355114eb4f14d4eb4ecd61e4c2ad430ecdd290dcdfc61"
+    },
+    "github-stars-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/github-stars-playbook/SKILL.md",
+      "computedHash": "839002f4b94bcb760d94d5d72dd9b03832fb9879bd34ae209dbc735a342f1e4b"
+    },
+    "gke-app-onboarding": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-app-onboarding/SKILL.md",
+      "computedHash": "050298d3b2d37d051eb029f5e0e41d29c486bbd9e91c9fac2c4107ee90f89b71"
+    },
+    "gke-backup-dr": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-backup-dr/SKILL.md",
+      "computedHash": "8e74d845287fb873ee73c7301f48f6ba003f0b72dbf19733edfa83bb13bc2211"
+    },
+    "gke-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-basics/SKILL.md",
+      "computedHash": "0ffd52306f40192c5cfdbf34713ca078aa1e98cd1cab2b0dccd61e6ae88b30e5"
+    },
+    "gke-batch-hpc": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-batch-hpc/SKILL.md",
+      "computedHash": "e6b9b71b7ef44d798a6457577a9074c48b13fd9f5ac43de97bf6e41a78c907f7"
+    },
+    "gke-cluster-autoscaler": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-cluster-autoscaler/SKILL.md",
+      "computedHash": "7759c4745973871696a8922e8c233d5b8069605cba7c5d2f0ace7623096b659c"
+    },
+    "gke-cluster-creation": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-cluster-creation/SKILL.md",
+      "computedHash": "b5eabb259793ad22a06da63f97a5d27feda742bb4ca94fe6fab93f866d04379b"
+    },
+    "gke-compute-classes": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-compute-classes/SKILL.md",
+      "computedHash": "23d47b038a8de7bc30fc532e23c7f2ee5df6ab0e7a33b88c52dd7ff11788b953"
+    },
+    "gke-cost-analysis": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-cost-analysis/SKILL.md",
+      "computedHash": "c5cab8caff2a569dfaa58e1f9beae0bdd097258bbe16d7934ebe5924695aae45"
+    },
+    "gke-cost-optimization": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-cost-optimization/SKILL.md",
+      "computedHash": "455c1bb11a63832ec4c5335abbd0aa2857721590d4dbf6f892edb2fdb202a5b7"
+    },
+    "gke-golden-path": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-golden-path/SKILL.md",
+      "computedHash": "4e657e2346007c750cd8e4933ba57b6bb00f1de4656ecd856c4814e9562a2f96"
+    },
+    "gke-inference": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-inference/SKILL.md",
+      "computedHash": "a1085d248118c4082213cc9d1cb27a11d75e5eab1f1497481517554e9c403623"
+    },
+    "gke-multitenancy": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-multitenancy/SKILL.md",
+      "computedHash": "ccdbbce389dbf6888957d991bb44444b53b6915e334591c9a227aefc97390b0f"
+    },
+    "gke-networking": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-networking/SKILL.md",
+      "computedHash": "c1fca0f9731402c91f808b7d9653b7f1651f9858216e39843e1589bfa33fa5d4"
+    },
+    "gke-observability": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-observability/SKILL.md",
+      "computedHash": "f4b3fdb16ed8f5b12382cbd74982e939e8c9f9f4c5436b77760419b0b1d28598"
+    },
+    "gke-reliability": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-reliability/SKILL.md",
+      "computedHash": "ef7e34db4deb62beeb5964a679bd32d2dd7750342994b55aa6eb8ad3aa5ad324"
+    },
+    "gke-security": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-security/SKILL.md",
+      "computedHash": "7e624116df04a2341274952eeebfdd19409a126bb7a2c0c9d1cd84e0260cfbef"
+    },
+    "gke-storage": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-storage/SKILL.md",
+      "computedHash": "5c8c78ab8e4e8e74bc667e40b20ae611433230e9ef780fbf22b786eb70d6d463"
+    },
+    "gke-upgrades": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-upgrades/SKILL.md",
+      "computedHash": "f999c15141bde71a5cb11177fc1f26bc39f9b0406e692b1cca9f5fd4642515e8"
+    },
+    "gke-workload-scaling": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/gke-workload-scaling/SKILL.md",
+      "computedHash": "55e54477a13d5286ee2f4856e1762aac42d399085368b8f7a1703e59cc7aca3b"
+    },
+    "go-to-market-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/go-to-market-playbook/SKILL.md",
+      "computedHash": "7ade48ffa6408ed9f8865105f7be866437497aa88867063741c0c272a6dee772"
+    },
+    "google-ads-api-mcp-setup": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ads/google-ads-api-mcp-setup/SKILL.md",
+      "computedHash": "08598916fbd79a61f85740395f192f0f2ea7f76a7d7d2636b95e0e618699770d"
+    },
+    "google-ads-api-quickstart": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ads/google-ads-api-quickstart/SKILL.md",
+      "computedHash": "6d90f564ad3b85bf083ade10f3cc8ff14982f5b54d80a5817b024fc8069170e2"
+    },
+    "google-agents-cli-onboarding": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-agents-cli-onboarding/SKILL.md",
+      "computedHash": "b9293a26eebaba098faf404ae76d5983ce2df6d265e9dea9a505a1a27f9e7e3d"
+    },
+    "google-analytics-admin-api-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/analytics/google-analytics-admin-api-basics/SKILL.md",
+      "computedHash": "62a221484a01061d2ebd73e96de37794f6ee13e9c487f896d27bffa48643e525"
+    },
+    "google-analytics-data-api-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/analytics/google-analytics-data-api-basics/SKILL.md",
+      "computedHash": "b1d2aa7e69f468a2f520c81a166c2913eb31f01f969656e4b40da7d40ea5a295"
+    },
+    "google-cloud-global-frontend-configuration": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-global-frontend-configuration/SKILL.md",
+      "computedHash": "3a10be711b9dafede2b731a94f34c627e17da9f34fad49ba36f2dccf1a5624fa"
+    },
+    "google-cloud-networking-observability": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-networking-observability/SKILL.md",
+      "computedHash": "4d3a7f876c9f520bc6bbc2ba97bd531b7b4adb67d6f31ac02c535664f24b409d"
+    },
+    "google-cloud-recipe-auth": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-recipe-auth/SKILL.md",
+      "computedHash": "a192d5c03174dfb92feb74b2ae5fb3c65597f10a852556de447470a917c6aa1b"
+    },
+    "google-cloud-recipe-foundation-builder": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-recipe-foundation-builder/SKILL.md",
+      "computedHash": "0ebc7815cd6d7fdedad87e0e8947210f1bc7f0fcba1ae38e714c5e9785f36d33"
+    },
+    "google-cloud-recipe-onboarding": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-recipe-onboarding/SKILL.md",
+      "computedHash": "e2695f1e724aed74584a756ff087a175475365b5d75ac80a949778cb07786195"
+    },
+    "google-cloud-solution-agentic-ai-bidirectional-streaming": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-solution-agentic-ai-bidirectional-streaming/SKILL.md",
+      "computedHash": "b3752b32ac5e0cdfc3fa4b87fac2ad95eb8bb31e61049d4ed55f955e155ef47b"
+    },
+    "google-cloud-solution-agentic-ai-borderless-data-lakehouse": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-solution-agentic-ai-borderless-data-lakehouse/SKILL.md",
+      "computedHash": "3eea28b36a02147bd860daae3e472cff2262b74865c6f36188f3edb8a61c7824"
+    },
+    "google-cloud-solution-agentic-ai-data-science-workflow": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-solution-agentic-ai-data-science-workflow/SKILL.md",
+      "computedHash": "fb9a8dd491e03757fb34ababd4c5fc580c31df8a348887681628c2be4f9bca11"
+    },
+    "google-cloud-solution-agentic-analytics-spark-knowledge-catalog": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-solution-agentic-analytics-spark-knowledge-catalog/SKILL.md",
+      "computedHash": "0b51e7c19bc61e3ad67282cba43564f6446c3e94d514036b38b5739d5a99eca7"
+    },
+    "google-cloud-solution-architecture": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-solution-architecture/SKILL.md",
+      "computedHash": "38fb26eca1081a9e5c93024f2e03f0828dbe95b68e92131e3046077e0ba08220"
+    },
+    "google-cloud-solution-build-deploy-agents": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-solution-build-deploy-agents/SKILL.md",
+      "computedHash": "599f49202347b45faf46f4edc9efdc3c6c2e1a0e2b839f2a9fe4c9adc7ae1df2"
+    },
+    "google-cloud-solution-n-tier-serverless-web-app": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-solution-n-tier-serverless-web-app/SKILL.md",
+      "computedHash": "50ec2ff092ad846656f3c3b67bc3cfca9666ca0fb7e9f5ca143e81aebbf525c0"
+    },
+    "google-cloud-solution-rag-enterprise-search-gke-sqldb": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-solution-rag-enterprise-search-gke-sqldb/SKILL.md",
+      "computedHash": "f4a8580f3a532b30471ee9570f5592a4d742fb5d3af5847fbc9493a12f0cb4c9"
+    },
+    "google-cloud-storage-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-storage-basics/SKILL.md",
+      "computedHash": "9a247ea17e4a6d0974c3790ee90bce01c08d7f8836cba04163630d391ffe1952"
+    },
+    "google-cloud-waf-cost-optimization": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-waf-cost-optimization/SKILL.md",
+      "computedHash": "1f852cd6f80be36fe01d43033708e059f079fdd1b73b4c3a0082ccea46b5a541"
+    },
+    "google-cloud-waf-operational-excellence": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-waf-operational-excellence/SKILL.md",
+      "computedHash": "f23258bfe1d6d70f5653bbea44ef9db1d8a184bbf140b39f077d91989dc6a2c1"
+    },
+    "google-cloud-waf-performance-optimization": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-waf-performance-optimization/SKILL.md",
+      "computedHash": "5a88895251bc5966d7a843c53274fbc8b786da1c8be96aebb70277e586007d44"
+    },
+    "google-cloud-waf-reliability": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-waf-reliability/SKILL.md",
+      "computedHash": "10bfc01d12912f7bcb27317c36e069c870778867129bef3d2282b045e7fd6aec"
+    },
+    "google-cloud-waf-security": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-waf-security/SKILL.md",
+      "computedHash": "911604b76ff9fcda079e5b6e68089958a528b26d1afb607d15db267dd6579259"
+    },
+    "google-cloud-waf-sustainability": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/google-cloud-waf-sustainability/SKILL.md",
+      "computedHash": "16ec00e000b82545b0b83640dc34a49392ea7193abe4486fbfbbb62ee670bbe3"
+    },
+    "google-mobile-ads-android-migrate-to-next-gen": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ads/google-mobile-ads-android-migrate-to-next-gen/SKILL.md",
+      "computedHash": "be6663269f5d74ebf1618e4cb534196626925e9ae771561de210512554f5aa40"
+    },
+    "google-mobile-ads-banner": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ads/google-mobile-ads-banner/SKILL.md",
+      "computedHash": "25d44a486bcaa4d2807ece9251c4c06ae10387601cdc5b3a47b4eb98c48d2bbc"
+    },
+    "google-mobile-ads-get-started": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ads/google-mobile-ads-get-started/SKILL.md",
+      "computedHash": "0d94dd79b54a60c2e478adfd846566f3cad0f9ce2f2c20fdc1b6b00a240a6e91"
+    },
+    "google-mobile-ads-interstitial": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ads/google-mobile-ads-interstitial/SKILL.md",
+      "computedHash": "e1698b148cd431d77035515389047c2acafff99209310473add0d6bf1f8bc455"
+    },
+    "google-mobile-ads-rewarded": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ads/google-mobile-ads-rewarded/SKILL.md",
+      "computedHash": "4f27b356703e15f9857e956ad012093143c414ff72a3767f23147d6c77a8c200"
+    },
+    "google-search-console-cli": {
+      "source": "Bin-Huang/google-search-console-cli",
+      "sourceType": "github",
+      "skillPath": "skills/google-search-console-cli/SKILL.md",
+      "computedHash": "783f821d5676f6071f578fb2871161f6eaa0c0fb34e145761eb26c0ae21ba163"
+    },
+    "gr": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr/SKILL.md",
+      "computedHash": "580c8b7fd5dfae085775303aef23e9f6b8782bc8ad5f98d29c0dec8071474870"
+    },
+    "gr-aso": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-aso/SKILL.md",
+      "computedHash": "bf6045272e568035e45e65294ea0e669e2a6da4d50f3d020249046cca0050f63"
+    },
+    "gr-b2b-growth": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-b2b-growth/SKILL.md",
+      "computedHash": "f79e830952113a1dfa6d2cf87c37ac3b558a35e0773ea2c994b0edf66ae8c704"
+    },
+    "gr-backlinks": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-backlinks/SKILL.md",
+      "computedHash": "85230623e56821e70b9c258a4444aa385bd54863f9d0a2602624feb78936c3be"
+    },
+    "gr-blog-post": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-blog-post/SKILL.md",
+      "computedHash": "8c09ff61b4f1ca7d139a0203ae61f08e1c582ae71775fec25224881cf77a8396"
+    },
+    "gr-community-ambassador": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-community-ambassador/SKILL.md",
+      "computedHash": "03362a384d966dac19b6b4888fd4e2cad05db44f76b7e3479b72eb9f78c11420"
+    },
+    "gr-competitor": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-competitor/SKILL.md",
+      "computedHash": "274cc92a5b59d326bde3daea7325c68effdbf034fbf03825f915a51c39cfbe98"
+    },
+    "gr-competitor-research": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-competitor-research/SKILL.md",
+      "computedHash": "1652cf418d35f27eef3ecaf38bcefb8deae582d92ac31dcfd2e13110d4222fc8"
+    },
+    "gr-core": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-core/SKILL.md",
+      "computedHash": "69d1e89818a572090f42639aa746325bedab378df885c0df3e6a7b57c766d49b"
+    },
+    "gr-geo-cite": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-geo-cite/SKILL.md",
+      "computedHash": "d1391f574a5081928d174fbf12bb11cfd06023a4b91d403adfa2f9195bfe3730"
+    },
+    "gr-oss-marketing": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-oss-marketing/SKILL.md",
+      "computedHash": "07c7e5a65a5ac0c300056e3c6fbfabd845de10fdb8fc5d8b3653e0d2bf063b2f"
+    },
+    "gr-ph-launch": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-ph-launch/SKILL.md",
+      "computedHash": "9c60d0e8196e46d66681c83fbb3cf5a00f5a2af0330ab64ae8fe374236fc78cb"
+    },
+    "gr-product-dev-ops": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-product-dev-ops/SKILL.md",
+      "computedHash": "7d909840584c68a1c172a7f7d18c5e843925b77d54d4a9e8435281ac94e96f50"
+    },
+    "gr-readme": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-readme/SKILL.md",
+      "computedHash": "cf7025153fee7dd39f1d15d9bc7a37ecdcee606780efeff4e3f8a8ca03403796"
+    },
+    "gr-seo-geo-agent": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-seo-geo-agent/SKILL.md",
+      "computedHash": "c1c74a854bdbb661fdde671275fe2b7df71062f2bd03ca2dfdab318e273f4f1b"
+    },
+    "gr-seo-patrol": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-seo-patrol/SKILL.md",
+      "computedHash": "f580275f7e1dd97610b7c7434f6efb240fe86fd7046367be72652ee4ed9782df"
+    },
+    "gr-social-distill": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-social-distill/SKILL.md",
+      "computedHash": "725df03972c37507219b1bbdf6d335a06039b19a7436ea53f46e57ee7155eef1"
+    },
+    "gr-user-interview": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gr-user-interview/SKILL.md",
+      "computedHash": "2071cbe2e25f7fd4cf7faa48a3c0ff7679b4f7e68a3a220f8a737dcd400bf1d5"
+    },
+    "growth-hacking-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/growth-hacking-playbook/SKILL.md",
+      "computedHash": "e6a22a522d49c15a5e4577ab94b1a64fe1279e22b07dafc14f93fbc40328d304"
+    },
+    "hardware-saas-gtm": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/hardware-saas-gtm/SKILL.md",
+      "computedHash": "379346304198e59422b2f381a1cc0c78d1e331700df407fe44dddc4426361be9"
+    },
+    "ima-sdk-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/ads/ima-sdk-basics/SKILL.md",
+      "computedHash": "01b6fc4e10c1775afe0b7311f144cee2355a8109af591c6463f5af7635abbe35"
+    },
+    "image": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/image/SKILL.md",
+      "computedHash": "179c3e3a8b786b90361ee135279cc8d42e4082e3f545cd7b484a00db27be1dca"
+    },
+    "influencer-marketing": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/influencer-marketing/SKILL.md",
+      "computedHash": "6f8db618f6732d7b7ff151f43ae77fd0b1e5eff257606ca8e0245579cd4fba24"
+    },
+    "kol-outreach": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/kol-outreach/SKILL.md",
+      "computedHash": "a1abb1c3a8bf804e20a82f5fb734b0a823626a92041f77987a555515b5797cb5"
+    },
+    "launch": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/launch/SKILL.md",
+      "computedHash": "7473cc83093b5657ff22a61dec591a72e16c9f6ba2d6b2b44f40fdd7f1282ba0"
+    },
+    "lead-magnets": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/lead-magnets/SKILL.md",
+      "computedHash": "6a36a8582d2a179826712d9c05d1210ffc46ca42a3c8eaa8fd5862a526430bab"
+    },
+    "marketing-council": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/marketing-council/SKILL.md",
+      "computedHash": "b98fba2987dedb894f2b7e04ba3d668d630ae7534ddcb5f78f198a9c79d64f81"
+    },
+    "marketing-ideas": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/marketing-ideas/SKILL.md",
+      "computedHash": "2548b6a76f7ac7a4968ed16d9ac7bb139a5c9f97f6710265c856d5fb84b893f1"
+    },
+    "marketing-loops": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/marketing-loops/SKILL.md",
+      "computedHash": "8347671a89b2741c4521be12a289973338ccb8d9e6c3f0b1d97c08f1f9a89b6d"
+    },
+    "marketing-plan": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/marketing-plan/SKILL.md",
+      "computedHash": "c1541262368129976b3bd8f3706587d717f6f9db5e532af54c5d5c119f85d8c7"
+    },
+    "marketing-psychology": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/marketing-psychology/SKILL.md",
+      "computedHash": "d057044710ce7b7f9b90b84b3ab64e9359aaf47982b922ec10daca3822185ede"
+    },
+    "offers": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/offers/SKILL.md",
+      "computedHash": "c2f81befcac9951da1bb715f7139123902a2108c4bd4e8584bd68d78fce8a111"
+    },
+    "onboarding": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/onboarding/SKILL.md",
+      "computedHash": "38ae7da6cadf48792ac882198934ef4be52a47fb1efcf756a3d39f96fd382f09"
+    },
+    "open-source-marketing-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/open-source-marketing-playbook/SKILL.md",
+      "computedHash": "afec0367de647181633b570309257de100b600f033c958cd0da6baace2a55090"
+    },
+    "paywalls": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/paywalls/SKILL.md",
+      "computedHash": "2f85b43846a4e88633e504fcae9165d0c104fd7ca7ae9c4748a13e4dc35bf12b"
+    },
+    "plg-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/plg-playbook/SKILL.md",
+      "computedHash": "b7f8b7a9f34ca21c00109bace9d903feac8757504929c06da3fa876cd5eae784"
+    },
+    "popups": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/popups/SKILL.md",
+      "computedHash": "f6a8d630cee8d07bcb8dced3e4717b9533fd79a8f31bfeb3f244058520900512"
+    },
+    "pricing": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/pricing/SKILL.md",
+      "computedHash": "6242ce16c6a31520a4bff27eb531d06091f02951bd743a5616c0468e330f1b4e"
+    },
+    "product-hunt-launch-guide": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/product-hunt-launch-guide/SKILL.md",
+      "computedHash": "b90daf3031a19597a597c0cd68227b25feda98d2250ca48bf46348b78bdc5661"
+    },
+    "product-hunt-launch-playbook-win-1-daily": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/product-hunt-launch-playbook-win-1-daily/SKILL.md",
+      "computedHash": "1409a8b2946c02dbdcb80081ddf69651c0b309c7f2567a637a8882f421c46e6b"
+    },
+    "product-hunt-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/product-hunt-playbook/SKILL.md",
+      "computedHash": "551f550310b2f9b3acc7523eae57b6d5454bc4952f2009170d7e6991073b5f5f"
+    },
+    "product-marketing": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/product-marketing/SKILL.md",
+      "computedHash": "709145cb3cd36bab03d5dfe4ecd41af3120ed5a9d293c7ba9d7d9648c39f34b9"
+    },
+    "programmatic-seo": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/programmatic-seo/SKILL.md",
+      "computedHash": "a53dc8741b0df338766ef8fc7d704bdfc75b8c8e7e1b1b2a5947d81d8c9508ff"
+    },
+    "prospecting": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/prospecting/SKILL.md",
+      "computedHash": "0228ac277e4944c3c52a9936f661f2af2e481fe51fce9e0f20f38d9378c440e7"
+    },
+    "public-relations": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/public-relations/SKILL.md",
+      "computedHash": "a1c913e448992b2d9691da683d27b9cd5768ae13ffa6265553bcbe4ae642465c"
+    },
+    "referrals": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/referrals/SKILL.md",
+      "computedHash": "f79ec55ebeac33f9ab0b52c27fd82ecbc5537bd02f6410ca014085e3974fe8aa"
+    },
+    "revops": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/revops/SKILL.md",
+      "computedHash": "c05345d2db25fff632dbce95a07324d973ed381b10f88b443f75db1d79cc7481"
+    },
+    "saas-growth-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/saas-growth-playbook/SKILL.md",
+      "computedHash": "8475d45fae98d964400871f3de85dab463f29a73fa8626727cb22c6fa32bde9b"
+    },
+    "saas-marketing-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/saas-marketing-playbook/SKILL.md",
+      "computedHash": "4badd427e656abbddb0e665bc5ce7bc2024711e0279501ed7d0f87206b556b35"
+    },
+    "sales-enablement": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/sales-enablement/SKILL.md",
+      "computedHash": "d3f3cf16e3b766d6f15cc302de362b808060f9a9068c839140add85248c33115"
+    },
+    "schema": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/schema/SKILL.md",
+      "computedHash": "13693bae311fd444da31a82b3aa46003e12a21220aae98c77ee479fe34116067"
+    },
+    "seo-audit": {
+      "source": "seo-skills/seo-audit-skill",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "f468cab1f52687f89be08dc431b0400d684fdcda82540b0690ba7d428ea17458"
+    },
+    "signup": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/signup/SKILL.md",
+      "computedHash": "c373af5ec8a394eaed5f6a3727a8a9e55c8be47146481955fe91de97b7a5fb1d"
+    },
+    "site-architecture": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/site-architecture/SKILL.md",
+      "computedHash": "cf98bb28d2a26e2e5f086f2418352975608e52907b05bc7d54a2d67b3d93b7aa"
+    },
+    "sms": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/sms/SKILL.md",
+      "computedHash": "09d1295131e754db7fd1aba5dc761553aa0093d45681eae8369f54575da82b2f"
+    },
+    "social": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/social/SKILL.md",
+      "computedHash": "97ec8a7e9f1865b2c6a052df7b46864e3c9e0cda82207a7223adb5248c6c9703"
+    },
+    "startup-consultant": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/startup-consultant/SKILL.md",
+      "computedHash": "d3d0ac2942f0539bde7615c912b9df2d2ca6bd64cc07b9387dac395db29cd022"
+    },
+    "startup-growth-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/startup-growth-playbook/SKILL.md",
+      "computedHash": "47985bf68345af7d386f7d8297720a5e5ca30ed42403c2cb3d848bb6e3e43a2f"
+    },
+    "startup-launch": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/startup-launch/SKILL.md",
+      "computedHash": "b93be6db5090537d32f5de35d5778413128a7ab1df60d762b6391744471c3d45"
+    },
+    "startup-launch-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/startup-launch-playbook/SKILL.md",
+      "computedHash": "ee8dddbbd15fd5a9f0a40d7ecff4f24a28c103e6dbfa2174a78668a01d64ba30"
+    },
+    "startup-marketing-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/startup-marketing-playbook/SKILL.md",
+      "computedHash": "c9de1dfc86aacf41adc0e76ece1de8e9eb9523fa07df240165177d5cc8d2d357"
+    },
+    "video": {
+      "source": "coreyhaines31/marketingskills",
+      "sourceType": "github",
+      "skillPath": "skills/video/SKILL.md",
+      "computedHash": "d0868ef8e927fec183f13aea40e50ccc16d61fd9ecce6da4488715b43b821245"
+    },
+    "viral-marketing-playbook": {
+      "source": "Gingiris-1031/gingiris-skills",
+      "sourceType": "github",
+      "skillPath": "skills/viral-marketing-playbook/SKILL.md",
+      "computedHash": "557e27a48a6149771d931b9f86b7b7d96147a089a37511d861c5925e1aaddc0e"
+    },
+    "workload-manager-basics": {
+      "source": "google/skills",
+      "sourceType": "github",
+      "skillPath": "skills/cloud/workload-manager-basics/SKILL.md",
+      "computedHash": "86a27cce8c0d7adf236a24143ad7a0912f8623214f2abf647741f1acd43dbfa7"
+    }
+  }
+}
