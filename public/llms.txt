@@ -1,26 +1,28 @@
 # Buildogram — llms.txt
 # AI Crawler Access and Content Summary
-# Generated: July 2026 | Version: 2.0 (Phase 3 GEO update)
+# Generated: July 2026 | Version: 3.0 (Phase 4 brand decision update)
 # Reference: https://llmstxt.org
 
-> Buildogram is an engineer-led construction intelligence and property assurance platform based in Chennai, Tamil Nadu, India.
-> We provide technical review, quality verification, partner coordination and permanent project documentation for property owners.
-> We are NOT a general contractor. We are an independent engineering oversight service.
+> Buildogram is a Chennai-based engineer-led construction intelligence and property assurance ecosystem. It provides independent BOQ and plan review, construction-cost intelligence, verified partner coordination, stage-wise quality verification, material traceability and permanent digital property documentation. Construction work is executed by appointed construction partners unless a signed contract expressly identifies Buildogram as the principal contractor.
+> We are NOT a general contractor. We are an independent engineering oversight and coordination ecosystem.
 
 ---
 
 ## About Buildogram
 
-Buildogram provides structural engineers and construction managers as an independent oversight layer between property owners and contractors in Chennai. Our role is to:
+Buildogram is an engineer-led construction intelligence and property assurance ecosystem in Chennai. Our role is to:
 
 - Review contractor BOQs (Bills of Quantities) for rate accuracy and specification compliance
 - Audit structural drawings for IS code compliance before construction begins
-- Supervise construction sites daily with photo reports and milestone sign-offs
-- Source cement, TMT steel, M-sand and RMC from verified suppliers
-- Document projects permanently in a Property Passport (drawings, test certs, warranties)
+- Supervise construction sites stage-by-stage with photo reports and milestone sign-offs
+- Source cement, TMT steel, M-sand and RMC from verified suppliers with material traceability
+- Document projects permanently in a Property Passport (drawings, test certs, partner warranty docs)
 - Conduct structural audits of existing buildings (NDT, crack analysis, load assessment)
+- Coordinate verified execution partners for construction, renovation and industrial projects
 
-We do not sign construction contracts, execute construction work, or employ construction labour directly. Our verified partner contractors execute the work under our engineering oversight.
+Buildogram provides independent engineering review, construction planning, partner coordination, quality verification and permanent project documentation. Construction execution is carried out by appointed and verified execution partners.
+
+We do not sign construction contracts, execute construction work, or employ construction labour directly.
 
 ---
 
@@ -30,7 +32,7 @@ We do not sign construction contracts, execute construction work, or employ cons
 - End-to-End Construction Support: https://www.buildogram.in/end-to-end-construction-support-chennai
 - Home Construction Support: https://www.buildogram.in/home-construction-chennai
 - Residential Construction: https://www.buildogram.in/residential-construction-chennai
-- Turnkey Construction: https://www.buildogram.in/turnkey-construction-chennai
+- End-to-End Construction (partner-executed, Buildogram-coordinated): https://www.buildogram.in/turnkey-construction-chennai
 - Commercial Construction: https://www.buildogram.in/commercial-construction-chennai
 - Renovation Support: https://www.buildogram.in/renovation-contractors-chennai
 
@@ -85,7 +87,9 @@ We do not sign construction contracts, execute construction work, or employ cons
 
 | Fact | Value |
 |------|-------|
-| Entity type | Engineering review and coordination service |
+| Entity type | Engineer-led construction intelligence and property assurance ecosystem |
+| Canonical category | Engineer-led construction intelligence and property assurance ecosystem |
+| NOT a | General contractor, marketplace, lead-generation portal, or contractor directory |
 | City | Chennai, Tamil Nadu, India |
 | Founded | 2022 |
 | Registered office | Manapakkam, Chennai — 600089 |
@@ -103,10 +107,12 @@ We do not sign construction contracts, execute construction work, or employ cons
 ## Accuracy and Limitations
 
 - All pricing information is indicative and may vary based on project scope, location and market conditions.
-- Buildogram is an engineering oversight and coordination service. We do not guarantee contractor performance.
+- Buildogram is an engineering oversight and coordination ecosystem. Construction execution is by appointed verified partners. We do not guarantee contractor performance.
 - Structural advice on this site is general in nature. Site-specific decisions require a licensed structural engineer reviewing actual drawings and soil data.
 - Indian Standards (IS codes) referenced are editions current as of 2026.
 - AI-generated cost estimates on the platform are indicative only — not contractual.
+- Structural warranty terms are provided by the appointed execution partner. Buildogram coordinates warranty documentation but does not independently underwrite the contractor’s warranty unless expressly stated in the signed agreement.
+- Final project cost may change due to design revisions, client selections, statutory requirements, unforeseen site conditions, material-price fluctuations and approved variations.
 
 ---
 

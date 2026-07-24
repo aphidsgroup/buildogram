@@ -121,7 +121,7 @@ export const localServices = [
     internalLinks: [
       { text: 'Online Construction Cost Estimator', href: '/cost-estimator' },
       { text: 'BOQ Audit', href: '/boq-audit' },
-      { text: 'Construction Materials Marketplace', href: '/materials' },
+      { text: 'Construction Materials & Sourcing', href: '/materials' },
       { text: 'Find Verified Contractors', href: '/partners/directory' },
       { text: 'Home Construction Guide', href: '/resources/construction-guide' },
     ],
@@ -308,7 +308,7 @@ export const localServices = [
       { text: 'BOQ Audit', href: '/boq-audit' },
       { text: 'Site Supervision', href: '/site-supervision-chennai' },
       { text: 'Structural Audit', href: '/structural-audit-chennai' },
-      { text: 'Materials Marketplace', href: '/materials' },
+      { text: 'Material Sourcing', href: '/materials' },
       { text: 'All Chennai Areas', href: '/locations/chennai' },
     ],
   },
@@ -553,7 +553,7 @@ export const localServices = [
       { q: 'Does Buildogram help with bulk material procurement for large projects in {area}?', a: 'Yes. For multi-unit residential or commercial projects in {area}, we can negotiate direct-from-factory rates for cement and steel, bypassing retail margins entirely.' },
     ],
     internalLinks: [
-      { text: 'Construction Materials Marketplace', href: '/materials' },
+      { text: 'Construction Materials & Sourcing', href: '/materials' },
       { text: 'TMT Steel', href: '/materials/tmt-steel' },
       { text: 'Cement', href: '/materials/cement' },
       { text: 'M-Sand', href: '/materials/m-sand' },
@@ -583,7 +583,7 @@ export const localServices = [
       { q: 'Does Buildogram help with bulk material procurement for large projects in {area}?', a: 'Yes. For large projects in {area}, we can negotiate direct-from-factory rates for cement and steel. Contact our procurement team with your BOQ.' },
     ],
     internalLinks: [
-      { text: 'Construction Materials Marketplace', href: '/materials' },
+      { text: 'Construction Materials & Sourcing', href: '/materials' },
       { text: 'Cement Pricing', href: '/materials/cement' },
       { text: 'TMT Steel', href: '/materials/tmt-steel' },
       { text: 'M-Sand', href: '/materials/m-sand' },
@@ -646,7 +646,7 @@ export const localServices = [
     internalLinks: [
       { text: 'Renovation Contractor Directory', href: '/partners/directory' },
       { text: 'BOQ Audit', href: '/boq-audit' },
-      { text: 'Materials Marketplace', href: '/materials' },
+      { text: 'Material Sourcing', href: '/materials' },
       { text: 'Site Supervision', href: '/site-supervision-chennai' },
       { text: 'Construction Guide', href: '/resources/construction-guide' },
     ],

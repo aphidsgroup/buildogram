@@ -12,7 +12,7 @@ const CRITERIA = [
   { icon: '📜', title: 'RERA Registration', desc: 'Every builder we list must be registered under TNRERA (Tamil Nadu Real Estate Regulatory Authority). This protects you from unregistered fly-by-night operators.' },
   { icon: '🏗️', title: 'Minimum 3 Completed Projects', desc: 'We inspect at least 3 completed projects — checking structural quality, material brands used, and client satisfaction before approving a builder.' },
   { icon: '👷', title: 'Structural Engineer Tie-Up', desc: 'Builders must have a licensed structural engineer on their team or as a retained consultant. We verify credentials and check that design drawings are stamped by a registered engineer.' },
-  { icon: '🔒', title: 'Warranty Documentation', desc: 'We require builders to provide a minimum 1-year workmanship warranty, with structural warranty documentation available. Builders who cannot produce these are not listed.' },
+  { icon: '🔒', title: 'Warranty Documentation', desc: 'We require builders to confirm their workmanship and structural warranty terms in writing. Warranty obligations are governed by the signed contract between the property owner and the appointed builder — Buildogram verifies and records this documentation.' },
 ];
 
 const WHEN_TO_HIRE = [
@@ -127,6 +127,15 @@ export default function BuildersPage() {
             <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>Apply to join the Buildogram verified partner network and get quality project leads.</p>
             <Link href="/join-as-partner" className="btn btn-primary">Apply to Join</Link>
           </div>
+        </div>
+      </div>
+
+      {/* Partner disclaimer — DECISION-1 & DECISION-5 approved copy */}
+      <div style={{ background: 'var(--bg-card2)', borderTop: '1px solid var(--border)', padding: '24px' }}>
+        <div className="container">
+          <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '860px', margin: '0 auto', textAlign: 'center' }}>
+            <strong>Partner Verification Notice:</strong> Partner verification confirms that selected credentials and project information were reviewed using Buildogram&apos;s verification process. It is not a guarantee of future performance. The execution agreement, warranty obligations, pricing and construction responsibilities remain governed by the signed contract between the property owner and the appointed execution partner.
+          </p>
         </div>
       </div>
 
