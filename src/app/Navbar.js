@@ -12,7 +12,7 @@ const MEGA_MENUS = [
       { href: '/end-to-end-construction-support-chennai', label: 'End-to-End Construction Support' },
       { href: '/builders-in-chennai', label: 'Builders in Chennai' },
       { href: '/construction-company-chennai', label: 'Construction Company Chennai' },
-      { href: '/villa-construction', label: 'Villa Construction' },
+      { href: '/build/villa-construction', label: 'Villa Construction' },
       { href: '/turnkey-construction-chennai', label: 'Turnkey Construction' },
       { href: '/residential-construction-chennai', label: 'Residential Construction' },
       { href: '/commercial-construction-chennai', label: 'Commercial Construction' },
@@ -37,14 +37,14 @@ const MEGA_MENUS = [
       { href: '/materials/tmt-steel', label: 'TMT Steel' },
       { href: '/materials/msand-psand', label: 'M-Sand & P-Sand' },
       { href: '/materials/bricks-aac-blocks', label: 'Bricks & AAC Blocks' },
-      { href: '/materials/ready-mix-concrete', label: 'Ready Mix Concrete' },
+      { href: '/materials/rmc', label: 'Ready Mix Concrete' },
       { href: '/materials/waterproofing', label: 'Waterproofing Materials' },
       { href: '/materials/electrical', label: 'Electrical Materials' },
       { href: '/materials/plumbing', label: 'Plumbing Materials' },
       { href: '/materials/fabrication-steel', label: 'Fabrication & Steel Materials' },
       { href: '/materials/piling-foundation-materials', label: 'Piling & Foundation Materials' },
       { href: '/materials/finishing-materials', label: 'Finishing Materials' },
-      { href: '/material-quotes', label: 'Request Material Quote' },
+      { href: '/materials/request-quote', label: 'Request Material Quote' },
     ]
   },
   {
@@ -53,7 +53,6 @@ const MEGA_MENUS = [
       { href: '/structural-audit-chennai', label: 'Building Structural Audit' },
       { href: '/building-structural-audit-chennai', label: 'Residential Structural Audit' },
       { href: '/commercial-structural-audit-chennai', label: 'Commercial Building Audit' },
-      { href: '/apartment-structural-audit-chennai', label: 'Apartment Structural Audit' },
       { href: '/old-building-structural-audit-chennai', label: 'Old Building Safety Audit' },
       { href: '/building-crack-inspection-chennai', label: 'Crack Inspection' },
       { href: '/ndt-testing-chennai', label: 'NDT Testing' },
@@ -85,7 +84,7 @@ const MEGA_MENUS = [
   {
     label: 'Partners',
     links: [
-      { href: '/partners/directory', label: 'Find Verified Partners' },
+      { href: '/partners/directory', label: 'Find Partners' },
       { href: '/partners/builders', label: 'Builders' },
       { href: '/partners/contractors', label: 'Contractors' },
       { href: '/partners/architects', label: 'Architects' },

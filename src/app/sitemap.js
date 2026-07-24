@@ -133,11 +133,21 @@ export default async function sitemap() {
   ];
 
   // Dynamic: new service hub pages
-  const serviceHubRoutes = serviceHubs.map((h) => ({
-    url: `${baseUrl}${h.canonicalPath}`,
-    priority: h.priority || 0.9,
-    changeFrequency: 'weekly',
-  }));
+  // SEO P0 (2026-07-25): these serviceHubs entries have NO renderer (no physical
+  // route and not in SERVICES) — they 404 in production. Excluded until pages
+  // exist. Redirects for them live in next.config.mjs.
+  const NON_RENDERING_HUBS = new Set([
+    '/steel-fabrication-contractors-chennai',
+    '/warehouse-steel-building-chennai',
+    '/factory-shed-construction-chennai',
+  ]);
+  const serviceHubRoutes = serviceHubs
+    .filter((h) => !NON_RENDERING_HUBS.has(h.canonicalPath))
+    .map((h) => ({
+      url: `${baseUrl}${h.canonicalPath}`,
+      priority: h.priority || 0.9,
+      changeFrequency: 'weekly',
+    }));
 
   // Dynamic: services
   const serviceRoutes = services.map((s) => ({
@@ -190,11 +200,14 @@ export default async function sitemap() {
     .filter(Boolean);
 
   // Dynamic: materials
-  const materialRoutes = materials.map((m) => ({
-    url: `${baseUrl}/materials/${m.slug}`,
-    priority: 0.8,
-    changeFrequency: 'monthly',
-  }));
+  // SEO P0 (2026-07-25): 'ready-mix-concrete' 301s to /materials/rmc — keep redirects out of the sitemap.
+  const materialRoutes = materials
+    .filter((m) => m.slug !== 'ready-mix-concrete')
+    .map((m) => ({
+      url: `${baseUrl}/materials/${m.slug}`,
+      priority: 0.8,
+      changeFrequency: 'monthly',
+    }));
 
   // Dynamic: quality-gated area pages
   const areaRoutes = areas
@@ -258,7 +271,9 @@ export default async function sitemap() {
     const partners = await safeDbCall(() => prisma.partners.findMany({
       where: { verification_status: 'verified', public_profile_enabled: true }
     }), []);
-    partnerRoutes = partners.map((p) => ({
+    partnerRoutes = partners
+      .filter((p) => !p.slug?.startsWith('demo-')) // SEO P0: never expose seeded demo partners
+      .map((p) => ({
       url: `${baseUrl}/partners/${p.slug}`,
       priority: 0.85,
       changeFrequency: 'weekly',
@@ -267,7 +282,7 @@ export default async function sitemap() {
     console.error('Failed to fetch partners for sitemap:', err);
   }
 
-  return [
+  const allRoutes = [
     ...staticRoutes,
     { url: `${baseUrl}/case-studies`, priority: 0.9, changeFrequency: 'weekly' },
     ...caseStudyRoutes,
@@ -284,6 +299,16 @@ export default async function sitemap() {
     ...areaRoutes,
     ...serviceAreaRoutes,
   ];
+
+  // SEO P0 (2026-07-25): dedupe by URL — six service URLs were previously
+  // emitted twice (once in staticRoutes, once via serviceHubRoutes).
+  // First occurrence wins.
+  const seen = new Set();
+  return allRoutes.filter((r) => {
+    if (seen.has(r.url)) return false;
+    seen.add(r.url);
+    return true;
+  });
   // NOTE: Do NOT stamp lastModified: now on all entries.
   // Google learns to ignore lastModified if it changes on every deploy.
   // Only DB-backed entries (caseStudyRoutes, proofAssetRoutes) carry real timestamps.

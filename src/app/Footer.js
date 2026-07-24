@@ -19,7 +19,7 @@ const FOOTER_COLS = [
       ['Shop Materials', '/materials'],
       ['Cement', '/materials/cement'],
       ['TMT Steel', '/materials/tmt-steel'],
-      ['Find Verified Partners', '/partners/directory'],
+      ['Find Partners', '/partners/directory'],
       ['AI Tools', '/ai-tools'],
     ],
   },

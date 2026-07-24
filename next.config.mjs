@@ -98,6 +98,16 @@ const nextConfig = {
 
   async redirects() {
     return [
+      // ── SEO P0 (2026-07-25): repair confirmed internal 404s ──────────────
+      // Each is one-hop, permanent, to the closest existing canonical page.
+      { source: '/villa-construction', destination: '/build/villa-construction', permanent: true },
+      { source: '/apartment-structural-audit-chennai', destination: '/structural-audit-chennai', permanent: true },
+      { source: '/material-quotes', destination: '/materials/request-quote', permanent: true },
+      { source: '/materials/ready-mix-concrete', destination: '/materials/rmc', permanent: true },
+      { source: '/steel-fabrication-contractors-chennai', destination: '/steel-construction-chennai', permanent: true },
+      { source: '/warehouse-steel-building-chennai', destination: '/industrial-shed-construction-chennai', permanent: true },
+      { source: '/factory-shed-construction-chennai', destination: '/industrial-shed-construction-chennai', permanent: true },
+      { source: '/verified-contractors-chennai', destination: '/partners/contractors', permanent: true },
       {
         source: '/properties/buy',
         destination: 'https://www.realproprealty.com',
