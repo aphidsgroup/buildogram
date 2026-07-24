@@ -1,6 +1,6 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import { generateFAQSchema, generateServiceSchema } from '@/lib/seo/schema';
-import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema';
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
   title: 'PEB Building Contractors in Chennai | Pre-Engineered Buildings | Buildogram',
