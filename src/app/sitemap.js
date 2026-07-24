@@ -16,7 +16,8 @@ const prisma = new PrismaClient();
 
 export default async function sitemap() {
   const baseUrl = 'https://www.buildogram.in';
-  const now = new Date().toISOString();
+  // Removed: const now = new Date().toISOString()
+  // Reason: stamping every entry with the current deploy time teaches Google to ignore lastModified.
 
   const staticRoutes = [
     { url: baseUrl, priority: 1.0, changeFrequency: 'weekly' },
@@ -40,8 +41,8 @@ export default async function sitemap() {
     { url: `${baseUrl}/blog`, priority: 0.8, changeFrequency: 'weekly' },
     { url: `${baseUrl}/specifications`, priority: 0.75, changeFrequency: 'monthly' },
     { url: `${baseUrl}/warranty-and-maintenance`, priority: 0.75, changeFrequency: 'monthly' },
-    { url: `${baseUrl}/why-vs-aggregators`, priority: 0.75, changeFrequency: 'monthly' },
-    { url: `${baseUrl}/why-vs-mason`, priority: 0.75, changeFrequency: 'monthly' },
+    // NOTE: why-vs-aggregators and why-vs-mason are served by [serviceSlug] dynamic route.
+    // Do NOT add them here as static entries — they will appear in serviceHubRoutes below.
     { url: `${baseUrl}/construction-in-chennai`, priority: 0.85, changeFrequency: 'weekly' },
     { url: `${baseUrl}/privacy-policy`, priority: 0.5, changeFrequency: 'yearly' },
     { url: `${baseUrl}/terms`, priority: 0.5, changeFrequency: 'yearly' },
@@ -68,20 +69,17 @@ export default async function sitemap() {
     { url: `${baseUrl}/renovation-contractors-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/site-supervision-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/turnkey-construction-chennai`, priority: 0.9, changeFrequency: 'weekly' },
-    { url: `${baseUrl}/end-to-end-construction-support-chennai`, priority: 0.9, changeFrequency: 'weekly' },
-    { url: `${baseUrl}/boq-review-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    // NOTE: end-to-end-construction-support-chennai, boq-review-chennai, structural-plan-review-chennai,
+    // steel-construction-chennai, peb-building-contractors-chennai, industrial-shed-construction-chennai
+    // are 404 (not in services.js). Removed from sitemap until pages are created. (Phase 2 fix)
     { url: `${baseUrl}/contractor-quote-review-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/construction-cost-estimation-chennai`, priority: 0.9, changeFrequency: 'weekly' },
-    { url: `${baseUrl}/structural-plan-review-chennai`, priority: 0.9, changeFrequency: 'weekly' },
-    { url: `${baseUrl}/steel-construction-chennai`, priority: 0.9, changeFrequency: 'weekly' },
-    { url: `${baseUrl}/peb-building-contractors-chennai`, priority: 0.9, changeFrequency: 'weekly' },
-    { url: `${baseUrl}/industrial-shed-construction-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     // Structural Audit & NDT
     { url: `${baseUrl}/structural-audit-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/building-structural-audit-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/residential-structural-audit-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/commercial-structural-audit-chennai`, priority: 0.9, changeFrequency: 'weekly' },
-    { url: `${baseUrl}/apartment-structural-audit-chennai`, priority: 0.9, changeFrequency: 'weekly' },
+    // NOTE: apartment-structural-audit-chennai is 404 (not in services.js). Removed until page created. (Phase 2 fix)
     { url: `${baseUrl}/old-building-structural-audit-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/building-crack-inspection-chennai`, priority: 0.9, changeFrequency: 'weekly' },
     { url: `${baseUrl}/ndt-testing-chennai`, priority: 0.9, changeFrequency: 'weekly' },
@@ -273,9 +271,10 @@ export default async function sitemap() {
     ...materialRoutes,
     ...areaRoutes,
     ...serviceAreaRoutes,
-  ].map((entry) => ({
-    ...entry,
-    lastModified: now,
-  }));
+  ];
+  // NOTE: Do NOT stamp lastModified: now on all entries.
+  // Google learns to ignore lastModified if it changes on every deploy.
+  // Only DB-backed entries (caseStudyRoutes, proofAssetRoutes) carry real timestamps.
+  // Static and programmatic entries are returned without lastModified.
 }
 

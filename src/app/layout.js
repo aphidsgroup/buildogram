@@ -11,21 +11,10 @@ const dmSerifText = DM_Serif_Text({ subsets: ['latin'], weight: ['400'], style: 
 
 export const metadata = {
   metadataBase: new URL('https://www.buildogram.in'),
-  title: 'Buildogram | Engineer-Led Construction Support Chennai | Structural Audit, BOQ Review, Steel Construction',
-  description: 'Buildogram is an engineer-led construction support platform for property owners in Chennai — structural audit, BOQ review, contractor quote audit, steel construction, PEB buildings, site supervision, and property handover documentation.',
-  keywords: [
-    'Home construction company Chennai',
-    'Structural audit Chennai',
-    'BOQ review Chennai',
-    'Steel construction Chennai',
-    'PEB building contractors Chennai',
-    'Construction project management Chennai',
-    'Site supervision Chennai',
-    'Verified builders and contractors Chennai',
-    'Construction material sourcing Chennai',
-    'Property Passport',
-    'Buildogram'
-  ],
+  title: 'Buildogram | Engineer-Led Construction Support Chennai',
+  description: 'Engineer-led structural audit, BOQ review, site supervision and construction intelligence for property owners in Chennai.',
+  // keywords: removed — Google ignores <meta name="keywords"> since 2009. Zero SEO value.
+  // (Phase 2 fix: seo-audit skill + manual audit both identified this as clutter)
   icons: {
     icon: [
       { url: '/favicon.ico',              sizes: 'any',    type: 'image/x-icon' },
@@ -56,9 +45,10 @@ export const metadata = {
     description: 'Structural audits, BOQ review, steel construction, site supervision — engineer-led and owner-first.',
     images: ['https://www.buildogram.in/og-image.jpg'],
   },
-  alternates: {
-    canonical: '/',
-  },
+  // alternates.canonical: REMOVED from root layout (Phase 2 fix).
+  // Setting canonical: '/' here caused any page without generateSEOMetadata() to inherit
+  // the homepage canonical, effectively telling Google all such pages are duplicates of '/'.
+  // Canonical is now set exclusively per-page via generateSEOMetadata().
   manifest: '/manifest.webmanifest',
   applicationName: 'Buildogram',
   appleWebApp: {
@@ -72,8 +62,9 @@ export const viewport = {
   themeColor: '#FC6E20',
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  // Phase 2 fix: removed userScalable:false and maximumScale:1
+  // Reason: violates WCAG 2.1 SC 1.4.4 — prevents users from zooming for accessibility
+  // seomator audit flagged a11y-zoom-disabled as critical on ALL 30 crawled pages
   viewportFit: 'cover',
 };
 
