@@ -1,13 +1,60 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
+import { generateOrganizationSchema } from '@/lib/seo/schema';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import Link from 'next/link';
 import Image from 'next/image';
 
 export const metadata = generateSEOMetadata({
-  title: 'About Buildogram | Construction & Property Marketplace',
-  description: 'Learn about Buildogram, an IIT-alumni, PhD structural engineer-led construction-as-a-service platform transforming home building in Chennai.',
+  title: 'About Buildogram | Engineer-Led Construction Intelligence — Chennai',
+  description: 'Buildogram is founded by civil and structural engineers from Chennai. We provide independent BOQ review, structural audits, site supervision, and permanent property documentation.',
   path: '/about',
 });
+
+// E-E-A-T: Person schema for each founder — strongest entity signal for a service brand
+const PERSON_SCHEMAS = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Kavin',
+    jobTitle: 'Co-Founder & Structural Engineering Lead',
+    worksFor: { '@type': 'Organization', '@id': 'https://www.buildogram.in/#organization', name: 'Buildogram' },
+    description: 'Civil & structural engineer specialised in foundation design, pile dynamics, and Chennai soil profiles. Oversees all geotechnical checks and IS code compliance.',
+    url: 'https://www.buildogram.in/about',
+    knowsAbout: ['Structural Engineering', 'Foundation Design', 'IS 456', 'IS 1893', 'Pile Foundation', 'Soil Bearing Capacity'],
+    address: { '@type': 'PostalAddress', addressLocality: 'Chennai', addressRegion: 'Tamil Nadu', addressCountry: 'IN' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Lokesh',
+    jobTitle: 'Co-Founder & Materials and Logistics Director',
+    worksFor: { '@type': 'Organization', '@id': 'https://www.buildogram.in/#organization', name: 'Buildogram' },
+    description: 'Materials supply and logistics veteran in Tamil Nadu. Leads open-book material sourcing and Chennai market rate benchmarking for cement, TMT steel, and RMC.',
+    url: 'https://www.buildogram.in/about',
+    knowsAbout: ['Construction Materials', 'Supply Chain', 'BOQ Pricing', 'Chennai Material Markets'],
+    address: { '@type': 'PostalAddress', addressLocality: 'Chennai', addressRegion: 'Tamil Nadu', addressCountry: 'IN' },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Manoj',
+    jobTitle: 'Co-Founder & Head of Construction Quality Control',
+    worksFor: { '@type': 'Organization', '@id': 'https://www.buildogram.in/#organization', name: 'Buildogram' },
+    description: 'Onsite construction quality coordinator. Developed the 18-checkpoint phase checklist system and manages field engineers, concrete slump tests, and laboratory cube compression tests.',
+    url: 'https://www.buildogram.in/about',
+    knowsAbout: ['Construction Quality Control', 'Concrete Testing', 'Site Supervision', 'Defect Analysis'],
+    address: { '@type': 'PostalAddress', addressLocality: 'Chennai', addressRegion: 'Tamil Nadu', addressCountry: 'IN' },
+  },
+];
+
+const ABOUT_PAGE_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'About Buildogram',
+  url: 'https://www.buildogram.in/about',
+  description: 'About Buildogram — engineer-led construction intelligence platform in Chennai founded by Kavin, Lokesh and Manoj.',
+  mainEntity: { '@type': 'Organization', '@id': 'https://www.buildogram.in/#organization' },
+};
 
 const STATS = [
   { value: '500+', label: 'Projects Supported', icon: '🏗️' },
@@ -55,6 +102,12 @@ export default function About() {
 
   return (
     <>
+      {/* E-E-A-T: Person schema for each founder */}
+      {PERSON_SCHEMAS.map((s, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(s) }} />
+      ))}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ABOUT_PAGE_SCHEMA) }} />
+
       {/* HERO */}
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 20%, rgba(252, 110, 32, 0.07) 0%, transparent 55%)' }} />
@@ -62,7 +115,7 @@ export default function About() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Our Engineering DNA</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>About Buildogram — The Construction &amp; Property Marketplace</h1>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>About Buildogram — Engineer-Led Construction Intelligence</h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>Transforming unorganized residential construction in Chennai into an engineer-led, tech-enabled, and highly transparent construction platform — backed by soil tests, BOQ contracts, and 10-year structural warranties.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <a href="/contact" className="btn btn-primary btn-lg">Talk to Our Founders</a>

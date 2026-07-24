@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Breadcrumbs from '@/components/seo/Breadcrumbs';
+import EngineerCredibility from '@/components/seo/EngineerCredibility';
 
 export default function ServicePageTemplate({ service }) {
   const {
@@ -130,6 +131,9 @@ export default function ServicePageTemplate({ service }) {
           </section>
         )}
 
+        {/* E-E-A-T Trust Block */}
+        <EngineerCredibility compact />
+
         {/* RELATED LINKS */}
         {relatedLinks && relatedLinks.length > 0 && (
           <div style={{ marginTop: '48px', padding: '24px', background: '#FFF7ED', borderRadius: 'var(--radius)', border: '1px solid #FED7AA' }}>
@@ -206,7 +210,7 @@ function buildSchemas(service) {
         addressRegion: 'Tamil Nadu',
         addressCountry: 'IN',
       },
-      telephone: '+91-XXXXXXXXXX',
+      telephone: '+919360232456',
       areaServed: 'Chennai',
     },
   };
