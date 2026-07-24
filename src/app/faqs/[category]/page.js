@@ -7,10 +7,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
+  params = await params; // Next 16: params is a Promise
   const cat = faqMap[params.category];
   if (!cat) return {};
   return { title: cat.metaTitle, description: cat.metaDescription,
-    alternates: { canonical: `https://buildogram.in/faqs/${cat.slug}` },
+    alternates: { canonical: `https://www.buildogram.in/faqs/${cat.slug}` },
   };
 }
 
@@ -19,13 +20,14 @@ const breadcrumbSchema = (itemData) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://buildogram.in' },
-    { '@type': 'ListItem', position: 2, name: 'Faqs', item: 'https://buildogram.in/faqs' },
-    { '@type': 'ListItem', position: 3, name: itemData.cat.title, item: `https://buildogram.in/faqs/${itemData.cat.slug}` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.buildogram.in' },
+    { '@type': 'ListItem', position: 2, name: 'Faqs', item: 'https://www.buildogram.in/faqs' },
+    { '@type': 'ListItem', position: 3, name: itemData.cat.title, item: `https://www.buildogram.in/faqs/${itemData.cat.slug}` },
   ],
 });
 
-export default function FaqCategoryPage({ params }) {
+export default async function FaqCategoryPage({ params }) {
+  params = await params; // Next 16: params is a Promise
   const cat = faqMap[params.category];
   if (!cat) notFound();
 

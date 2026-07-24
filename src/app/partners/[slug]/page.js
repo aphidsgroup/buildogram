@@ -47,6 +47,8 @@ function Section({ title, children }) {
 
 // ── Metadata ──────────────────────────────────────────────────────────
 export async function generateMetadata({ params }) {
+  params = await params; // Next 16: params is a Promise
+  if (params.slug?.startsWith('demo-')) return {}; // SEO P0: never expose seeded demo partners
   let partner = null;
   try {
     partner = await safeDbCall(() => prisma.partners.findUnique({
@@ -60,7 +62,7 @@ export async function generateMetadata({ params }) {
 
   return generateSEOMetadata({
     title: partner.seo_title || `${partner.company_name} | ${partner.partner_type?.replace(/_/g, ' ')} in ${partner.location} | Buildogram`,
-    description: partner.seo_description || partner.short_description || `View credentials, portfolio, and reviews for ${partner.company_name}, a verified ${partner.partner_type?.replace(/_/g, ' ')} serving ${partner.service_areas?.join(', ') || partner.location}.`,
+    description: partner.seo_description || partner.short_description || `View credentials, portfolio, and reviews for ${partner.company_name}, a ${partner.partner_type?.replace(/_/g, ' ')} serving ${partner.service_areas?.join(', ') || partner.location}.`,
     path: `/partners/${partner.slug}`,
     image: partner.cover_url || partner.logo_url || 'https://www.buildogram.in/og-default.png'
   });
@@ -68,6 +70,8 @@ export async function generateMetadata({ params }) {
 
 // ── Main Page ─────────────────────────────────────────────────────────
 export default async function PartnerProfilePage({ params }) {
+  params = await params; // Next 16: params is a Promise
+  if (params.slug?.startsWith('demo-')) notFound(); // SEO P0: never expose seeded demo partners
   let partner = null;
   let related = [];
   try {

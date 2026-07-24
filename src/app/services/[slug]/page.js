@@ -10,13 +10,14 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
+  params = await params; // Next 16: params is a Promise
   const svc = services.find((s) => s.slug === params.slug);
   if (!svc) return {};
   return {
     title: svc.metaTitle,
     description: svc.metaDescription,
-    openGraph: { title: svc.metaTitle, description: svc.metaDescription, url: `https://buildogram.in/services/${svc.slug}` },
-      alternates: { canonical: `https://buildogram.in/services/${svc.slug}` },
+    openGraph: { title: svc.metaTitle, description: svc.metaDescription, url: `https://www.buildogram.in/services/${svc.slug}` },
+      alternates: { canonical: `https://www.buildogram.in/services/${svc.slug}` },
   };
 }
 
@@ -35,13 +36,14 @@ const breadcrumbSchema = (itemData) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://buildogram.in' },
-    { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://buildogram.in/services' },
-    { '@type': 'ListItem', position: 3, name: itemData.svc.title, item: `https://buildogram.in/services/${itemData.svc.slug}` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.buildogram.in' },
+    { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://www.buildogram.in/services' },
+    { '@type': 'ListItem', position: 3, name: itemData.svc.title, item: `https://www.buildogram.in/services/${itemData.svc.slug}` },
   ],
 });
 
-export default function ServicePage({ params }) {
+export default async function ServicePage({ params }) {
+  params = await params; // Next 16: params is a Promise
   const currentPath = `/services${params.slug}`.replace('//', '/');
   const relatedLinks = getContextualLinks('service', currentPath);
 

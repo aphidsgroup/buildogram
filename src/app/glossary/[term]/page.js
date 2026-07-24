@@ -10,12 +10,13 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
+  params = await params; // Next 16: params is a Promise
   const term = glossaryMap[params.term];
   if (!term) return {};
   return {
     title: `${term.term} — Buildogram Construction Glossary`,
     description: `${term.definition} Learn the full meaning and importance of ${term.term} in home construction and property in India.`,
-      alternates: { canonical: `https://buildogram.in/glossary/${term.slug}` },
+      alternates: { canonical: `https://www.buildogram.in/glossary/${term.slug}` },
   };
 }
 
@@ -24,7 +25,7 @@ const termSchema = (term) => ({
   '@type': 'DefinedTerm',
   name: term.term,
   description: term.definition,
-  inDefinedTermSet: { '@type': 'DefinedTermSet', name: 'Buildogram Construction Glossary', url: 'https://buildogram.in/glossary' },
+  inDefinedTermSet: { '@type': 'DefinedTermSet', name: 'Buildogram Construction Glossary', url: 'https://www.buildogram.in/glossary' },
 });
 
 
@@ -32,13 +33,14 @@ const breadcrumbSchema = (itemData) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://buildogram.in' },
-    { '@type': 'ListItem', position: 2, name: 'Glossary', item: 'https://buildogram.in/glossary' },
-    { '@type': 'ListItem', position: 3, name: itemData.term.term, item: `https://buildogram.in/glossary/${itemData.term.slug}` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.buildogram.in' },
+    { '@type': 'ListItem', position: 2, name: 'Glossary', item: 'https://www.buildogram.in/glossary' },
+    { '@type': 'ListItem', position: 3, name: itemData.term.term, item: `https://www.buildogram.in/glossary/${itemData.term.slug}` },
   ],
 });
 
-export default function GlossaryTermPage({ params }) {
+export default async function GlossaryTermPage({ params }) {
+  params = await params; // Next 16: params is a Promise
   const currentPath = `/glossary${params.term}`.replace('//', '/');
   const relatedLinks = getContextualLinks('service', currentPath);
 

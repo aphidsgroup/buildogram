@@ -10,13 +10,14 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
+  params = await params; // Next 16: params is a Promise
   const guide = guideMap[params.slug];
   if (!guide) return {};
   return {
     title: guide.metaTitle,
     description: guide.metaDescription,
     openGraph: { title: guide.metaTitle, description: guide.metaDescription },
-      alternates: { canonical: `https://buildogram.in/guides/${guide.slug}` },
+      alternates: { canonical: `https://www.buildogram.in/guides/${guide.slug}` },
   };
 }
 
@@ -26,7 +27,7 @@ const articleSchema = (guide) => ({
   headline: guide.title,
   description: guide.metaDescription,
   author: { '@type': 'Organization', name: 'Buildogram' },
-  publisher: { '@type': 'Organization', name: 'Buildogram', url: 'https://buildogram.in' },
+  publisher: { '@type': 'Organization', name: 'Buildogram', url: 'https://www.buildogram.in' },
 });
 
 const faqSchema = (faqs) => ({
@@ -44,13 +45,14 @@ const breadcrumbSchema = (itemData) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://buildogram.in' },
-    { '@type': 'ListItem', position: 2, name: 'Guides', item: 'https://buildogram.in/guides' },
-    { '@type': 'ListItem', position: 3, name: itemData.guide.title, item: `https://buildogram.in/guides/${itemData.guide.slug}` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.buildogram.in' },
+    { '@type': 'ListItem', position: 2, name: 'Guides', item: 'https://www.buildogram.in/guides' },
+    { '@type': 'ListItem', position: 3, name: itemData.guide.title, item: `https://www.buildogram.in/guides/${itemData.guide.slug}` },
   ],
 });
 
-export default function GuidePage({ params }) {
+export default async function GuidePage({ params }) {
+  params = await params; // Next 16: params is a Promise
   const currentPath = `/guides${params.slug}`.replace('//', '/');
   const relatedLinks = getContextualLinks('service', currentPath);
 

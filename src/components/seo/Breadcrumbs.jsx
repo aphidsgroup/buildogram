@@ -11,7 +11,7 @@ export default function Breadcrumbs({ crumbs = [], injectSchema = true }) {
       '@type': 'ListItem',
       position: index + 1,
       name: crumb.label,
-      item: `https://buildogram.in${crumb.href}`
+      item: `https://www.buildogram.in${crumb.href}`
     }))
   };
 

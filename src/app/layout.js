@@ -11,9 +11,9 @@ const dmSerifText = DM_Serif_Text({ subsets: ['latin'], weight: ['400'], style: 
 
 export const metadata = {
   metadataBase: new URL('https://www.buildogram.in'),
-  title: 'Buildogram | Engineer-Led Construction Intelligence â€” Chennai',
+  title: 'Buildogram | Engineer-Led Construction Intelligence — Chennai',
   description: 'Engineer-led construction intelligence, quality verification and permanent property documentation for Chennai homeowners. Independent BOQ review, structural audits, site supervision and partner coordination.',
-  // keywords: removed â€” Google ignores <meta name="keywords"> since 2009. Zero SEO value.
+  // keywords: removed — Google ignores <meta name="keywords"> since 2009. Zero SEO value.
   // (Phase 2 fix: seo-audit skill + manual audit both identified this as clutter)
   icons: {
     icon: [
@@ -31,17 +31,17 @@ export const metadata = {
     shortcut: '/favicon.ico',
   },
   openGraph: {
-    title: 'Buildogram | Engineer-Led Construction Intelligence â€” Chennai',
+    title: 'Buildogram | Engineer-Led Construction Intelligence — Chennai',
     description: 'Buildogram is an engineer-led construction intelligence and property assurance ecosystem. Independent BOQ review, structural audits, partner coordination, site supervision and permanent Property Passport documentation for Chennai homeowners.',
     url: 'https://www.buildogram.in/',
     siteName: 'Buildogram',
-    images: [{ url: 'https://www.buildogram.in/og-image.jpg', width: 1200, height: 630, alt: 'Buildogram â€” Construction Â· Property Â· Materials' }],
+    images: [{ url: 'https://www.buildogram.in/og-image.jpg', width: 1200, height: 630, alt: 'Buildogram — Construction · Property · Materials' }],
     locale: 'en_IN',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Buildogram | Engineer-Led Construction Intelligence â€” Chennai',
+    title: 'Buildogram | Engineer-Led Construction Intelligence — Chennai',
     description: 'Independent BOQ review, structural audits, quality verification and permanent property documentation. Engineer-led and owner-first.',
     images: ['https://www.buildogram.in/og-image.jpg'],
   },
@@ -63,7 +63,7 @@ export const viewport = {
   width: 'device-width',
   initialScale: 1,
   // Phase 2 fix: removed userScalable:false and maximumScale:1
-  // Reason: violates WCAG 2.1 SC 1.4.4 â€” prevents users from zooming for accessibility
+  // Reason: violates WCAG 2.1 SC 1.4.4 — prevents users from zooming for accessibility
   // seomator audit flagged a11y-zoom-disabled as critical on ALL 30 crawled pages
   viewportFit: 'cover',
 };

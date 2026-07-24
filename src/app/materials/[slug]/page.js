@@ -12,10 +12,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
+  params = await params; // Next 16: params is a Promise
   const mat = materialMap[params.slug];
   if (!mat) return {};
   return { title: mat.metaTitle, description: mat.metaDescription,
-    alternates: { canonical: `https://buildogram.in/materials/${mat.slug}` },
+    alternates: { canonical: `https://www.buildogram.in/materials/${mat.slug}` },
   };
 }
 
@@ -34,13 +35,14 @@ const breadcrumbSchema = (itemData) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://buildogram.in' },
-    { '@type': 'ListItem', position: 2, name: 'Materials', item: 'https://buildogram.in/materials' },
-    { '@type': 'ListItem', position: 3, name: itemData.mat.name, item: `https://buildogram.in/materials/${itemData.mat.slug}` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.buildogram.in' },
+    { '@type': 'ListItem', position: 2, name: 'Materials', item: 'https://www.buildogram.in/materials' },
+    { '@type': 'ListItem', position: 3, name: itemData.mat.name, item: `https://www.buildogram.in/materials/${itemData.mat.slug}` },
   ],
 });
 
-export default function MaterialPage({ params }) {
+export default async function MaterialPage({ params }) {
+  params = await params; // Next 16: params is a Promise
   const currentPath = `/materials${params.slug}`.replace('//', '/');
   const relatedLinks = getContextualLinks('material', currentPath);
 
@@ -72,7 +74,7 @@ export default function MaterialPage({ params }) {
           </h1>
           
           <p style={{ color: '#CBD5E1', fontSize: '18px', maxWidth: '700px', lineHeight: 1.6, marginBottom: '40px' }}>
-            {mat.intro} Source high-quality {mat.name} directly from verified suppliers for your construction project.
+            {mat.intro} Source high-quality {mat.name} directly from suppliers for your construction project.
           </p>
 
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
@@ -179,7 +181,7 @@ export default function MaterialPage({ params }) {
         <div style={{ marginBottom: '64px', background: 'white', padding: '40px', borderRadius: '16px', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)' }}>
           <h2 style={{ fontSize: '28px', fontWeight: 800, marginBottom: '24px', color: '#0F172A' }}>The Buildogram Material Marketplace</h2>
           <p style={{ color: '#475569', fontSize: '16px', lineHeight: 1.6, marginBottom: '32px' }}>
-            We simplify material procurement by connecting you with verified suppliers across Chennai. Instead of haggling with multiple vendors, our marketplace does the heavy lifting for you.
+            We simplify material procurement by connecting you with suppliers across Chennai. Instead of haggling with multiple vendors, our marketplace does the heavy lifting for you.
           </p>
           
           <div className="grid-3" style={{ gap: '24px', marginBottom: '32px' }}>
@@ -213,9 +215,9 @@ export default function MaterialPage({ params }) {
             <Link href="/partners/directory?category=Supplier" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <span style={{ fontSize: '24px' }}>🚚</span>
               <span style={{ fontWeight: 700, fontSize: '15px' }}>Find Suppliers</span>
-              <span style={{ color: '#64748B', fontSize: '13px' }}>Verified Local Sellers</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Local Sellers</span>
             </Link>
-            <Link href="/services/cost-estimator" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <Link href="/cost-estimator" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <span style={{ fontSize: '24px' }}>💰</span>
               <span style={{ fontWeight: 700, fontSize: '15px' }}>Estimate Cost</span>
               <span style={{ color: '#64748B', fontSize: '13px' }}>Calculate {mat.name} quantity</span>
@@ -230,7 +232,7 @@ export default function MaterialPage({ params }) {
 
         <div className="card" style={{ background: '#0F172A', border: 'none', textAlign: 'center', padding: '44px', borderRadius: '16px' }}>
           <h3 style={{ color: 'white', fontSize: '24px', fontWeight: 800, marginBottom: '12px' }}>Need {mat.name} for your project?</h3>
-          <p style={{ color: '#CBD5E1', fontSize: '16px', marginBottom: '28px' }}>Get side-by-side quotes from verified suppliers. Upload your BOQ or request pricing directly.</p>
+          <p style={{ color: '#CBD5E1', fontSize: '16px', marginBottom: '28px' }}>Get side-by-side quotes from suppliers. Upload your BOQ or request pricing directly.</p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href={`/materials/request-quote?category=${mat.slug}`} className="btn btn-primary" style={{ padding: '14px 28px', fontSize: '16px' }}>Request {mat.name} Quote</Link>
             <Link href={`/materials/request-quote?category=${mat.slug}&boq=true`} className="btn btn-outline-light" style={{ padding: '14px 28px', fontSize: '16px' }}>Upload BOQ</Link>

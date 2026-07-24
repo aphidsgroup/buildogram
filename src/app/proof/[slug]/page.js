@@ -51,14 +51,14 @@ export default async function ProofDetailPage({ params }) {
     author: {
       '@type': 'Organization',
       name: 'Buildogram',
-      url: 'https://buildogram.in'
+      url: 'https://www.buildogram.in'
     },
     publisher: {
       '@type': 'Organization',
       name: 'Buildogram',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://buildogram.in/logo-icon.png'
+        url: 'https://www.buildogram.in/logo-icon.png'
       }
     },
     datePublished: proof.created_at,

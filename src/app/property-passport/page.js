@@ -8,11 +8,11 @@ export const metadata = {
   openGraph: {
     title: 'Property Passport OS | Digital Twin for Real Estate',
     description: 'The permanent digital twin for your physical asset. Secure, transferable, and invaluable.',
-    url: 'https://buildogram.in/property-passport',
+    url: 'https://www.buildogram.in/property-passport',
     siteName: 'Buildogram',
     images: [
       {
-        url: 'https://buildogram.in/og/property-passport.png',
+        url: 'https://www.buildogram.in/og/property-passport.png',
         width: 1200,
         height: 630,
         alt: 'Property Passport Interface',

@@ -7,10 +7,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }) {
+  params = await params; // Next 16: params is a Promise
   const comp = comparisonMap[params.slug];
   if (!comp) return {};
   return { title: comp.metaTitle, description: comp.metaDescription,
-    alternates: { canonical: `https://buildogram.in/compare/${comp.slug}` },
+    alternates: { canonical: `https://www.buildogram.in/compare/${comp.slug}` },
   };
 }
 
@@ -19,13 +20,14 @@ const breadcrumbSchema = (itemData) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
-    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://buildogram.in' },
-    { '@type': 'ListItem', position: 2, name: 'Compare', item: 'https://buildogram.in/compare' },
-    { '@type': 'ListItem', position: 3, name: itemData.comp.title, item: `https://buildogram.in/compare/${itemData.comp.slug}` },
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.buildogram.in' },
+    { '@type': 'ListItem', position: 2, name: 'Compare', item: 'https://www.buildogram.in/compare' },
+    { '@type': 'ListItem', position: 3, name: itemData.comp.title, item: `https://www.buildogram.in/compare/${itemData.comp.slug}` },
   ],
 });
 
-export default function ComparisonPage({ params }) {
+export default async function ComparisonPage({ params }) {
+  params = await params; // Next 16: params is a Promise
   const comp = comparisonMap[params.slug];
   if (!comp) notFound();
 

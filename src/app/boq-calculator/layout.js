@@ -5,7 +5,7 @@ export const metadata = {
   openGraph: {
     title: 'Free BOQ Calculator | Buildogram',
     description: 'Generate a detailed Bill of Quantities for your house construction project — 44 items, COCENA 2025 rates, margin analysis.',
-    url: 'https://buildogram.com/boq-calculator',
+    url: 'https://www.buildogram.in/boq-calculator',
     siteName: 'Buildogram',
     type: 'website',
   },
@@ -15,7 +15,7 @@ export const metadata = {
     description: 'Instant Bill of Quantities for residential construction — COCENA 2025 rates, 44 items, margin sensitivity.',
   },
   alternates: {
-    canonical: 'https://buildogram.com/boq-calculator',
+    canonical: 'https://www.buildogram.in/boq-calculator',
   },
 };
 
