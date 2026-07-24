@@ -45,7 +45,7 @@ Updated: 2026-07-25 (readiness pass 3 — owner corrections 1–10 applied) · M
 - Generator FAQs: locality cost FAQ and "verified contractor network" FAQ rewritten.
 - `localServices.js` / `serviceHubs.js` / `boq-review-chennai`: undated material and works rates removed (cement, TMT, PEB, shed, renovation, BOQ rate strip); Chennai-wide PEB/shed ranges retained only with an explicit "indicative only — not a dated quotation" qualifier.
 - `/construction-in-chennai` hub: "Marine clay … Pile foundations are mandatory", the flood-zone locality list and 12 per-locality soil notes replaced with neutral, site-specific wording.
-- **Quality-gate check:** all 28 area pages still exceed the 150-unique-word indexability threshold after removals (verified by replicating the generator's word count) — no locality page falls out of the sitemap as a side-effect.
+- **Content-length sanity check:** All 28 locality pages passed the minimum content-length sanity check. This does not constitute content-quality, uniqueness or indexability approval. Final indexing decisions remain pending P1 locality evaluation. Verified by replicating the generator's word count; no locality page changed sitemap state as a side-effect.
 
 ### 2b. NAP verification (owner item 9)
 Website NAP is now single and consistent:

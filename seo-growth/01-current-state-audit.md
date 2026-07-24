@@ -35,7 +35,7 @@ Total public indexable surface (excluding dashboards): roughly 236 physical rout
 - Middleware + robots.txt correctly exclude `/ops`, `/partner`, `/client`, `/admin`, `/api`, report and portal routes.
 - Live robots.txt matches source; sitemap referenced; host directive present. AI crawlers (OAI-SearchBot, PerplexityBot, anthropic-ai, Bingbot) explicitly allowed; GPTBot/CCBot blocked pending a documented decision.
 - Canonicals: self-canonical via shared `generateSEOMetadata`; homepage and service page verified live with correct `.in` canonical and robots `index, follow`.
-- Locality pages have a real quality gate (`localPageGenerator.js`): word/FAQ/link thresholds, `noindex` for thin pages, and the sitemap only includes gate-passing pages — unusually disciplined for programmatic local SEO.
+- Locality pages have a content-length sanity check (`localPageGenerator.js`): word/FAQ/link thresholds, `noindex` below threshold, and the sitemap only includes threshold-passing pages — disciplined plumbing for programmatic local SEO, but a word count is not an indexing qualification. (NOTE 2026-07-25: this threshold is a content-length sanity check only — it does not constitute content-quality, uniqueness or indexability approval; final indexing decisions remain pending P1 locality evaluation.)
 - `lastModified` deliberately omitted from sitemap rather than fake-stamped (correct call, documented in code).
 - Entity direction is right: engineer-led owner-side positioning is consistent across homepage metadata, footer NAP is complete (address, phone, email), breadcrumbs and FAQ components exist.
 

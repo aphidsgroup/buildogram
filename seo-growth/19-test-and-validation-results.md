@@ -133,5 +133,5 @@ Scope: `src/app`, `src/components`, `src/data`, `src/lib`, excluding authenticat
 | 10 | public `buildogram.com` | 0 new | **0** (2 documented internal/test remainders) |
 | 11 | mojibake | 0 new | **0** |
 
-Locality indexability re-check: replicated the generator's word-count gate — **28/28 area pages still pass** the 150-unique-word threshold after content removal, so no page silently drops to `noindex` or leaves the sitemap.
+Locality content-length sanity check: **All 28 locality pages passed the minimum content-length sanity check. This does not constitute content-quality, uniqueness or indexability approval. Final indexing decisions remain pending P1 locality evaluation.** Verified by replicating the generator's word count; no page silently changed `noindex`/sitemap state as a side-effect of the removals.
 Tests: **21/21 pass**. Syntax: `node --check` clean on all files modified in this pass.

@@ -1,8 +1,31 @@
 # SEO Growth System — CHANGELOG
 
+## CURRENT STATE (authoritative — as of Readiness Pass 3, 2026-07-25)
+
+**Readiness Pass 3 supersedes all earlier wording decisions in this changelog.** The following terms are **no longer used anywhere in public content**, and any earlier entry below describing them as the "current" or "approved replacement" wording reflects the state at that commit only:
+
+| Superseded wording | Current wording |
+| --- | --- |
+| `screened` / `screened by our team` / `Engineer-Screened` | Buildogram Partner Network · Listed Construction Professionals · listed partner |
+| `vetted` / `engineer-vetted` | (removed — no screening implication) |
+| `verified contractor network` / `verified supplier network` / `Verified Partner Network` / `verified builder` | Buildogram Partner Network · suppliers in our network · listed partner |
+| `qualified structural engineers` | structural engineering professionals · structural engineering review coordination · review by an appropriate structural engineering professional |
+| `2,500+ BQS checkpoints` / `500+ QC checks` / `up to 2,500+` (logically invalid) | structured quality checkpoints · stage-wise quality checks · documented inspection checkpoints |
+| Prescriptive locality soil / flooding / foundation claims (per-area soil type, flood-risk ratings, "Pile foundations are mandatory", plinth-height directives) | Site-specific due-diligence wording; foundation decisions deferred to project-specific soil investigation and structural design |
+| `current Chennai market data` / `updated monthly` | project inputs and available Chennai market references |
+| Locality ₹/sqft cost figures, undated material/works rates | Project-specific estimate wording; any retained range is explicitly marked "indicative only — not a dated quotation" |
+| `3–5 working days` turnaround | The expected turnaround is confirmed after reviewing the project scope, documents and required deliverables |
+
+**Deployment state:** branch `seo/buildogram-organic-growth-system`, not merged, not deployed. Preview deployment approved by owner but **not yet created** (Vercel MCP token lacks access to the `aphidsgroup-3300s-projects` team scope — 403). Build/lint remain owner-machine gates. Production promotion and P1 both remain **NO-GO**.
+
+**Note on locality pages:** all 28 passed the minimum content-length sanity check. This does not constitute content-quality, uniqueness or indexability approval. Final indexing decisions remain pending P1 locality evaluation.
+
+> **Historical entries below:** retained as a record of what changed at each commit. Wording quoted in them was accurate at that time and may have been superseded by the table above.
+
+
 ## 2026-07-25 — Readiness pass 3 (owner corrections 1–10, pre-preview-deploy)
 
-**Item 7 (priority) — locality safety claims remediated.** 28 areas × soilType/soilNote/floodRisk neutralised; 26 legacy localities × soilNote; 23 prescriptive sentences (plinth heights, pile/raft prescriptions, waterproofing directives, marsh/water-table statements) removed from constructionTips across 12 entries; locality cost card, flood badge, area+service chips, generator cost FAQ and LocalBusiness `priceRange` removed; `/construction-in-chennai` "Pile foundations are mandatory", flood-zone locality list and 12 per-locality soil notes rewritten. All 28 area pages still clear the 150-word indexability gate (verified).
+**Item 7 (priority) — locality safety claims remediated.** 28 areas × soilType/soilNote/floodRisk neutralised; 26 legacy localities × soilNote; 23 prescriptive sentences (plinth heights, pile/raft prescriptions, waterproofing directives, marsh/water-table statements) removed from constructionTips across 12 entries; locality cost card, flood badge, area+service chips, generator cost FAQ and LocalBusiness `priceRange` removed; `/construction-in-chennai` "Pile foundations are mandatory", flood-zone locality list and 12 per-locality soil notes rewritten. All 28 locality pages passed the minimum content-length sanity check. This does not constitute content-quality, uniqueness or indexability approval. Final indexing decisions remain pending P1 locality evaluation.
 **Item 1** — "qualified structural engineers" removed from every Buildogram-team/service claim → "structural engineering professionals" / "structural engineering review coordination". Educational and legal guidance advising users to consult a licensed/registered engineer intentionally retained.
 **Item 2** — screening implication fully removed (`screened`, `vetted`, plus 51 further "verified contractor/supplier/builder network" instances found in data files, the locality generator template, directory UI, notification template and brand positioning) → Buildogram Partner Network / Listed Professionals / listed partner.
 **Item 3** — drone wording replaced with regulatory-responsibility formulation.
