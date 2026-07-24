@@ -155,7 +155,7 @@ export default function SurveyRequirementClient() {
             </div>
             <AIToolResult 
               resultData={result} 
-              actionLabel="Book a Verified Land Surveyor"
+              actionLabel="Book a Land Surveyor"
               onActionClick={() => setShowLeadCapture(true)}
             />
           </div>

@@ -24,7 +24,7 @@ export default function Page() {
       serviceDetails={[
         { title: 'Detailed Reports', desc: 'Get itemized breakdowns of our findings.' },
         { title: 'Expert Guidance', desc: 'Speak directly with our senior engineers.' },
-        { title: 'Verified Records', desc: 'All documents are stored in your Property Passport.' }
+        { title: 'Documented Records', desc: 'All documents are stored in your Property Passport.' }
       ]}
       proofData={{
         title: 'Real Engineering Value',

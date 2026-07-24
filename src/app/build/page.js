@@ -12,10 +12,10 @@ title: 'Construction Support and Contractor Marketplace | Buildogram',
 const services = [
   { icon: '🏠', title: 'Home Construction', desc: 'Individual homes built with transparent BOQ, material proof and quality checks.', href: '/build/home-construction', tag: 'Most Popular' },
   { icon: '🏛️', title: 'Villa Construction', desc: 'Premium villas with 3D planning, luxury materials and complete handover documentation.', href: '/build/villa-construction', tag: 'Premium' },
-  { icon: '🏢', title: 'Commercial Construction', desc: 'Showrooms, offices, warehouses, clinics and schools — built to spec.', href: '/build/commercial-construction', tag: '' },
+  { icon: '🏢', title: 'Commercial Construction', desc: 'Showrooms, offices, warehouses, clinics and schools — built to spec.', href: '/build/commercial', tag: '' },
   { icon: '🔨', title: 'Renovation', desc: 'Structural upgrades, waterproofing, interiors and before/after proof.', href: '/build/renovation', tag: '' },
-  { icon: '🎨', title: 'Interiors', desc: 'Modular kitchens, wardrobes, false ceilings and complete interior fit-outs.', href: '/build/interiors', tag: '' },
-  { icon: '📋', title: 'PMC', desc: 'Project Management Consulting — we supervise your project and protect your investment.', href: '/build/pmc', tag: '' },
+  { icon: '🎨', title: 'Interiors', desc: 'Modular kitchens, wardrobes, false ceilings and complete interior fit-outs.', href: '/partners/interiors', tag: '' },
+  { icon: '📋', title: 'PMC', desc: 'Project Management Consulting — we supervise your project and protect your investment.', href: '/construction-project-management-chennai', tag: '' },
 ];
 
 const proofPoints = [

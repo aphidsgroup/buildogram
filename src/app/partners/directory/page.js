@@ -41,7 +41,7 @@ export default async function PartnerDirectoryPage() {
       SELECT p.*,
         COALESCE((SELECT COUNT(*)::int FROM partner_enquiries pe WHERE pe.partner_id = p.id), 0) as enquiry_count
       FROM partners p
-      WHERE p.approval_status = 'Approved' AND p.active = true
+      WHERE p.approval_status = 'Approved' AND p.active = true AND p.slug NOT LIKE 'demo-%'
       ORDER BY p.featured DESC, p.created_at DESC LIMIT 100
     `;
 

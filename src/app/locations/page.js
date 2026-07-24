@@ -182,7 +182,7 @@ export default function LocationsHub() {
               ['Material Sourcing', '/building-materials-chennai'],
               ['Piling Works', '/piling-works-chennai'],
               ['Construction Cost Estimation', '/services/construction-cost-consultation'],
-              ['Verified Contractors', '/verified-contractors-chennai'],
+              ['Contractors', '/partners/contractors'],
             ].map(([label, href]) => (
               <Link
                 key={href}

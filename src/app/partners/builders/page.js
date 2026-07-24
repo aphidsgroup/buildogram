@@ -3,7 +3,7 @@ import Link from 'next/link';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
-  title: 'Verified Builders in Chennai | Engineer-Approved Construction Partners | Buildogram',
+  title: 'Builders in Chennai | Engineer-Screened Construction Partners | Buildogram',
   description: 'Find RERA-registered, engineer-approved builders in Chennai. Buildogram verifies past projects, structural compliance, and warranty documentation before listing any builder.',
   path: '/partners/builders',
 });
@@ -42,9 +42,9 @@ export default function BuildersPage() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255,163,100,0.18), rgba(252,110,32,0.14))', border: '1px solid rgba(252,110,32,0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Partner Directory</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Verified Builders in Chennai</h1>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Builders in Chennai</h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>
-            Every builder in our network is RERA-registered and has been vetted by our engineers. No unverified listings, no fake reviews — just builders who have proven their quality.
+            Builders in our network are screened by our team against the criteria below before they can appear in the directory.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/join-as-partner" className="btn btn-primary btn-lg">Join as a Builder</Link>
@@ -59,7 +59,7 @@ export default function BuildersPage() {
         <section style={{ marginBottom: '64px' }}>
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
             <div className="tag" style={{ marginBottom: '12px' }}>Our Vetting Process</div>
-            <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', color: 'var(--secondary)' }}>What Makes a Buildogram-Verified Builder?</h2>
+            <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', color: 'var(--secondary)' }}>What We Screen Builders For</h2>
             <p style={{ color: 'var(--text-muted)', maxWidth: '580px', margin: '12px auto 0', fontSize: '15px' }}>We check every builder against 4 non-negotiable criteria before they can appear in our directory.</p>
           </div>
           <div className="grid-2" style={{ gap: '20px' }}>
@@ -124,7 +124,7 @@ export default function BuildersPage() {
           <div className="card" style={{ background: 'var(--secondary)', border: 'none', textAlign: 'center', padding: '36px' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>🏗️</div>
             <h3 style={{ fontSize: '20px', color: 'white', marginBottom: '8px' }}>Are You a Builder?</h3>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>Apply to join the Buildogram verified partner network and get quality project leads.</p>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>Apply to join the Buildogram partner network and get quality project leads.</p>
             <Link href="/join-as-partner" className="btn btn-primary">Apply to Join</Link>
           </div>
         </div>
@@ -139,7 +139,7 @@ export default function BuildersPage() {
         </div>
       </div>
 
-      <BreadcrumbSchema items={[{ name: 'Home', path: '/' }, { name: 'Partners', path: '/partners' }, { name: 'Verified Builders in Chennai', path: '/partners/builders' }]} />
+      <BreadcrumbSchema items={[{ name: 'Home', path: '/' }, { name: 'Partners', path: '/partners' }, { name: 'Builders in Chennai', path: '/partners/builders' }]} />
     </>
   );
 }

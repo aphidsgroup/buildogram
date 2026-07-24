@@ -15,7 +15,7 @@ export default function CementPage() {
   return ( <>
     <PublicServicePage
       heroEyebrow="Material Sourcing Hub"
-      heroTitle="Engineer-Verified Cement in Chennai"
+      heroTitle="Cement Supply in Chennai"
       heroSub="Get transparent, bulk-rate quotes for fresh OPC 53 and PPC cement. Every batch is verified by Buildogram engineers for age, grade, and lump-free quality before it hits your site."
       heroPrimaryCta={{ label: 'Get a Cement Quote', href: '/contact?type=materials' }}
       heroSecondaryCta={{ label: 'View All Materials', href: '/materials' }}
@@ -36,7 +36,7 @@ export default function CementPage() {
       serviceDetails={[
         { title: "OPC 53 Grade", desc: "High early strength cement ideal for RCC work, slabs, columns, and beams. We ensure it's factory-fresh for maximum strength." },
         { title: "PPC (Portland Pozzolana Cement)", desc: "Best for brick masonry, plastering, and tiling. Highly resistant to chemical attacks, making it great for Chennai's coastal weather." },
-        { title: "Top Brands Verified", desc: "We facilitate sourcing from UltraTech, Ramco, Dalmia, Chettinad, Zuari, and Coromandel based on current market availability." },
+        { title: "Top Brands Available", desc: "We facilitate sourcing from UltraTech, Ramco, Dalmia, Chettinad, Zuari, and Coromandel based on current market availability." },
         { title: "Bulk & Retail Procurement", desc: "Whether you need 50 bags for a renovation or 5000 bags for a commercial project, we negotiate the best per-bag rate." }
       ]}
       

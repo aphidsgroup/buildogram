@@ -38,7 +38,7 @@ const TRUST_ITEMS = [
 
 const FAQS = [
   { question: 'Does Buildogram sell materials directly to me?', answer: 'We connect you with our verified supplier network and facilitate procurement — either by placing orders on your behalf or by providing supplier contacts for direct purchase. Our role is to verify material quality and ensure fair pricing, not to be a retailer.' },
-  { question: 'How do Buildogram\'s material prices compare to market rates?', answer: 'Our network operates at Broadway and Mannady wholesale rates — typically 8–15% below retail prices. The savings come from bulk ordering, direct manufacturer relationships, and eliminating intermediary markups.' },
+  { question: 'How do Buildogram\'s material prices compare to market rates?', answer: 'Our network sources at wholesale market rates from hubs like Broadway and Mannady. Savings versus retail vary by material, brand, quantity and delivery location — each quote shows the actual rate offered.' },
   { question: 'Can I visit the supplier before placing an order?', answer: 'Yes. We can arrange site visits to our verified supplier warehouses in Chennai. This is especially useful before your first order to build trust with the supplier.' },
   { question: 'What are Manufacturer Test Certificates (MTCs) and why do they matter?', answer: 'An MTC is a quality certification issued by the manufacturer confirming the batch of material meets the specified grade (e.g., Fe500D for TMT steel, OPC 53 for cement). It includes test data on tensile strength, yield strength, chemical composition, and more. Without MTC verification, you cannot be sure you received what you paid for.' },
   { question: 'How long does material delivery take after ordering?', answer: 'Cement and M-sand: same day or next day in Chennai. TMT steel: 1–3 days depending on quantity. RMC: scheduled delivery window. Tiles and finishing materials: 3–7 days depending on stock.' },
@@ -71,9 +71,9 @@ export default function MaterialsPage() {
         <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', padding: '24px' }}>
           {[
             { value: '11+', label: 'Material Categories' },
-            { value: '150+', label: 'Verified Suppliers' },
+            { value: 'Chennai-wide', label: 'Supplier Network' },
             { value: 'Broadway', label: 'Wholesale Pricing' },
-            { value: '100%', label: 'MTC-Verified Delivery' },
+            { value: 'MTC', label: 'Mill Test Certificates on Supply' },
           ].map(s => (
             <div key={s.label} style={{ textAlign: 'center', padding: '12px' }}>
               <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--primary)' }}>{s.value}</div>

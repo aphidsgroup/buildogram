@@ -59,7 +59,7 @@ export default function ChennaiHub() {
       {/* Stats bar */}
       <div style={{ background: 'var(--bg-card)', borderBottom: '1px solid var(--border)' }}>
         <div className="container" style={{ padding: '20px 24px', display: 'flex', gap: '40px', flexWrap: 'wrap', justifyContent: 'center' }}>
-          {[['28+', 'Chennai Localities'], ['500+', 'Projects Supported'], ['18%', 'Average Savings'], ['₹50Cr+', 'Value Managed']].map(([val, lbl]) => (
+          {[['28+', 'Chennai Localities Covered'], ['Engineer-Led', 'Independent Reviews'], ['BOQ + Site', 'Audit & Supervision'], ['Documented', 'Property Records']].map(([val, lbl]) => (
             <div key={lbl} style={{ textAlign: 'center' }}>
               <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--primary)' }}>{val}</div>
               <div style={{ fontSize: '13px', color: 'var(--text-muted)' }}>{lbl}</div>
@@ -98,7 +98,7 @@ export default function ChennaiHub() {
             </Link>
             <Link href="/partners/directory" style={{ textDecoration: 'none' }}>
               <div className="card card-hover" style={{ height: '100%', background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '24px' }}>
-                <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#1E293B', marginBottom: '8px' }}>🤝 Verified Partners</h3>
+                <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#1E293B', marginBottom: '8px' }}>🤝 Partners</h3>
                 <p style={{ fontSize: '14px', color: '#64748B', lineHeight: 1.5, margin: 0 }}>Find trusted architects, builders, and contractors.</p>
               </div>
             </Link>

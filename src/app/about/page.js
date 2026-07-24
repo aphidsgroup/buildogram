@@ -57,18 +57,18 @@ const ABOUT_PAGE_SCHEMA = {
 };
 
 const STATS = [
-  { value: '500+', label: 'Projects Supported', icon: '🏗️' },
-  { value: '₹50Cr+', label: 'Construction Value Managed', icon: '💰' },
-  { value: '18%', label: 'Average Client Savings', icon: '📉' },
-  { value: '10-Year', label: 'Structural Warranty', icon: '🛡️' },
+  { value: 'Engineer-Led', label: 'Independent Owner-Side Reviews', icon: '🏗️' },
+  { value: 'Chennai', label: 'Primary Service Area', icon: '📍' },
+  { value: 'BOQ + Site', label: 'Quote Audits & Quality Checks', icon: '📉' },
+  { value: 'Documented', label: 'Property Passport Records', icon: '🛡️' },
 ];
 
 const TIMELINE = [
   { year: '2021', event: 'Founded by Kavin, Lokesh & Manoj in Chennai', detail: 'Three engineers frustrated with opaque construction practices decided to build a transparent, engineer-led platform for homeowners.' },
-  { year: '2022', event: 'First 50 BOQ Reviews Completed', detail: 'Helped Chennai homeowners collectively avoid over ₹2.5Cr in hidden contractor costs through rigorous BOQ auditing.' },
+  { year: '2022', event: 'BOQ Review Service Launched', detail: 'Began helping Chennai homeowners identify hidden contractor costs, scope gaps and pricing inconsistencies through rigorous BOQ auditing.' },
   { year: '2023', event: 'Launched Property Passport & Client Portal', detail: 'Introduced digital property records and a live client portal giving homeowners real-time access to their construction progress and test reports.' },
   { year: '2024', event: 'Expanded to NDT Testing & Pile Foundation Services', detail: 'Added Non-Destructive Testing (NDT) for structural audits and specialized pile foundation design for Chennai\'s challenging coastal soil conditions.' },
-  { year: '2025', event: '500+ Projects Milestone & AI Tools Launched', detail: 'Reached 500+ supported projects and launched AI-assisted BOQ review tools, making construction cost verification faster and more accessible.' },
+  { year: '2025', event: 'AI Tools Launched', detail: 'Launched AI-assisted BOQ review tools, making construction cost verification faster and more accessible.' },
 ];
 
 export default function About() {

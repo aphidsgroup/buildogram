@@ -263,7 +263,7 @@ export default async function AreaPage({ params }) {
               Start Your {area.name} Construction Project
             </h2>
             <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '16px', marginBottom: '24px' }}>
-              Get engineer-led guidance, verified contractors, and transparent pricing.
+              Get engineer-led guidance, contractors, and transparent pricing.
             </p>
             <a
               href="/contact?type=construction"

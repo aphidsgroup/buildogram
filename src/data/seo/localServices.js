@@ -23,7 +23,7 @@ export const localServices = [
       { q: 'How do I find a reliable home construction contractor in {area}?', a: 'Buildogram\'s verified contractor network includes builders with validated project histories in {area} and across Chennai. All contractors undergo background and quality screening before listing on our platform.' },
       { q: 'What is the approximate cost of home construction in {area}?', a: 'Home construction costs in {area} typically range from {costMin} to {costMax} per sqft depending on specification — basic, standard, or premium. Contact our engineers for a project-specific estimate.' },
       { q: 'Do I need CMDA or GCC approval for home construction in {area}?', a: 'Yes. {approvalNote}. Building without approval is illegal and can result in demolition orders. Buildogram helps you verify approval requirements for your specific plot.' },
-      { q: 'What is a BOQ review and why does it matter for my home construction?', a: 'A Bill of Quantities (BOQ) lists every material, labour item, and its quantity and rate. Buildogram\'s engineers audit your contractor\'s BOQ against market rates and engineering norms. This typically saves 8–15% on construction cost.' },
+      { q: 'What is a BOQ review and why does it matter for my home construction?', a: 'A Bill of Quantities (BOQ) lists every material, labour item, and its quantity and rate. Buildogram\'s engineers audit your contractor\'s BOQ against market rates and engineering norms to identify scope gaps, pricing inconsistencies and avoidable cost risks. Actual outcomes vary by quotation, project scope, specifications and omissions.' },
       { q: 'How long does home construction take in {area}?', a: 'A standard ground-floor house (800–1200 sqft) typically takes 6–8 months from approval to handover. Multi-storey structures take 10–14 months.' },
       { q: 'What soil challenges should I be aware of when building in {area}?', a: '{soilNote}' },
     ],
@@ -82,9 +82,9 @@ export const localServices = [
       { step: '05', title: 'Negotiation Support', desc: 'Our engineers can join contractor meetings to help you negotiate a fair, transparent agreement.' },
     ],
     faqs: [
-      { q: 'What is a BOQ review and why do I need it for my {area} project?', a: 'A Bill of Quantities (BOQ) is a line-by-line cost breakdown of your construction project. BOQ review by Buildogram\'s engineers identifies over-priced items, missing items, and specification risks before you sign with a contractor — typically saving 8–15% on total project cost.' },
+      { q: 'What is a BOQ review and why do I need it for my {area} project?', a: 'A Bill of Quantities (BOQ) is a line-by-line cost breakdown of your construction project. BOQ review by Buildogram\'s engineers identifies over-priced items, missing items, and specification risks before you sign with a contractor. Potential savings vary by quotation, project scope, specifications and omissions.' },
       { q: 'What construction materials should I verify in a BOQ for a {area} project?', a: 'Key materials to verify include: cement (grade and quantity), TMT steel (grade and weight), M-sand vs river sand, RMC mix design, tile specifications, waterproofing compound, electrical conduit and wiring specs, and plumbing pipe grades.' },
-      { q: 'How much does a BOQ audit cost at Buildogram?', a: 'BOQ audit pricing varies by project size and complexity. Contact our team for a project-specific quote. Given the typical savings of 8–15%, the audit cost is usually recovered in the first phase of construction.' },
+      { q: 'How much does a BOQ audit cost at Buildogram?', a: 'BOQ audit pricing varies by project size and complexity. Contact our team for a project-specific quote. Potential savings vary by quotation, project scope, specifications and omissions.' },
       { q: 'What is the difference between a package quote and a BOQ?', a: 'A package quote (e.g., ₹1,800/sqft all-in) gives you one number but hides material specifications and quantities. A BOQ breaks down every cost separately, giving you full transparency and accountability throughout the project.' },
       { q: 'Can a contractor refuse a BOQ audit?', a: 'Any reputable contractor should be comfortable with independent BOQ review. Resistance to a BOQ audit is itself a red flag. Buildogram always recommends insisting on a detailed BOQ before signing any construction agreement.' },
     ],
@@ -115,7 +115,7 @@ export const localServices = [
       { q: 'What is the construction cost per sqft in {area} in 2025?', a: 'Construction costs in {area} typically range from {costMin} to {costMax} per sqft depending on specification level. Final cost depends on soil conditions, number of floors, and specific finish choices.' },
       { q: 'What factors affect construction cost in {area}?', a: 'Key factors include: soil type (pile foundation costs more), number of floors, material specification, interior finishes, bathroom fixtures, and electrical complexity. {area}-specific: {soilNote}' },
       { q: 'What is typically not included in a contractor\'s sqft rate?', a: 'Most sqft-rate quotes exclude: government approvals, soil testing, site clearing, compound wall, bore well, overhead water tank, landscaping, utility connections, and interior furniture. Always ask for a detailed inclusion list.' },
-      { q: 'How can I reduce construction cost in {area} without compromising quality?', a: 'Key strategies: (1) Get an independent BOQ review before signing — save 8–15%. (2) Source cement and TMT steel directly through Buildogram marketplace. (3) Use M-sand instead of river sand. (4) Plan multiple floors from the start. (5) Avoid mid-project specification changes.' },
+      { q: 'How can I reduce construction cost in {area} without compromising quality?', a: 'Key strategies: (1) Get an independent BOQ review before signing to catch scope gaps and pricing inconsistencies. (2) Source cement and TMT steel directly through Buildogram marketplace. (3) Use M-sand instead of river sand. (4) Plan multiple floors from the start. (5) Avoid mid-project specification changes.' },
       { q: 'Is construction cheaper in {area} compared to central Chennai?', a: 'Labour costs across Chennai are similar, but land and specific material logistics may vary by zone. Always get site-specific quotes.' },
     ],
     internalLinks: [
@@ -431,7 +431,7 @@ export const localServices = [
     internalLinks: [
       { text: 'PEB Buildings', href: '/peb-building-contractors-chennai' },
       { text: 'Industrial Shed Construction', href: '/industrial-shed-construction-chennai' },
-      { text: 'Steel Fabrication Contractors', href: '/steel-fabrication-contractors-chennai' },
+      { text: 'Steel Fabrication Contractors', href: '/steel-construction-chennai' },
       { text: 'BOQ Audit', href: '/boq-audit' },
       { text: 'All Chennai Areas', href: '/locations/chennai' },
     ],
@@ -462,8 +462,8 @@ export const localServices = [
     internalLinks: [
       { text: 'Steel Construction', href: '/steel-construction-chennai' },
       { text: 'Industrial Shed Construction', href: '/industrial-shed-construction-chennai' },
-      { text: 'Warehouse Steel Building', href: '/warehouse-steel-building-chennai' },
-      { text: 'Steel Fabrication Contractors', href: '/steel-fabrication-contractors-chennai' },
+      { text: 'Warehouse Steel Building', href: '/industrial-shed-construction-chennai' },
+      { text: 'Steel Fabrication Contractors', href: '/steel-construction-chennai' },
       { text: 'All Chennai Areas', href: '/locations/chennai' },
     ],
   },
@@ -524,7 +524,7 @@ export const localServices = [
     internalLinks: [
       { text: 'PEB Buildings', href: '/peb-building-contractors-chennai' },
       { text: 'Steel Construction', href: '/steel-construction-chennai' },
-      { text: 'Warehouse Steel Building', href: '/warehouse-steel-building-chennai' },
+      { text: 'Warehouse Steel Building', href: '/industrial-shed-construction-chennai' },
       { text: 'BOQ Audit', href: '/boq-audit' },
       { text: 'All Chennai Areas', href: '/locations/chennai' },
     ],

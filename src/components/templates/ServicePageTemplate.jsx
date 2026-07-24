@@ -149,7 +149,7 @@ export default function ServicePageTemplate({ service }) {
         {/* CTA BLOCK - gingiris-seo-geo CTA Convert Block standard */}
         <div className="card" style={{ marginTop: '48px', background: 'var(--gradient-dark)', border: 'none', textAlign: 'center', padding: '48px' }}>
           <h3 style={{ color: 'white', fontSize: '26px', marginBottom: '12px' }}>Ready to get started?</h3>
-          <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '28px', maxWidth: '540px', margin: '0 auto 28px' }}>Talk to our verified engineers in Chennai for a free consultation on your project requirements.</p>
+          <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '28px', maxWidth: '540px', margin: '0 auto 28px' }}>Talk to our engineers in Chennai for a consultation on your project requirements.</p>
           <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href={ctaHref} className="btn btn-primary btn-lg">{ctaLabel}</Link>
             {ctaSecondaryHref && (

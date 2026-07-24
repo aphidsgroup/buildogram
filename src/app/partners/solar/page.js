@@ -99,7 +99,7 @@ export default function SolarPage() {
           <div className="card" style={{ background: 'var(--secondary)', textAlign: 'center', padding: '36px' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>🔋</div>
             <h3 style={{ fontSize: '20px', color: 'white', marginBottom: '8px' }}>Solar Installer? Join Us</h3>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>Get quality Chennai residential and commercial solar leads from our verified partner network.</p>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>Get quality Chennai residential and commercial solar leads from our partner network.</p>
             <Link href="/join-as-partner" className="btn btn-primary">Apply to Join</Link>
           </div>
         </div>

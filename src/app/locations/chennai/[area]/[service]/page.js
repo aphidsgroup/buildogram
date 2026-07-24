@@ -218,7 +218,7 @@ export default async function ServiceAreaPage({ params }) {
               Get {service.name} Support in {area.name}
             </h2>
             <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '16px', marginBottom: '24px' }}>
-              Engineer-led transparency. Verified contractors. Competitive material pricing.
+              Engineer-led transparency. Screened contractors. Competitive material pricing.
             </p>
             <a
               href="/contact?type=construction"

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
-  title: 'Verified Architects in Chennai | COA-Registered Design Partners | Buildogram',
+  title: 'Architects in Chennai | Design Partners | Buildogram',
   description: 'Find COA-registered architects in Chennai with CMDA plan approval experience. Buildogram verifies Council of Architecture registration, portfolio, and structural collaboration.',
   path: '/partners/architects',
 });
@@ -37,8 +37,8 @@ export default function ArchitectsPage() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255,163,100,0.18), rgba(252,110,32,0.14))', border: '1px solid rgba(252,110,32,0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Partner Directory</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Verified Architects in Chennai</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>COA-registered architects with CMDA plan approval experience and structural engineer collaboration — vetted by our engineering team.</p>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Architects in Chennai</h1>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>COA-registered architects with CMDA plan approval experience and structural engineer collaboration — screened by our team.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/join-as-partner" className="btn btn-primary btn-lg">Join as an Architect</Link>
             <Link href="/contact?type=partner-match" className="btn btn-lg" style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>Find an Architect</Link>

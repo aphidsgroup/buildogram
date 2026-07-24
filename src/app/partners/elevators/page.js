@@ -108,7 +108,7 @@ export default function ElevatorsPage() {
           <div className="card" style={{ background: 'var(--secondary)', textAlign: 'center', padding: '36px' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>🔧</div>
             <h3 style={{ fontSize: '20px', color: 'white', marginBottom: '8px' }}>Elevator Contractor?</h3>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>Join our verified partner network and receive pre-qualified elevator installation leads in Chennai.</p>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>Join our partner network and receive pre-qualified elevator installation leads in Chennai.</p>
             <Link href="/join-as-partner" className="btn btn-primary">Apply to Join</Link>
           </div>
         </div>

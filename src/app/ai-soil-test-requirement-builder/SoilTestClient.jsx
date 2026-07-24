@@ -165,7 +165,7 @@ export default function SoilTestClient() {
             </div>
             <AIToolResult 
               resultData={result} 
-              actionLabel="Book a Verified Soil Test"
+              actionLabel="Book a Soil Test"
               onActionClick={() => setShowLeadCapture(true)}
             />
           </div>

@@ -78,7 +78,7 @@ export default function SuppliersPage() {
           <div className="card" style={{ textAlign: 'center', padding: '36px' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>📦</div>
             <h3 style={{ fontSize: '20px', color: 'var(--secondary)', marginBottom: '8px' }}>Request Material Quote</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>Share your BOQ quantities and we get you same-day wholesale quotes from verified suppliers.</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>Share your BOQ quantities and we get you same-day wholesale quotes from suppliers.</p>
             <Link href="/contact?type=material-quote" className="btn btn-primary">Request Quote</Link>
           </div>
           <div className="card" style={{ background: 'var(--secondary)', textAlign: 'center', padding: '36px' }}>

@@ -100,11 +100,11 @@ export default function PropertiesHubPage() {
           <div style={{ padding: '48px', background: '#F8FAFC', borderRadius: '24px', border: '1px solid #E2E8F0' }}>
             <h3 style={{ fontSize: '22px', marginBottom: '16px', color: '#0F172A' }}>Already have your plot or property?</h3>
             <p style={{ color: '#64748B', fontSize: '16px', marginBottom: '32px' }}>
-              If you already have your property and need construction guidance, BOQ review, verified contractors, or material support — Buildogram is your construction companion from here.
+              If you already have your property and need construction guidance, BOQ review, contractors, or material support — Buildogram is your construction companion from here.
             </p>
             <div style={{ display: 'flex', gap: '16px', justifyContent: 'center', flexWrap: 'wrap' }}>
               <Link href="/contact" className="btn btn-primary" style={{ padding: '14px 28px' }}>Start Your Construction Journey</Link>
-              <Link href="/partners/directory" className="btn btn-outline" style={{ padding: '14px 28px' }}>Explore Verified Partners</Link>
+              <Link href="/partners/directory" className="btn btn-outline" style={{ padding: '14px 28px' }}>Explore Partners</Link>
               <Link href="/materials" className="btn btn-outline" style={{ padding: '14px 28px' }}>Material Support</Link>
             </div>
           </div>

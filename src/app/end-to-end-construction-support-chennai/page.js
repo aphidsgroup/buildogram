@@ -32,7 +32,7 @@ const phases = [
   { num: '03', title: 'Contractor Vetting', desc: 'Background checks, past project site visits, financial capacity assessment, reference calls.' },
   { num: '04', title: 'Construction Execution', desc: 'Milestone-based payment schedule tied to verified progress. No advance payments without sign-off.' },
   { num: '05', title: 'Site Supervision', desc: 'Daily photo reports, material delivery checks, concrete cube tests, rebar inspection before casting.' },
-  { num: '06', title: 'Material Sourcing', desc: 'Cement, TMT steel, M-sand and RMC procured directly from verified suppliers at benchmarked rates.' },
+  { num: '06', title: 'Material Sourcing', desc: 'Cement, TMT steel, M-sand and RMC procured directly from suppliers at benchmarked rates.' },
   { num: '07', title: 'Handover & Property Passport', desc: 'Snag list inspection, as-built drawings, test certificates, warranties — bound as your permanent Property Passport.' },
 ];
 
@@ -75,7 +75,7 @@ export default function EndToEndConstructionPage() {
       <section style={{ background: 'var(--primary)', padding: '20px 0' }}>
         <div className="container">
           <div style={{ display: 'flex', gap: '48px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            {[['500+', 'Projects Supported'], ['₹2.1Cr', 'Average Project Value'], ['18%', 'Avg Cost Savings vs Market'], ['7', 'Construction Phases Covered']].map(([val, label]) => (
+            {[['7', 'Construction Phases Covered'], ['Engineer-Led', 'Independent Reviews'], ['BOQ + Site', 'Audit & Supervision'], ['Chennai', 'Service Area']].map(([val, label]) => (
               <div key={label} style={{ textAlign: 'center' }}>
                 <div style={{ color: 'white', fontSize: '24px', fontWeight: 700 }}>{val}</div>
                 <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: '13px' }}>{label}</div>

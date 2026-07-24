@@ -8,7 +8,7 @@ export default function Page() {
     <PublicServicePage
       heroEyebrow="Materials Dashboard"
       heroTitle="Sand & M-Sand Sourcing"
-      heroSub="Verified suppliers for River Sand, M-Sand (Plastering & Concreting), and P-Sand."
+      heroSub="Suppliers for River Sand, M-Sand (Plastering & Concreting), and P-Sand."
       heroPrimaryCta={{ label: 'Talk to an Engineer', href: '/contact?type=material_quote' }}
       heroSecondaryCta={{ label: 'Explore Platform', href: '/' }}
       problems={[{"icon":"🪨","title":"High Silt Content","desc":"Adulterated sand weakens concrete and causes plastering cracks."}]}

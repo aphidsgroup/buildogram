@@ -185,7 +185,7 @@ export default function DirectoryClient({ initialPartners = [] }) {
             border: '1px solid #E2E8F0', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', maxWidth: '600px', margin: '0 auto'
           }}>
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>🤝</div>
-            <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#1E293B', marginBottom: '12px' }}>Verified Partners Are Being Onboarded</h3>
+            <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#1E293B', marginBottom: '12px' }}>Partners Are Being Onboarded</h3>
             <p style={{ color: '#64748B', lineHeight: 1.6, marginBottom: '24px' }}>
               We are currently reviewing and onboarding trusted builders, architects, and suppliers in this category. Quality takes time, and we only list partners who meet our engineering standards.
             </p>

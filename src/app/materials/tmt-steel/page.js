@@ -12,7 +12,7 @@ export default function TmtSteelPage() {
   return ( <>
     <PublicServicePage
       heroEyebrow="Material Sourcing Hub"
-      heroTitle="Engineer-Verified TMT Steel in Chennai"
+      heroTitle="TMT Steel Supply in Chennai"
       heroSub="Secure primary-brand Fe500D and Fe550D TMT steel bars directly from authorized distributors. Every delivery includes an MTC (Material Test Certificate) and physical bendability checks by our engineers."
       heroPrimaryCta={{ label: 'Get a Steel Quote', href: '/contact?type=materials' }}
       heroSecondaryCta={{ label: 'View All Materials', href: '/materials' }}

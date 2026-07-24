@@ -2,7 +2,7 @@ import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export const metadata = generateSEOMetadata({
   title: "Construction Material Sourcing in Chennai | Buildogram",
-  description: "Transparent construction material sourcing in Chennai. Get competitive quotes for cement, steel, sand, electrical, and plumbing directly from verified suppliers.",
+  description: "Transparent construction material sourcing in Chennai. Get competitive quotes for cement, steel, sand, electrical, and plumbing directly from suppliers.",
   path: "/materials"
 });
 

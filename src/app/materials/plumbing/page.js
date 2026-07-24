@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
   title: 'Plumbing Materials & Pipes in Chennai | CPVC, UPVC, SWR',
-  description: 'Verified plumbing pipes and fittings in Chennai. We supply lead-free CPVC for hot water, UPVC for cold water, and heavy-duty SWR pipes for drainage.',
+  description: 'Plumbing pipes and fittings in Chennai. We supply lead-free CPVC for hot water, UPVC for cold water, and heavy-duty SWR pipes for drainage.',
   path: '/materials/plumbing',
 });
 

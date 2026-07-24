@@ -22,7 +22,7 @@ const STEPS = [
 
 const DELIVERABLES = [
   'Material Takeoff & BOQ Generation',
-  'Verified Supply of Beams, Columns & Plates',
+  'Supply of Beams, Columns & Plates',
   'Mill Test Certificates (MTC)',
   'Weight Verification at Bridge',
   'Anti-Corrosion Primer Application'

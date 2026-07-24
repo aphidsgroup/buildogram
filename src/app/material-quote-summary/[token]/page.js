@@ -48,7 +48,7 @@ export default async function QuoteSummaryPage({ params }) {
 
         {analysis.length === 0 ? (
           <div style={{ padding: '40px', textAlign: 'center', color: '#64748B', background: '#F1F5F9', borderRadius: '12px' }}>
-            We are currently gathering quotes from verified suppliers. Please check back shortly.
+            We are currently gathering quotes from suppliers. Please check back shortly.
           </div>
         ) : (
           <>

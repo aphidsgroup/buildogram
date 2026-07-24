@@ -14,7 +14,7 @@ const INTENT_OPTIONS = [
   { value: 'soil', label: 'Soil Testing' },
   { value: 'piling', label: 'Pile Foundation' },
   { value: 'passport', label: 'Property Passport Documentation' },
-  { value: 'partner_application', label: 'Join Verified Partner Network' },
+  { value: 'partner_application', label: 'Join Partner Network' },
   { value: 'ai', label: 'AI Tools Support' },
   { value: 'general', label: 'General Enquiry' },
 ];
@@ -385,7 +385,7 @@ export default function Contact() {
                   { icon: '🏗️', text: 'Home construction guidance' },
                   { icon: '📋', text: 'BOQ & plan review' },
                   { icon: '🧱', text: 'Material sourcing support' },
-                  { icon: '🤝', text: 'Verified partner connections' },
+                  { icon: '🤝', text: 'Partner connections' },
                   { icon: '📸', text: 'Site progress tracking' },
                   { icon: '🏠', text: 'Property Passport records' },
                   { icon: '🛡️', text: 'Partner registration' },
@@ -416,7 +416,7 @@ export default function Contact() {
               <div style={{ background: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
                 <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '8px' }}>Do you provide free initial consultations?</h3>
                 <p style={{ color: '#475569', fontSize: '15px', lineHeight: 1.6, margin: 0 }}>
-                  Yes, we offer an initial consultation to understand your construction or property requirement and guide you to the right services or verified partners.
+                  Yes, we offer an initial consultation to understand your construction or property requirement and guide you to the right services or partners.
                 </p>
               </div>
               <div style={{ background: 'white', padding: '20px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>

@@ -20,7 +20,7 @@ const HOW_IT_WORKS = [
   { step: '01', title: 'Concept & Feasibility', desc: 'Map your plot, budget, soil conditions, approval authority, and construction type before any commitment.' },
   { step: '02', title: 'Design & Structural Review', desc: 'Independent review of architectural and structural drawings — catching under-design, compliance gaps, and value engineering opportunities.' },
   { step: '03', title: 'BOQ & Contractor Audit', desc: 'Line-by-line audit of every contractor quote — rates, quantities, specifications, and hidden exclusions — before you sign.' },
-  { step: '04', title: 'Verified Contractor & Material Match', desc: 'Connect with screened contractors and verified suppliers with transparent material pricing and MTC compliance.' },
+  { step: '04', title: 'Contractor & Material Match', desc: 'Connect with screened contractors and suppliers with transparent material pricing and MTC compliance.' },
   { step: '05', title: 'Site Supervision & Quality Checks', desc: 'Engineer-led milestone inspections at every structural stage — concrete grades, rebar, waterproofing — with photographic reports.' },
   { step: '06', title: 'Property Passport Handover', desc: 'All drawings, invoices, material records, warranties, and maintenance guides — compiled into your permanent digital Property Passport.' },
 ];
@@ -119,7 +119,7 @@ export default function Home() {
               <div className={`${styles.browserDot} ${styles.red}`} />
               <div className={`${styles.browserDot} ${styles.yellow}`} />
               <div className={`${styles.browserDot} ${styles.green}`} />
-              <span style={{ fontSize: '12px', color: '#64748b', marginLeft: '12px', fontWeight: 600 }}>buildogram.com / command-center</span>
+              <span style={{ fontSize: '12px', color: '#64748b', marginLeft: '12px', fontWeight: 600 }}>buildogram.in / command-center</span>
             </div>
             <div className={styles.heroRightBody} style={{ padding: '24px', background: '#F8FAFC', display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto' }}>
               
@@ -300,14 +300,14 @@ export default function Home() {
             <SectionHeader
               eyebrow="Material Quote Support"
               title="Clarity on material brands and rates."
-              description="Get transparent quotes and comparative dashboards for cement, TMT steel, sand, blocks, tiles, and electricals directly from our verified supplier network."
+              description="Get transparent quotes and comparative dashboards for cement, TMT steel, sand, blocks, tiles, and electricals directly from our supplier network."
             />
           </AnimatedSection>
 
           <div className={styles.materialDashboard}>
             <div className={styles.matDashHeader}>
               <div className={styles.matDashTitle}>TMT Steel Price Comparison</div>
-              <div className={styles.matDashBadge}>Live Rates</div>
+              <div className={styles.matDashBadge}>Illustrative Example</div>
             </div>
             
             <div className={styles.matRow}>
@@ -319,28 +319,29 @@ export default function Home() {
             </div>
             
             <div className={styles.matRowItem}>
-              <div className={styles.matCol}>Sri Ram Steels (Verified)</div>
-              <div className={styles.matCol}>JSW 500D</div>
+              <div className={styles.matCol}>Supplier A</div>
+              <div className={styles.matCol}>Brand X 500D</div>
               <div className={styles.matCol}>5 MT</div>
               <div className={styles.matCol} style={{ color: 'var(--primary)', fontWeight: 700 }}>₹68,500</div>
               <div className={styles.matCol}>Next Day</div>
             </div>
             <div className={styles.matRowItem}>
-              <div className={styles.matCol}>Chennai Trade Links</div>
-              <div className={styles.matCol}>Tata Tiscon</div>
+              <div className={styles.matCol}>Supplier B</div>
+              <div className={styles.matCol}>Brand Y 550D</div>
               <div className={styles.matCol}>5 MT</div>
               <div className={styles.matCol} style={{ color: 'var(--primary)', fontWeight: 700 }}>₹71,200</div>
               <div className={styles.matCol}>2 Days</div>
             </div>
             <div className={styles.matRowItem}>
-              <div className={styles.matCol}>BuildMart India</div>
-              <div className={styles.matCol}>ARSS 500</div>
+              <div className={styles.matCol}>Supplier C</div>
+              <div className={styles.matCol}>Brand Z 500</div>
               <div className={styles.matCol}>5 MT</div>
               <div className={styles.matCol} style={{ color: 'var(--primary)', fontWeight: 700 }}>₹64,000</div>
               <div className={styles.matCol}>Same Day</div>
             </div>
 
             <div className="text-center" style={{ marginTop: '24px' }}>
+              <p style={{ fontSize: '12px', color: '#94a3b8', marginBottom: '12px' }}>Illustrative example — actual supplier quotes are shared per enquiry with rate, unit and delivery terms.</p>
               <Link href="/materials" className="btn btn-primary">Compare Material Rates</Link>
             </div>
           </div>
@@ -353,8 +354,8 @@ export default function Home() {
           <AnimatedSection>
             <SectionHeader
               eyebrow="Trusted Professionals"
-              title="Verified Partner Network."
-              description="Find engineers, contractors, architects, and suppliers who have been vetted for quality, reliability, and past project records."
+              title="Partner Network."
+              description="Find engineers, contractors, architects, and suppliers screened by our team before joining the network."
             />
           </AnimatedSection>
 
@@ -367,7 +368,7 @@ export default function Home() {
             ))}
           </div>
           <div className="text-center" style={{ marginTop: '40px' }}>
-            <Link href="/partners/directory" className="btn btn-primary btn-lg">Explore Verified Partners</Link>
+            <Link href="/partners/directory" className="btn btn-primary btn-lg">Explore Partners</Link>
           </div>
         </div>
       </section>
@@ -575,7 +576,7 @@ export default function Home() {
         <div className="sectionInner">
           <AnimatedSection className={styles.partnerCtaBox}>
             <h2 className={styles.partnerCtaH2}>Are you a builder, contractor, architect, or supplier?</h2>
-            <p className={styles.partnerCtaP}>Join the Buildogram network to connect with property owners looking for verified professionals and quality materials.</p>
+            <p className={styles.partnerCtaP}>Join the Buildogram network to connect with property owners looking for professionals and quality materials.</p>
             <Link href="/partners/register" className="btn btn-primary btn-lg" style={{ background: '#0F172A', color: 'white', border: 'none' }}>Become a Buildogram Partner</Link>
           </AnimatedSection>
         </div>
@@ -587,7 +588,7 @@ export default function Home() {
           <AnimatedSection className={styles.ctaBox}>
             <div className={styles.ctaGlow} aria-hidden="true" />
             <h2 className={styles.ctaH2}>Start with clarity. Build with confidence.</h2>
-            <p className={styles.ctaP}>Get the right engineering guidance, verified partners, materials, and property records from day one.</p>
+            <p className={styles.ctaP}>Get the right engineering guidance, partners, materials, and property records from day one.</p>
             <div className={styles.ctaActions}>
               <Link href="/contact?type=construction" className="btn btn-primary btn-lg">Talk to an Engineer</Link>
               <Link href="/boq-audit" className={`btn btn-lg ${styles.ctaOutline}`}>Review My Quote</Link>

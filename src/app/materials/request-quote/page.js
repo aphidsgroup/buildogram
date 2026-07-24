@@ -48,7 +48,7 @@ function RequestQuoteForm() {
       <div style={{ textAlign: 'center', padding: '60px', background: '#ECFDF5', borderRadius: '16px', border: '1px solid #10B981' }}>
         <div style={{ fontSize: '48px', marginBottom: '16px' }}>✅</div>
         <h2 style={{ fontSize: '24px', color: '#047857', marginBottom: '16px' }}>Quote Request Received!</h2>
-        <p style={{ color: '#065F46', fontSize: '16px', marginBottom: '32px' }}>Our operations team will review your requirements and begin gathering quotes from verified suppliers in your area.</p>
+        <p style={{ color: '#065F46', fontSize: '16px', marginBottom: '32px' }}>Our operations team will review your requirements and begin gathering quotes from suppliers in your area.</p>
         <Link href="/materials" style={{ display: 'inline-block', background: '#10B981', color: 'white', padding: '12px 24px', borderRadius: '8px', textDecoration: 'none', fontWeight: 600 }}>Return to Materials</Link>
       </div>
     );
@@ -109,7 +109,7 @@ export default function RequestQuotePage() {
             <span>🔒</span> 100% Data Privacy
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#475569', fontSize: '14px', fontWeight: 600 }}>
-            <span>✅</span> Verified Suppliers Only
+            <span>✅</span> Screened Suppliers
           </div>
         </div>
       </div>

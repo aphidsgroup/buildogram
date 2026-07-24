@@ -8,7 +8,7 @@ import Link from 'next/link';
 import PartnerApplicationForm from '@/components/partner/PartnerApplicationForm';
 
 export const metadata = generateSEOMetadata({ 
-  title: 'Join Buildogram as a Verified Partner | AI Construction Ecosystem', 
+  title: 'Join Buildogram as a Partner | AI Construction Ecosystem', 
   description: 'Join Buildogram’s AI-driven, engineer-led construction and property ecosystem. Builders, architects, engineers, and suppliers apply here.', 
   path: '/join-as-partner' 
 });
@@ -23,7 +23,7 @@ const STEPS = [
 
 const FAQS = [
   { question: 'Who can join the Buildogram Partner Ecosystem?', answer: 'We welcome Builders, Contractors, Architects, Structural Engineers, Surveyors, Soil/NDT Labs, Piling Contractors, Material Suppliers, Fabricators, Interior Designers, and more.' }, 
-  { question: 'What is the Partner OS?', answer: 'The Partner OS is our proprietary operating system where verified partners can manage leads, track project progress, collaborate with clients in the Client Room, and build Case Studies.' }, 
+  { question: 'What is the Partner OS?', answer: 'The Partner OS is our proprietary operating system where partners can manage leads, track project progress, collaborate with clients in the Client Room, and build Case Studies.' }, 
   { question: 'How much does it cost?', answer: 'Applying is free. We operate on a lead assignment or commission model depending on the category. Detailed terms are shared upon successful verification.' }, 
   { question: 'Why do you verify partners?', answer: 'Buildogram is an engineer-led platform built on trust. We verify all partners to ensure clients receive high-quality, transparent, and technically sound services.' }
 ];
