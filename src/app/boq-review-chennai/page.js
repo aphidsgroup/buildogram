@@ -1,10 +1,29 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
+import { generateFAQSchema, generateServiceSchema } from '@/lib/seo/schema';
 import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema';
+import EngineerCredibility from '@/components/seo/EngineerCredibility';
 
 export const metadata = generateSEOMetadata({
   title: 'BOQ Review & Audit in Chennai | Contractor Quote Check | Buildogram',
   description: 'Get your contractor BOQ reviewed by structural engineers in Chennai. Line-by-line verification, rate benchmarking, material quantity check and savings report.',
   path: '/boq-review-chennai',
+});
+
+const faqSchema = generateFAQSchema([
+  { question: 'What exactly is a BOQ audit?', answer: 'A BOQ (Bill of Quantities) audit is a line-by-line engineering review of your contractor\'s quotation. Every item is checked: the quantity is verified against your drawings, and the rate is benchmarked against current market prices for Chennai.' },
+  { question: 'How long does the BOQ review take?', answer: 'Standard turnaround is 3 working days from when we receive the BOQ and drawings. For BOQs with more than 100 line items, allow 5 working days.' },
+  { question: 'What format should I send my BOQ in?', answer: 'We accept any format — Excel, PDF, Word, or even a handwritten contractor estimate scanned as a photo. Drawings can be sent as PDF, DWG, or photos of physical prints.' },
+  { question: 'Can you review a contractor quote if I don\'t have structural drawings?', answer: 'Yes. For projects where drawings are not yet finalised, we perform a quantity estimate review — checking whether the quantities in the BOQ are realistic for your project type and floor area.' },
+  { question: 'What if my contractor disagrees with the review findings?', answer: 'Our review is an independent engineering opinion backed by current market data and quantity take-offs from drawings. We provide the calculation basis and market data reference for any disputed item. We can also join a three-way call with your contractor to explain findings.' },
+  { question: 'How much money can I realistically save from a BOQ review?', answer: 'In our experience across Chennai residential projects, average overquoting above verified market rates is 18–25%. On a ₹1Cr project, that is ₹18–25 lakhs in potential savings. Our observed average saving is ₹3.2 lakhs per project.' },
+  { question: 'Do you also review construction contracts and agreements?', answer: 'Yes, as an add-on to BOQ review. We check whether the contract has milestone-linked payment terms, defect liability period, arbitration clause, and whether materials are specified with brand/grade rather than generic terms.' },
+]);
+
+const serviceSchema = generateServiceSchema({
+  name: 'BOQ Review and Audit Chennai',
+  description: 'Line-by-line contractor BOQ review by structural engineers — quantity verification, rate benchmarking against Chennai market prices, and negotiation brief.',
+  url: '/boq-review-chennai',
+  category: 'Engineering Review',
 });
 
 const faqs = [
@@ -29,6 +48,8 @@ const catches = [
 export default function BOQReviewPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       {/* Hero */}
       <section style={{ background: 'var(--secondary)', padding: '80px 0 60px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 50%, rgba(252,110,32,0.08) 0%, transparent 60%)' }} />
@@ -171,6 +192,9 @@ export default function BOQReviewPage() {
             ))}
           </div>
         </section>
+
+        {/* E-E-A-T Trust Block */}
+        <EngineerCredibility service="BOQ Review" />
 
         {/* Related */}
         <section style={{ marginBottom: '40px' }}>

@@ -1,10 +1,28 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
+import { generateFAQSchema, generateServiceSchema } from '@/lib/seo/schema';
 import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
   title: 'Industrial Shed Construction in Chennai | Factory Shed Builders | Buildogram',
   description: 'Industrial shed and factory building construction support in Chennai. RCC frame, steel frame and PEB sheds with BOQ, supervision and quality control in Chennai industrial zones.',
   path: '/industrial-shed-construction-chennai',
+});
+
+const faqSchema = generateFAQSchema([
+  { question: 'Which type of industrial shed is best for a factory in Chennai?', answer: 'For single-storey manufacturing sheds with clear spans of 15–30m, a steel frame or PEB structure offers the best cost-to-speed ratio. For chemical or pharma plants requiring heavy floor loads, RCC frame is more appropriate. For large logistics warehouses needing 40m+ clear spans, PEB is the most economical choice.' },
+  { question: 'How long does industrial shed construction take in Chennai?', answer: 'Timeline by structure type: PEB shed: 8–14 weeks from order to structure complete. Steel frame shed: 2–4 months. RCC frame shed: 5–9 months. Interior finishing (flooring, electrical, plumbing) adds additional time.' },
+  { question: 'What permits do I need for an industrial shed in SIDCO or SIPCOT Chennai?', answer: 'SIDCO plots: prior approval from SIDCO estate office + CMDA/DTCP building plan approval + fire NOC from Tamil Nadu Fire and Rescue Services (for buildings above 500 sqm built-up) + Factories Inspector registration (for manufacturing activity).' },
+  { question: 'Can you support construction of a crane bay inside an industrial shed?', answer: 'Yes. Crane bay design requires runway beam sized for the EOT crane capacity and span; column brackets at the right elevation; gantry rail specification and alignment. We review the crane manufacturer\'s load data, design the runway structure, and supervise installation.' },
+  { question: 'What floor slab specification do I need for forklift operations?', answer: 'For forklifts: minimum M30 concrete (RMC), minimum 150mm slab thickness, fibre-reinforced or mesh reinforcement, shrinkage control joints at 4.5m centres, floor hardener (dry-shake or liquid) for dust resistance and abrasion resistance.' },
+  { question: 'Do you work on expansion of an existing industrial shed?', answer: 'Yes. We assess the existing structure (foundation capacity, column load, connection details), determine the permissible expansion, and design and supervise the extension. The key consideration is whether the existing structure can carry the additional roof load and any new crane or equipment load.' },
+  { question: 'What is the minimum plot size for industrial shed construction in Chennai?', answer: 'SIDCO and SIPCOT have plots starting at 0.5 ground (1,200 sqft plot). For custom industrial plots under CMDA/DTCP, minimum setbacks govern. Typically, a 2,400–3,000 sqft plot can accommodate an 1,800–2,000 sqft shed with adequate setbacks and access roads.' },
+]);
+
+const serviceSchema = generateServiceSchema({
+  name: 'Industrial Shed Construction Chennai',
+  description: 'Engineer-supervised industrial shed and factory building construction across Chennai industrial zones — SIDCO, SIPCOT, Oragadam, Sriperumbudur.',
+  url: '/industrial-shed-construction-chennai',
+  category: 'Industrial Construction',
 });
 
 const shedTypes = [
@@ -29,6 +47,8 @@ const faqs = [
 export default function IndustrialShedPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       {/* Hero */}
       <section style={{ background: 'var(--secondary)', padding: '80px 0 60px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 70% 40%, rgba(252,110,32,0.08) 0%, transparent 60%)' }} />

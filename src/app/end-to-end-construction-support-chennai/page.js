@@ -1,10 +1,29 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
+import { generateFAQSchema, generateServiceSchema } from '@/lib/seo/schema';
 import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema';
+import EngineerCredibility from '@/components/seo/EngineerCredibility';
 
 export const metadata = generateSEOMetadata({
   title: 'End-to-End Construction Support in Chennai | Buildogram',
   description: 'Complete construction support from soil test to handover in Chennai. BOQ, structural design, site supervision, material sourcing, contractor management and Property Passport.',
   path: '/end-to-end-construction-support-chennai',
+});
+
+const faqSchema = generateFAQSchema([
+  { question: 'What exactly is included in end-to-end construction support?', answer: 'Everything from the first soil test through to the final key handover: pre-construction planning, BOQ review, contractor selection and vetting, site supervision throughout construction, material quality checks, and permanent project documentation (Property Passport). You deal with one point of contact — Buildogram coordinates everything else.' },
+  { question: 'How is Buildogram different from a construction contractor?', answer: 'Buildogram is an engineering review and coordination service — not the executing contractor. We provide technical oversight, independent quality checks, and owner-side representation. The actual construction is done by verified partner contractors. This means you get independent accountability that a contractor cannot provide for their own work.' },
+  { question: 'Do you take responsibility for construction delays?', answer: 'Buildogram manages the milestone schedule and flags delays with documented evidence. Our contracts with partner contractors include milestone-linked payment clauses. While we cannot guarantee dates beyond our control (monsoon, material supply), our supervision model ensures delays are caught early and documented.' },
+  { question: 'What happens if there is a cost overrun?', answer: 'Our itemised, capped BOQ model means variations must be documented and approved by you before extra work proceeds. We track actual vs. budgeted costs at every milestone and give you a running cost report. Unilateral contractor overruns without documented change orders are not accepted.' },
+  { question: 'How do I monitor my project if I am an NRI or living elsewhere?', answer: 'Every project gets a client portal with daily photo updates, milestone sign-off requests, and a live cost tracker. You approve milestone payments digitally before funds are released. Our site engineers are your eyes on the ground.' },
+  { question: 'What is the Property Passport?', answer: 'A permanent physical and digital record of your building — containing all approved drawings, structural design calculations, material test certificates (cement, TMT steel, concrete cube tests), warranty documents from vendors, and the final as-built plan. It is invaluable for future renovations, resale, bank valuations, and insurance claims.' },
+  { question: 'How long does a typical G+1 house construction take in Chennai?', answer: 'A well-managed G+1 house (1,800–2,400 sqft built-up) typically takes 14–18 months from foundation to handover. This includes 2–3 months for pre-construction (approvals, design, BOQ finalisation) and 12–15 months of actual construction, weather permitting.' },
+]);
+
+const serviceSchema = generateServiceSchema({
+  name: 'End-to-End Construction Support Chennai',
+  description: 'Complete construction support from soil test to handover — BOQ review, contractor vetting, site supervision, material sourcing and Property Passport documentation.',
+  url: '/end-to-end-construction-support-chennai',
+  category: 'Construction Management',
 });
 
 const phases = [
@@ -30,6 +49,8 @@ const faqs = [
 export default function EndToEndConstructionPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       {/* Hero */}
       <section style={{ background: 'var(--secondary)', padding: '80px 0 60px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 30% 50%, rgba(252,110,32,0.08) 0%, transparent 60%)' }} />

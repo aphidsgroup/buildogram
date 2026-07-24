@@ -1,10 +1,29 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
+import { generateFAQSchema, generateServiceSchema } from '@/lib/seo/schema';
 import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema';
+import EngineerCredibility from '@/components/seo/EngineerCredibility';
 
 export const metadata = generateSEOMetadata({
   title: 'Structural Plan Review in Chennai | IS Code Compliance | Buildogram',
   description: 'Independent structural drawing review by licensed engineers in Chennai. IS 456, IS 1893 compliance, rebar check, foundation adequacy and load analysis. 5-day turnaround.',
   path: '/structural-plan-review-chennai',
+});
+
+const faqSchema = generateFAQSchema([
+  { question: 'Is this the same as CMDA structural approval?', answer: 'No. CMDA approval is a statutory compliance check for zoning, setbacks, and permitted floor area. It does not check whether your column sizes are correct, whether your rebar cover is adequate, or whether your foundation is designed for the actual soil bearing capacity at your site. Buildogram\'s structural plan review fills that gap.' },
+  { question: 'What file formats do you accept for drawings?', answer: 'We accept PDF, DWG, DXF, and scanned JPG/PNG of physical prints. For best results, send the full structural drawing set: foundation plan, column layout, beam/slab layout, reinforcement details, and section drawings.' },
+  { question: 'How long does the structural plan review take?', answer: 'Standard turnaround is 5 working days from receipt of the complete drawing set. For complex structures (G+3 and above, long spans, irregular column grids) allow 7–10 working days.' },
+  { question: 'Who actually conducts the review?', answer: 'A licensed structural engineer with a minimum of 8 years of residential and commercial building experience in Chennai. All reviewers are registered with a professional body. We do not use juniors or AI tools to replace engineering judgment for structural safety reviews.' },
+  { question: 'What happens if critical issues are found in the drawings?', answer: 'You receive a marked drawing set clearly annotating each issue with its severity (Critical/Major/Minor) and a specific fix recommendation. Critical issues must be resolved in the design before construction begins.' },
+  { question: 'Can you review drawings during construction, not just before?', answer: 'Yes. Mid-construction reviews are sometimes more urgent — for example, if you discover that construction is proceeding differently from the approved drawings. We offer a site-and-drawings review.' },
+  { question: 'What is the difference between structural design and structural review?', answer: 'Structural design is the creation of the engineering design from scratch. Structural review is an independent check of an existing design, confirming it is correct and IS-code-compliant. Buildogram provides structural review; if your project does not yet have a structural engineer, we can refer you to one.' },
+]);
+
+const serviceSchema = generateServiceSchema({
+  name: 'Structural Plan Review Chennai',
+  description: 'Independent IS-code compliance review of structural drawings by licensed engineers — IS 456, IS 1893, foundation adequacy, rebar schedule and load analysis.',
+  url: '/structural-plan-review-chennai',
+  category: 'Structural Engineering Review',
 });
 
 const defects = [
@@ -29,6 +48,8 @@ const faqs = [
 export default function StructuralPlanReviewPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       {/* Hero */}
       <section style={{ background: 'var(--secondary)', padding: '80px 0 60px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 60% 40%, rgba(252,110,32,0.08) 0%, transparent 60%)' }} />

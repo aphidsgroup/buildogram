@@ -1,10 +1,28 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
+import { generateFAQSchema, generateServiceSchema } from '@/lib/seo/schema';
 import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
   title: 'PEB Building Contractors in Chennai | Pre-Engineered Buildings | Buildogram',
   description: 'Source and supervise Pre-Engineered Building (PEB) contractors in Chennai. Factories, warehouses, cold storage — BOQ, contractor vetting and quality control.',
   path: '/peb-building-contractors-chennai',
+});
+
+const faqSchema = generateFAQSchema([
+  { question: 'What is the difference between a PEB and conventional structural steel?', answer: 'A Pre-Engineered Building (PEB) is a steel structure where every component is designed as a system and factory-fabricated to exact dimensions. Conventional structural steel is designed element-by-element per project-specific drawings. PEBs are faster (50–70% less erection time), lighter, and more cost-effective for large spans.' },
+  { question: 'How long does a PEB factory or warehouse take to construct in Chennai?', answer: 'A standard PEB building of 10,000 sqft: design and manufacturing takes 6–8 weeks, site erection takes 2–3 weeks. Total 8–12 weeks from order to structure complete.' },
+  { question: 'Which PEB manufacturers are available in Chennai and Tamil Nadu?', answer: 'Major PEB manufacturers with supply and erection capability in Tamil Nadu: Kirby Building Systems, Tata BlueScope Steel (LYSAGHT), Interarch Building Products, Lloyd Insulations, and Zamil Steel.' },
+  { question: 'What approvals and permits are needed for a PEB industrial building in Tamil Nadu?', answer: 'For SIDCO/SIPCOT plots: prior approval from the estate authority. For private plots: CMDA or DTCP building plan approval, fire NOC from Tamil Nadu Fire and Rescue Services (for buildings above certain area thresholds), and factories inspector registration for manufacturing facilities.' },
+  { question: 'Can a PEB building be expanded in the future?', answer: 'Yes. A well-planned PEB building can be extended in the length direction (additional bays) with minimal disruption. We recommend planning the future expansion direction at the design stage so that the foundation and cladding are prepared for it.' },
+  { question: 'What maintenance does a PEB roof require in Chennai?', answer: 'Annual inspection of ridge, eave, and gutter joints; cleaning of gutters after monsoon; inspection of fastener washers every 2 years; touch-up painting on scratched areas. Typical roofing lifespan with maintenance: 20–25 years.' },
+  { question: 'Does Buildogram design PEB buildings?', answer: 'Buildogram reviews and verifies PEB designs — we do not manufacture or fabricate them. The PEB vendor\'s in-house engineering team produces the design; we review it against IS 800:2007, client load specifications, and local wind/seismic requirements.' },
+]);
+
+const serviceSchema = generateServiceSchema({
+  name: 'PEB Building Contractors Chennai',
+  description: 'Engineer-supervised PEB procurement, factory inspection and erection supervision for factories, warehouses and industrial buildings across Chennai and Tamil Nadu.',
+  url: '/peb-building-contractors-chennai',
+  category: 'Pre-Engineered Buildings',
 });
 
 const faqs = [
@@ -29,6 +47,8 @@ const applications = [
 export default function PEBBuildingPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       {/* Hero */}
       <section style={{ background: 'var(--secondary)', padding: '80px 0 60px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 30% 60%, rgba(252,110,32,0.08) 0%, transparent 60%)' }} />

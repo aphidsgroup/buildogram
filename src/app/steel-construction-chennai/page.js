@@ -1,10 +1,28 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
+import { generateFAQSchema, generateServiceSchema } from '@/lib/seo/schema';
 import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
   title: 'Steel Structure Construction in Chennai | Structural Steel Buildings | Buildogram',
   description: 'Engineer-supervised structural steel construction in Chennai. Industrial buildings, steel frame houses, mezzanine floors and hybrid structures with BOQ and quality control.',
   path: '/steel-construction-chennai',
+});
+
+const faqSchema = generateFAQSchema([
+  { question: 'What is the cost of structural steel construction per sqft in Chennai?', answer: 'Indicative rates in Chennai (2026): Steel frame industrial building — ₹1,600–2,200/sqft. Steel+RCC hybrid residential — ₹2,200–2,800/sqft. Mezzanine floor addition — ₹800–1,200/sqft. Actual cost depends on steel section sizes, span, height, and roof/cladding specification.' },
+  { question: 'How long does steel fabrication and erection take?', answer: 'For a typical industrial shed of 5,000 sqft: fabrication takes 3–5 weeks and erection takes 1–2 weeks on-site. Total 4–7 weeks from drawing approval to structure complete.' },
+  { question: 'Is structural steel construction permitted for residential buildings in Chennai?', answer: 'Yes. Steel structures are permitted for residential use under CMDA regulations, provided they meet structural safety requirements and have a structural engineer\'s certificate.' },
+  { question: 'What is the difference between mild steel and HYSD steel?', answer: 'Mild Steel (IS 2062 E250) is used for structural sections (ISMB, ISMC, angles, plates) — yield strength 250 MPa. HYSD steel (Fe500D TMT bars) is used as reinforcement inside RCC concrete. They serve different structural purposes and are not interchangeable.' },
+  { question: 'How do you prevent rust in Chennai\'s coastal climate?', answer: 'Chennai\'s proximity to the coast requires hot-dip galvanising or epoxy coating for structural steel. Within 5 km of the coast, bare mild steel shows significant corrosion within 12–18 months. Our specification includes minimum 6mm thickness for exposed plate connections.' },
+  { question: 'Can you add a mezzanine floor to an existing building?', answer: 'Yes, subject to a structural assessment of the existing building\'s foundation and column capacity to carry the additional load. We assess the existing structure, calculate the permissible additional load, design the mezzanine frame within that limit, and supervise fabrication and erection.' },
+  { question: 'Which IS code governs steel structure design in India?', answer: 'IS 800:2007 (General Construction in Steel) is the primary code. Material grades are governed by IS 2062. Welding is governed by IS 816. For bolted connections, IS 1367 covers fastener specifications.' },
+]);
+
+const serviceSchema = generateServiceSchema({
+  name: 'Steel Structure Construction Chennai',
+  description: 'Engineer-supervised structural steel fabrication, erection and quality control for industrial, commercial and residential projects in Chennai.',
+  url: '/steel-construction-chennai',
+  category: 'Steel Construction',
 });
 
 const faqs = [
@@ -20,6 +38,8 @@ const faqs = [
 export default function SteelConstructionPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       {/* Hero */}
       <section style={{ background: 'var(--secondary)', padding: '80px 0 60px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 30% 50%, rgba(252,110,32,0.08) 0%, transparent 60%)' }} />
