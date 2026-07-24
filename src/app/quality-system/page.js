@@ -5,10 +5,12 @@ import ProcessSteps from '@/components/seo/ProcessSteps';
 import FAQBlock from '@/components/seo/FAQBlock';
 import LocalIntentBlock from '@/components/seo/LocalIntentBlock';
 import Link from 'next/link';
+import { generateHowToSchema, generateFAQSchema } from '@/lib/seo/schema';
+import EngineerCredibility from '@/components/seo/EngineerCredibility';
 
 export const metadata = generateSEOMetadata({ 
-  title: 'Buildogram Quality System (BQS) | Evidence-Backed Construction Quality', 
-  description: 'The Buildogram Quality System (BQS) provides an evidence-backed framework with up to 2500+ potential checkpoints. Stage-wise engineer-led inspections mapped directly to your Property Passport.', 
+  title: 'Buildogram Quality System (BQS) | Stage-Wise Construction Quality Verification', 
+  description: 'The Buildogram Quality System provides up to 2,500+ engineer-led inspection checkpoints across every construction stage. Independent verification. Evidence-backed. Recorded in your Property Passport.', 
   path: '/quality-system' 
 });
 
@@ -27,9 +29,20 @@ const FAQS = [
   { question: 'Can I see the inspection results?', answer: 'Yes. Completed stage summaries and owner-visible proof records are automatically published to your secure Property Passport.' }
 ];
 
+const howToSchema = generateHowToSchema({
+  name: 'How the Buildogram Quality System (BQS) Works',
+  description: 'A stage-wise, evidence-backed construction quality framework with up to 2500+ checkpoints, carried out by independent qualified engineers.',
+  url: 'https://www.buildogram.in/quality-system',
+  steps: STEPS.map(s => ({ name: s.title, text: s.desc })),
+});
+
+const faqSchema = generateFAQSchema(FAQS.map(f => ({ q: f.question, a: f.answer })));
+
 export default function Page() { 
   return ( 
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <main style={{ minHeight: '100vh', background: 'var(--bg)', paddingBottom: '96px' }}>
         
         {/* Hero Section */}
@@ -60,6 +73,8 @@ export default function Page() {
               <span style={{ color: 'var(--secondary)', marginLeft: '4px' }}>Buildogram Quality System (BQS)</span>
             </div>
             
+            <EngineerCredibility mode="full" />
+
             <div style={{ background: 'var(--bg-card)', padding: '32px', borderRadius: 'var(--radius)', border: '1px solid var(--border)', boxShadow: 'var(--shadow)', marginBottom: '48px' }}>
               <h2 style={{ fontSize: '24px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '24px' }}>
                 What is the Buildogram Quality System?

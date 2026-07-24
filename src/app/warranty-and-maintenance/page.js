@@ -86,8 +86,8 @@ export default function WarrantyAndMaintenance() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Post-Handover Care & Trust</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>Warranty, Home Loans & Lifetime Maintenance — All Under One Roof</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>We protect your investment from foundation kickoff to lifetime asset care — hassle-free bank loan support, stamp-bound 10-year structural warranties, and premium AMC care plans.</p>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>Warranty Documentation, Home Loan Support & Lifetime Maintenance</h1>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>Structural warranty is provided by your execution partner and documented in your Property Passport. We add bank loan coordination and premium AMC care plans to protect your investment long after handover.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <a href="/contact" className="btn btn-primary btn-lg">Book Free Consultation</a>
             <a href="/cost-estimator" className="btn btn-lg btn-outline-light">Estimate Build Cost</a>
@@ -101,20 +101,20 @@ export default function WarrantyAndMaintenance() {
         <div className="grid-3 mb-8 animate-fade-in">
           <div className="card text-center" style={{ borderTop: '6px solid var(--primary)', padding: '32px' }}>
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>🛡️</div>
-            <h3 style={{ fontSize: '20px', color: 'var(--primary-dark)', marginBottom: '8px' }}>10-Yr Structural Warranty</h3>
+            <h3 style={{ fontSize: '20px', color: 'var(--primary-dark)', marginBottom: '8px' }}>Partner Structural Warranty</h3>
             <p className="text-muted text-xs mb-4" style={{ lineHeight: '1.6' }}>
-              Legally certified, stamp-bound structural protection covering RCC columns, deep pile foundations, load beams, and slab integrity against structural stress cracks.
+              Structural warranty covering RCC columns, foundations, beams and slab integrity is provided by your appointed execution partner and recorded in your Property Passport. Buildogram coordinates and documents this warranty — it does not independently underwrite it.
             </p>
-            <span className="badge badge-blue">IS-Code Compliant Guarantee</span>
+            <span className="badge badge-blue">Documented in Property Passport</span>
           </div>
 
           <div className="card text-center" style={{ borderTop: '6px solid var(--accent)', padding: '32px' }}>
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>💧</div>
             <h3 style={{ fontSize: '20px', color: 'var(--primary-dark)', marginBottom: '8px' }}>1-Year Systems Warranty</h3>
             <p className="text-muted text-xs mb-4" style={{ lineHeight: '1.6' }}>
-              We cover all concealed pipelines, structural dampness, waterproofing barriers, sanitary CP fittings, tiling hollow joints, and electrical modular switches for 12 full months.
+              Covered under the execution partner&apos;s workmanship warranty: concealed pipelines, waterproofing, sanitary fittings, tiling and electrical switches for 12 months from handover. Terms governed by the signed execution contract.
             </p>
-            <span className="badge badge-orange">Zero-Cost Maintenance Cover</span>
+            <span className="badge badge-orange">Partner-Backed Coverage</span>
           </div>
 
           <div className="card text-center" style={{ borderTop: '6px solid var(--primary-light)', padding: '32px' }}>

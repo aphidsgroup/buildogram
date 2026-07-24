@@ -4,8 +4,8 @@ import Link from 'next/link';
 import { guides, guideCategories } from '@/data/seo/guides';
 
 export const metadata = generateSEOMetadata({
-  title: 'Buildogram Guides | Construction, BOQ, Property & Maintenance Guides',
-  description: 'Expert guides for homeowners, landlords, and property investors. BOQ, construction cost, contractor selection, plan review, property records, rental, and maintenance.',
+  title: 'Construction & Property Guides | Expert Advice for Homeowners | Buildogram',
+  description: 'Expert guides for homeowners: BOQ review, construction cost estimation, contractor selection, structural plan review, soil testing, Property Passport and property maintenance — by Buildogram engineers.',
   path: '/guides',
 });
 
@@ -19,9 +19,26 @@ const categoryLabels = {
   'property-passport': 'Property Passport',
 };
 
+const guidesListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Buildogram Construction & Property Guides',
+  description: 'Expert guides for homeowners on BOQ, construction cost, contractor selection, plan review, property records and maintenance.',
+  url: 'https://www.buildogram.in/guides',
+  numberOfItems: guides.length,
+  itemListElement: guides.map((g, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: g.title,
+    url: `https://www.buildogram.in/guides/${g.slug}`,
+    description: g.metaDescription || g.intro?.slice(0, 160),
+  })),
+};
+
 export default function GuidesHub() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(guidesListSchema) }} />
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>

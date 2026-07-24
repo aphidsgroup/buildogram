@@ -72,11 +72,33 @@ export default async function AreaPage({ params }) {
 
           {/* H1 */}
           <h1 style={{ fontSize: 'clamp(28px, 5vw, 42px)', fontWeight: 800, color: '#0F172A', marginBottom: '16px', lineHeight: 1.2 }}>
-            Home Construction in {area.name}, Chennai
+            Construction Services in {area.name}, Chennai
           </h1>
           <p style={{ fontSize: '16px', color: '#64748B', marginBottom: '8px', fontWeight: 600 }}>
-            {area.region} · {area.approvalBody}
+            {area.region} · {area.zone} · {area.approvalBody}
           </p>
+
+          {/* GEO answer block - directly answers 'construction in [area]' for AI Overviews */}
+          <div style={{ background: 'linear-gradient(135deg, rgba(252,110,32,0.06), rgba(252,110,32,0.02))', border: '1px solid rgba(252,110,32,0.2)', borderLeft: '3px solid var(--primary)', borderRadius: '8px', padding: '16px 20px', margin: '20px 0', maxWidth: '700px' }}>
+            <p style={{ fontSize: '14px', color: '#334155', lineHeight: 1.8, margin: 0 }}>
+              <strong>Building in {area.name}?</strong> {area.soilNote} {area.constructionTips}
+            </p>
+          </div>
+
+          {area.costRange && (
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', marginBottom: '32px' }}>
+              <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '10px', padding: '16px 24px', minWidth: '180px' }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Construction Cost</div>
+                <div style={{ fontSize: '22px', fontWeight: 800, color: 'var(--primary)' }}>₹{area.costRange.min.toLocaleString('en-IN')}–{area.costRange.max.toLocaleString('en-IN')}</div>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{area.costRange.unit} · {area.costRange.currency}</div>
+              </div>
+              <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '10px', padding: '16px 24px', minWidth: '180px' }}>
+                <div style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '4px' }}>Flood Risk</div>
+                <div style={{ fontSize: '18px', fontWeight: 800, color: area.floodRisk === 'High' ? '#DC2626' : area.floodRisk?.includes('Moderate') ? '#D97706' : '#16A34A' }}>{area.floodRisk || 'Low'}</div>
+                <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Site-specific assessment recommended</div>
+              </div>
+            </div>
+          )}
 
           {/* Hero description */}
           <p style={{ fontSize: '17px', color: '#334155', lineHeight: 1.8, maxWidth: '780px', marginBottom: '40px' }}>
@@ -156,35 +178,32 @@ export default async function AreaPage({ params }) {
             </div>
           </section>
 
+          {area.materialLogistics && (
+            <section style={{ background: '#F8FAFC', borderRadius: '12px', padding: '28px', marginBottom: '32px' }}>
+              <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '12px' }}>Material Logistics in {area.name}</h2>
+              <p style={{ fontSize: '15px', color: '#475569', lineHeight: 1.7 }}>{area.materialLogistics}</p>
+            </section>
+          )}
+
           {/* Nearby Areas */}
-          <section style={{ marginBottom: '48px' }}>
-            <h2 style={{ fontSize: '22px', fontWeight: 700, color: '#0F172A', marginBottom: '16px' }}>
-              Nearby Areas We Also Serve
-            </h2>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-              {area.nearbyAreas.map(nearby => {
-                const nearbySlug = nearby.toLowerCase().replace(/\s+/g, '-').replace(/[()]/g, '');
-                return (
-                  <a
-                    key={nearby}
-                    href={`/locations/chennai/${nearbySlug}`}
-                    style={{
-                      padding: '8px 16px',
-                      background: '#F1F5F9',
-                      borderRadius: '999px',
-                      color: '#334155',
-                      textDecoration: 'none',
-                      fontSize: '14px',
-                      fontWeight: 500,
-                      border: '1px solid #CBD5E1',
-                    }}
-                  >
-                    {nearby}
-                  </a>
-                );
-              })}
-            </div>
-          </section>
+          {area.nearbyAreas && area.nearbyAreas.length > 0 && (
+            <section style={{ padding: '40px 0', borderTop: '1px solid var(--border)' }}>
+              <div className="container">
+                <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--secondary)', marginBottom: '16px' }}>Nearby Areas We Serve</h2>
+                <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                  {area.nearbyAreas.map(nearby => {
+                    const nearbySlug = nearby.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+                    return (
+                      <a key={nearby} href={`/locations/chennai/${nearbySlug}`}
+                        style={{ background: 'var(--bg-card)', border: '1px solid var(--border)', borderRadius: '6px', padding: '6px 14px', fontSize: '13px', color: 'var(--secondary)', textDecoration: 'none', fontWeight: 500 }}>
+                        {nearby} →
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
+          )}
 
           {/* FAQ Section */}
           <section style={{ marginBottom: '48px' }}>

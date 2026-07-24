@@ -2,16 +2,22 @@ import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import { faqCategories } from '@/data/seo/faqs';
+import { generateFAQSchema } from '@/lib/seo/schema';
 
 export const metadata = generateSEOMetadata({
-  title: 'Frequently Asked Questions | Buildogram',
-  description: 'Answers to common questions about home construction, BOQ, contractor selection, quality inspection, property listings, Property Passport, and more.',
+  title: 'FAQs | Construction, BOQ, Property & Quality Questions | Buildogram',
+  description: 'Answers from structural engineers on home construction costs, BOQ audits, contractor selection, soil testing, structural audits, Property Passport, and more — specific to Chennai.',
   path: '/faqs',
 });
+
+// Flatten all FAQs from all categories for the FAQPage schema
+const allFaqs = faqCategories.flatMap(cat => cat.faqs);
+const faqPageSchema = generateFAQSchema(allFaqs);
 
 export default function FaqsHub() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqPageSchema) }} />
       <section style={{ background: 'var(--secondary)', color: 'white', padding: '60px 0 72px' }}>
         <div className="container">
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>

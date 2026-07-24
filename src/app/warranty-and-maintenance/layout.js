@@ -1,9 +1,9 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export const metadata = generateSEOMetadata({
-  title: "Warranty And Maintenance | Buildogram",
-  description: "Comprehensive warranty and maintenance services. Buildogram is an AI-driven, engineer-led construction and property ecosystem offering BOQ review, structural audit, survey, testing, and piling.",
-  path: "/warranty-and-maintenance"
+  title: 'Warranty Documentation, Home Loan Support & Maintenance Plans | Buildogram',
+  description: 'Partner structural warranty documentation, bank loan liaison coordination, and premium Annual Maintenance Contracts (AMC) for Chennai homeowners — all coordinated by Buildogram after project handover.',
+  path: '/warranty-and-maintenance',
 });
 
 
