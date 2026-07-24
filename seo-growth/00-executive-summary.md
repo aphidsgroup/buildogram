@@ -1,5 +1,14 @@
 # 00 — Executive Summary: Buildogram Organic Search System
 
+## READINESS PASS 4 (2026-07-25) — preview-deployment preparation
+
+Branch is deployment-ready and verified clean: **102 files changed, every one a real content change** (two line-ending-noise batches detected and reverted), 11 added deliverables, 0 deleted, 0 binaries, **0 secrets/credentials/DB exports/private data**. Locality gate terminology corrected everywhere — a content-length threshold is explicitly *not* an indexability approval, and all locality URLs are marked pending P1 evaluation. A `CURRENT STATE` supersession table now heads the changelog so earlier temporary wording cannot be mistaken for current.
+
+**Three gates could not be executed from this environment and are handed over with exact procedures:** the production build (`19-…md` §16 template), the protected Vercel preview (token lacks the team scope — 403; `20-…md` §4), and the read-only production DB check (no network route to Neon). Items 6–9 are automated in `seo-growth/preview-verification.sh` and run in one command once a preview URL exists.
+
+**Recommendations: preview deployment GO** (conditional on the owner build passing and Deployment Protection enabled) · **production promotion NO-GO** · **P1 NO-GO**.
+
+
 ## READINESS PASS 3 (2026-07-25) — owner corrections 1–10 applied
 
 Highest-priority action completed: **unsourced locality soil, flood, foundation and cost statements are no longer publicly live.** 28 area records (+26 legacy localities) had soil type, soil notes and flood-risk ratings replaced with site-specific due-diligence wording; 23 prescriptive engineering sentences (plinth heights, pile/raft prescriptions) were removed; locality ₹/sqft figures were removed from pages, FAQs and LocalBusiness schema; and the `/construction-in-chennai` hub's "Pile foundations are mandatory" claim and per-locality soil notes were rewritten. All 28 locality pages passed the minimum content-length sanity check. This does not constitute content-quality, uniqueness or indexability approval. Final indexing decisions remain pending P1 locality evaluation. Alongside this: all screening implication removed (124 replacements), engineer wording neutralised to "structural engineering professionals", drone/regulatory wording corrected, market-data wording neutralised, all BQS/QC numbers removed (including the logically invalid "up to 2,500+"), turnaround made scope-confirmed, and a NAP defect fixed (locality schema was emitting a placeholder phone and postcode on every locality page). Register restructured into 5 sections; deployment gates reclassified. All scans zero; tests 21/21. **Remaining gate: `npm run lint && npm test && npm run build` on the owner machine, then preview deploy.**

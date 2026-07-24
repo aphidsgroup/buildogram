@@ -27,6 +27,7 @@ Updated: 2026-07-25 (readiness pass 3 — owner corrections 1–10 applied) · M
 | 17 | "3–5 working days" review turnaround (component + plan-review FAQ) | "The expected turnaround is confirmed after reviewing the project scope, documents and required deliverables." | operational evidence that the SLA is achievable for the stated scope |
 
 ## Section 2 — Mandatory before preview deployment
+*(reclassified per owner item 8: build/lint/test, preview verification, read-only DB Sections A+B, screening-wording removal, quality-framework number removal, locality remediation and NAP confirmation are all pre-production gates; credential/statistic/consultation/warranty/supplier-rate restorations are post-deployment items only because no live public claim now depends on them.)*
 
 1. **`npm run lint`** — 0 errors; warnings triaged. *(sandbox cannot run — owner machine)*
 2. **`npm test`** — currently 21/21 pass in sandbox; re-run locally.

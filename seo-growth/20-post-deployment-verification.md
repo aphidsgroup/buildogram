@@ -1,107 +1,137 @@
-# 20 — Post-Deployment Verification
+# 20 — Preview Deployment Verification Report
 
-Status: **PRE-DEPLOYMENT — baseline captured, post-deploy sections pending owner deploy**
-Prepared: 2026-07-25 · Branch: `seo/buildogram-organic-growth-system` (8 commits, 910d16a → HEAD)
-Deployment identifier: PENDING (fill with Vercel deployment ID/commit after owner pushes)
-Deployment date/time: PENDING
-Production crawl (post-deploy) date/time: PENDING
+Status: **PREVIEW NOT YET CREATED — branch verified and deployment-ready; execution gates blocked on owner environment**
+Prepared: 2026-07-25 · Branch: `seo/buildogram-organic-growth-system` · HEAD: see §2
+Preview deployment identifier: **NOT CREATED**
+Preview URL: **NOT CREATED** · Commit SHA deployed: **n/a** · Deployment timestamp: **n/a**
 
-The sandbox cannot deploy (owner approval + push required) and cannot run `next build` (45-second process cap). This document therefore contains: the verified BEFORE baseline, the exact AFTER checks to run, and pass criteria. Post-deploy sections are marked ⏳.
+## 0. Execution status of the owner's 12 items
+
+| Item | Status |
+| --- | --- |
+| 1. Correct locality gate terminology | ✅ DONE — canonical sentence applied across 00, 01, 02, 19, 20, CHANGELOG, NEEDS-OWNER-VERIFICATION, register |
+| 2. CURRENT STATE section in changelog | ✅ DONE — supersession table + historical-entry note |
+| 3. Owner-machine validation (npm ci/lint/test/build) | ⛔ **BLOCKED** — sandbox cannot run (see §3) |
+| 4. Branch contents confirmation | ✅ DONE — §2 |
+| 5. Protected Vercel preview | ⛔ **BLOCKED** — Vercel token lacks team scope (403); procedure + safeguards in §4 |
+| 6. Preview route-family validation | ⏳ Script ready (§5) — needs preview URL |
+| 7. Redirect validation via actual responses | ⏳ Script ready (§6) — needs preview URL |
+| 8. Preview sitemap validation | ⏳ Script ready (§7) — needs preview URL |
+| 9. Rendered-content safety scans | ⏳ Script ready (§8) — needs preview URL |
+| 10. NAP owner confirmation | ⏳ Exact NAP presented in §9 — needs owner sign-off |
+| 11. Production DB read-only verification | ⛔ **BLOCKED** — no network route to Neon; script ready (§10) |
+| 12. Update deployment report | ✅ DONE — this document + 7 others |
 
 ---
 
-## 0. Readiness pass 3 applied (2026-07-25)
+## 1. Terminology correction applied (item 1)
 
-Owner corrections 1–10 implemented before preview deployment: engineer wording neutralised, screening implication removed, drone/regulatory wording corrected, market-data wording neutralised, BQS/QC numbers removed, turnaround made scope-confirmed, **locality soil/flood/foundation/cost claims conservatively remediated (highest priority)**, NAP defect in locality schema fixed, register restructured into 5 sections. Full scan table in `19-…md` §15. §6 below must now additionally confirm the absence of `screened`, `vetted`, `qualified structural engineer`, `2500+`, `up to 2,500+`, categorical locality soil/flood statements and locality ₹/sqft figures in rendered production HTML.
+Canonical wording now used everywhere a locality threshold is referenced:
 
-## 1. Deployment gate — must pass BEFORE pushing
+> All 28 locality pages passed the minimum content-length sanity check. This does not constitute content-quality, uniqueness or indexability approval. Final indexing decisions remain pending P1 locality evaluation.
 
-Run on the owner machine, in order:
+`01-current-state-audit.md` §2 and `02-url-inventory.csv` additionally reworded "quality gate" → "content-length sanity check" with the same qualification. **No page is retained as indexable solely because it exceeds 150 words**; the threshold now governs sitemap plumbing only, and every locality URL is marked in the inventory as pending P1 evaluation.
 
+## 2. Branch contents confirmation (item 4)
+
+- `git status`: **clean** (working tree and index empty).
+- `git diff --check e3f3ef8..HEAD`: **10 pre-existing trailing-whitespace lines** in two files (`join-as-partner`, `quality-system`) inherited from the original source lines we edited — cosmetic, no functional impact. Classification: **Harmless**.
+- **Commits (13):** `910d16a` async-params/canonical/mojibake → `3b46e00` claims → `95160c0` routing/sitemap → `7f5ee1c` domains → `09171fc` partner-data guards → `c2d3662` docs → `5903e27` docs → `c908d0c` neutral partner wording → `58bd44c` docs → `b978e89` readiness-pass-3 content → `9db284c` + line-ending restore → docs/terminology → line-ending restore (17 files).
+- **Total files changed: 102** — every one carries real content change (verified with `git diff -w`; two earlier line-ending-noise batches of 198 and 17 files were detected and reverted).
+- **Added: 11** (all `seo-growth/*` deliverables incl. `production-db-verification.sql`). **Deleted: 0.**
+- **Category breakdown of the 91 modified files:** route/page 62 · data 7 · lib 5 · component 4 · schema/seo-lib 3 · api 3 · config 1 (`next.config.mjs` — redirects) · other 6.
+- **Redirect files changed:** `next.config.mjs` only (no `vercel.json` exists; middleware matcher does not intersect any redirect source).
+- **Schema files changed:** `src/lib/seo/localSchema.js`, `src/lib/seo/schema.js` consumers, `src/components/seo/Breadcrumbs.jsx`.
+
+**Safety confirmation — the branch contains none of:** `.env` files · secrets · credentials · database exports · private user data · generated production records · binary files (0 binary diffs) · temporary crawl files outside `seo-growth/`. The only `.sql` file is the read-only verification script (0 `INSERT`/`COPY` statements; phone numbers are hashed with `md5()` and never printed in clear).
+
+## 3. Owner-machine validation (item 3) — BLOCKED, procedure below
+
+**Environment facts already captured:** Node **v22.22.3** · npm **10.9.8** · lockfile **`package-lock.json`** (npm; no `packageManager` field declared, no yarn/pnpm lockfile) · **no type-check script and no `tsconfig.json`** — project is JavaScript-only with `jsconfig.json`, so a non-emitting `tsc` check is not applicable and must be recorded as **N/A**, not skipped.
+
+Why the sandbox cannot run it (three documented attempts): the network-mounted filesystem makes `next build` impractically slow; a clean local-disk copy with fresh `npm ci` was terminated because this environment kills background processes when each shell command ends (45-second cap) and the build spans ~900 routes.
+
+**Run from a clean checkout:**
 ```bash
+git clone <repo> buildogram-verify && cd buildogram-verify
 git checkout seo/buildogram-organic-growth-system
-npm run lint                # gate: 0 errors (warnings triaged)
-npm test                    # gate: 21/21
-npm run build               # gate: completes; record warnings per §12 of doc 19
+git status && git diff --check
+npm ci                 # uses package-lock.json
+npm run lint           # gate: 0 errors
+npm test               # gate: 21/21 (node --test tests/*.test.mjs)
+npm run build          # gate: completes (prisma generate + verify-env + next build)
+# type-check: N/A — no tsconfig.json / no typecheck script (record as N/A)
 ```
+Record into `19-…md` §12: Node version · npm version · lockfile · exact commands · exit codes · test counts · build duration · total/static/dynamic route counts · build warnings · lint warnings · type errors (N/A) · prerender failures · DB/env warnings · sitemap generation result. Categorise every warning **Harmless / Fix before production / Blocks deployment**.
 
-Build-report requirements (fill into doc 19 §12): exact command, exit status, static/dynamic route counts, every warning categorised as Harmless / Fix-before-deploy / Blocks-deploy. Expected warning classes to watch for: metadata/viewport export warnings (Next 16), dynamic-server-usage warnings on `force-dynamic` pages (harmless if intentional), sitemap DB-access failures (harmless — `safeDbCall` degrades gracefully, but confirm the sitemap still emits static entries), prerender failures on the six repaired route families (**blocks deploy** if any).
+**Blocking rule (owner-set):** any failed build, failed test, type error, prerender failure or unresolved SEO-affecting warning blocks preview deployment.
 
-Then deploy to a **Vercel preview** first, run §3–§7 against the preview URL, and only then promote/merge to production with owner approval.
+## 4. Protected preview deployment (item 5) — BLOCKED, procedure below
 
-## 2. BEFORE baseline (verified live crawls, 2026-07-25, pre-deploy)
+**Blocker:** the Vercel MCP in this session is authenticated but its token has no access to scope `aphidsgroup-3300s-projects` (403 on `list_deployments` for project `prj_2qfbQGMjU9qR3Q45W5hdgcLJuMqV`, team `team_hm60UmBmtMjbc47ulqd9Mk2r`). Re-authentication to that scope is required. The MCP's `deploy_to_vercel` tool was deliberately **not** used as a workaround: it creates a *new* project from an uploaded file tree, which would produce exactly the indexable duplicate the owner prohibits.
 
-| URL | Status observed |
+**Recommended safeguard — Vercel Deployment Protection (no code change, cannot leak to production):**
+1. Push the branch → Vercel auto-creates a preview deployment.
+2. Vercel → Project → Settings → Deployment Protection → **Standard Protection** (Vercel Authentication) enabled for Preview. Unauthenticated crawlers then receive a 401 and cannot index the preview.
+3. Verify: `curl -sI https://<preview-url>/` from a logged-out context → expect `401`.
+
+A code-level preview `noindex` is **not** recommended here, because it must never reach production; if you prefer belt-and-braces, the only safe form is env-conditional in `middleware.js` (`process.env.VERCEL_ENV !== 'production'` → set `X-Robots-Tag: noindex, nofollow`), which is inert in production by construction. Current middleware sets that header only for `/ops`, `/partner`, `/client`, `/project/`, `/property-passport/` — it does **not** noindex the preview site-wide today.
+
+Record once created: deployment ID · preview URL · commit SHA · timestamp · environment · protection method · whether unauthenticated crawlers can access · whether preview pages emit noindex.
+
+## 5. ⏳ Route-family validation (item 6) — script ready
+
+Test slugs (≥3 per family, all confirmed present in the data layer): `/services/`: villa-construction, boq-review, turnkey-construction · `/materials/`: aggregates, paint, roofing · `/guides/`: what-is-boq-in-construction, how-to-compare-contractor-quotes, why-low-construction-quote-can-be-risky · `/glossary/`: rmc + 2 · `/faqs/`: 3 categories · `/compare/`: 3 slugs · `/partners/`: 1 real approved partner **plus `/partners/demo-builder` which must 404** · `/case-studies/`, `/proof/`: any published slug.
+
+Record per URL: requested URL · HTTP status · final URL · redirect sequence · canonical · robots directive · title · meta description · H1 · visible body length · main-content presence · structured-data types · internal links · sitemap eligibility · duplicate-content risk · **content-quality classification** from the owner's list (Substantial and unique / Useful but requires improvement / Thin / Templated with insufficient differentiation / Duplicate or cannibalising / Business verification required / Noindex candidate / Merge or redirect candidate).
+
+**Standing rule recorded:** a repaired HTTP 200 does not qualify a URL for indexing. Expected classifications from source inspection (to be confirmed against rendered output): `/services/*` → likely *Duplicate or cannibalising* against the `-chennai` pages (cluster C-groups); `why-vs-aggregators` / `why-vs-mason` → *Thin*; locality pages → *Templated with insufficient differentiation* pending P1.
+
+## 6. ⏳ Redirect validation (item 7) — script ready
+
+All 8 sources from `07-…csv`. **Note recorded:** Next.js `permanent: true` emits **308**, not 301 — the report must record the *actual* status returned, not the configured intent. Per redirect capture: source · actual status · intermediate URLs · destination · destination status · destination canonical · sitemap presence · internal-link references · loop result · chain result. Required outcome: one hop · permanent status (301 **or** 308) · relevant destination · destination 200 · source absent from sitemap and internal links · no homepage fallback.
+
+## 7. ⏳ Sitemap validation (item 8) — script ready
+
+Fetch `/sitemap.xml`; assert 200 · valid XML · all hosts `www.buildogram.in` (**and no preview-domain URLs — the sitemap hard-codes the production baseUrl, so preview output should still emit production hostnames; confirm**) · no duplicates · no redirecting URLs · no 404s · no blocked/noindexed URLs · no `demo-*` partner URLs · valid canonical targets · repaired dynamic routes present · sensible `lastmod`. **Every URL must be status-checked by actual request, not inferred from route definitions.**
+
+## 8. ⏳ Rendered-content safety scan (item 9) — script ready
+
+Scan rendered HTML + metadata + JSON-LD (not source) across homepage, `/about`, `/construction-in-chennai`, `/locations/chennai`, 3 locality pages, `/structural-audit-chennai`, `/boq-review-chennai`, `/quality-system`, `/materials`, a partner category page, a locality+service page, for: unsupported project counts/values · savings percentages · warranty periods · audit starting prices · BQS/QC counts · `screened` · `vetted` · `verified contractor` · `verified supplier` · unsupported engineering qualifications · `certified pilots` · undated "live"/"current" rates · categorical locality soil claims · categorical flooding claims · mandatory pile/raft prescriptions · placeholder telephone · placeholder postcode · `buildogram.com` · `app.buildogram.com` · mojibake. Report every match with URL, source component and disposition. **Source-level scans are currently at zero for all of these** (`19-…md` §15) — the preview scan confirms no stale ISR/cache remnants.
+
+## 9. NAP for owner confirmation (item 10)
+
+| Field | Currently configured value |
 | --- | --- |
-| `/` | 200 — but title/OG serve mojibake ("Intelligence â€" Chennai"); nav contains 4 broken links; unverified stats/claims rendered |
-| `/structural-audit-chennai` | 200 — "Certified…" H1, ₹10,000 price anchor, thin body |
-| `/services/villa-construction` | **404** (async-params bug) |
-| `/guides/what-is-boq-in-construction` | **404** (async-params bug — confirmed pre-deploy 2026-07-25) |
-| `/guides/house-construction-cost-chennai` | **404** |
-| `/villa-construction` | **404** (nav link) |
-| `/apartment-structural-audit-chennai` | **404** (nav link) |
-| `/material-quotes` | **404** (nav link) |
-| `/materials/ready-mix-concrete` | **404** (nav link) |
-| `/steel-fabrication-contractors-chennai` | **404** (in sitemap) |
-| `/warehouse-steel-building-chennai` | **404** (in sitemap) |
-| `/factory-shed-construction-chennai` | **404** (in sitemap) |
-| `robots.txt` | 200 — correct policy |
+| Business name | **Buildogram** |
+| Legal name | *Buildogram* (`positioning.js` carries `TODO: confirm registered legal entity name`) |
+| Street address | No.35, 7th Floor, Awfis Space, Centre Point 3, Poonamallee High Road |
+| Locality | Manapakkam, Porur |
+| City | Chennai |
+| State | Tamil Nadu |
+| Postal code | 600089 |
+| Country | India (IN) |
+| Telephone | +91 93602 32456 (schema: `+919360232456`) |
+| Public email | hello@buildogram.in |
+| Canonical website URL | https://www.buildogram.in |
 
-## 3. ⏳ Route-family verification (post-deploy)
+Consistency check performed: **Footer ✅ · Organization schema ✅ · LocalBusiness schema ✅ (defect fixed this pass — was emitting `+91-XXXXXXXXXX` / `600000` / `info@buildogram.in`) · Legal pages ✅ (now `hello@buildogram.in`) · Contact page — telephone/email consistent, address block to be re-confirmed visually on the preview · Google Business Profile — ⏳ PENDING, no access.** No address information has been inferred or fabricated. **Owner: confirm the table above verbatim before production promotion.**
 
-Test ≥3 valid slugs per family; record status, final URL, redirect chain, canonical, title, description, H1, robots meta, body presence, JSON-LD presence, sitemap inclusion, internal links:
+## 10. ⏳ Production database verification (item 11) — BLOCKED
 
-- `/services/`: `villa-construction`, `boq-review`, `turnkey-construction`
-- `/materials/` (dynamic): `aggregates`, `paint`, `roofing`
-- `/guides/`: `what-is-boq-in-construction`, `how-to-compare-contractor-quotes`, `why-low-construction-quote-can-be-risky`
-- `/glossary/`: `rmc` + 2 others
-- `/faqs/`: 3 category slugs · `/compare/`: 3 slugs
-- `/partners/[slug]`: any real approved partner (NOT `demo-*`; also confirm `/partners/demo-builder` returns 404)
+No network route from this environment to the Neon host (`EAI_AGAIN`). Run Sections **A and B only** of `seo-growth/production-db-verification.sql` from an authorised environment; **do not run Section C**. Required sanitised report fields: count of `demo-*` partners · count of `@pilot.buildogram.in` records · seed-phone matches · placeholder-avatar/stock-photo matches · duplicate phone counts · suspicious RERA/ISO placeholders · seed-marker records · potential fictional records without `demo-*` slugs · active vs inactive counts · sitemap-eligible vs blocked counts. The script prints IDs, slugs and boolean flags only — no personal contact details or credentials. If suspicious records exist, an archival proposal (reversible Section C1) goes to the owner for approval before anything is changed.
 
-Pass: all 200, self-canonical on `www.buildogram.in`, unique titles, H1 present, SSR body present, no `noindex`.
+## 11. Remaining blockers
 
-## 4. ⏳ Redirect verification (post-deploy)
+1. Build/lint/test not yet run on a real environment (item 3) — **blocks preview deployment**.
+2. Vercel scope re-authentication (item 5) — **blocks preview creation**.
+3. Production DB read-only verification (item 11) — **blocks production promotion**.
+4. NAP owner confirmation + GBP match (item 10) — **blocks production promotion**.
+5. Items 6–9 unexecuted until a preview URL exists.
+6. Content-quality classification of the ~85 restored dynamic URLs is not yet done — **blocks P1**.
 
-For each of the 8 sources (see `07-content-pruning-and-redirect-map.csv`): `curl -sIL` → expect single 308/301 hop → destination 200 → destination self-canonical → zero internal links to source (already verified in code; re-verify in rendered HTML of homepage + one service page).
+## 12. Recommendations
 
-## 5. ⏳ Production sitemap verification (post-deploy)
-
-`/sitemap.xml` returns 200; then script-check every URL: all 200 (no 3xx/4xx), no duplicates, all hosts `https://www.buildogram.in`, no `demo-*` partner URLs, no noindexed URLs, `lastmod` present only on DB-backed entries (case studies/proof), restored dynamic families present.
-
-## 6. ⏳ Claims scan (post-deploy, rendered HTML incl. JSON-LD/FAQ schema)
-
-Grep rendered HTML of: homepage, `/about`, `/end-to-end-construction-support-chennai`, `/locations/chennai`, **3 locality pages e.g. `/locations/chennai/velachery`, `/locations/chennai/adyar`, `/locations/chennai/pallikaranai`**, `/construction-in-chennai`, `/structural-audit-chennai`, `/boq-review-chennai`, `/quality-system`, `/materials`, one partner category page, for:
-`500+ Projects` · `₹12.8Cr` · `₹2.1Cr` · `₹50Cr+` · `18%` savings · `10-Year Warranty` · `8–15%` · `starts around ₹10,000` · `certified pilots` · `Verified Partner Network` · `vetted` · `screened` · `certified structural engineers` · `licensed structural engineers` · `qualified structural engineers` · `2500+` · `up to 2,500+` · `500+ QC` · `pile foundations are mandatory` · `prone to flooding` · locality `₹…/sqft` figures · `+91-XXXXXXXXXX` · `600000` · `info@buildogram.in`.
-Pass: zero hits (source-level scans already at zero; this confirms no stale cache/ISR remnants).
-
-## 7. ⏳ Domain & encoding scan (post-deploy)
-
-Rendered HTML: zero `buildogram.com` / `app.buildogram.com`; zero `â‚¹`/`â€`/`Â·` sequences; `₹`, `—`, `'` render correctly; homepage title shows "— Chennai". All canonicals `www.buildogram.in`.
-
-## 8. Production database verification
-
-Status: **PENDING OWNER** — sandbox cannot reach Neon (network restriction).
-Procedure prepared: `seo-growth/production-db-verification.sql` — Section A (counts, read-only), Section B (ID/slug export with indicator flags: seed phones, ui-avatars logos, unsplash covers, unnumbered RERA/ISO claims, duplicate phones, non-demo-slug heuristics), Section C (archival/deletion, commented out, owner-approval-gated). No personal data printed; nothing deletes automatically.
-
-## 9. Search-engine notification (PREPARED — do not execute without owner approval)
-
-**GSC:** Search Console → Sitemaps → resubmit `https://www.buildogram.in/sitemap.xml`; add annotation (Insights/notes + internal log): "2026-MM-DD: P0 release — repaired ~85 404 dynamic URLs, 8 redirects, sitemap cleanup, claims remediation."
-**Bing:** Webmaster Tools → Sitemaps → resubmit same URL.
-**URL Inspection priority (request indexing individually, max ~10–12, in this order):**
-1. `/` 2. `/construction-in-chennai` 3. `/boq-review-chennai` 4. `/structural-audit-chennai` 5. `/construction-cost-estimation-chennai` 6. `/end-to-end-construction-support-chennai` 7. `/home-construction-chennai` 8–12. restored dynamic pages with most substantial unique content, e.g. `/guides/what-is-boq-in-construction`, `/guides/how-to-compare-contractor-quotes`, `/services/turnkey-construction`, `/glossary/rmc`, `/faqs/<top category>`.
-**Recrawl-needed (previously 404, now 200):** all `/services/*`, `/guides/*`, `/glossary/*`, `/faqs/*`, `/compare/*` URLs — recovered via sitemap resubmission, not bulk inspection requests.
-**Should remain redirected/excluded:** the 8 redirect sources; `demo-*` partner URLs.
-Do NOT bulk-request indexing for hundreds of URLs.
-
-## 10. Remaining risks
-
-1. Build not yet run anywhere — highest residual risk; gate §1 covers it.
-2. Restored dynamic pages (~85) go from 404 → 200 at once; several are thin (`why-vs-*`, some glossary). If any are low-quality, Google may index-then-demote — the P1 quality classification (gate below) addresses this; consider temporarily noindexing the thinnest few if classification finds them empty.
-3. Production DB demo-partner state unknown until §8 runs.
-4. GSC/GA4 still not connected — before/after impact measurement will lack pre-deploy query-level baseline beyond what GSC retains historically.
-5. `/services/*` pages now render AND duplicate `-chennai` pages (C-group cannibalisation) — accepted temporarily; resolved in P1 with data.
-
-## 11. Go/No-Go for P1
-
-**Current recommendation: NO-GO (holding state, as designed).**
-P1 may begin when ALL of: (a) build passes on owner machine with warnings triaged; (b) deploy completes and §§3–7 all pass on production; (c) DB verification §8 run and any demo data archived; (d) restored dynamic pages classified for content quality, uniqueness and search intent (classification worksheet to be produced as the first P1 task, using GSC data once connected).
+- **Preview deployment: GO** — branch is clean, scoped, secret-free and internally consistent, conditional on item 3 passing on your machine and protection being enabled per §4.
+- **Production promotion: NO-GO** — blockers 1–4 outstanding.
+- **P1: NO-GO** — requires production verification to pass *and* the restored dynamic pages to be classified for content quality, uniqueness and search intent.

@@ -20,6 +20,18 @@
 
 **Note on locality pages:** all 28 passed the minimum content-length sanity check. This does not constitute content-quality, uniqueness or indexability approval. Final indexing decisions remain pending P1 locality evaluation.
 
+## 2026-07-25 — Readiness pass 4 (preview-deployment preparation)
+
+- Locality gate terminology corrected across all 8 deliverables to the owner's canonical sentence (content-length sanity check ≠ indexability approval; P1 evaluation pending).
+- `CURRENT STATE` supersession section added to this changelog (above).
+- Branch integrity: 17 further line-ending-noise files reverted; branch diff now 102 files, all real content changes; register CSV normalised to LF.
+- Branch safety audit completed: 0 secrets/credentials/DB exports/binaries/private data; only `.sql` present is the read-only verification script (0 INSERT/COPY, phones hashed).
+- Environment facts captured for the owner build: Node v22.22.3, npm 10.9.8, package-lock.json, no packageManager field, no tsconfig (type-check = N/A).
+- Created `seo-growth/preview-verification.sh` — one-command runner for items 6–9 (protection check, route families, redirects with **actual** status capture since Next emits 308, sitemap per-URL status check, rendered claim/domain/encoding scan).
+- Vercel preview **not created**: MCP token lacks access to team scope `aphidsgroup-3300s-projects` (403). `deploy_to_vercel` deliberately not used as a workaround — it would create a separate project and risk an indexable duplicate.
+- Recommendation recorded: use Vercel Deployment Protection (Standard) rather than code-level preview noindex, so preview-only settings cannot reach production.
+- Status: preview deployment **GO** (conditional on owner build passing); production promotion **NO-GO**; P1 **NO-GO**.
+
 > **Historical entries below:** retained as a record of what changed at each commit. Wording quoted in them was accurate at that time and may have been superseded by the table above.
 
 

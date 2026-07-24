@@ -135,3 +135,39 @@ Scope: `src/app`, `src/components`, `src/data`, `src/lib`, excluding authenticat
 
 Locality content-length sanity check: **All 28 locality pages passed the minimum content-length sanity check. This does not constitute content-quality, uniqueness or indexability approval. Final indexing decisions remain pending P1 locality evaluation.** Verified by replicating the generator's word count; no page silently changed `noindex`/sitemap state as a side-effect of the removals.
 Tests: **21/21 pass**. Syntax: `node --check` clean on all files modified in this pass.
+
+
+## 16. Owner-machine validation template (readiness pass 4, 2026-07-25)
+
+Environment facts captured in-sandbox: **Node v22.22.3 · npm 10.9.8 · lockfile `package-lock.json` · no `packageManager` field · no `tsconfig.json` and no type-check script (TypeScript check = N/A, JavaScript-only project with `jsconfig.json`)**.
+
+Fill this table from a clean checkout (`git clone` → `git checkout seo/buildogram-organic-growth-system` → `npm ci`):
+
+| Field | Value |
+| --- | --- |
+| Node.js version | |
+| Package-manager version | |
+| Lockfile used | package-lock.json |
+| `git status` | |
+| `git diff --check` | |
+| `npm ci` exit code | |
+| `npm run lint` exit code / warnings | |
+| `npm test` exit code / test counts | |
+| `npm run build` exit code | |
+| Build duration | |
+| Total routes generated | |
+| Static routes | |
+| Dynamic routes | |
+| Build warnings (each: Harmless / Fix before production / Blocks deployment) | |
+| Metadata / viewport warnings | |
+| Dynamic-rendering warnings | |
+| Prerender failures | |
+| DB / env-var warnings | |
+| Sitemap generation result | |
+| Type errors | N/A (no tsconfig) |
+
+Blocking rule: any failed build, failed test, type error, prerender failure or unresolved SEO-affecting warning blocks preview deployment.
+
+## 17. Branch integrity note (readiness pass 4)
+
+Two batches of line-ending-only noise (198 then 17 files) entered the branch via staging commands and were detected with `git diff -w` and reverted. Final branch diff vs `e3f3ef8`: **102 files, 100% with real content change**, 11 added (all `seo-growth/`), 0 deleted, 0 binary. `git diff --check` reports 10 pre-existing trailing-whitespace lines in two files whose surrounding lines we edited — classified **Harmless**.
