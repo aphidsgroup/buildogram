@@ -4,9 +4,20 @@ import { google } from 'googleapis';
 export async function GET() {
   try {
     // 1. Authenticate with Google
-    const auth = new google.auth.GoogleAuth({
-      scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
-    });
+    let auth;
+    if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
+      // Use raw JSON from env (Vercel)
+      const credentials = JSON.parse(process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
+      auth = new google.auth.GoogleAuth({
+        credentials,
+        scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
+      });
+    } else {
+      // Use file path from GOOGLE_APPLICATION_CREDENTIALS (Local)
+      auth = new google.auth.GoogleAuth({
+        scopes: ['https://www.googleapis.com/auth/webmasters.readonly'],
+      });
+    }
 
     const searchconsole = google.searchconsole({
       version: 'v1',
