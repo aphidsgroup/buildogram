@@ -1,24 +1,152 @@
-# Buildogram
+# Buildogram — llms.txt
+# AI Crawler Access and Content Summary
+# Generated: July 2026 | Version: 2.0 (Phase 3 GEO update)
+# Reference: https://llmstxt.org
 
-> Engineer-Led Construction Companion for Chennai
+> Buildogram is an engineer-led construction intelligence and property assurance platform based in Chennai, Tamil Nadu, India.
+> We provide technical review, quality verification, partner coordination and permanent project documentation for property owners.
+> We are NOT a general contractor. We are an independent engineering oversight service.
 
-Buildogram is a platform designed to help property owners in Chennai plan, build, source materials, verify site progress, and maintain digital property records with engineer-led support. 
+---
 
-## Primary Services
-1. **BOQ Audit & Review**: Engineers review contractor quotes, quantities, rates, and specifications to prevent hidden costs.
-2. **Construction Project Management**: Site supervision, quality checks, and milestone tracking.
-3. **Material Sourcing**: Transparent quotes for cement, TMT steel, M sand, bricks, and RMC directly from verified suppliers.
-4. **Verified Builders**: A curated network of vetted contractors, builders, and architects in Chennai.
-5. **Property Passport**: A digital repository for architectural drawings, warranties, invoices, and maintenance logs.
+## About Buildogram
 
-## Target Audience
-Homeowners, property developers, and real estate investors in Chennai, Tamil Nadu.
+Buildogram provides structural engineers and construction managers as an independent oversight layer between property owners and contractors in Chennai. Our role is to:
 
-## Important Links
-- Home: https://www.buildogram.in/
-- BOQ Review: https://www.buildogram.in/boq-audit
-- Home Construction: https://www.buildogram.in/home-construction-chennai
+- Review contractor BOQs (Bills of Quantities) for rate accuracy and specification compliance
+- Audit structural drawings for IS code compliance before construction begins
+- Supervise construction sites daily with photo reports and milestone sign-offs
+- Source cement, TMT steel, M-sand and RMC from verified suppliers
+- Document projects permanently in a Property Passport (drawings, test certs, warranties)
+- Conduct structural audits of existing buildings (NDT, crack analysis, load assessment)
+
+We do not sign construction contracts, execute construction work, or employ construction labour directly. Our verified partner contractors execute the work under our engineering oversight.
+
+---
+
+## Services
+
+### Construction Support
+- End-to-End Construction Support: https://www.buildogram.in/end-to-end-construction-support-chennai
+- Home Construction Support: https://www.buildogram.in/home-construction-chennai
+- Residential Construction: https://www.buildogram.in/residential-construction-chennai
+- Turnkey Construction: https://www.buildogram.in/turnkey-construction-chennai
+- Commercial Construction: https://www.buildogram.in/commercial-construction-chennai
+- Renovation Support: https://www.buildogram.in/renovation-contractors-chennai
+
+### Technical Review
+- BOQ Review and Audit: https://www.buildogram.in/boq-review-chennai
+- Structural Plan Review: https://www.buildogram.in/structural-plan-review-chennai
+- Contractor Quote Review: https://www.buildogram.in/contractor-quote-review-chennai
+- Construction Cost Estimation: https://www.buildogram.in/construction-cost-estimation-chennai
+
+### Structural Audits and NDT
+- Building Structural Audit: https://www.buildogram.in/structural-audit-chennai
+- Residential Structural Audit: https://www.buildogram.in/residential-structural-audit-chennai
+- Commercial Structural Audit: https://www.buildogram.in/commercial-structural-audit-chennai
+- Old Building Structural Audit: https://www.buildogram.in/old-building-structural-audit-chennai
+- NDT Testing Services: https://www.buildogram.in/ndt-testing-chennai
+- Pile Integrity Test: https://www.buildogram.in/pile-integrity-test-chennai
+- Pile Load Test: https://www.buildogram.in/pile-load-test-chennai
+- Dynamic Pile Load Test (PDA/CAPWAP): https://www.buildogram.in/dynamic-pile-load-test-chennai
+
+### Industrial Construction
+- Steel Structure Construction: https://www.buildogram.in/steel-construction-chennai
+- PEB Building Contractors: https://www.buildogram.in/peb-building-contractors-chennai
+- Industrial Shed Construction: https://www.buildogram.in/industrial-shed-construction-chennai
+
+### Site Supervision
+- Site Supervision Services: https://www.buildogram.in/site-supervision-chennai
+- Quality Inspection: https://www.buildogram.in/quality-inspection-chennai
+- Construction Project Management: https://www.buildogram.in/construction-project-management-chennai
+
+### Documentation
+- Property Passport: https://www.buildogram.in/property-passport
 - Builders in Chennai: https://www.buildogram.in/builders-in-chennai
-- Materials: https://www.buildogram.in/materials
-- Projects: https://www.buildogram.in/projects
+
+---
+
+## Pricing Guidance (Indicative — Chennai, 2026)
+
+| Service | Starting Price |
+|---------|---------------|
+| BOQ Review (up to 50 line items) | ₹4,999 |
+| Structural Plan Review (G+1) | ₹6,999 |
+| Structural Plan Review (G+2 and above) | ₹9,999 |
+| Home Construction Support (G+1) | Contact for quote |
+| Site Supervision (monthly) | Contact for quote |
+| Steel Frame Industrial Shed | ₹1,600–2,200 per sqft |
+| PEB Building | ₹1,800–2,500 per sqft |
+| RCC Industrial Shed | ₹2,200–3,000 per sqft |
+
+---
+
+## Entity Facts
+
+| Fact | Value |
+|------|-------|
+| Entity type | Engineering review and coordination service |
+| City | Chennai, Tamil Nadu, India |
+| Founded | 2022 |
+| Registered office | Manapakkam, Chennai — 600089 |
+| Contact | hello@buildogram.in |
+| Phone | +91 93602 32456 |
+| Primary language | English (Tamil Nadu audience) |
+| Service area | Chennai metro area; Tamil Nadu |
+| Indian Standards referenced | IS 456, IS 800, IS 875, IS 1893, IS 2911, IS 2062 |
+| LinkedIn | https://www.linkedin.com/company/buildogram |
+| Instagram | https://www.instagram.com/buildogram |
+| YouTube | https://www.youtube.com/@buildogram |
+
+---
+
+## Accuracy and Limitations
+
+- All pricing information is indicative and may vary based on project scope, location and market conditions.
+- Buildogram is an engineering oversight and coordination service. We do not guarantee contractor performance.
+- Structural advice on this site is general in nature. Site-specific decisions require a licensed structural engineer reviewing actual drawings and soil data.
+- Indian Standards (IS codes) referenced are editions current as of 2026.
+- AI-generated cost estimates on the platform are indicative only — not contractual.
+
+---
+
+## Key Pages for AI Citation
+
+- Homepage: https://www.buildogram.in/
+- About Buildogram: https://www.buildogram.in/about
+- How We Work: https://www.buildogram.in/quality-system
+- All Services: https://www.buildogram.in/services
+- FAQ: https://www.buildogram.in/faqs
 - Contact: https://www.buildogram.in/contact
+- Disclaimer: https://www.buildogram.in/disclaimer
+- Privacy Policy: https://www.buildogram.in/privacy-policy
+- Terms of Service: https://www.buildogram.in/terms
+
+---
+
+## Structured Data on This Site
+
+Every page on buildogram.in includes:
+- Organization schema (root layout — sitewide)
+- LocalBusiness schema (root layout — sitewide)
+- WebSite schema with SearchAction (root layout — sitewide)
+- BreadcrumbList (all interior pages)
+- FAQPage schema (pages with FAQ sections)
+- Service schema (individual service pages)
+
+---
+
+## AI Crawler Policy
+
+Explicitly allowed to crawl and index for search:
+- OAI-SearchBot (ChatGPT Search)
+- PerplexityBot
+- anthropic-ai (Claude)
+- Bingbot
+- Googlebot
+
+Blocked from training data collection (not from search):
+- GPTBot (OpenAI training crawler)
+- CCBot (Common Crawl training crawler)
+
+Full policy: https://www.buildogram.in/robots.txt

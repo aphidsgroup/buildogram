@@ -68,10 +68,11 @@ export const viewport = {
   viewportFit: 'cover',
 };
 
-import { generateOrganizationSchema, generateLocalBusinessSchema } from '@/lib/seo/schema';
+import { generateOrganizationSchema, generateLocalBusinessSchema, generateWebSiteSchema } from '@/lib/seo/schema';
 
 const orgSchema = generateOrganizationSchema();
 const localBusinessSchema = generateLocalBusinessSchema();
+const webSiteSchema = generateWebSiteSchema();
 
 export default function RootLayout({ children }) {
   return (
@@ -102,6 +103,7 @@ export default function RootLayout({ children }) {
         />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }} />
         
         {/* Analytics Placeholder */}
         {process.env.NEXT_PUBLIC_GA_ID && (

@@ -175,11 +175,19 @@ export default async function sitemap() {
   }));
 
   // Dynamic: localities (legacy — kept for URL continuity)
-  const localityRoutes = localities.map((l) => ({
-    url: `${baseUrl}/locations/chennai/${l.slug}`,
-    priority: 0.85,
-    changeFrequency: 'monthly',
-  }));
+  // Phase 3 fix: quality-gated via generateAreaPage to prevent noindex-in-sitemap conflict
+  // (seomator flagged 7 pages with noindex meta but present in sitemap — fixed here)
+  const localityRoutes = localities
+    .map((l) => {
+      const page = generateAreaPage(l.slug);
+      if (!page || !page.isIndexable) return null;
+      return {
+        url: `${baseUrl}/locations/chennai/${l.slug}`,
+        priority: 0.85,
+        changeFrequency: 'monthly',
+      };
+    })
+    .filter(Boolean);
 
   // Dynamic: materials
   const materialRoutes = materials.map((m) => ({
