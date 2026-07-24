@@ -8,3 +8,4 @@ source_url,destination_url,type,hops,reason,internal_links_updated,sitemap_statu
 /factory-shed-construction-chennai,/industrial-shed-construction-chennai,301,1,"serviceHubs entry with no renderer; same intent cluster",none found,removed from sitemap,next.config.mjs
 /verified-contractors-chennai,/partners/contractors,301,1,"Broken link on /locations; contractors partner page is closest canonical",locations/page.js,never in sitemap,next.config.mjs
 NOTE: No pages were deleted. No URL redirects to the homepage. All redirects verified one-hop (no chain: no destination above appears as a source).,,,,,,,
+"UPDATE 2026-07-25 (readiness pass): all 8 sources re-verified absent from sitemap and internal links after final wording edits; no vercel.json or middleware conflicts; deployment pending owner.",,,,,,,

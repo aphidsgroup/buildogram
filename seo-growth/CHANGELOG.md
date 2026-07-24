@@ -1,5 +1,17 @@
 # SEO Growth System — CHANGELOG
 
+## 2026-07-25 — Deployment-readiness phase (post-P0, pre-deploy)
+
+- Partner wording tightened per owner directive: all public "screened"/"vetted"/"Engineer-Screened" wording (10 instances) replaced with neutral Partner Network terms; missed "Verified Contractors in Chennai" H1 fixed. Register CL24.
+- "Qualified structural engineers" RETAINED with documented evidence basis (named founders on /about: structural engineering lead + B.E. credential; Person schema present). Register CL25 — owner to confirm formal credentials; fallback wording defined.
+- Two additional async-params routes fixed: case-studies/[slug], proof/[slug] (blog has no slug route).
+- Deployment-prep audit: no env/credential/secret files in any branch commit; no vercel.json (no redirect conflict surface); middleware matcher does not intersect any redirect source; all 8 redirects one-hop with sources absent from sitemap and internal links.
+- Owner-safe production DB verification procedure created: seo-growth/production-db-verification.sql (read-only sections A/B; approval-gated cleanup C; heuristics for non-demo-slug seed data: seed phone numbers, ui-avatars/unsplash placeholders, unnumbered RERA/ISO claims, duplicate phones).
+- Pre-deploy production baseline captured (incl. fresh confirmation that valid /guides/ slugs 404 live).
+- Created seo-growth/20-post-deployment-verification.md: full post-deploy check framework, GSC/Bing procedures, URL Inspection priority list, risks, P1 gate. Current P1 status: NO-GO until deploy + production checks pass.
+- Build/lint remain owner-machine gates (sandbox cannot run them — documented in 19 §12 and 20 §1).
+
+
 ## 2026-07-25 — P0 implementation (owner-approved)
 
 Branch: `seo/buildogram-organic-growth-system` · No deploy performed; changes await owner review and merge.

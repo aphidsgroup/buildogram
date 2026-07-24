@@ -104,3 +104,12 @@ Acceptance: build completes; static generation output shows the six dynamic fami
 | No unrelated homepage redirects | PASS (redirect map §07) |
 | Production build passes | See §12 |
 | Tests pass | PASS 21/21 (§1) |
+
+
+## 14. Deployment-readiness addendum (2026-07-25, second pass)
+
+- Repo-wide screened/vetted scan after tightening: **0 public instances**.
+- Async-params consistency scan: all public dynamic routes now `await params` (services, materials, guides, glossary, faqs, compare, partners, locations, case-studies, proof, properties/listing). Remaining sync `params.` references occur only after the awaited reassignment (safe).
+- Secrets audit of all branch commits (`git log --name-only`): no .env/credential/pem/google files committed.
+- Redirect-conflict audit: no vercel.json; middleware matcher (`/ops /partner /client /project /property-passport`) does not intersect any redirect source; next.config redirects are the single redirect source of truth.
+- Git identity configured; LFS hook warning during commits is benign (no LFS-tracked assets touched).

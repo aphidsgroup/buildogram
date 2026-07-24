@@ -36,6 +36,13 @@ Owner decisions from P0 approval have been implemented. Every removed or softene
 22. **Legal contact mailbox** — privacy/terms now point to `hello@buildogram.in`. Confirm this mailbox is monitored for privacy requests, or create `privacy@buildogram.in` and tell us to swap it in.
 23. **NAP** — confirm footer address/phone matches Google Business Profile exactly.
 
+## Deployment gate (added 2026-07-25, readiness pass)
+
+24. **Run the build locally** — the sandbox cannot execute it: `npm run lint && npm test && npm run build`, record results into `19-test-and-validation-results.md` §12 (route counts + every warning categorised Harmless / Fix-before-deploy / Blocks-deploy).
+25. **Deploy to a Vercel preview first**, run §§3–7 of `20-post-deployment-verification.md` against the preview, then approve promotion to production.
+26. **Run `production-db-verification.sql`** Sections A+B (read-only) against Neon; approve Section C (archival) only after reviewing output.
+27. **Confirm founder engineering credentials** (CL25) — degrees/registration numbers for the structural engineering lead; enables stronger wording later and strengthens Person schema.
+
 ## Proof assets recommended (unchanged)
 
 Engineer profiles with qualifications; sample redacted BOQ comparison; sample inspection checklist/report; client-approved case studies; supplier rate methodology + dated price index; warranty document; published partner verification checklist.
