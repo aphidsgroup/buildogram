@@ -31,7 +31,7 @@ export default function ContextualCTA({ pageType, currentPath }) {
     case 'location':
       ctaText = "Discuss Your Requirement";
       ctaLink = "/contact";
-      subtitle = "Talk to a Buildogram engineer today for verified, stress-free execution.";
+      subtitle = "Talk to a Buildogram engineer today to plan your project with execution oversight.";
       break;
   }
 

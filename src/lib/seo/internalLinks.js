@@ -45,7 +45,7 @@ export const CLUSTERS = {
     { label: 'Case Studies', href: '/case-studies', description: 'Detailed breakdowns of completed projects.' },
     { label: 'Field Proof', href: '/proof', description: 'Real updates from our engineers on site.' },
     { label: 'Quality System', href: '/quality-system', description: 'The strict standards we enforce.' },
-    { label: 'Partners', href: '/partners', description: 'The best architects and builders in Chennai.' },
+    { label: 'Partners', href: '/partners', description: 'Verified architects and builders in Chennai.' },
     { label: 'Chennai Service Hub', href: '/locations/chennai', description: 'Our hyper-local ecosystem footprint.' },
     { label: 'Property Passport', href: '/property-passport', description: 'Secure digital handover records.' }
   ],
