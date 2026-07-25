@@ -1,52 +1,81 @@
-# OV02 — Materials Operating Model: Owner Decision Record
+# OV02 — Materials Operating Model: **OWNER DECISION CONFIRMED**
 
-**RESEARCH-ONLY — NO PUBLICATION OR IMPLEMENTATION AUTHORISED** · Status: **AWAITING OWNER DECISION**
+**RESEARCH-ONLY — NO PUBLICATION OR IMPLEMENTATION AUTHORISED**
+**Decision date:** 2026-07-25 · **Status: RESOLVED** (15 operational sub-confirmations remain open)
 
-## Why this blocks 2,506 queries
+## Confirmed model
 
-Keyword eligibility, page format, schema type and claim wording all derive from what Buildogram actually *does* with materials. The same query — "cement suppliers in chennai" — is legitimate under a directory model, misleading under a no-fulfilment model, and requires `Product`/`Offer` schema only under a direct-sales model. No amount of content quality fixes a mismatch here.
+| # | Model | Decision | Operating limitation |
+| - | --- | --- | --- |
+| 1 | Direct seller | **Not selected** | Buildogram does not sell materials under its own invoice or represent itself as stockist, dealer or seller. |
+| 2 | Material quotation collector | **Selected** | May collect and compare supplier quotations for customers. |
+| 3 | Material sourcing coordinator | **Selected** | May coordinate sourcing within construction, renovation, BOQ or project-support engagements. |
+| 4 | Procurement consultant | **Selected** | May advise on specifications, brands, grades, quotation comparison, quantities, exclusions and procurement decisions. |
+| 5 | Supplier referral network | **Selected** | May introduce customers to suppliers; supplier and customer complete the transaction unless separately agreed in writing. |
+| 6 | Supplier directory | **Selected** | May list real suppliers where each listing is current, transparent and supported by genuine business information. |
+| 7 | Price-information publisher | **Selected with restrictions** | Dated, indicative observations only, with source, unit, GST, transport, date and limitations disclosed. **Manually collected observations must never be called "live rates."** |
+| 8 | Logistics coordinator | **Not selected** | May communicate delivery requirements to suppliers; must not claim logistics responsibility, delivery execution or delivery guarantees. |
+| 9 | No active fulfilment | **Not selected** | Quotation, sourcing, procurement-support, referral and directory functions are active. |
 
-## Decision required — select ALL that currently apply
+## Confirmed commercial structure
 
-| # | Model | Definition | Select |
-| --- | --- | --- | --- |
-| 1 | **Direct seller** | Buildogram sells material, invoices the customer, owns the transaction | ☐ |
-| 2 | **Material quotation collector** | Buildogram gathers quotes from suppliers on the customer's behalf | ☐ |
-| 3 | **Material sourcing coordinator** | Buildogram arranges supply as part of a project engagement | ☐ |
-| 4 | **Procurement consultant** | Buildogram advises on procurement; customer transacts | ☐ |
-| 5 | **Supplier referral network** | Buildogram introduces suppliers, no transaction involvement | ☐ |
-| 6 | **Supplier directory** | Buildogram publishes a listing of suppliers | ☐ |
-| 7 | **Price-information publisher** | Buildogram publishes dated market rate observations | ☐ |
-| 8 | **Logistics coordinator** | Buildogram arranges delivery to site | ☐ |
-| 9 | **No active material fulfilment yet** | Materials pages are informational only today | ☐ |
+Unless a specific written contract states otherwise: **the supplier issues the quotation, invoices the customer, and is responsible for availability, quality, GST invoicing, transport and delivery commitments.** The customer transacts directly with the supplier. Buildogram collects quotations, compares specifications, coordinates sourcing, advises on procurement and introduces suppliers — and must disclose any sourcing, consultation, referral or commission fee. Buildogram must not represent itself as authorised dealer, stockist, manufacturer, wholesaler or direct seller without documentary proof, and must not guarantee supplier performance, pricing, delivery or quality unless a signed agreement says so.
 
-**Additional confirmations needed if any of 1–3 or 7–8 are selected:**
-- Supplier panel size and how suppliers are onboarded
-- Who issues the quotation, and its validity period
-- GST treatment and whether quoted prices include transport
-- Minimum order quantity and delivery radius
-- For model 7: collection method, sample size, observation frequency, revision policy
+## Effect on the keyword universe — measured
 
-## What each model permits
+Of the materials queries in the master universe (420 classified):
 
-| Query family | Requires model | Commercial targeting | Informational targeting | Schema permitted |
-| --- | --- | --- | --- | --- |
-| "buy cement chennai", "construction material shop" | 1 | Only under model 1 | Yes (buying guides) | `Product`/`Offer` **only** with a real visible purchase flow |
-| "cement suppliers in chennai", "tmt dealers chennai" | 5 or 6 | Only with real, maintained listings | Yes | `LocalBusiness` for each genuinely listed business; **never** for the directory page itself |
-| "get cement quote chennai", "material sourcing chennai" | 2, 3 or 4 | Only with a real quotation workflow | Yes | `Offer` only if a genuine quotation process is visible |
-| "cement price chennai", "tmt rate today" | 7 | Only with a dated, maintained dataset | Yes, with methodology + limitations | No price schema without a maintained feed |
-| "opc vs ppc", "fe500 vs fe500d", "m-sand quality test" | none — expertise only | N/A | **Yes — permitted today** | `Article`/`FAQ` |
-| "cement quantity calculator" | none — tool | N/A | **Yes — permitted today** | `WebApplication` if accurate |
-| "cement delivery chennai", "bulk order m-sand" | 8 | Only under model 8 | Yes (delivery planning guide) | None |
+| Status | Count | Meaning |
+| --- | ---: | --- |
+| **PERMITTED** | **213** | Quotation, sourcing, procurement, supplier-directory and informational/tool queries — commercial targeting now allowed with correct positioning |
+| **PERMITTED WITH RESTRICTIONS** | **71** | Price/rate queries — dated indicative observations only |
+| **BLOCKED** | **136** | Direct-seller/dealer/stockist/wholesale/warehouse terms (direct-seller model not selected) and delivery/bulk-order terms (logistics not selected) |
 
-## Current position, pending the decision
+Blocked terms remain eligible for **informational or directory** treatment — what is prohibited is Buildogram appearing as the seller or delivery guarantor.
 
-**Permitted today without any model confirmation:** material selection/education content (~400 queries) and quantity calculators (~120 queries). These are the only materials queries that can be planned for now, and they happen to carry the highest AI-citation value in the set.
+## Positioning language
 
-**Blocked today:** direct purchase (~120), dealer/supplier discovery (~340), quotation/sourcing (~150), price/rate (~200), logistics (~90).
+**Acceptable:** find relevant suppliers · compare supplier quotations · request construction-material quotations · get material sourcing support · explore listed suppliers · review brands, grades and specifications · coordinate site-specific material requirements.
 
-**Important nuance recorded per your instruction:** a supplier or dealer query is **not automatically unusable**. Under models 5/6 it remains eligible as directory content, and under any model it remains eligible for informational content that explains how to choose and verify a supplier. What is prohibited is implying a fulfilment capability that does not exist.
+**Not permitted:** buy cement from Buildogram · Buildogram cement/TMT dealer · construction material shop · wholesale materials from Buildogram · cement stockist · same-day delivery by Buildogram · Buildogram material warehouse · Buildogram authorised dealership.
 
-## Consequence if no decision is made
+## Supplier-directory requirements
 
-The materials programme stalls at educational content only. That is a defensible position — it is honest and citation-friendly — but it forfeits the commercial half of the materials opportunity indefinitely.
+A supplier page is indexable only with: legal/public business name · material categories · brands and grades · areas served · minimum-order info where available · GST availability · delivery capability · contact/quotation pathway · last-verified date · listing-relationship disclosure · verification status **based on an actual published procedure**.
+
+Prohibited without corresponding evidence and published criteria: "verified supplier", "approved supplier", "trusted supplier", "authorised dealer". **The directory page itself must not be marked as a `LocalBusiness`.** Individual supplier entities may carry business structured data only when the visible listing contains real, matching information.
+
+## Price-publishing rules
+
+Every observation must show: material · brand or generic category · grade/specification · unit · observation date · supplier sample or source type · GST inclusion · transport inclusion · delivery geography · minimum quantity where relevant · price validity · indicative-data disclaimer · update status.
+
+**Approved terminology:** indicative Chennai market observation · supplier quotation observed on [date] · indicative material price range · recent quotation range · dated market-rate observation.
+**Prohibited:** live rates · real-time rates · today's guaranteed price · lowest price in Chennai · official Chennai material rate · Buildogram material price index.
+**Product name until a formal statistical methodology exists: "Buildogram Chennai Material Price Monitor" — never "index."**
+
+## Schema permissions
+
+| Schema | Permission |
+| --- | --- |
+| `Article` / `BlogPosting` | Permitted for genuine educational content |
+| `FAQPage` | Permitted when FAQs are visible and useful |
+| `WebApplication` / `SoftwareApplication` | Permitted for functioning, accurate calculators |
+| `ItemList` | Permitted for a genuine visible supplier directory |
+| Individual business schema | Only for real supplier profiles with matching visible data |
+| `Product` | **Not permitted** unless Buildogram presents a genuine specific product offering |
+| `Offer` | **Not permitted** for ordinary quote-collection forms or indicative rate observations |
+| `AggregateRating` | **Prohibited** without genuine, visible, policy-compliant review data |
+
+## Three permitted layers
+
+1. **Education and tools** — guides, specifications, comparisons, quality checks, calculators (brand-neutral unless documented product evidence supports comparison).
+2. **Procurement and quotation support** — quotation collection, specification review, supplier comparison, sourcing coordination.
+3. **Supplier discovery** — maintained directory and referral experiences.
+
+**Blocked layer:** direct product sales · dealer positioning · wholesale positioning · inventory claims · delivery guarantees · `Product`/`Offer` schema.
+
+## Remaining owner confirmations before any commercial material page
+
+Active supplier count · onboarding procedure · listing update frequency · quotation request workflow · who is charged (customer, supplier or both) · commission and referral disclosure policy · quotation validity handling · GST treatment · transport treatment · minimum-order handling · Chennai delivery coverage · complaint and dispute process · price-observation collection method · publication frequency · rate correction and revision policy.
+
+**These 15 items are now the gating set for the materials programme — the model itself is settled.**

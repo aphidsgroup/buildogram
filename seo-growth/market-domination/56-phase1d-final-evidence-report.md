@@ -16,7 +16,7 @@ Phase 1D required two inputs that this environment cannot produce: **owner capab
 | Owner-confirmed managed services | **0** (14 proposed) |
 | Owner-confirmed partner-coordinated services | **0** (17 proposed) |
 | Unsupported services (proposed do-not-market) | **8** |
-| Materials operating model | **PROPOSED, not confirmed** — quotation collector + sourcing coordinator + referral network + price-information publisher |
+| Materials operating model | **CONFIRMED 2026-07-25** — quotation collector + sourcing coordinator + procurement consultant + supplier referral network + supplier directory + price-information publisher (restricted). NOT direct seller, NOT logistics coordinator. |
 | GSC observed queries | **0** — not connected |
 | Bing observed queries | **0** — not connected |
 | Customer-language queries | **0** — no CRM/enquiry export supplied |
@@ -81,3 +81,28 @@ GSC, Bing, GA4, CRM ingestion (§§5–8), the 68 SERP captures (§9), Tamil/Tan
 With those three, the rescore in §12 runs immediately and produces the first genuinely evidence-backed opportunity set. Without them, any further Claude work would add structure to a system that already has enough — and would risk re-manufacturing the appearance of progress that Phases 1B and 1C were built to eliminate.
 
 **Separately and unrelated to this research track: the P0 deployment remains unshipped.** `/guides/*` and five other route families are still 404 in production. That is live, user-facing damage, and it is worth more than any keyword decision in this programme.
+
+
+## 7. ADDENDUM — OV02 resolved (2026-07-25)
+
+The owner returned the materials operating model. **This is the first confirmed business-capability decision in the entire programme.**
+
+Confirmed: quotation collector · sourcing coordinator · procurement consultant · supplier referral network · supplier directory · price-information publisher (restricted).
+Not selected: direct seller · logistics coordinator.
+Commercial structure: the **supplier** issues the quotation, invoices the customer and owns availability, quality, GST, transport and delivery. Buildogram collects, compares, coordinates, advises and introduces — with mandatory fee/commission disclosure.
+
+**Measured effect on the 420 materials queries in the master universe:**
+
+| Status | Count |
+| --- | ---: |
+| PERMITTED (quotation, sourcing, procurement, directory, education, tools) | **213** |
+| PERMITTED WITH RESTRICTIONS (price/rate — dated indicative only) | **71** |
+| BLOCKED (direct-seller/dealer/stockist/wholesale/warehouse, delivery/bulk-order) | **136** |
+
+Blocked terms remain answerable through informational or directory content — the prohibition is on Buildogram appearing as seller or delivery guarantor, not on addressing the topic.
+
+**Files updated:** `OV02-…md` (full decision record) · `43-material-business-model-map.csv` (rebuilt with per-family permissions, schema rules and positioning language) · `04-material-taxonomy.csv` (all 46 rows carry the confirmed model) · `02`, `02b`, `02c` (four new columns: materials_model_status, commercial/informational targeting, schema permitted) · `53-buildogram-capability-ledger.csv` (7 materials capabilities confirmed; dealership and wholesale marked CONFIRMED UNSUPPORTED) · `55-evidence-based-opportunity-set.csv` (2 clusters released from BUSINESS MODEL BLOCKED) · `35-owner-verification-register.csv` (OV02 RESOLVED).
+
+**What this does NOT unlock.** The materials clusters move from *business-model blocked* to *hypothesis only* — they still fail the observed-search-evidence gate, like every other cluster. No materials page is authorised. The remaining materials gate is now **15 operational confirmations** (supplier count, onboarding, update frequency, quotation workflow, who is charged, fee disclosure, quotation validity, GST, transport, minimum order, delivery coverage, complaints process, price-observation method, publication frequency, revision policy) plus first-party search data.
+
+**Remaining capability decisions: 42 of 49** — the direct/managed/partner-coordinated rows in `54-owner-capability-decision.md` are still open, and they govern far more of the site than materials does.
