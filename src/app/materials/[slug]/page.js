@@ -31,13 +31,13 @@ const faqSchema = (faqs) => ({
 });
 
 
-const breadcrumbSchema = (itemData) => ({
+const breadcrumbSchema = (mat) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.buildogram.in' },
     { '@type': 'ListItem', position: 2, name: 'Materials', item: 'https://www.buildogram.in/materials' },
-    { '@type': 'ListItem', position: 3, name: itemData.mat.name, item: `https://www.buildogram.in/materials/${itemData.mat.slug}` },
+    { '@type': 'ListItem', position: 3, name: mat.name, item: `https://www.buildogram.in/materials/${mat.slug}` },
   ],
 });
 
