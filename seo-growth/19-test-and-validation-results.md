@@ -145,25 +145,26 @@ Fill this table from a clean checkout (`git clone` → `git checkout seo/buildog
 
 | Field | Value |
 | --- | --- |
-| Node.js version | |
-| Package-manager version | |
+| Node.js version | v20.19.2 |
+| Package-manager version | npm 10.8.2 |
 | Lockfile used | package-lock.json |
-| `git status` | |
-| `git diff --check` | |
-| `npm ci` exit code | |
-| `npm run lint` exit code / warnings | |
-| `npm test` exit code / test counts | |
-| `npm run build` exit code | |
-| Build duration | |
-| Total routes generated | |
-| Static routes | |
-| Dynamic routes | |
-| Build warnings (each: Harmless / Fix before production / Blocks deployment) | |
-| Metadata / viewport warnings | |
-| Dynamic-rendering warnings | |
-| Prerender failures | |
-| DB / env-var warnings | |
-| Sitemap generation result | |
+| `git status` | clean (nothing to commit) |
+| `git diff --check` | no whitespace errors |
+| `npm ci` exit code | 1 (EPERM file-lock on Windows; node_modules deleted and `npm install` used instead — EXIT 0) |
+| `npm run lint` exit code / warnings | EXIT 1 — 244 errors, 16 warnings — **ALL PRE-EXISTING**, not in P0 diff; `eslint.ignoreDuringBuilds: true` set — does not block build |
+| `npm test` exit code / test counts | EXIT 0 — **21/21 PASS** (BOQ engine math × 14, Razorpay signature × 7) |
+| `npm run build` exit code | EXIT 0 (after fixing 6 breadcrumbSchema prerender crashes — see §18) |
+| Build duration | ~2m 55s (47s compile + 108s static generation) |
+| Total routes generated | 1082 static pages |
+| Static routes (○) | ~380 |
+| SSG routes (●) | ~695 (location × 650 + services/guides/glossary/faqs/compare/materials) |
+| Dynamic routes (ƒ) | ~56 |
+| Build warnings (each: Harmless / Fix before production / Blocks deployment) | `eslint` key deprecated: **Harmless** · `middleware` → `proxy`: **Fix before production** · Custom Cache-Control: **Harmless** · Missing env vars (local only): **Harmless** |
+| Metadata / viewport warnings | None |
+| Dynamic-rendering warnings | None |
+| Prerender failures | 6 (all fixed — breadcrumbSchema param mismatch in materials, compare, faqs, glossary, guides, services — see §18) |
+| DB / env-var warnings | `safeDbCall: DATABASE_URL missing` — safe fallback activated; not a failure |
+| Sitemap generation result | ✅ `/sitemap.xml` generated — 0 404 URLs, 0 duplicates, 0 demo-* slugs |
 | Type errors | N/A (no tsconfig) |
 
 Blocking rule: any failed build, failed test, type error, prerender failure or unresolved SEO-affecting warning blocks preview deployment.
@@ -171,3 +172,27 @@ Blocking rule: any failed build, failed test, type error, prerender failure or u
 ## 17. Branch integrity note (readiness pass 4)
 
 Two batches of line-ending-only noise (198 then 17 files) entered the branch via staging commands and were detected with `git diff -w` and reverted. Final branch diff vs `e3f3ef8`: **102 files, 100% with real content change**, 11 added (all `seo-growth/`), 0 deleted, 0 binary. `git diff --check` reports 10 pre-existing trailing-whitespace lines in two files whose surrounding lines we edited — classified **Harmless**.
+
+## 18. Prerender bug fixes (breadcrumbSchema param mismatch)
+
+Discovered during owner-machine build run (2026-07-25). Six [slug] page files all had the same bug:
+
+```js
+// WRONG (parameter name mismatch)
+const breadcrumbSchema = (itemData) => ({ ..., name: itemData.X.field })
+breadcrumbSchema(X)  // itemData = X, so itemData.X = undefined ? TypeError
+
+// FIXED
+const breadcrumbSchema = (X) => ({ ..., name: X.field })
+```n
+| File | Bug field | Fix commit |
+| --- | --- | --- |
+| materials/[slug]/page.js | itemData.mat.name | 5c00ffa |
+| compare/[slug]/page.js | itemData.comp.title |  10d4e9 |
+| aqs/[category]/page.js | itemData.cat.title |  10d4e9 |
+| glossary/[term]/page.js | itemData.term.term |  10d4e9 |
+| guides/[slug]/page.js | itemData.guide.title |  10d4e9 |
+| services/[slug]/page.js | itemData.svc.title |  10d4e9 |
+
+All were pre-existing bugs introduced when the pages were originally generated. The bug did not surface in dev (Turbopack hot-reload) because error boundaries mask it. It only crashed during production static prerender. No application logic was changed � only the parameter name in the local function definition.
+

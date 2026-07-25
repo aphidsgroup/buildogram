@@ -16,9 +16,19 @@
 | Locality ₹/sqft cost figures, undated material/works rates | Project-specific estimate wording; any retained range is explicitly marked "indicative only — not a dated quotation" |
 | `3–5 working days` turnaround | The expected turnaround is confirmed after reviewing the project scope, documents and required deliverables |
 
-**Deployment state:** branch `seo/buildogram-organic-growth-system`, not merged, not deployed. Preview deployment approved by owner but **not yet created** (Vercel MCP token lacks access to the `aphidsgroup-3300s-projects` team scope — 403). Build/lint remain owner-machine gates. Production promotion and P1 both remain **NO-GO**.
+**Deployment state:** branch `seo/buildogram-organic-growth-system` HEAD `010d4e9` — **PUSHED to origin 2026-07-25T17:49 IST**. Local build ✅ EXIT 0 · Tests ✅ 21/21 · Vercel preview auto-triggering via GitHub integration. Production promotion pending Phase 4 (preview verification) gate pass.
 
 **Note on locality pages:** all 28 passed the minimum content-length sanity check. This does not constitute content-quality, uniqueness or indexability approval. Final indexing decisions remain pending P1 locality evaluation.
+
+## 2026-07-25 — P0 Build, Bug-Fix & Push (owner-machine run)
+
+- **Branch pushed:** `seo/buildogram-organic-growth-system` → `origin` for first time. HEAD: `010d4e9`.
+- **Tests:** 21/21 pass (BOQ engine math × 14, Razorpay sig × 7).
+- **Lint:** 244 pre-existing errors (not in P0 diff); `eslint.ignoreDuringBuilds: true` — does not block build or Vercel.
+- **Bug found & fixed — breadcrumbSchema param mismatch (6 pages):** `materials/[slug]`, `compare/[slug]`, `faqs/[category]`, `glossary/[term]`, `guides/[slug]`, `services/[slug]` all had `(itemData) => itemData.X.field` but called as `breadcrumbSchema(X)` — crashed prerender of all ~100 dynamic slug pages. Fixed in commits `5c00ffa` and `010d4e9`. Pre-existing bug, undetected in dev because Turbopack error-boundary masks it.
+- **Build:** EXIT 0 · 1082 static pages · 47s compile · 108s generation · 0 prerender failures after fix.
+- **Route families confirmed:** `/services/[slug]` (15) · `/guides/[slug]` (22) · `/glossary/[term]` (26) · `/faqs/[category]` (10) · `/compare/[slug]` (5) · `/materials/[slug]` (16).
+- **Phase 8 docs:** §16 build table filled in `19-test-and-validation-results.md`; §18 bug-fix log added.
 
 ## 2026-07-25 — Readiness pass 4 (preview-deployment preparation)
 
