@@ -1,93 +1,126 @@
-# 54 — Owner Capability Decision
+# 54 — Owner Capability Decision (OV01)
 
-**RESEARCH-ONLY — NO PUBLICATION OR IMPLEMENTATION AUTHORISED** · Status: **AWAITING OWNER DECISION**
+**RESEARCH-ONLY — NO PUBLICATION OR IMPLEMENTATION AUTHORISED** · **42 capabilities awaiting decision** (7 resolved via OV02)
 
-Mark each row `CONFIRMED` · `CONFIRMED WITH CHANGES` · `NOT CURRENTLY OFFERED` · `PLANNED` · `PARTNER ONLY` · `NEEDS DISCUSSION`.
+For each row select: `CONFIRMED DIRECT` · `CONFIRMED MANAGED` · `CONFIRMED PARTNER-COORDINATED` · `DIRECTORY ONLY` · `INFORMATIONAL ONLY` · `PLANNED` · `NOT OFFERED` · `NEEDS DISCUSSION`. Notes column is free text.
 
-Machine-readable detail: `53-buildogram-capability-ledger.csv` (49 capabilities). **A website page or repository entry does not prove a service is operational** — every "current" classification in that file reads `OWNER_CONFIRMATION_REQUIRED`.
+**Direct test:** does a Buildogram staff member perform, review, sign/approve, communicate, and remain responsible for corrections? Software assistance alone does not make it direct.
 
-## A. Proposed DIRECT capabilities (Buildogram staff / software)
+---
 
-| Capability | Proposed classification | Your decision |
-| --- | --- | --- |
-| Construction calculators | Digital software tool | |
-| BOQ Studio | Digital software tool | |
-| Quotation-comparison tools | Digital software tool | |
-| Property Passport | Digital software tool | |
-| Construction tracking software | Digital software tool | |
-| Site logbook / project-record systems | Digital software tool | |
-| Partner and professional directory | Professional directory | |
-| Construction guides and checklists | Informational content | |
-| Material quotation workflow | Digital software tool + managed workflow | |
-| Price-observation publishing | Informational content (dated methodology required) | |
+## Group 1 — BOQ, estimation and commercial control
 
-## B. Proposed BUILDOGRAM-MANAGED services — confirm **each** individually
+| Capability | Proposed | Decision | Who performs | Who signs the deliverable | Notes |
+| --- | --- | --- | --- | --- | --- |
+| BOQ review | Direct | | | | |
+| Contractor quotation comparison | Direct | | | | |
+| Preliminary construction estimation | Direct | | | | |
+| Cost comparison | Direct | | | | |
+| Detailed BOQ preparation | Managed | | | | |
+| Quantity take-off | Managed | | | | |
+| Rate analysis | Managed | | | | |
+| Contractor bill checking | Managed | | | | |
+| Variation review | Managed | | | | |
 
-Only confirm where you actually have people performing the work.
+## Group 2 — Project management and supervision
 
-| Capability | Who performs it? | Who invoices? | Your decision |
+| Capability | Proposed | Decision | Who performs | Site attendance? | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Contractor comparison | Direct | | | | |
+| Contractor-selection support | Direct | | | | |
+| Construction planning | Managed | | | | |
+| Project scheduling | Managed | | | | |
+| Site supervision | Managed | | | | |
+| Progress reporting | Managed | | | | |
+| Quality-inspection coordination | Managed | | | | |
+
+## Group 3 — Structural engineering and diagnostics *(regulated — see `57-…csv`)*
+
+| Capability | Proposed | Decision | Responsible professional | Registration held | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Structural design | Partner-coordinated | | | | |
+| Structural audit | Partner-coordinated | | | | |
+| NDT testing | Partner-coordinated | | | | |
+| Stability certificate | **Unsupported — coordination only** | | | | |
+| Structural-audit coordination | Managed | | | | |
+
+## Group 4 — Survey, soil and foundation *(regulated)*
+
+| Capability | Proposed | Decision | Responsible professional | Accreditation / licence | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Soil investigation | Partner-coordinated | | | | |
+| Land survey | Partner-coordinated | | | | |
+| Drone survey | Partner-coordinated | | | DGCA RPC holder? | |
+| Piling / foundation work | Partner-coordinated | | | | |
+| Soil-test coordination | Managed | | | | |
+| Survey coordination | Managed | | | | |
+
+## Group 5 — Construction execution
+
+| Capability | Proposed | Decision | Who contracts client | Who invoices | Who warrants |
+| --- | --- | --- | --- | --- | --- |
+| House / villa / residential construction | Partner-coordinated | | | | |
+| Commercial construction | Partner-coordinated | | | | |
+| Industrial / warehouse / PEB construction | Partner-coordinated | | | | |
+| Turnkey construction execution | **Unsupported as direct** | | | | |
+
+## Group 6 — Renovation and interiors
+
+| Capability | Proposed | Decision | Who performs | Who invoices | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Renovation | Partner-coordinated | | | | |
+| Interiors | Partner-coordinated | | | | |
+| Waterproofing | Partner-coordinated | | | | |
+| Painting / plumbing / electrical | Partner-coordinated | | | | |
+
+## Group 7 — Specialist systems *(several regulated)*
+
+| Capability | Proposed | Decision | Notes |
 | --- | --- | --- | --- |
-| BOQ preparation | | | |
-| BOQ review | | | |
-| Quotation comparison | | | |
-| Construction estimation | | | |
-| Contractor comparison | | | |
-| Contractor-selection support | | | |
-| Project planning | | | |
-| Site-progress reporting | | | |
-| Quality-check coordination | | | |
-| Material quotation collection | | | |
-| Material sourcing coordination | | | |
-| Property inspection coordination | | | |
-| Structural-audit coordination | | | |
-| Handover documentation | | | |
+| MEP / HVAC design | Partner-coordinated | | |
+| Fire systems | Partner-coordinated | | |
+| Solar | Partner-coordinated / directory | | |
+| Elevators | Partner-coordinated / directory | | |
+| Home automation | Partner-coordinated / directory | | |
+| Roofing / fabrication / demolition | Partner-coordinated | | |
 
-**Note on wording:** managed services may use advisory/review keywords ("BOQ review", "quotation audit", "site supervision") but **not** "contractor", "builder" or "certifier" terms — those imply execution or certification authority.
+## Group 8 — Professional directory
 
-## C. Proposed PARTNER-COORDINATED services
-
-For each: who contracts with the client, who invoices, who carries professional liability, who provides warranty, who handles complaints?
-
-| Capability | Your decision | Who contracts | Who invoices | Who is liable |
+| Capability | Proposed | Decision | Published listing criteria exist? | Notes |
 | --- | --- | --- | --- | --- |
-| Construction execution | | | | |
-| Architectural design | | | | |
-| Structural design | | | | |
-| Structural audit | | | | |
-| NDT testing | | | | |
-| Soil testing | | | | |
-| Land surveying | | | | |
-| Drone surveying | | | | |
-| Piling | | | | |
-| Renovation | | | | |
-| Interiors | | | | |
-| Waterproofing | | | | |
-| Solar | | | | |
-| Elevators | | | | |
-| Home automation | | | | |
-| Specialist building systems | | | | |
-| Materials supply and logistics | | | | |
+| Builders / contractors directory | Directory | | | |
+| Architects / structural engineers directory | Directory | | | |
+| Surveyors / NDT labs / piling directory | Directory | | | |
+| Suppliers directory | Directory *(OV02 confirmed)* | ✅ | | |
 
-## D. Proposed UNSUPPORTED — do not market as direct
+## Group 9 — Property inspection and documentation
 
-| Claim | Why blocked | Your decision |
-| --- | --- | --- |
-| Turnkey construction execution | Implies Buildogram builds | |
-| Structural certification | Requires registered SE authority | |
-| Stability-certificate issuance | Legal issuance authority | |
-| Laboratory testing | Requires owned or accredited lab | |
-| Direct construction-material dealership | Requires stock, invoicing, supply responsibility | |
-| Direct wholesale supply | Same | |
-| Property brokerage | Regulated; portals are separate brands | |
-| Services across every Chennai locality | 0 of 165 localities confirmed | |
+| Capability | Proposed | Decision | Who inspects | Qualification | Notes |
+| --- | --- | --- | --- | --- | --- |
+| Property condition inspection | Managed | | | | |
+| Snag inspection | Managed | | | | |
+| Handover documentation | Managed | | | | |
+| Project documentation | Direct | | | | |
+| Property Passport | Direct | | | | |
 
-## E. Materials operating model
+## Group 10 — Digital tools and knowledge products
 
-**Proposed:** quotation collector + sourcing coordinator + supplier referral network + price-information publisher.
-**Not proposed:** direct seller · authorised dealer · wholesaler · marketplace · inventory owner · logistics provider · invoice-issuing supplier.
+| Capability | Proposed | Decision | Staff review of outputs? | Notes |
+| --- | --- | --- | --- | --- |
+| Construction calculators | Direct (tool) | | | |
+| BOQ Studio | Direct (tool) | | | |
+| Project tracking software | Direct (tool) | | | |
+| Site logbook and reporting tools | Direct (tool) | | | |
+| Construction knowledge and checklists | Direct (content) | | | |
+| Supplier quotation collection | Direct *(OV02 confirmed)* | ✅ | | |
+| Supplier quotation comparison | Direct *(OV02 confirmed)* | ✅ | | |
 
-Confirm by ticking in `OV02-materials-operating-model.md`. Buildogram must not be described as a dealer, supplier, wholesaler or marketplace unless it **accepts orders, invoices customers, fulfils supply and takes commercial responsibility for delivery**.
+---
 
-## Why this blocks everything downstream
+## Service-area decision — see `58-service-area-capability-map.csv`
 
-Until this table is returned: 106 service rows stay unsupported or planned, ~1,900 materials queries stay commercially untargetable, no locality page can claim coverage, and no cluster can be scored for commercial priority. The capability ledger is now the single largest blocker in the programme — larger than the missing search data, because it determines what may be *said*, not merely what may be *targeted*.
+13 zones/corridors, each requiring one of: direct staff · managed partner · referral only · informational only · not served. **Do not answer "all Chennai."**
+
+## Why this is now the largest blocker
+
+42 capabilities unconfirmed means: 106 service taxonomy rows stay unsupported or planned, no service page wording can be finalised, no CTA or schema can be approved, no locality page can claim coverage, and 13 regulated services remain publication-blocked. This governs **what may be said**, which is a stricter constraint than what may be targeted.

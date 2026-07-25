@@ -106,3 +106,14 @@ Blocked terms remain answerable through informational or directory content — t
 **What this does NOT unlock.** The materials clusters move from *business-model blocked* to *hypothesis only* — they still fail the observed-search-evidence gate, like every other cluster. No materials page is authorised. The remaining materials gate is now **15 operational confirmations** (supplier count, onboarding, update frequency, quotation workflow, who is charged, fee disclosure, quotation validity, GST, transport, minimum order, delivery coverage, complaints process, price-observation method, publication frequency, revision policy) plus first-party search data.
 
 **Remaining capability decisions: 42 of 49** — the direct/managed/partner-coordinated rows in `54-owner-capability-decision.md` are still open, and they govern far more of the site than materials does.
+
+
+## 8. ADDENDUM 2 — Phase 1E status (2026-07-25)
+
+**Workstream A (P0 release): NOT COMPLETED — owner-blocked.** Production re-verified today: `/guides/what-is-boq-in-construction` still returns 404. Build, preview, route/redirect/sitemap/claim verification, DB check and promotion all require the owner machine, Vercel scope re-authentication, and Neon access. Full runbook and status in `59-p0-production-release-report.md`. **Nothing was simulated.**
+
+**Workstream B (OV01 capability lock): STRUCTURE COMPLETE — 42 decisions outstanding.** Created `OV01-buildogram-operating-model.md` (proposed position, direct/managed/partner-coordinated tests, prohibited wording), `57-service-delivery-and-liability-map.csv` (13 regulated services with qualification, registration, accreditation, responsible professional, signer, permitted and prohibited wording — all publication-blocked until the signer is named), `58-service-area-capability-map.csv` (13 zones/corridors, none selected — a partner's willingness to travel is explicitly not coverage), and rebuilt `54-owner-capability-decision.md` into the owner's 10 decision groups with per-capability accountability columns.
+
+**Capability status: 7 of 49 confirmed** (all via OV02). 42 outstanding.
+
+**Standing rule restated:** confirming a capability does not raise any cluster above the search-evidence cap. Capability evidence and search-demand evidence remain separate.
