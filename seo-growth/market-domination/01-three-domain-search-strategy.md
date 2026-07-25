@@ -2,6 +2,8 @@
 
 **RESEARCH-ONLY — NO PUBLICATION OR IMPLEMENTATION AUTHORISED**
 
+Date: 2026-07-25 · Revision 3 (Phase 1B) — see `44-market-intelligence-validation-report.md`: the Phase 1A cost-index claim was factually wrong and is withdrawn; the BOQ gap claim is withdrawn pending SERP evidence; 0 of 161 localities are source-validated; 0 queries are observed in real search data.
+
 Date: 2026-07-25 · Revision 2 — incorporates the owner's five strategic corrections · Stage: **Phase 1A — Read-Only Market Intelligence**
 
 ## 1. Scope of this stage
