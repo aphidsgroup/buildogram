@@ -32,13 +32,13 @@ const faqSchema = (faqs, pageUrl) => ({
 });
 
 
-const breadcrumbSchema = (itemData) => ({
+const breadcrumbSchema = (svc) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.buildogram.in' },
     { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://www.buildogram.in/services' },
-    { '@type': 'ListItem', position: 3, name: itemData.svc.title, item: `https://www.buildogram.in/services/${itemData.svc.slug}` },
+    { '@type': 'ListItem', position: 3, name: svc.title, item: `https://www.buildogram.in/services/${svc.slug}` },
   ],
 });
 

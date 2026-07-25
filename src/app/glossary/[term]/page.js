@@ -29,13 +29,13 @@ const termSchema = (term) => ({
 });
 
 
-const breadcrumbSchema = (itemData) => ({
+const breadcrumbSchema = (term) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.buildogram.in' },
     { '@type': 'ListItem', position: 2, name: 'Glossary', item: 'https://www.buildogram.in/glossary' },
-    { '@type': 'ListItem', position: 3, name: itemData.term.term, item: `https://www.buildogram.in/glossary/${itemData.term.slug}` },
+    { '@type': 'ListItem', position: 3, name: term.term, item: `https://www.buildogram.in/glossary/${term.slug}` },
   ],
 });
 

@@ -16,13 +16,13 @@ export async function generateMetadata({ params }) {
 }
 
 
-const breadcrumbSchema = (itemData) => ({
+const breadcrumbSchema = (cat) => ({
   '@context': 'https://schema.org',
   '@type': 'BreadcrumbList',
   itemListElement: [
     { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.buildogram.in' },
     { '@type': 'ListItem', position: 2, name: 'Faqs', item: 'https://www.buildogram.in/faqs' },
-    { '@type': 'ListItem', position: 3, name: itemData.cat.title, item: `https://www.buildogram.in/faqs/${itemData.cat.slug}` },
+    { '@type': 'ListItem', position: 3, name: cat.title, item: `https://www.buildogram.in/faqs/${cat.slug}` },
   ],
 });
 
