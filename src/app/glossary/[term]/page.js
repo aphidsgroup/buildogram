@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation';
 import RelatedLinksBlock from '@/components/seo/RelatedLinksBlock';
 import ContextualCTA from '@/components/seo/ContextualCTA';
 import { getContextualLinks } from '@/lib/seo/internalLinks';
+import { getConversionContext } from '@/lib/conversion/context';
+import ContextualEnquiryForm from '@/components/conversion/ContextualEnquiryForm';
 
 export async function generateStaticParams() {
   return glossaryTerms.map((t) => ({ term: t.slug }));
@@ -85,6 +87,11 @@ export default async function GlossaryTermPage({ params }) {
         <div style={{ marginBottom: '40px' }}>
           <h2 style={{ fontSize: '20px', color: 'var(--secondary)', marginBottom: '16px' }}>Explained Simply</h2>
           <p style={{ fontSize: '16px', color: 'var(--text)', lineHeight: 1.85 }}>{term.explanation}</p>
+        </div>
+
+        {/* CONTEXTUAL ENQUIRY FORM */}
+        <div style={{ marginBottom: '48px' }}>
+          <ContextualEnquiryForm context={getConversionContext(currentPath)} placement="inline" />
         </div>
 
         {/* WHY IT MATTERS */}

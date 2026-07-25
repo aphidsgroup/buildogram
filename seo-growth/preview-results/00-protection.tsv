@@ -1,0 +1,3 @@
+check	result
+unauthenticated_status	302
+x_robots_tag	X-Robots-Tag: noindex

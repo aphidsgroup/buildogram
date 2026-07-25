@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation';
 import RelatedLinksBlock from '@/components/seo/RelatedLinksBlock';
 import ContextualCTA from '@/components/seo/ContextualCTA';
 import { getContextualLinks } from '@/lib/seo/internalLinks';
+import { getConversionContext } from '@/lib/conversion/context';
+import ContextualEnquiryForm from '@/components/conversion/ContextualEnquiryForm';
 
 export async function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -123,6 +125,11 @@ export default async function ServicePage({ params }) {
               ))}
             </ul>
           </div>
+        </div>
+
+        {/* CONTEXTUAL ENQUIRY FORM */}
+        <div style={{ maxWidth: '640px', margin: '0 auto 60px' }}>
+          <ContextualEnquiryForm context={getConversionContext(currentPath)} placement="inline" />
         </div>
 
         {/* PROCESS */}

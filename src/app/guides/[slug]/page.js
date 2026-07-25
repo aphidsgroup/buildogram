@@ -4,6 +4,8 @@ import { notFound } from 'next/navigation';
 import RelatedLinksBlock from '@/components/seo/RelatedLinksBlock';
 import ContextualCTA from '@/components/seo/ContextualCTA';
 import { getContextualLinks } from '@/lib/seo/internalLinks';
+import { getConversionContext } from '@/lib/conversion/context';
+import ContextualEnquiryForm from '@/components/conversion/ContextualEnquiryForm';
 
 export async function generateStaticParams() {
   return guides.map((g) => ({ slug: g.slug }));
@@ -114,6 +116,11 @@ export default async function GuidePage({ params }) {
                     </li>
                   ))}
                 </ul>
+              )}
+              {i === 0 && (
+                <div style={{ marginTop: '48px', marginBottom: '16px' }}>
+                  <ContextualEnquiryForm context={getConversionContext(currentPath)} placement="inline" />
+                </div>
               )}
             </div>
           ))}

@@ -5,6 +5,8 @@ import { localServices } from '@/data/seo/localServices';
 import { generateAreaPage } from '@/lib/seo/localPageGenerator';
 import { generateLocalBusinessSchema, generateFAQSchema, generateWebPageSchema } from '@/lib/seo/localSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
+import { getConversionContext } from '@/lib/conversion/context';
+import ContextualEnquiryForm from '@/components/conversion/ContextualEnquiryForm';
 
 const BASE_URL = 'https://www.buildogram.in';
 
@@ -145,6 +147,11 @@ export default async function AreaPage({ params }) {
               <p style={{ fontSize: '14px', color: '#475569', lineHeight: 1.7 }}>{area.materialLogistics}</p>
             </div>
           </section>
+
+          {/* CONTEXTUAL ENQUIRY FORM */}
+          <div style={{ marginBottom: '48px', maxWidth: '640px', margin: '0 auto 48px' }}>
+            <ContextualEnquiryForm context={getConversionContext(`/locations/chennai/${area.slug}`)} placement="inline" />
+          </div>
 
           {/* Services Grid */}
           <section style={{ marginBottom: '48px' }}>
