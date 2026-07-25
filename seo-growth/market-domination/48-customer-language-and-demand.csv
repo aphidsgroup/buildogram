@@ -1,0 +1,4 @@
+# RESEARCH-ONLY — NO PUBLICATION OR IMPLEMENTATION AUTHORISED
+# TEMPLATE — NO DATA. This is often the highest-value source: it captures wording keyword tools never show. Redact names, numbers, addresses before ingestion.
+source_channel,exact_customer_wording_redacted,service_requested,property_type,locality,problem,budget_language,urgency,construction_stage,follow_up_questions,outcome,qualified_or_unqualified,matched_query_cluster,reveals_query_absent_from_universe
+<contact form | whatsapp | call notes | email | BOQ request | material quote | property enquiry>,<REDACT ALL PERSONAL DATA>,,,,,,,,,,,,

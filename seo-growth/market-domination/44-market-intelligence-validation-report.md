@@ -1,5 +1,7 @@
 # 44 — Market Intelligence Validation Report (Phase 1B)
 
+> **SUPERSEDED IN PART BY PHASE 1C (`52-phase1c-evidence-report.md`).** The "150 strongly validated" and "5,273 active" figures below were corrected: with zero observed queries the score ceiling is 49, so **0 clusters are strongly validated**; the active planning universe is now **277 evidence-backed / 243 priority**, with 5,803 rows archived to `02a`.
+
 **RESEARCH-ONLY — NO PUBLICATION OR IMPLEMENTATION AUTHORISED**
 
 Date: 2026-07-25 · Verdict on Phase 1A: **a research skeleton, not validated market intelligence** — your assessment was correct on every point.

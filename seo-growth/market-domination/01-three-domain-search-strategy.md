@@ -1,5 +1,7 @@
 # 01 — Three-Domain Search Strategy (revised)
 
+> **Revision 4 (Phase 1C):** active planning universe reduced from 5,273 to **277 evidence-backed / 243 priority** rows; 5,803 archived. **0 queries carry observed search evidence**, so no cluster may be labelled strongly validated. Domain-ownership model below is unchanged and remains the most defensible output of the programme.
+
 **RESEARCH-ONLY — NO PUBLICATION OR IMPLEMENTATION AUTHORISED**
 
 Date: 2026-07-25 · Revision 3 (Phase 1B) — see `44-market-intelligence-validation-report.md`: the Phase 1A cost-index claim was factually wrong and is withdrawn; the BOQ gap claim is withdrawn pending SERP evidence; 0 of 161 localities are source-validated; 0 queries are observed in real search data.

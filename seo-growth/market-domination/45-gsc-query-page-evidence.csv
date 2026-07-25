@@ -1,0 +1,6 @@
+# RESEARCH-ONLY — NO PUBLICATION OR IMPLEMENTATION AUTHORISED
+# TEMPLATE — NO DATA. Export per domain separately (never combined). Use Search Console > Performance > Export, with Query AND Page dimensions together (Pages tab > filter by query, or the Search Analytics API) so query-to-page relationships survive. 16-month window recommended.
+domain,query,landing_page,date_range,device,country,search_appearance,clicks,impressions,ctr,avg_position,branded_or_nonbranded,query_family,existing_cluster,unexpected_ranking_url,cannibalisation_signal,striking_distance_status,conversion_data_status
+buildogram.in,<EXPORT REQUIRED>,,<16 months if available>,,,,,,,,,,,,,,
+toletboardchennai.in,<EXPORT REQUIRED>,,,,,,,,,,,,,,,,
+realproprealty.com,<EXPORT REQUIRED>,,,,,,,,,,,,,,,,

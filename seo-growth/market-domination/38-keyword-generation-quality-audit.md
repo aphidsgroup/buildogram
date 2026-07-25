@@ -1,5 +1,7 @@
 # 38 — Keyword Generation Quality Audit
 
+> **PHASE 1C UPDATE:** evidence caps applied (max 29 mechanical / 39 hypothesis / 49 repository-derived). Band distribution now: 0 proven, 0 strongly evidenced, 0 validated, **205 plausible hypotheses**, 5,068 weak, 807 removed. The 4,996 mechanical rows have been moved out of the planning universe into `02a-raw-candidate-query-archive.csv`.
+
 **RESEARCH-ONLY — NO PUBLICATION OR IMPLEMENTATION AUTHORISED**
 
 Date: 2026-07-25 · Phase 1B · Subject: the 6,080-row `02-master-keyword-universe.csv` produced in Phase 1A
