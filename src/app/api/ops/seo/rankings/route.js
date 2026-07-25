@@ -9,7 +9,7 @@ export async function GET() {
     }
 
     const keywords = [
-      'turnkey construction chennai',
+      'End-to-End Construction chennai',
       'structural audit chennai',
       'soil testing chennai',
       'house construction cost chennai',

@@ -183,7 +183,7 @@ export const localServices = [
       { text: 'AI Floor Plan Creator', href: '/ai-floor-plan-creator' },
       { text: 'BOQ Audit', href: '/boq-audit' },
       { text: 'Structural Plan Review', href: '/structural-plan-review-chennai' },
-      { text: 'Find Verified Architects', href: '/partners/directory' },
+      { text: 'Find Professional architects', href: '/partners/directory' },
       { text: 'Construction Cost Estimator', href: '/cost-estimator' },
     ],
   },
@@ -653,9 +653,9 @@ export const localServices = [
   },
   {
     slug: 'turnkey-construction',
-    name: 'Turnkey Construction',
+    name: 'End-to-End Construction',
     shortName: 'Turnkey',
-    verb: 'turnkey construction',
+    verb: 'End-to-End Construction',
     h1Template: 'Turnkey Home Construction in {area}, Chennai',
     introTemplate:
       'Want a single contractor to manage your entire home construction in {area} from design to handover? Buildogram helps you choose and supervise a trustworthy turnkey contractor — ensuring transparency, quality, and accountability throughout the process.',
@@ -667,8 +667,8 @@ export const localServices = [
       { step: '04', title: 'Supervised Execution', desc: 'Independent milestone inspections ensure the turnkey contractor delivers what was agreed.' },
     ],
     faqs: [
-      { q: 'What is the turnkey construction rate in {area}?', a: 'Turnkey package pricing in {area} varies widely with specification and inclusions. Buildogram does not publish a fixed locality rate — always obtain a detailed specification list and written scope before comparing packages.' },
-      { q: 'What is the risk with turnkey construction?', a: 'The main risk is specification ambiguity — a low turnkey price often hides downgraded material grades, thinner walls, or excluded items. Buildogram\'s contract and BOQ review service identifies these gaps before you sign.' },
+      { q: 'What is the End-to-End Construction rate in {area}?', a: 'Turnkey package pricing in {area} varies widely with specification and inclusions. Buildogram does not publish a fixed locality rate — always obtain a detailed specification list and written scope before comparing packages.' },
+      { q: 'What is the risk with End-to-End Construction?', a: 'The main risk is specification ambiguity — a low turnkey price often hides downgraded material grades, thinner walls, or excluded items. Buildogram\'s contract and BOQ review service identifies these gaps before you sign.' },
       { q: 'Can I get a fixed price guarantee for my {area} project?', a: 'A genuinely fixed price requires a fully defined scope with no scope gaps. Buildogram helps you create a watertight scope of work and BOQ — the foundation of any valid fixed-price agreement.' },
       { q: 'Who is responsible for building approvals in a turnkey contract?', a: 'Typically, the turnkey contractor handles liaison work for CMDA or GCC approvals, but you (the owner) remain legally responsible. Ensure the contract clearly states who bears the cost of the approval fees.' },
       { q: 'Can I supply my own finishing materials in a turnkey contract?', a: 'Yes, this is called a "semi-turnkey" or "labour + basic materials" contract. You can exclude items like tiles, sanitaryware, and electrical fixtures from the BOQ and procure them yourself.' },

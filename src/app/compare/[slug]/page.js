@@ -112,12 +112,12 @@ export default async function ComparisonPage({ params }) {
             <Link href="/partners/directory?category=Builder" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <span style={{ fontSize: '24px' }}>🏗️</span>
               <span style={{ fontWeight: 700, fontSize: '15px' }}>Hire Builders</span>
-              <span style={{ color: '#64748B', fontSize: '13px' }}>Turnkey construction</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>End-to-End Construction</span>
             </Link>
             <Link href="/materials" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <span style={{ fontSize: '24px' }}>🧱</span>
               <span style={{ fontWeight: 700, fontSize: '15px' }}>Buy Materials</span>
-              <span style={{ color: '#64748B', fontSize: '13px' }}>Direct from suppliers</span>
+              <span style={{ color: '#64748B', fontSize: '13px' }}>Quality materials</span>
             </Link>
             <Link href="/partners/directory?category=Architect" style={{ background: 'white', padding: '20px', borderRadius: '12px', textDecoration: 'none', color: '#0F172A', border: '1px solid #E2E8F0', boxShadow: '0 4px 6px rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <span style={{ fontSize: '24px' }}>📐</span>

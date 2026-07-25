@@ -13,7 +13,7 @@ const MEGA_MENUS = [
       { href: '/builders-in-chennai', label: 'Builders in Chennai' },
       { href: '/construction-company-chennai', label: 'Construction Company Chennai' },
       { href: '/build/villa-construction', label: 'Villa Construction' },
-      { href: '/turnkey-construction-chennai', label: 'Turnkey Construction' },
+      { href: '/turnkey-construction-chennai', label: 'End-to-End Construction' },
       { href: '/residential-construction-chennai', label: 'Residential Construction' },
       { href: '/commercial-construction-chennai', label: 'Commercial Construction' },
       { href: '/renovation-contractors-chennai', label: 'Renovation & Remodeling' },

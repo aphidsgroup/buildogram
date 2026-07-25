@@ -16,7 +16,7 @@ title: 'Builders, Contractors, Architects & Suppliers | Buildogram',
 });
 
 const CATEGORIES = [
-  { icon: '🏗️', label: 'Builders', desc: 'Residential, villa and turnkey construction', filter: 'Builder' },
+  { icon: '🏗️', label: 'Builders', desc: 'Residential, villa and End-to-End Construction', filter: 'Builder' },
   { icon: '🔧', label: 'Contractors', desc: 'RCC, MEP, finishing and civil work specialists', filter: 'Builder' },
   { icon: '📐', label: 'Architects', desc: 'Design, planning and structural coordination', filter: 'Architect' },
   { icon: '🎨', label: 'Interior Designers', desc: 'Residential and commercial interior fit-outs', filter: 'Interior Designer' },

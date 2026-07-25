@@ -432,14 +432,14 @@ export const services = [
 
   {
     slug: 'turnkey-construction',
-    title: 'Turnkey Construction Services in Chennai',
-    metaTitle: 'Turnkey Construction in Chennai | Buildogram',
+    title: 'End-to-End Construction Services in Chennai',
+    metaTitle: 'End-to-End Construction in Chennai | Buildogram',
     metaDescription: 'Complete turnkey home construction in Chennai. Buildogram manages design, BOQ, construction, finishing, and handover — one team, full responsibility.',
-    heroTitle: 'Turnkey Construction in Chennai',
+    heroTitle: 'End-to-End Construction in Chennai',
     heroSubtitle: 'Hand us your plot. Receive your completed home. One team, full accountability, zero surprises.',
     heroTag: 'Turnkey Services',
     icon: '🔑',
-    intro: `Turnkey construction means Coordinated Execution Contracts, one point of responsibility, and one team managing your entire project from design to handover. Buildogram\'s turnkey service covers architectural design, structural engineering, material procurement, construction, finishing, and handover — all backed by an itemized BOQ and a 10-year structural warranty.`,
+    intro: `End-to-End Construction means Coordinated Execution Contracts, one point of responsibility, and one team managing your entire project from design to handover. Buildogram\'s turnkey service covers architectural design, structural engineering, material procurement, construction, finishing, and handover — all backed by an itemized BOQ and a 10-year structural warranty.`,
     whoFor: ['Homeowners who want single-point responsibility', 'NRIs and busy professionals who cannot manage multiple vendors', 'Investors who want a complete, ready-to-use or ready-to-sell property'],
     whatWeDo: [
       { title: 'End-to-End Project Management', desc: 'One point of contact from design to handover.' },
@@ -460,7 +460,7 @@ export const services = [
     faqs: [
       { q: 'What is the difference between PMC and turnkey?', a: 'In PMC, you manage the contractor and we supervise. In turnkey, we are the contractor — you deal with one team for everything.' },
       { q: 'Is turnkey more expensive than managing construction yourself?', a: 'Turnkey has a coordination cost but eliminates multiple vendor management, reduces risks of quality compromise, and gives you a single point of warranty responsibility.' },
-      { q: 'Can I make design changes during turnkey construction?', a: 'Change orders are allowed but must be documented, priced, and signed before work begins. This is how we maintain BOQ integrity.' },
+      { q: 'Can I make design changes during End-to-End Construction?', a: 'Change orders are allowed but must be documented, priced, and signed before work begins. This is how we maintain BOQ integrity.' },
     ],
     relatedServices: ['house-construction', 'construction-project-management', 'villa-construction'],
     relatedGuides: ['compare-pmc-vs-turnkey-construction', 'what-is-boq-in-construction'],

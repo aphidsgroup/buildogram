@@ -26,9 +26,9 @@ export const comparisons = [
   },
   {
     slug: 'pmc-vs-turnkey-construction',
-    title: 'PMC vs. Turnkey Construction — Which is Right for You?',
-    metaTitle: 'PMC vs Turnkey Construction — Which Should You Choose? | Buildogram',
-    metaDescription: 'Understand the difference between PMC (Project Management Consulting) and turnkey construction. Which approach is right for your home construction project in Chennai?',
+    title: 'PMC vs. End-to-End Construction — Which is Right for You?',
+    metaTitle: 'PMC vs End-to-End Construction — Which Should You Choose? | Buildogram',
+    metaDescription: 'Understand the difference between PMC (Project Management Consulting) and End-to-End Construction. Which approach is right for your home construction project in Chennai?',
     intro: 'Two common approaches to managing home construction in Chennai — PMC and Turnkey — serve different needs. Here is a clear comparison to help you decide.',
     table: [
       { feature: 'Your role', contractor: 'PMC: You manage the contractor; PMC supervises', buildogram: 'Turnkey: One team manages everything for you' },
