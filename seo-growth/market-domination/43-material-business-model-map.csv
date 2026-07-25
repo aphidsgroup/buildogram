@@ -1,4 +1,5 @@
 # RESEARCH-ONLY — NO PUBLICATION OR IMPLEMENTATION AUTHORISED
+# PHASE 1D PROPOSED MODEL (awaiting owner confirmation): quotation collector + sourcing coordinator + supplier referral network + price-information publisher. NOT confirmed: direct seller, authorised dealer, wholesaler, marketplace, inventory owner, logistics provider, invoice-issuing supplier.
 # Counts are approximate groupings of the 2,506 model-gated rows in 02. Commercial targeting stays blocked until the owner selects all applicable models (register OV02).
 keyword_family,example_queries,query_count_in_universe,required_operating_model,currently_permitted,allowed_content_type,commercial_targeting_permitted,informational_targeting_permitted,schema_permitted,evidence_needed,owner_decision_required
 Direct purchase intent,buy cement chennai; construction material shop chennai; cement dealer chennai,~120,Direct material seller,NO — model unconfirmed,None until model confirmed,NO,YES (via buying guides),NO Product/Offer until real purchase flow exists,"Sales capability, stock, invoicing, delivery terms",YES
