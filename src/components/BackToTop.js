@@ -1,7 +1,12 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
 
-export default function BackToTop() {
+/**
+ * BackToTopButton -- the scroll-ring button, decoupled from fixed positioning.
+ * Fixed position is now owned by FloatingActionStack.
+ * Visibility logic and scroll-ring SVG preserved exactly.
+ */
+export default function BackToTopButton({ style = {} }) {
   const [visible, setVisible]     = useState(false);
   const [scrollPct, setScrollPct] = useState(0);
   const btnRef = useRef(null);
@@ -20,18 +25,16 @@ export default function BackToTop() {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   /*
-   * GEOMETRY — single source of truth
-   * Button: 52 × 52 px
-   * SVG  : 52 × 52 px, absolutely layered on top
-   * Ring center: cx = cy = 26   (exact button center)
-   * Ring radius : r = 23        (23 + strokeWidth/2 = 24 → inside the 52px edge)
-   * → The ring sits 2px inside the button edge, perfectly concentric
+   * GEOMETRY -- single source of truth (unchanged)
+   * Button: 52  52 px
+   * Ring center: cx = cy = 26
+   * Ring radius : r = 23.75
    */
   const SIZE   = 52;
-  const CX     = SIZE / 2;        // 26
-  const CY     = SIZE / 2;        // 26
-  const SW     = 2.5;             // stroke width
-  const R      = CX - SW / 2 - 1; // 23.75 → ring hugs inner edge evenly
+  const CX     = SIZE / 2;
+  const CY     = SIZE / 2;
+  const SW     = 2.5;
+  const R      = CX - SW / 2 - 1;
   const CIRC   = 2 * Math.PI * R;
   const offset = CIRC - (scrollPct / 100) * CIRC;
 
@@ -53,20 +56,15 @@ export default function BackToTop() {
         btnRef.current.style.transform   = visible ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.85)';
       }}
       style={{
-        /* position */
-        position    : 'fixed',
-        bottom      : '28px',
-        right       : '28px',
-        zIndex      : 9999,
-
-        /* size — must match SIZE constant */
+        /* size */
         width       : `${SIZE}px`,
         height      : `${SIZE}px`,
         padding     : 0,
+        flexShrink  : 0,
 
         /* glass */
         borderRadius    : '50%',
-        border          : 'none',            /* NO CSS border — SVG handles the ring */
+        border          : 'none',
         background      : 'rgba(12, 20, 40, 0.60)',
         backdropFilter  : 'blur(18px)',
         WebkitBackdropFilter: 'blur(18px)',
@@ -77,8 +75,9 @@ export default function BackToTop() {
         alignItems      : 'center',
         justifyContent  : 'center',
         cursor          : 'pointer',
+        position        : 'relative',
 
-        /* show / hide */
+        /* show / hide -- visibility logic preserved exactly */
         opacity         : visible ? 1 : 0,
         transform       : visible ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.85)',
         pointerEvents   : visible ? 'auto' : 'none',
@@ -88,13 +87,9 @@ export default function BackToTop() {
           'background 0.25s ease',
           'box-shadow 0.25s ease',
         ].join(', '),
+        ...style,
       }}
     >
-      {/*
-        SVG layer — same size as button, absolute, pointer-events:none
-        rotate(-90deg) so progress starts at the top (12 o'clock)
-        ALL circles share cx=CX cy=CY r=R → perfectly concentric
-      */}
       <svg
         width={SIZE}
         height={SIZE}
@@ -102,19 +97,12 @@ export default function BackToTop() {
         aria-hidden="true"
         style={{
           position      : 'absolute',
-          inset         : 0,              /* top:0 right:0 bottom:0 left:0 */
+          inset         : 0,
           pointerEvents : 'none',
           transform     : 'rotate(-90deg)',
         }}
       >
-        {/* Track ring — subtle white */}
-        <circle
-          cx={CX} cy={CY} r={R}
-          fill="none"
-          stroke="rgba(255,255,255,0.12)"
-          strokeWidth={SW}
-        />
-        {/* Progress ring — orange */}
+        <circle cx={CX} cy={CY} r={R} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth={SW} />
         <circle
           cx={CX} cy={CY} r={R}
           fill="none"
@@ -127,21 +115,9 @@ export default function BackToTop() {
         />
       </svg>
 
-      {/* Arrow — centered by button's flex layout, sits above SVG via z-index */}
-      <svg
-        width="14" height="14"
-        viewBox="0 0 14 14"
-        fill="none"
-        aria-hidden="true"
-        style={{ position: 'relative', zIndex: 1, display: 'block' }}
-      >
-        <path
-          d="M7 11V3M3 7l4-4 4 4"
-          stroke="white"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"
+        style={{ position: 'relative', zIndex: 1, display: 'block' }}>
+        <path d="M7 11V3M3 7l4-4 4 4" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     </button>
   );

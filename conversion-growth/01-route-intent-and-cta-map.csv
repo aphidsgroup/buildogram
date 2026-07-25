@@ -1,0 +1,19 @@
+page_family,example_url,user_intent,funnel_stage,existing_primary_cta,existing_secondary_cta,existing_form,existing_whatsapp_link,best_enquiry_moment,show_widget,show_inline_form,form_placement_slot,notes
+home,/,Understand Buildogram and decide to engage,awareness,Contact us,How it works,No,No,After hero section,true,false,page-end,Low intent — widget only
+service,/services/house-construction,Get help with this specific service,decision,Contact / Book a call,View process,Sometimes,No,After scope/benefits section before deep FAQ,true,true,after-scope|page-end,High intent — show inline form
+service-boq-review,/services/boq-review,Get their BOQ or contractor quote reviewed,decision,Request BOQ review,Learn more,Sometimes,No,After deliverables section,true,true,after-scope|page-end,Highest-intent service — specific override
+service-hub,/boq-review-chennai,Local intent for BOQ review in Chennai,decision,Book review,Learn more,Sometimes,No,After scope section,true,true,after-scope|page-end,Top-level location service pages
+service-hub,/construction-in-chennai,Find construction support in Chennai,consideration,Contact Buildogram,View services,No,No,After service overview,true,true,after-scope|page-end,Local intent hub
+material,/materials/cement,Get material price info or sourcing support,consideration,Request quotation support,View all materials,Sometimes,No,After price table / specs section,true,true,after-scope|page-end,Materials = sourcing coordinator only — never buy/order
+guide,/guides/what-is-boq-in-construction,Understand a topic then take action,awareness,Read more,Related guides,No,No,After first complete answer / checklist,true,true,after-first-answer|page-end,Never before main answer
+glossary,/glossary/boq,Look up a term then take action,awareness,None,None,No,No,After definition section,true,false,page-end,Widget only — no inline form (short pages)
+faq,/faqs/construction,Get answer to a specific question,awareness,None,None,No,No,After FAQ list (page end),true,false,page-end,Widget only — answers must not be interrupted
+compare,/compare/buildogram-vs-contractor,Compare options before deciding,consideration,Contact Buildogram,Learn more,Sometimes,No,After comparison table,true,true,after-scope|page-end,High consideration intent
+location-area,/locations/chennai/velachery,Find construction services in this area,consideration,View services,Contact,No,No,After local relevance section,true,true,after-scope|page-end,After area info established — no urgency framing
+location-service,/locations/chennai/velachery/boq-review,Engage a specific service in this locality,decision,Contact / Book,View service,No,No,After scope section,true,true,after-scope|page-end,Highest local intent — both widget and form
+calculator,/boq-calculator,Use tool then get human help,decision,Get BOQ reviewed,None,No,No,Only after result is produced — never before,true,true,after-result,Form only after result; no calculation values pre-filled
+partner-listing,/partners/builders,Browse listed professionals,consideration,View directory,Join as partner,No,No,After directory list,true,false,page-end,Widget only; label "Enquire via Buildogram"
+partner-profile,/partners/some-builder,Learn about a specific listed professional,consideration,Enquire (via Buildogram),None,No,No,After profile content,true,false,page-end,Form label must state lead goes to Buildogram not partner
+about,/how-it-works,Understand the service model,awareness,Contact us,None,No,No,Page end,true,false,page-end,Widget only
+case-study,/case-studies/some-project,Review past work for trust-building,consideration,Contact us,None,No,No,Page end,true,false,page-end,Widget only — do not interrupt case study reading
+resources,/resources,Browse resource hub,awareness,None,None,No,No,Page end,true,false,page-end,Index page — widget only

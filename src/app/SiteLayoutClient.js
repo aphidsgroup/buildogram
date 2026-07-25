@@ -3,7 +3,7 @@ import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import BackToTop from '@/components/BackToTop';
+// BackToTop removed — now rendered inside FloatingActionStack (src/components/conversion/FloatingActionStack.jsx)
 
 export default function SiteLayoutClient({ children }) {
   const pathname = usePathname();
@@ -30,7 +30,7 @@ export default function SiteLayoutClient({ children }) {
         {children}
       </main>
       {!isDashboard && <Footer />}
-      {!isDashboard && <BackToTop />}
+      {/* BackToTop is rendered by FloatingActionStack in root layout */}
     </>
   );
 }

@@ -1,0 +1,18 @@
+page_family,question_key,question_label,field_type,options,submit_label,rationale
+home,project_stage,What stage is your project?,select,Planning a new build|Reviewing contractor quotes|Managing ongoing construction|Just researching,Request a callback,Qualifies intent without being intrusive
+service-generic,project_stage,What stage is your project?,select,Planning stage|Have land need to build|Already started|Looking for cost review,Request a callback,Helps route the enquiry to the right conversation
+service-boq-review,reviewing_what,What are you reviewing?,select,Contractor quote|BOQ document|Both|Not sure yet,Request BOQ review,Directly relevant to the service — increases conversion confidence
+service-structural-audit,audit_concern,What is your main concern?,select,Cracks in walls or slabs|Adding a new floor|Pre-purchase inspection|Ageing building check|Other,Request structural audit,Routes the call to right assessment type
+service-land-survey,survey_type,What type of survey do you need?,select,Boundary survey|Topographic survey|Not sure yet,Request a callback,Simple qualifier for a technical service
+service-pile-foundation,piling_type,What is your foundation type?,select,New bored piles|Driven piles|Pile load testing|Not sure yet,Request a callback,Helps pre-qualify the technical scope
+material-general,materials_needed,Which materials do you need?,select,Cement|Steel / TMT bars|Sand|Bricks / AAC blocks|Multiple materials|Other,Get material sourcing support,Directly routes to correct sourcing category
+guide,construction_situation,What is your construction situation?,select,Planning a new build|Reviewing contractor quotes|Managing ongoing construction|Just researching,Request a callback,Soft qualifier — matches informational intent stage
+glossary,construction_situation,What is your construction situation?,select,Planning a new build|Reviewing contractor quotes|Managing ongoing construction|Just researching,Request a callback,Same as guide — educational stage
+faq,construction_situation,What is your construction situation?,select,Planning a new build|Reviewing contractor quotes|Managing ongoing construction|Just researching,Request a callback,FAQ readers are at awareness stage
+compare,decision_stage,Where are you in your decision?,select,Still comparing options|Almost decided|Need a second opinion|Just researching,Discuss my project,Identifies decision stage from comparison intent
+location-area,service_needed,What service do you need?,select,Home construction|BOQ review|Structural audit|Land survey|Other,Discuss my project,Qualifies the required service in that locality
+location-service,project_stage,What stage is your project?,select,Planning stage|Have land need to build|Already started|Looking for cost review,Request a callback,Locality + service already known — stage qualifies next step
+calculator,calculator_purpose,What did you use the calculator for?,select,Estimating new construction cost|Checking a contractor quote|Planning a renovation|Other,Discuss my project,Context of calculator use routes to right conversation
+partner-listing,professional_type,What type of professional do you need?,select,Builder / contractor|Architect|Interior designer|Structural engineer|Material supplier|Other,Request a callback,Routes to correct partner category
+partner-profile,project_type,What is your project?,select,New home construction|Renovation|Structural audit|Commercial project|Other,Request a callback,Qualifies before routing — label must say lead goes to Buildogram
+about,project_stage,What stage is your project?,select,Planning a new build|Reviewing contractor quotes|Managing ongoing construction|Just researching,Request a callback,Awareness stage — soft qualifier

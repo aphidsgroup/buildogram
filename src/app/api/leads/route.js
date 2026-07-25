@@ -3,12 +3,71 @@ import { getUserFromRequest } from '@/lib/auth';
 import { getLeads, addLead, updateLead, addLeadActivity } from '@/lib/storageProvider';
 import { sendNotification } from '@/lib/notifications/notificationService';
 
+// ── New source values (additive) ─────────────────────────────────────────────
+// CONTEXTUAL_INLINE_FORM · WHATSAPP_FLOATING_WIDGET · PAGE_CTA · PHONE_CTA
+
+// ── In-memory rate limiter (5 req / IP / 15 min) ─────────────────────────────
+// Resets on cold start — acceptable for serverless; upgrade to Redis if needed.
+const _rateLimitMap = new Map(); // ip → { count, resetAt }
+const RATE_LIMIT    = 5;
+const RATE_WINDOW   = 15 * 60 * 1000; // 15 minutes
+
+function checkRateLimit(ip) {
+  const now   = Date.now();
+  const entry = _rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    _rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW });
+    return true; // OK
+  }
+  if (entry.count >= RATE_LIMIT) return false; // blocked
+  entry.count++;
+  return true; // OK
+}
+
+// ── Duplicate guard: same phone + sourcePage within 60s ───────────────────────
+const _recentSubmissions = new Map(); // key → timestamp
+const DUPE_WINDOW = 60 * 1000; // 60 seconds
+
+function isDuplicate(phone, sourcePage) {
+  const key = `${phone}|${sourcePage}`;
+  const last = _recentSubmissions.get(key);
+  if (last && Date.now() - last < DUPE_WINDOW) return true;
+  _recentSubmissions.set(key, Date.now());
+  return false;
+}
+
 export async function POST(req) {
   try {
+    // ── Payload size cap (8KB) ────────────────────────────────────────────────
+    const contentLength = parseInt(req.headers.get('content-length') || '0', 10);
+    if (contentLength > 8192) {
+      return NextResponse.json({ success: false, error: 'Payload too large' }, { status: 413 });
+    }
+
+    // ── Rate limiting ─────────────────────────────────────────────────────────
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+             || req.headers.get('x-real-ip')
+             || 'unknown';
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json({ success: false, error: 'Too many requests. Please try again later.' }, { status: 429 });
+    }
+
     const body = await req.json();
+
+    // ── Honeypot ──────────────────────────────────────────────────────────────
+    if (body.website) {
+      // Bot detected — return success silently (don't reveal the check)
+      return NextResponse.json({ success: true, id: 0, leadType: 'bot' });
+    }
 
     if (!body.name || (!body.phone && body.leadType !== 'ai')) {
       return NextResponse.json({ success: false, error: 'Name and phone are required' }, { status: 400 });
+    }
+
+    // ── Duplicate submission guard ────────────────────────────────────────────
+    if (body.phone && isDuplicate(body.phone, body.sourcePage || '')) {
+      // Return success silently — user may have double-clicked
+      return NextResponse.json({ success: true, id: 0, leadType: body.leadType || 'duplicate' });
     }
 
     const leadType = body.leadType || 'general';

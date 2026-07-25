@@ -3,6 +3,7 @@ import SiteLayoutClient from './SiteLayoutClient';
 import PWARegister from '@/components/PWARegister';
 import AttributionTracker from '@/components/analytics/AttributionTracker';
 import FloatingReelPlayerClientWrapper from '@/components/reels/FloatingReelPlayerClientWrapper';
+import FloatingActionStack from '@/components/conversion/FloatingActionStack';
 import { Space_Grotesk, Be_Vietnam_Pro, DM_Serif_Text } from 'next/font/google';
 
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space', display: 'swap' });
@@ -131,6 +132,8 @@ export default function RootLayout({ children }) {
           </>
         )}
         <FloatingReelPlayerClientWrapper />
+        {/* FloatingActionStack: WhatsApp widget + BackToTop (single zIndex=9999 owner) */}
+        <FloatingActionStack />
       </body>
     </html>
   );
