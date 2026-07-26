@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 
 export default function PassportDetail({ params }) {
@@ -11,7 +11,7 @@ export default function PassportDetail({ params }) {
   const [recordForm, setRecordForm] = useState({ category: 'legal_document', title: '', description: '', file_url: '', visibility: 'private' });
   const [checklistForm, setChecklistForm] = useState({ stage: 'planning', checklist_item: '', remarks: '' });
 
-  const fetchPassport = async () => {
+  const fetchPassport = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`/api/ops/property-passports/${id}`);
@@ -24,12 +24,12 @@ export default function PassportDetail({ params }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => { void fetchPassport(); }, 0);
     return () => window.clearTimeout(timer);
-  }, [id]);
+  }, [fetchPassport]);
 
   const updateStatus = async (status) => {
     try {

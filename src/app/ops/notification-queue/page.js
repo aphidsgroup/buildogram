@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 
 const maskPhone = (phone) => {
@@ -19,7 +19,7 @@ export default function NotificationQueuePage() {
   // Detail Modal State
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`/api/ops/notification-queue?status=${statusFilter}`);
@@ -32,12 +32,12 @@ export default function NotificationQueuePage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => { void loadData(); }, 0);
     return () => window.clearTimeout(timer);
-  }, [statusFilter]);
+  }, [loadData]);
 
   const showToast = (msg, type = 'success') => {
     setToast({ message: msg, type });

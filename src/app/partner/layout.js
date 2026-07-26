@@ -129,7 +129,7 @@ export default function PartnerLayout({ children }) {
     };
     document.addEventListener('mousedown', handleClick);
     return () => { clearInterval(interval); document.removeEventListener('mousedown', handleClick); };
-  }, []);
+  }, [router]);
 
   const logout = async () => { 
     await fetch('/api/auth/logout', { method: 'POST' }); 

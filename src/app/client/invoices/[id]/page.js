@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect, useCallback, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/app/Navbar';
 import Link from 'next/link';
@@ -12,12 +12,12 @@ export default function ClientInvoiceDetail({ params }) {
   const [payLoading, setPayLoading] = useState(false);
   const [payError, setPayError] = useState('');
 
-  const load = () => fetch(`/api/client/invoices/${id}`).then(r => r.json()).then(d => {
+  const load = useCallback(() => fetch(`/api/client/invoices/${id}`).then(r => r.json()).then(d => {
     if (d.success) setInvoice(d.invoice);
     setLoading(false);
-  });
+  }), [id]);
 
-  useEffect(() => { load(); }, [id]);
+  useEffect(() => { void load(); }, [load]);
 
   const handlePayment = async () => {
     setPayLoading(true);

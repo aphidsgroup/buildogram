@@ -9,21 +9,17 @@ export default function PropertyMarketplaceClient({ initialListingType }) {
   const [filterType, setFilterType] = useState('all');
   const [filterBudget, setFilterBudget] = useState(0);
 
-  const fetchProperties = () => {
-    setLoading(true);
-    let url = `/api/public/properties?listing_type=${initialListingType}&type=${filterType}`;
-    if (filterBudget > 0) url += `&budget_max=${filterBudget}`;
-    
-    fetch(url)
-      .then(r => r.json())
-      .then(d => {
-        if (d.success) setProperties(d.properties);
-        setLoading(false);
-      });
-  };
-
   useEffect(() => {
-    const timer = window.setTimeout(fetchProperties, 0);
+    const fetchProperties = async () => {
+      setLoading(true);
+      let url = `/api/public/properties?listing_type=${initialListingType}&type=${filterType}`;
+      if (filterBudget > 0) url += `&budget_max=${filterBudget}`;
+      const response = await fetch(url);
+      const data = await response.json();
+      if (data.success) setProperties(data.properties);
+      setLoading(false);
+    };
+    const timer = window.setTimeout(() => { void fetchProperties(); }, 0);
     return () => window.clearTimeout(timer);
   }, [filterType, filterBudget, initialListingType]);
 

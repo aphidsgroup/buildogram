@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { DEFAULT_RATES } from '@/lib/boq-calc/rates';
 import { numberToWords } from '@/lib/boq-calc/numberToWords';
@@ -36,15 +36,7 @@ function updateRow(setter, idx, key, val) { setter(prev => prev.map((r, i) => i 
 
 // ── SECTION COMPONENTS ────────────────────────────────────────────────────
 
-function SectionFloorsLB({ floorConfig, floorsData, setFloorsData }) {
-  const labels = FLOOR_LABELS[floorConfig] || ['Ground'];
-  useEffect(() => {
-    const needed = labels.length;
-    if (floorsData.length !== needed) {
-      setFloorsData(labels.map((l, i) => floorsData[i] || { floorLabel: l, length: '', breadth: '', area: '' }));
-    }
-  }, [floorConfig]);
-
+function SectionFloorsLB({ floorsData, setFloorsData }) {
   function calcArea(idx) {
     const r = floorsData[idx] || {};
     const a = n(r.length) * n(r.breadth) * 10.764;
@@ -627,7 +619,7 @@ export default function BOQWorkstationPage({ params }) {
   // Project header edits
   const [header, setHeader] = useState({ title:'', client_name:'', client_phone:'', client_email:'', plot_address:'', floor_config:'G', margin_pct:'12', status:'draft', notes:'' });
 
-  async function loadProject() {
+  const loadProject = useCallback(async () => {
     setLoading(true);
     try {
       const r = await fetch(`/api/boq-calculator/projects/${id}`);
@@ -639,7 +631,12 @@ export default function BOQWorkstationPage({ params }) {
       // Restore section data from DB
       const secMap = {};
       for (const s of (p.sections || [])) secMap[s.section_key] = s.data_json;
-      if (secMap.floors)       setFloorsData(secMap.floors);
+      if (Array.isArray(secMap.floors) && secMap.floors.length > 0) {
+        setFloorsData(secMap.floors);
+      } else {
+        const floorLabels = FLOOR_LABELS[p.floor_config || 'G'] || ['Ground'];
+        setFloorsData(floorLabels.map(floorLabel => ({ floorLabel, length: '', breadth: '', area: '' })));
+      }
       if (secMap.foundation)   setFoundation(secMap.foundation);
       if (secMap.plinthBeam)   setPlinthBeam(secMap.plinthBeam);
       if (secMap.basement)     setBasement(secMap.basement);
@@ -665,12 +662,12 @@ export default function BOQWorkstationPage({ params }) {
       }
     } catch (err) { console.error(err); }
     setLoading(false);
-  }
+  }, [id]);
 
   useEffect(() => {
     const timer = window.setTimeout(() => { void loadProject(); }, 0);
     return () => window.clearTimeout(timer);
-  }, [id]);
+  }, [loadProject]);
 
   async function handleSaveAndCalculate() {
     setSaving(true); setSaveMsg('');
@@ -728,6 +725,17 @@ export default function BOQWorkstationPage({ params }) {
   if (loading) return <div style={{ textAlign: 'center', padding: '80px 0', color: '#94A3B8' }}>Loading workstation…</div>;
   if (!project) return <div style={{ textAlign: 'center', padding: '80px 0', color: '#EF4444' }}>Project not found.</div>;
 
+  const handleFloorConfigChange = (event) => {
+    const floorConfig = event.target.value;
+    const floorLabels = FLOOR_LABELS[floorConfig] || ['Ground'];
+    setHeader(current => ({ ...current, floor_config: floorConfig }));
+    setFloorsData(current => floorLabels.map((floorLabel, index) => (
+      current[index]
+        ? { ...current[index], floorLabel }
+        : { floorLabel, length: '', breadth: '', area: '' }
+    )));
+  };
+
   const sectionComponents = [
     // 0: Info (header form inline)
     <div key="info" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))', gap: 14 }}>
@@ -743,7 +751,7 @@ export default function BOQWorkstationPage({ params }) {
       ))}
       <label style={{ fontSize: 13, fontWeight: 600, color: '#374151', display: 'flex', flexDirection: 'column', gap: 5 }}>
         Floor Config
-        <select value={header.floor_config} onChange={e => setHeader(h => ({ ...h, floor_config: e.target.value }))}
+        <select value={header.floor_config} onChange={handleFloorConfigChange}
           style={{ padding: '8px 10px', border: '1px solid #E2E8F0', borderRadius: 8, fontSize: 14 }}>
           {['G','G+1','G+2','G+3'].map(o => <option key={o}>{o}</option>)}
         </select>
@@ -768,7 +776,7 @@ export default function BOQWorkstationPage({ params }) {
     </div>,
 
     // 1: Floors L×B
-    <SectionFloorsLB key="floors" floorConfig={header.floor_config} floorsData={floorsData} setFloorsData={setFloorsData} />,
+    <SectionFloorsLB key="floors" floorsData={floorsData} setFloorsData={setFloorsData} />,
 
     // 2: Foundation
     <SectionFoundation key="foundation" rows={foundation} setRows={setFoundation} />,

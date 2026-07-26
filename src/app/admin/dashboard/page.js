@@ -3,6 +3,6 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 export default function AdminDashboard() {
   const router = useRouter();
-  useEffect(() => { router.replace('/ops/dashboard'); }, []);
+  useEffect(() => { router.replace('/ops/dashboard'); }, [router]);
   return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh', fontFamily: 'Inter,sans-serif', color: '#64748b' }}>Redirecting to Admin Dashboard…</div>;
 }

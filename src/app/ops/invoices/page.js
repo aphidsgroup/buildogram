@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function OpsInvoicesPage() {
@@ -18,7 +18,7 @@ export default function OpsInvoicesPage() {
     due_date: '', payment_mode: '', notes: ''
   });
 
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`/api/ops/invoices?status=${statusFilter}`);
@@ -32,7 +32,7 @@ export default function OpsInvoicesPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter]);
 
   useEffect(() => { 
     const timer = window.setTimeout(() => {
@@ -52,7 +52,7 @@ export default function OpsInvoicesPage() {
       }
     }, 0);
     return () => window.clearTimeout(timer);
-  }, [statusFilter]);
+  }, [loadData]);
 
   const openForm = (inv = null) => {
     if (inv) {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { generateGbpPost, generateReelScript, generateCaseStudyOutline, generateLearnArticleOutline, generateLinkedInPost } from '@/lib/content/contentCalendarTemplates';
 import { TrackingPresets, buildTrackingUrl } from '@/lib/analytics/trackingUrlBuilder';
 
@@ -15,11 +15,7 @@ export default function ContentCalendarClient() {
   // Stats
   const [stats, setStats] = useState({ total: 0, pending: 0, drafted: 0, published: 0 });
 
-  useEffect(() => {
-    fetchItems();
-  }, [filterChannel, filterStatus]);
-
-  async function fetchItems() {
+  const fetchItems = useCallback(async () => {
     setLoading(true);
     let url = '/api/ops/content-calendar?limit=100';
     if (filterChannel) url += `&channel=${filterChannel}`;
@@ -42,7 +38,12 @@ export default function ContentCalendarClient() {
       console.error(err);
     }
     setLoading(false);
-  }
+  }, [filterChannel, filterStatus]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void fetchItems(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, [fetchItems]);
 
   function openEditor(item = null) {
     if (item) {

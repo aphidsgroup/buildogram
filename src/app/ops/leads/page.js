@@ -148,11 +148,12 @@ export default function OpsLeads() {
   };
 
   // Fetch activities when selected lead changes
+  const selectedId = selected?.id;
   useEffect(() => {
     const timer = window.setTimeout(() => {
-      if (selected) {
+      if (selectedId) {
         setActLoading(true);
-        fetch(`/api/leads/${selected.id}/activities`)
+        fetch(`/api/leads/${selectedId}/activities`)
           .then(r => r.json())
           .then(d => {
             if (d.success) setActivities(d.activities || []);
@@ -164,7 +165,7 @@ export default function OpsLeads() {
       }
     }, 0);
     return () => window.clearTimeout(timer);
-  }, [selected?.id]);
+  }, [selectedId]);
 
   // Handle adding a manual activity
   const handleAddActivity = async (e) => {

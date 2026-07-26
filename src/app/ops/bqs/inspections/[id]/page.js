@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 
 export default function BqsInspectionDetail({ params }) {
@@ -11,7 +11,7 @@ export default function BqsInspectionDetail({ params }) {
   const [showReworkModal, setShowReworkModal] = useState(false);
   const [reworkData, setReworkData] = useState({ result_id: null, issue_title: '', issue_description: '' });
 
-  const fetchInspection = async () => {
+  const fetchInspection = useCallback(async () => {
     try {
       const res = await fetch(`/api/ops/bqs/inspections/${params.id}`);
       const data = await res.json();
@@ -23,9 +23,9 @@ export default function BqsInspectionDetail({ params }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [params.id]);
 
-  const fetchPassports = async () => {
+  const fetchPassports = useCallback(async () => {
     try {
       const res = await fetch('/api/ops/property-passports');
       const data = await res.json();
@@ -35,7 +35,7 @@ export default function BqsInspectionDetail({ params }) {
     } catch (e) {
       console.error(e);
     }
-  };
+  }, []);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -43,7 +43,7 @@ export default function BqsInspectionDetail({ params }) {
       void fetchPassports();
     }, 0);
     return () => window.clearTimeout(timer);
-  }, [params.id]);
+  }, [fetchInspection, fetchPassports]);
 
   const updateResult = async (resultId, updatePayload) => {
     try {
