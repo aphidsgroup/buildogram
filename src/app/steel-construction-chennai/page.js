@@ -1,6 +1,7 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import { generateFAQSchema, generateServiceSchema } from '@/lib/seo/schema';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
+import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
   title: 'Steel Structure Construction in Chennai | Structural Steel Buildings | Buildogram',
@@ -53,7 +54,7 @@ export default function SteelConstructionPage() {
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', lineHeight: 1.7, maxWidth: '600px', marginBottom: '32px' }}>
             Engineer-supervised structural steel fabrication, erection and quality control for industrial, commercial and residential projects in Chennai.
           </p>
-          <a href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 600, textDecoration: 'none' }}>Get a Steel Construction Estimate</a>
+          <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 600, textDecoration: 'none' }}>Get a Steel Construction Estimate</Link>
         </div>
       </section>
 
@@ -169,7 +170,7 @@ export default function SteelConstructionPage() {
         <section style={{ background: 'var(--secondary)', borderRadius: '16px', padding: '48px 40px', textAlign: 'center' }}>
           <h2 style={{ color: 'white', fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>Get a Steel Construction Estimate</h2>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '480px', margin: '0 auto 28px' }}>Share your span, height, and usage — we'll give you a ballpark BOQ within 48 hours.</p>
-          <a href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>Request Estimate →</a>
+          <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>Request Estimate →</Link>
         </section>
       </div>
 

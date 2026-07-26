@@ -98,8 +98,8 @@ export default function HowItWorksClient() {
           <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>Radical Engineering Transparency — 9 Verified Stages</h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>We replace traditional contractor guesswork with PhD-reviewed structural designs, milestone-linked payments, and 500+ certified quality checks across 3 construction phases.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <a href="/contact" className="btn btn-primary btn-lg">Start Your Project</a>
-            <a href="/specifications" className="btn btn-lg btn-outline-light">View Specifications</a>
+            <Link href="/contact" className="btn btn-primary btn-lg">Start Your Project</Link>
+            <Link href="/specifications" className="btn btn-lg btn-outline-light">View Specifications</Link>
           </div>
         </div>
       </section>

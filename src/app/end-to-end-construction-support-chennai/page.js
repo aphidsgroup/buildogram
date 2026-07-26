@@ -2,6 +2,7 @@ import { generateSEOMetadata } from '@/lib/seo/metadata';
 import { generateFAQSchema, generateServiceSchema } from '@/lib/seo/schema';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import EngineerCredibility from '@/components/seo/EngineerCredibility';
+import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
   title: 'End-to-End Construction Support in Chennai | Buildogram',
@@ -65,8 +66,8 @@ export default function EndToEndConstructionPage() {
             One point of engineering accountability — from the first soil test to your final Property Passport. No coordination gaps. No surprises.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <a href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 600, textDecoration: 'none' }}>Get a Free Consultation</a>
-            <a href="/quality-system" style={{ display: 'inline-block', background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 500, textDecoration: 'none' }}>Our Quality System →</a>
+            <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 600, textDecoration: 'none' }}>Get a Free Consultation</Link>
+            <Link href="/quality-system" style={{ display: 'inline-block', background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 500, textDecoration: 'none' }}>Our Quality System →</Link>
           </div>
         </div>
       </section>
@@ -195,9 +196,9 @@ export default function EndToEndConstructionPage() {
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', marginBottom: '28px', maxWidth: '500px', margin: '0 auto 28px' }}>
             Book a free 30-minute consultation. We'll review your plot, scope, and budget and tell you exactly what's realistic.
           </p>
-          <a href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>
+          <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>
             Book Free Consultation →
-          </a>
+          </Link>
         </section>
       </div>
 

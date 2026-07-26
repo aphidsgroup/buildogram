@@ -1,6 +1,7 @@
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import PropertyMarketplaceClient from '../PropertyMarketplaceClient';
+import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
 title: '360° Verified Rentals | Buildogram',
@@ -24,8 +25,8 @@ export default function PropertiesRentPage() {
             Browse verified rental properties with 360° virtual tours. Know exactly what you're renting before you step inside.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <a href="/properties/list-your-property" className="btn btn-primary btn-lg">List Your Property</a>
-            <a href="/contact" className="btn btn-lg btn-outline-light">Talk to an Advisor</a>
+            <Link href="/properties/list-your-property" className="btn btn-primary btn-lg">List Your Property</Link>
+            <Link href="/contact" className="btn btn-lg btn-outline-light">Talk to an Advisor</Link>
           </div>
         </div>
       </section>

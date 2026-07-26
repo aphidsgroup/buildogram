@@ -6,6 +6,7 @@ import { generateLocalBusinessSchema, generateFAQSchema, generateWebPageSchema, 
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import { getConversionContext } from '@/lib/conversion/context';
 import ContextualEnquiryForm from '@/components/conversion/ContextualEnquiryForm';
+import Link from 'next/link';
 
 const BASE_URL = 'https://www.buildogram.in';
 
@@ -63,9 +64,9 @@ export default async function ServiceAreaPage({ params }) {
 
           {/* Breadcrumbs */}
           <nav aria-label="Breadcrumb" style={{ marginBottom: '24px', fontSize: '14px', color: '#64748B' }}>
-            <a href="/" style={{ color: '#FC6E20' }}>Home</a>{' / '}
-            <a href="/locations/chennai" style={{ color: '#FC6E20' }}>Chennai</a>{' / '}
-            <a href={`/locations/chennai/${area.slug}`} style={{ color: '#FC6E20' }}>{area.name}</a>{' / '}
+            <Link href="/" style={{ color: '#FC6E20' }}>Home</Link>{' / '}
+            <Link href="/locations/chennai" style={{ color: '#FC6E20' }}>Chennai</Link>{' / '}
+            <Link href={`/locations/chennai/${area.slug}`} style={{ color: '#FC6E20' }}>{area.name}</Link>{' / '}
             <span style={{ color: '#0F172A', fontWeight: 600 }}>{service.name}</span>
           </nav>
 
@@ -227,7 +228,7 @@ export default async function ServiceAreaPage({ params }) {
             <p style={{ color: 'rgba(255,255,255,0.85)', fontSize: '16px', marginBottom: '24px' }}>
               Engineer-led transparency. Construction partner network. Competitive material pricing.
             </p>
-            <a
+            <Link
               href="/contact?type=construction"
               style={{
                 display: 'inline-block',
@@ -241,7 +242,7 @@ export default async function ServiceAreaPage({ params }) {
               }}
             >
               Talk to an Engineer →
-            </a>
+            </Link>
           </div>
 
         </div>

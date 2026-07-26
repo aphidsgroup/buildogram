@@ -2,6 +2,7 @@ import { generateSEOMetadata } from '@/lib/seo/metadata';
 import { generateFAQSchema, generateServiceSchema } from '@/lib/seo/schema';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import EngineerCredibility from '@/components/seo/EngineerCredibility';
+import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
   title: 'BOQ Review & Audit in Chennai | Contractor Quote Check | Buildogram',
@@ -64,8 +65,8 @@ export default function BOQReviewPage() {
             Don't sign a contractor quote without an independent review. Our structural engineers check every line — quantities against drawings, rates against current market prices.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <a href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 600, textDecoration: 'none' }}>Upload Your BOQ for Review</a>
-            <a href="/contractor-quote-review-chennai" style={{ display: 'inline-block', background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 500, textDecoration: 'none' }}>Contractor Quote Check →</a>
+            <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 600, textDecoration: 'none' }}>Upload Your BOQ for Review</Link>
+            <Link href="/contractor-quote-review-chennai" style={{ display: 'inline-block', background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 500, textDecoration: 'none' }}>Contractor Quote Check →</Link>
           </div>
         </div>
       </section>
@@ -210,7 +211,7 @@ export default function BOQReviewPage() {
         <section style={{ background: 'var(--secondary)', borderRadius: '16px', padding: '48px 40px', textAlign: 'center' }}>
           <h2 style={{ color: 'white', fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>Don't Sign Without a Review</h2>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '500px', margin: '0 auto 28px' }}>Upload your contractor's BOQ and we'll tell you within 3 days exactly what it should cost.</p>
-          <a href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>Submit Your BOQ →</a>
+          <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>Submit Your BOQ →</Link>
         </section>
       </div>
 

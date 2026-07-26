@@ -1,6 +1,7 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import { generateFAQSchema, generateServiceSchema } from '@/lib/seo/schema';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
+import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
   title: 'PEB Building Contractors in Chennai | Pre-Engineered Buildings | Buildogram',
@@ -62,7 +63,7 @@ export default function PEBBuildingPage() {
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', lineHeight: 1.7, maxWidth: '600px', marginBottom: '32px' }}>
             Engineer-supervised PEB procurement, factory inspection and erection supervision for factories, warehouses and industrial buildings across Chennai and Tamil Nadu.
           </p>
-          <a href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 600, textDecoration: 'none' }}>Get PEB Project Support</a>
+          <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 600, textDecoration: 'none' }}>Get PEB Project Support</Link>
         </div>
       </section>
 
@@ -190,7 +191,7 @@ export default function PEBBuildingPage() {
         <section style={{ background: 'var(--secondary)', borderRadius: '16px', padding: '48px 40px', textAlign: 'center' }}>
           <h2 style={{ color: 'white', fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>Get PEB Project Support</h2>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '480px', margin: '0 auto 28px' }}>Share your span, height, and usage — we'll prepare a specification and get you 3 competitive quotes.</p>
-          <a href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>Start Your PEB Project →</a>
+          <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>Start Your PEB Project →</Link>
         </section>
       </div>
 

@@ -92,7 +92,7 @@ export default function ClientProjectsList() {
           <div style={{ fontSize: '48px', marginBottom: '16px' }}>🏗️</div>
           <div style={{ fontWeight: 700, fontSize: '18px', marginBottom: '8px' }}>No Projects Yet</div>
           <p>Your Buildogram construction projects will appear here once they are set up by our team.</p>
-          <a href="/contact" style={{ display: 'inline-block', marginTop: '16px', padding: '10px 24px', background: '#FC6E20', color: 'white', borderRadius: '10px', textDecoration: 'none', fontWeight: 700 }}>Contact Buildogram →</a>
+          <Link href="/contact" style={{ display: 'inline-block', marginTop: '16px', padding: '10px 24px', background: '#FC6E20', color: 'white', borderRadius: '10px', textDecoration: 'none', fontWeight: 700 }}>Contact Buildogram →</Link>
         </div>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>

@@ -1,6 +1,7 @@
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import { generateFAQSchema, generateServiceSchema } from '@/lib/seo/schema';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
+import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
   title: 'Industrial Shed Construction in Chennai | Factory Shed Builders | Buildogram',
@@ -63,8 +64,8 @@ export default function IndustrialShedPage() {
             Engineer-supervised factory shed and industrial building construction across Chennai's industrial zones — SIDCO, SIPCOT, Oragadam, Sriperumbudur and beyond.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <a href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 600, textDecoration: 'none' }}>Discuss Your Industrial Project</a>
-            <a href="/peb-building-contractors-chennai" style={{ display: 'inline-block', background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 500, textDecoration: 'none' }}>PEB Buildings →</a>
+            <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 600, textDecoration: 'none' }}>Discuss Your Industrial Project</Link>
+            <Link href="/peb-building-contractors-chennai" style={{ display: 'inline-block', background: 'transparent', border: '1px solid rgba(255,255,255,0.3)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 500, textDecoration: 'none' }}>PEB Buildings →</Link>
           </div>
         </div>
       </section>
@@ -154,7 +155,7 @@ export default function IndustrialShedPage() {
         <section style={{ background: 'var(--secondary)', borderRadius: '16px', padding: '48px 40px', textAlign: 'center' }}>
           <h2 style={{ color: 'white', fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>Discuss Your Industrial Project</h2>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '480px', margin: '0 auto 28px' }}>Tell us your plot, span, usage, and timeline. We'll recommend the right structure type and get the process started.</p>
-          <a href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>Start Your Project →</a>
+          <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>Start Your Project →</Link>
         </section>
       </div>
 

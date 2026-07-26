@@ -1,5 +1,6 @@
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
+import Link from 'next/link';
 export const metadata = generateSEOMetadata({
 title: 'Offline | Buildogram',
   description: 'You are currently offline.',
@@ -16,12 +17,12 @@ export default function OfflinePage() {
       <p style={{ color: '#64748B', maxWidth: '300px', marginBottom: '32px', lineHeight: '1.5' }}>
         Buildogram requires an active internet connection to securely load dashboard data. Please reconnect to continue.
       </p>
-      <a 
+      <Link
         href="/"
         style={{ padding: '12px 24px', backgroundColor: '#0F172A', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 600, fontSize: '16px', cursor: 'pointer', textDecoration: 'none' }}
       >
         Try Again
-      </a>
+      </Link>
     </div>
     <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Offline","path":"/offline"}]} />
     </>

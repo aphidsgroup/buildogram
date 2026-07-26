@@ -1,6 +1,7 @@
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import PropertyMarketplaceClient from '../PropertyMarketplaceClient';
+import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
 title: '360° Property Listings in Chennai | Buildogram Marketplace',
@@ -24,8 +25,8 @@ export default function PropertiesBuyPage() {
             Every listing comes with a verified history, 360° virtual tours, and Buildogram's Property Passport — so you buy with complete confidence.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <a href="/property-passport" className="btn btn-primary btn-lg">What is Property Passport?</a>
-            <a href="/contact" className="btn btn-lg btn-outline-light">Talk to an Advisor</a>
+            <Link href="/property-passport" className="btn btn-primary btn-lg">What is Property Passport?</Link>
+            <Link href="/contact" className="btn btn-lg btn-outline-light">Talk to an Advisor</Link>
           </div>
         </div>
       </section>

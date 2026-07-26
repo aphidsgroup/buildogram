@@ -111,8 +111,8 @@ export default function Projects() {
             We don't just hand over keys — we hand over concrete compression test records, lab-certified material reports, and 10-year structural warranties.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <a href="/contact" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px' }}>Request Site Audit Visit</a>
-            <a href="/cost-estimator" className="btn btn-outline" style={{ background: 'rgba(255,255,255,0.05)', color: 'white', borderColor: 'rgba(255,255,255,0.2)', padding: '16px 32px', fontSize: '16px' }}>Estimate Build Cost</a>
+            <Link href="/contact" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px' }}>Request Site Audit Visit</Link>
+            <Link href="/cost-estimator" className="btn btn-outline" style={{ background: 'rgba(255,255,255,0.05)', color: 'white', borderColor: 'rgba(255,255,255,0.2)', padding: '16px 32px', fontSize: '16px' }}>Estimate Build Cost</Link>
           </div>
         </div>
       </section>
