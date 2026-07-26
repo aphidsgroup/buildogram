@@ -449,7 +449,7 @@ export const SERVICES = [
     ],
     faqs: [
       { question: "When should I get a structural audit for my building in Chennai?", answer: "You should get an audit if the building is over 15 years old, if you are planning to add an extra floor, if you notice deep cracks or exposed rusting steel, or before buying an older property." },
-      { question: "What is a Structural Stability Certificate?", answer: "It is a legal document signed by a licensed structural engineer stating that the building is safe for occupation. It is often required by the Chennai Corporation for schools, hospitals, and commercial buildings." },
+      { question: "What is a Structural Stability Certificate?", answer: "It is a document signed by an appropriately credentialed structural professional stating that the building is safe for occupation. It is often required by the Chennai Corporation for schools, hospitals, and commercial buildings." },
       { question: "Will the testing damage my house?", answer: "No. We primarily use Non-Destructive Testing (NDT) methods like Rebound Hammer and Ultrasound, which test the strength of the concrete without breaking it." },
       { question: "How much does a structural audit cost in Chennai?", answer: "Costs depend on the building's square footage, condition and the number of NDT tests required. Pricing is quote-based: share your building details and we will provide a written scope and fee before any inspection." },
     ],

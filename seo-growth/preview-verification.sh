@@ -5,8 +5,8 @@
 # Optional (Vercel Deployment Protection):
 #   export VERCEL_PROTECTION_BYPASS="<token>"   (preferred)  or  export BYPASS="<token>"
 #   export VERCEL_PROTECTION_COOKIE_FILE="<temporary-cookie-jar>"
-# The token is sent ONLY as an x-vercel-protection-bypass request header.
-# It is never echoed, never written to any .tsv, and never placed in a URL.
+# Authentication is sent only as a bypass header or from the temporary cookie
+# jar. Credentials are never echoed, written to a .tsv, or placed in a URL.
 # Output:  seo-growth/preview-results/*.tsv  (paste into 20-…md)
 # Read-only: performs GET/HEAD requests only.
 # ============================================================================
@@ -66,7 +66,8 @@ fi
 
 # ABORT GUARD — if the authenticated fetch still lands on Vercel's login page,
 # every downstream section would silently measure vercel.com instead of the app.
-probe=$(fetch / 2>/dev/null | head -c 4000)
+probe=$(fetch / 2>/dev/null)
+probe="${probe:0:4000}"
 case "$probe" in
   *"Log in to Vercel"*|*"vercel.com/login"*|*"Authentication Required"*)
     cat >&2 <<'ABORT'
@@ -99,9 +100,9 @@ URLS=(
  /materials/aggregates /materials/paint /materials/roofing
  /guides/what-is-boq-in-construction /guides/how-to-compare-contractor-quotes /guides/why-low-construction-quote-can-be-risky
  /glossary/rmc /glossary/boq /glossary/sbc
- /faqs/construction-cost /faqs/boq-and-quotes /faqs/structural-audit
- /compare/boq-review-vs-contractor-quote /compare/turnkey-vs-labour-contract /compare/rcc-vs-steel
- /partners/demo-builder
+ /faqs/construction /faqs/boq /faqs/plan-review
+ /compare/buildogram-vs-contractor /compare/pmc-vs-turnkey-construction /compare/boq-review-vs-contractor-estimate
+ /partners/builders
  /locations/chennai/velachery /locations/chennai/adyar
  /construction-in-chennai /quality-system /boq-review-chennai /
 )
@@ -139,7 +140,8 @@ for s in "${!R[@]}"; do
   chain=$("${CURL[@]}" -I -L "$BASE$s" | grep -ci '^HTTP/')
   fin=$("${CURL[@]}" -o /dev/null -w '%{url_effective}' -L "$BASE$s")
   dst=$("${CURL[@]}" -o /dev/null -w '%{http_code}' -L "$BASE$s")
-  can=$(fetch "$s" | grep -oPm1 'rel="canonical"[^>]+href="\K[^"]+')
+  redirect_html=$(fetch "$s")
+  can=$(grep -oPm1 'rel="canonical"[^>]+href="\K[^"]+' <<<"$redirect_html")
   printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$s" "$first" "$((chain-1))" "$chain" "$fin" "${R[$s]}" "$dst" "$can" >> "$OUT/02-redirects.tsv"
 done
 echo "[2] redirects -> $OUT/02-redirects.tsv  (PASS = 301/308, hops=1, dest 200, self-canonical)"
@@ -181,14 +183,13 @@ PAT='500\+ Project|₹12\.8Cr|₹2\.1Cr|₹50Cr\+|18% *(Average|Avg)|10-Year (Pa
 printf 'url\tmatch\tcontext\n' > "$OUT/04-claim-scan.tsv"
 SCAN=( / /about /construction-in-chennai /locations/chennai /locations/chennai/velachery /locations/chennai/adyar /locations/chennai/pallikaranai /structural-audit-chennai /boq-review-chennai /quality-system /materials /partners/builders /land-survey-chennai /drone-survey-chennai )
 for u in "${SCAN[@]}"; do
-  fetch "$u" | grep -ohiE "$PAT" | sort -u | while read -r m; do
+  scan_html=$(fetch "$u")
+  grep -ohiE "$PAT" <<<"$scan_html" | sort -u | while read -r m; do
     printf '%s\t%s\tsee rendered HTML\n' "$u" "$m" >> "$OUT/04-claim-scan.tsv"
   done
 done
 hits=$(($(wc -l < "$OUT/04-claim-scan.tsv")-1))
 echo "[4] claim scan -> $OUT/04-claim-scan.tsv  (PASS = 0 rows; found: $hits)"
-echo
-echo "DONE. Paste results into seo-growth/20-post-deployment-verification.md §§5–8 and seo-growth/execution/11-preview-validation.md."
 
 # ── 5. Route-specific metadata (Sprint 2) ───────────────────────────────────
 # Verifies the shared-metadata-helper rewiring: every URL must emit its OWN
@@ -260,3 +261,6 @@ case "$BASE" in
     ;;
   *) echo "[6] cache check skipped (preview)";;
 esac
+
+echo
+echo "DONE. Paste results into seo-growth/20-post-deployment-verification.md §§5–8 and seo-growth/execution/11-preview-validation.md."
