@@ -9,9 +9,10 @@ const securityHeaders = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  // NOTE: the `eslint` key was removed on 2026-07-26. Next 16 dropped `next lint`
+  // and no longer reads it, so `ignoreDuringBuilds: true` was dead config that
+  // also implied lint was being suppressed when it was not. Linting now runs
+  // through the ESLint CLI via `npm run lint` against eslint.config.mjs.
 
   images: {
     // Phase 5 perf: serve AVIF first (30-50% smaller than WebP), fall back to WebP
