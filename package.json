@@ -51,6 +51,9 @@
     "seed": "node prisma/seed.js"
   },
   "overrides": {
+    "next": {
+      "postcss": "8.5.18"
+    },
     "googleapis-common": {
       "gaxios": "7.3.0"
     }
