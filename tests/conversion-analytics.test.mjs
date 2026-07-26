@@ -9,6 +9,10 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import {
+  sanitizeAnalyticsParams,
+  trackGenerateLead,
+} from '../src/lib/conversion/analytics.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -31,12 +35,65 @@ describe('analytics.js source — PII key guard', () => {
     });
   });
 
-  test('fireEvent strips PII before passing to gtag', () => {
-    assert.match(src, /PII_KEYS\.has\(k\)/);
+  test('fireEvent routes parameters through the strict allowlist', () => {
+    assert.match(src, /sanitizeAnalyticsParams\(params\)/);
   });
 
   test('generate_lead is documented as newly persisted only', () => {
     assert.match(src, /newly persisted lead/i);
+  });
+});
+
+describe('analytics runtime boundary', () => {
+  test('keeps approved context and drops PII, unknown fields and complex values', () => {
+    assert.deepEqual(
+      sanitizeAnalyticsParams({
+        page_type: 'service',
+        service_key: 'boq-review',
+        name: 'Private Person',
+        phone: '+91 90000 00000',
+        enquiry_text: 'Private project details',
+        address: 'Private address',
+        nested: { email: 'private@example.com' },
+      }),
+      {
+        page_type: 'service',
+        service_key: 'boq-review',
+      },
+    );
+  });
+
+  test('generate_lead emits context only and never includes a lead identifier', () => {
+    const calls = [];
+    global.window = { gtag: (...args) => calls.push(args) };
+    try {
+      trackGenerateLead(
+        {
+          pageType: 'service',
+          serviceKey: 'boq-review',
+          serviceName: 'BOQ Review',
+          locality: 'chennai',
+          contextualQuestion: { key: 'project_stage' },
+        },
+        { placement: 'inline', leadId: 'private-record-id' },
+      );
+    } finally {
+      delete global.window;
+    }
+
+    assert.equal(calls.length, 1);
+    assert.deepEqual(calls[0], [
+      'event',
+      'generate_lead',
+      {
+        page_type: 'service',
+        service_key: 'boq-review',
+        service_name: 'BOQ Review',
+        locality: 'chennai',
+        cta_placement: 'inline',
+        form_question_key: 'project_stage',
+      },
+    ]);
   });
 });
 
@@ -117,5 +174,22 @@ describe('ContextualEnquiryForm — generate_lead only on server success', () =>
     if (catchBlock) {
       assert.doesNotMatch(catchBlock[1], /trackGenerateLead/);
     }
+  });
+});
+
+describe('site analytics bootstrap and legacy service', () => {
+  test('root layout conditionally includes one GA loader and one initializer', async () => {
+    const layout = await readFile(path.join(root, 'src/app/layout.js'), 'utf8');
+    assert.equal((layout.match(/googletagmanager\.com\/gtag\/js/g) || []).length, 1);
+    assert.equal((layout.match(/gtag\('config'/g) || []).length, 1);
+    assert.match(layout, /process\.env\.NEXT_PUBLIC_GA_ID\s*&&/);
+  });
+
+  test('legacy analytics service sanitizes both GA and Meta event payloads', async () => {
+    const service = await readFile(path.join(root, 'src/lib/analyticsService.js'), 'utf8');
+    assert.match(service, /sanitizeAnalyticsParams\(data\)/);
+    assert.doesNotMatch(service, /gtag\('event',\s*eventName,\s*data\)/);
+    assert.doesNotMatch(service, /trackCustom',\s*eventName,\s*data\)/);
+    assert.match(service, /url\.split\(\/\[\?#\]\//);
   });
 });

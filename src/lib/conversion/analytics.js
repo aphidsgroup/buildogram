@@ -14,22 +14,32 @@ const ALLOWED_PARAM_KEYS = new Set([
 const PII_KEYS = new Set(['name', 'phone', 'email', 'message', 'address', 'full_name']);
 
 /**
- * Internal: fire a gtag event safely, stripping any PII keys.
+ * Keep only explicitly approved context fields. Unknown keys are dropped so a
+ * caller cannot accidentally forward form values or other identifiers to GA4.
+ */
+export function sanitizeAnalyticsParams(params = {}) {
+  const safeParams = {};
+  for (const [k, v] of Object.entries(params)) {
+    if (
+      ALLOWED_PARAM_KEYS.has(k) &&
+      v != null &&
+      ['string', 'number', 'boolean'].includes(typeof v)
+    ) {
+      safeParams[k] = typeof v === 'string' ? v.slice(0, 100) : v;
+    } else if (PII_KEYS.has(k) && process.env.NODE_ENV === 'development') {
+      console.warn(`[conversion/analytics] Stripped PII key "${k}"`);
+    }
+  }
+  return safeParams;
+}
+
+/**
+ * Internal: fire a gtag event safely through the strict parameter allowlist.
  */
 function fireEvent(eventName, params = {}) {
   if (typeof window === 'undefined' || typeof window.gtag !== 'function') return;
 
-  // Strip any PII that might have crept in
-  const safeParams = {};
-  for (const [k, v] of Object.entries(params)) {
-    if (!PII_KEYS.has(k)) {
-      safeParams[k] = v;
-    } else if (process.env.NODE_ENV === 'development') {
-      console.warn(`[conversion/analytics] Stripped PII key "${k}" from event "${eventName}"`);
-    }
-  }
-
-  window.gtag('event', eventName, safeParams);
+  window.gtag('event', eventName, sanitizeAnalyticsParams(params));
 }
 
 // ── Widget events ─────────────────────────────────────────────────────────────
@@ -106,7 +116,7 @@ export function trackLeadFormValidationError(context, { fieldName } = {}) {
  * trackGenerateLead — call only after a newly persisted lead is confirmed.
  * Duplicate or browser-only success states must never call this function.
  */
-export function trackGenerateLead(context, { placement = 'inline', leadId } = {}) {
+export function trackGenerateLead(context, { placement = 'inline' } = {}) {
   fireEvent('generate_lead', {
     page_type: context?.pageType,
     service_key: context?.serviceKey,
@@ -114,8 +124,6 @@ export function trackGenerateLead(context, { placement = 'inline', leadId } = {}
     locality: context?.locality,
     cta_placement: placement,
     form_question_key: context?.contextualQuestion?.key,
-    // leadId is an internal DB ID, not PII — safe to log
-    cta_version: leadId ? String(leadId).substring(0, 8) : undefined,
   });
 }
 
