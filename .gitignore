@@ -63,3 +63,9 @@ scratch/
 
 # verification outputs — may contain preview hostnames
 seo-growth/preview-results/
+
+# Local deployment and verification outputs
+/bypass.txt
+/deploy-output*.txt
+/local-verification.txt
+/verification-output*.txt
