@@ -49,5 +49,10 @@
   },
   "prisma": {
     "seed": "node prisma/seed.js"
+  },
+  "overrides": {
+    "googleapis-common": {
+      "gaxios": "7.3.0"
+    }
   }
 }
