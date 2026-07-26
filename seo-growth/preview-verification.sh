@@ -41,6 +41,21 @@ esac
 echo -e "protection_verdict\t$prot" >> "$OUT/00-protection.tsv"
 echo "[0] protection: $prot"
 
+if [ -z "$BYPASS" ] && [[ "$prot" == PROTECTED* ]]; then
+  cat >&2 <<'ABORT'
+
+=============================================================================
+ABORTED — the preview is behind Vercel Deployment Protection and no bypass
+token was supplied. No application verification has been attempted.
+
+Configure a Protection Bypass for Automation secret locally and re-run. Never
+print, commit, or place the secret in a URL.
+=============================================================================
+
+ABORT
+  exit 2
+fi
+
 # ABORT GUARD — if the authenticated fetch still lands on Vercel's login page,
 # every downstream section would silently measure vercel.com instead of the app.
 probe=$(fetch / 2>/dev/null | head -c 4000)
