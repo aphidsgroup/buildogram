@@ -4,20 +4,28 @@
 # Usage:  BASE="https://<preview-url>" bash seo-growth/preview-verification.sh
 # Optional (Vercel Deployment Protection):
 #   export VERCEL_PROTECTION_BYPASS="<token>"   (preferred)  or  export BYPASS="<token>"
+#   export VERCEL_PROTECTION_COOKIE_FILE="<temporary-cookie-jar>"
 # The token is sent ONLY as an x-vercel-protection-bypass request header.
 # It is never echoed, never written to any .tsv, and never placed in a URL.
 # Output:  seo-growth/preview-results/*.tsv  (paste into 20-…md)
 # Read-only: performs GET/HEAD requests only.
 # ============================================================================
 set -uo pipefail
+export LC_ALL=C.utf8
 BASE="${BASE:?set BASE to the preview URL, no trailing slash}"
 OUT="seo-growth/preview-results"; mkdir -p "$OUT"
 CURL=(curl -sS --max-time 30)
 # Accept either variable name; VERCEL_PROTECTION_BYPASS wins.
 BYPASS="${VERCEL_PROTECTION_BYPASS:-${BYPASS:-}}"
+COOKIE_FILE="${VERCEL_PROTECTION_COOKIE_FILE:-}"
 if [ -n "$BYPASS" ]; then
   CURL+=(-H "x-vercel-protection-bypass: ${BYPASS}")
   echo "[auth] protection bypass header enabled (token redacted, ${#BYPASS} chars)"
+fi
+if [ -n "$COOKIE_FILE" ]; then
+  [ -r "$COOKIE_FILE" ] || { echo "[auth] cookie file is not readable" >&2; exit 2; }
+  CURL+=(-b "$COOKIE_FILE")
+  echo "[auth] temporary protection cookie enabled (contents redacted)"
 fi
 # Guard: never let the token reach stdout or any output file.
 redact() { if [ -n "$BYPASS" ]; then sed "s/${BYPASS//\//\\/}/[REDACTED]/g"; else cat; fi; }
@@ -41,7 +49,7 @@ esac
 echo -e "protection_verdict\t$prot" >> "$OUT/00-protection.tsv"
 echo "[0] protection: $prot"
 
-if [ -z "$BYPASS" ] && [[ "$prot" == PROTECTED* ]]; then
+if [ -z "$BYPASS" ] && [ -z "$COOKIE_FILE" ] && [[ "$prot" == PROTECTED* ]]; then
   cat >&2 <<'ABORT'
 
 =============================================================================
@@ -99,8 +107,8 @@ URLS=(
 )
 printf 'url\tstatus\tfinal_url\tcanonical\trobots\ttitle\tdescription\th1\tbody_chars\tjsonld_types\tinternal_links\n' > "$OUT/01-routes.tsv"
 for u in "${URLS[@]}"; do
-  st=$(curl -sS -o /dev/null -w '%{http_code}' -L --max-time 30 "$BASE$u")
-  fin=$(curl -sS -o /dev/null -w '%{url_effective}' -L --max-time 30 "$BASE$u")
+  st=$("${CURL[@]}" -o /dev/null -w '%{http_code}' -L "$BASE$u")
+  fin=$("${CURL[@]}" -o /dev/null -w '%{url_effective}' -L "$BASE$u")
   html=$(fetch "$u")
   can=$(grep -oPm1 '<link[^>]+rel="canonical"[^>]+href="\K[^"]+' <<<"$html")
   rob=$(grep -oPm1 '<meta[^>]+name="robots"[^>]+content="\K[^"]+' <<<"$html")
@@ -127,10 +135,10 @@ declare -A R=(
 )
 printf 'source\tactual_status\thops\tchain\tfinal_url\texpected_dest\tdest_status\tdest_canonical\n' > "$OUT/02-redirects.tsv"
 for s in "${!R[@]}"; do
-  first=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$BASE$s")
-  chain=$(curl -sSI -L --max-time 30 "$BASE$s" | grep -ci '^HTTP/')
-  fin=$(curl -sS -o /dev/null -w '%{url_effective}' -L --max-time 30 "$BASE$s")
-  dst=$(curl -sS -o /dev/null -w '%{http_code}' -L --max-time 30 "$BASE$s")
+  first=$("${CURL[@]}" -o /dev/null -w '%{http_code}' "$BASE$s")
+  chain=$("${CURL[@]}" -I -L "$BASE$s" | grep -ci '^HTTP/')
+  fin=$("${CURL[@]}" -o /dev/null -w '%{url_effective}' -L "$BASE$s")
+  dst=$("${CURL[@]}" -o /dev/null -w '%{http_code}' -L "$BASE$s")
   can=$(fetch "$s" | grep -oPm1 'rel="canonical"[^>]+href="\K[^"]+')
   printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$s" "$first" "$((chain-1))" "$chain" "$fin" "${R[$s]}" "$dst" "$can" >> "$OUT/02-redirects.tsv"
 done
@@ -145,7 +153,7 @@ fi
 sort -o "$OUT/sitemap-urls.txt" "$OUT/sitemap-urls.txt"
 total=$(wc -l < "$OUT/sitemap-urls.txt"); uniq=$(sort -u "$OUT/sitemap-urls.txt" | wc -l)
 { echo -e "metric\tvalue"
-  echo -e "sitemap_http\t$(curl -sS -o /dev/null -w '%{http_code}' "$BASE/sitemap.xml")"
+  echo -e "sitemap_http\t$("${CURL[@]}" -o /dev/null -w '%{http_code}' "$BASE/sitemap.xml")"
   if command -v xmllint >/dev/null 2>&1; then
     echo -e "xml_wellformed\t$(xmllint --noout "$OUT/sitemap.xml" 2>&1 && echo yes || echo NO)"
   else
@@ -164,7 +172,7 @@ total=$(wc -l < "$OUT/sitemap-urls.txt"); uniq=$(sort -u "$OUT/sitemap-urls.txt"
 printf 'url\tstatus\n' > "$OUT/03-sitemap-status.tsv"
 while read -r u; do
   p="${u#https://www.buildogram.in}"
-  printf '%s\t%s\n' "$u" "$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$BASE$p")" >> "$OUT/03-sitemap-status.tsv"
+  printf '%s\t%s\n' "$u" "$("${CURL[@]}" -o /dev/null -w '%{http_code}' "$BASE$p")" >> "$OUT/03-sitemap-status.tsv"
 done < "$OUT/sitemap-urls.txt"
 echo "[3] sitemap -> $OUT/03-sitemap-*.tsv  (PASS = every url 200, 0 duplicates, 0 non-www, 0 preview-domain, 0 demo-*)"
 

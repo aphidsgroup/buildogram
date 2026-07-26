@@ -1,12 +1,14 @@
 import { PrismaClient } from '@prisma/client';
 import Link from 'next/link';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export const dynamic = 'force-dynamic';
 
-export const metadata = {
+export const metadata = generateSEOMetadata({
   title: 'Engineering Proof & Field Updates | Buildogram',
-  description: 'Real field updates, structural audits, construction progress, and material quality checks from Buildogram engineers in Chennai.',
-};
+  description: 'Published field updates covering construction progress, structural audits, and material quality checks in Chennai.',
+  path: '/proof',
+});
 
 export default async function ProofFeedPage() {
   const prisma = new PrismaClient();
@@ -37,7 +39,7 @@ export default async function ProofFeedPage() {
             Engineering Proof & Field Updates
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', maxWidth: '600px', lineHeight: 1.7 }}>
-            Real construction milestones, material quality checks, and structural audits executed by Buildogram engineers across Chennai.
+            Construction milestones, material quality checks, and structural-audit records published through Buildogram.
           </p>
         </div>
       </section>

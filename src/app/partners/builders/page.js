@@ -4,15 +4,15 @@ import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
   title: 'Builders in Chennai | Construction Partner Network | Buildogram',
-  description: 'Find RERA-registered, engineer-approved builders in Chennai. Buildogram verifies past projects, structural compliance, and warranty documentation before listing any builder.',
+  description: 'Browse builder listings and construction partner profiles in Chennai. Compare listed services, project information, and contact options.',
   path: '/partners/builders',
 });
 
 const CRITERIA = [
-  { icon: '📜', title: 'RERA Registration', desc: 'Every builder we list must be registered under TNRERA (Tamil Nadu Real Estate Regulatory Authority). This protects you from unregistered fly-by-night operators.' },
-  { icon: '🏗️', title: 'Minimum 3 Completed Projects', desc: 'We inspect at least 3 completed projects — checking structural quality, material brands used, and client satisfaction before approving a builder.' },
-  { icon: '👷', title: 'Structural Engineer Tie-Up', desc: 'Builders must have a licensed structural engineer on their team or as a retained consultant. We verify credentials and check that design drawings are stamped by a registered engineer.' },
-  { icon: '🔒', title: 'Warranty Documentation', desc: 'We require builders to confirm their workmanship and structural warranty terms in writing. Warranty obligations are governed by the signed contract between the property owner and the appointed builder — Buildogram verifies and records this documentation.' },
+  { icon: '📜', title: 'Registration Details', desc: 'Where applicable, ask the builder to provide current TNRERA registration details and verify them through the official TNRERA portal.' },
+  { icon: '🏗️', title: 'Past Project References', desc: 'Request completed-project references and independently review the stated scope, material specifications, and client feedback.' },
+  { icon: '👷', title: 'Engineering Coordination', desc: 'Ask how structural design is prepared and request the applicable calculations, drawings, and professional sign-offs for your project.' },
+  { icon: '🔒', title: 'Written Warranty Terms', desc: 'Request workmanship and structural warranty terms in writing. Any obligation is governed by the signed contract between the property owner and the appointed builder.' },
 ];
 
 const WHEN_TO_HIRE = [
@@ -58,9 +58,9 @@ export default function BuildersPage() {
         {/* Verification Criteria */}
         <section style={{ marginBottom: '64px' }}>
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <div className="tag" style={{ marginBottom: '12px' }}>Our Vetting Process</div>
-            <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', color: 'var(--secondary)' }}>Listing Criteria for Builders</h2>
-            <p style={{ color: 'var(--text-muted)', maxWidth: '580px', margin: '12px auto 0', fontSize: '15px' }}>We check every builder against 4 non-negotiable criteria before they can appear in our directory.</p>
+            <div className="tag" style={{ marginBottom: '12px' }}>Evaluation Checklist</div>
+            <h2 style={{ fontSize: 'clamp(22px, 3vw, 32px)', color: 'var(--secondary)' }}>Questions to Review With Builders</h2>
+            <p style={{ color: 'var(--text-muted)', maxWidth: '580px', margin: '12px auto 0', fontSize: '15px' }}>Use these four checks when comparing a builder&apos;s profile and proposal.</p>
           </div>
           <div className="grid-2" style={{ gap: '20px' }}>
             {CRITERIA.map(c => (
@@ -130,11 +130,11 @@ export default function BuildersPage() {
         </div>
       </div>
 
-      {/* Partner disclaimer — DECISION-1 & DECISION-5 approved copy */}
+      {/* Partner-directory disclaimer */}
       <div style={{ background: 'var(--bg-card2)', borderTop: '1px solid var(--border)', padding: '24px' }}>
         <div className="container">
           <p style={{ fontSize: '12px', color: 'var(--text-muted)', lineHeight: 1.7, maxWidth: '860px', margin: '0 auto', textAlign: 'center' }}>
-            <strong>Partner Verification Notice:</strong> Partner verification confirms that selected credentials and project information were reviewed using Buildogram&apos;s verification process. It is not a guarantee of future performance. The execution agreement, warranty obligations, pricing and construction responsibilities remain governed by the signed contract between the property owner and the appointed execution partner.
+            <strong>Partner Directory Notice:</strong> Profile and credential information should be independently verified before appointment. A directory listing is not a guarantee of future performance. The execution agreement, warranty obligations, pricing and construction responsibilities remain governed by the signed contract between the property owner and the appointed execution partner.
           </p>
         </div>
       </div>
