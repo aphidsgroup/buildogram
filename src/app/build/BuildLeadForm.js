@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { getAttributionPayload } from '@/lib/analytics/attribution';
+import { classifyLeadSubmission, DUPLICATE_LEAD_MESSAGE } from '@/lib/leads/submission-contract.mjs';
 
 export default function BuildLeadForm({ leadType = 'construction', sourcePage = '/build', ctaLabel = '🏗️ Get Free Consultation' }) {
   const [form, setForm] = useState({ name: '', phone: '', email: '', city: 'Chennai', locality: '', plot_area_sqft: '', floors: '', spec_level: '', message: '' });
@@ -28,7 +29,7 @@ export default function BuildLeadForm({ leadType = 'construction', sourcePage = 
         }),
       });
       const d = await res.json();
-      setStatus(d.success ? 'success' : 'error');
+      setStatus(classifyLeadSubmission(d));
     } catch { setStatus('error'); }
   };
 
@@ -63,6 +64,7 @@ export default function BuildLeadForm({ leadType = 'construction', sourcePage = 
       <button type="submit" className="btn btn-primary btn-lg" disabled={status === 'loading'} style={{ width: '100%', justifyContent: 'center' }}>
         {status === 'loading' ? 'Submitting…' : ctaLabel}
       </button>
+      {status === 'duplicate' && <p role="status" style={{ color: '#93c5fd', textAlign: 'center', fontSize: '14px' }}>{DUPLICATE_LEAD_MESSAGE}</p>}
       {status === 'error' && <p style={{ color: '#f87171', textAlign: 'center', fontSize: '14px' }}>Something went wrong. Please try again.</p>}
     </form>
   );

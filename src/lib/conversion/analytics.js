@@ -103,8 +103,8 @@ export function trackLeadFormValidationError(context, { fieldName } = {}) {
 }
 
 /**
- * trackGenerateLead — fires ONLY after server returns success === true.
- * Never call this on click or before server confirmation.
+ * trackGenerateLead — call only after a newly persisted lead is confirmed.
+ * Duplicate or browser-only success states must never call this function.
  */
 export function trackGenerateLead(context, { placement = 'inline', leadId } = {}) {
   fireEvent('generate_lead', {

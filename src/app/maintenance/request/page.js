@@ -3,6 +3,7 @@ import { useState, Suspense, useEffect } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { getAttributionPayload } from '@/lib/analytics/attribution';
+import { classifyLeadSubmission, DUPLICATE_LEAD_MESSAGE } from '@/lib/leads/submission-contract.mjs';
 
 const ISSUE_CATEGORIES = [
   { id: 'plumbing', label: 'Plumbing & Leakage' },
@@ -66,7 +67,7 @@ function MaintenanceRequestFormInner() {
         }),
       });
       const d = await res.json();
-      setStatus(d.success ? 'success' : 'error');
+      setStatus(classifyLeadSubmission(d));
     } catch { setStatus('error'); }
   };
 
@@ -146,6 +147,7 @@ function MaintenanceRequestFormInner() {
               {status === 'loading' ? 'Submitting…' : '🔧 Submit Request'}
             </button>
             
+            {status === 'duplicate' && <p role="status" style={{ color: '#2563eb', textAlign: 'center', fontSize: '14px', fontWeight: 600 }}>{DUPLICATE_LEAD_MESSAGE}</p>}
             {status === 'error' && <p style={{ color: '#ef4444', textAlign: 'center', fontSize: '14px', fontWeight: 600 }}>Something went wrong. Please try again.</p>}
           </form>
         </div>

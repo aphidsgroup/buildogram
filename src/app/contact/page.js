@@ -3,6 +3,10 @@ import { useState, useEffect } from 'react';
 import { getAttributionPayload } from '@/lib/analytics/attribution';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import PremiumCard from '@/components/ui/PremiumCard';
+import {
+  classifyLeadSubmission,
+  DUPLICATE_LEAD_MESSAGE,
+} from '@/lib/leads/submission-contract.mjs';
 import styles from './contact.module.css';
 
 const INTENT_OPTIONS = [
@@ -70,10 +74,14 @@ function ContactForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      if (res.ok) {
+      const data = await res.json().catch(() => ({}));
+      const result = classifyLeadSubmission(data);
+      if (res.ok && result === 'success') {
         setStatus('Success');
         setSubmittedData(form);
         setForm({ name: '', phone: '', email: '', leadType: form.leadType, location: '', notes: '', formData: {} });
+      } else if (res.ok && result === 'duplicate') {
+        setStatus(DUPLICATE_LEAD_MESSAGE);
       } else {
         setStatus('Failed to submit. Please try again.');
       }

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { getAttributionPayload } from '@/lib/analytics/attribution';
+import { classifyLeadSubmission, DUPLICATE_LEAD_MESSAGE } from '@/lib/leads/submission-contract.mjs';
 
 const MATERIAL_CATEGORIES = ['Cement', 'Steel / TMT', 'Sand', 'M-Sand', 'Solid Blocks', 'Red Bricks', 'Electricals', 'Plumbing', 'Tiles', 'Paint', 'Doors & Windows', 'RMC', 'Other'];
 const CUSTOMER_TYPES = ['Home Owner', 'Contractor', 'Builder', 'Architect', 'Supplier', 'Other'];
@@ -74,7 +75,7 @@ export default function MaterialLeadForm() {
         }),
       });
       const d = await res.json();
-      setStatus(d.success ? 'success' : 'error');
+      setStatus(classifyLeadSubmission(d));
     } catch { setStatus('error'); }
   };
 
@@ -151,6 +152,7 @@ export default function MaterialLeadForm() {
       <button type="submit" className="btn btn-primary btn-lg mt-2" disabled={status === 'loading'} style={{ width: '100%', justifyContent: 'center' }}>
         {status === 'loading' ? 'Submitting…' : '📦 Request Material Quote'}
       </button>
+      {status === 'duplicate' && <p role="status" style={{ color: '#93c5fd', textAlign: 'center', fontSize: '14px' }}>{DUPLICATE_LEAD_MESSAGE}</p>}
       {status === 'error' && <p style={{ color: '#f87171', textAlign: 'center', fontSize: '14px' }}>Something went wrong. Please try again.</p>}
     </form>
   );

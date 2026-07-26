@@ -12,6 +12,10 @@ import Link from 'next/link';
 import { getAttributionPayload } from '@/lib/analytics/attribution';
 import { CONVERSION_COMPLETE_EVENT } from '@/lib/conversion/tooltip-lifecycle.mjs';
 import {
+  isCreatedLeadResponse,
+  isDuplicateLeadResponse,
+} from '@/lib/leads/submission-contract.mjs';
+import {
   trackLeadFormView,
   trackLeadFormStart,
   trackLeadFormValidationError,
@@ -33,6 +37,7 @@ export default function ContextualEnquiryForm({
   const [hasStarted, setHasStarted]   = useState(false);
   const [submitting, setSubmitting]   = useState(false);
   const [submitted, setSubmitted]     = useState(false);
+  const [duplicate, setDuplicate]     = useState(false);
   const [errors, setErrors]           = useState({});
   const [serverError, setServerError] = useState(null);
 
@@ -154,14 +159,19 @@ export default function ContextualEnquiryForm({
 
       const json = await res.json().catch(() => ({}));
 
-      if (res.ok && json.success) {
+      if (res.ok && isCreatedLeadResponse(json)) {
         setSubmitted(true);
-        // Fire generate_lead ONLY on server success
+        // Fire generate_lead only for a newly persisted lead.
         trackGenerateLead(context, { placement, leadId: json.id });
         // Suppress tooltip for this session
         try { sessionStorage.setItem(SESSION_KEY_FORM, '1'); } catch (_) {}
         window.dispatchEvent(new Event(CONVERSION_COMPLETE_EVENT));
         onSuccess?.();
+      } else if (res.ok && isDuplicateLeadResponse(json)) {
+        setDuplicate(true);
+        // The earlier persisted request already represents the conversion.
+        // Suppress further prompting without emitting another conversion event.
+        try { sessionStorage.setItem(SESSION_KEY_FORM, '1'); } catch (_) {}
       } else {
         setServerError('Something went wrong. Please try again or contact us on WhatsApp.');
         trackLeadFormFailure(context, { errorCode: String(res.status) });
@@ -172,6 +182,25 @@ export default function ContextualEnquiryForm({
     } finally {
       setSubmitting(false);
     }
+  }
+
+  if (duplicate) {
+    return (
+      <div
+        role="status"
+        aria-live="polite"
+        style={{
+          background: 'rgba(59,130,246,0.08)',
+          border: '1px solid rgba(59,130,246,0.25)',
+          borderRadius: '12px',
+          padding: '24px',
+          textAlign: 'center',
+          color: 'var(--text-primary, #0c1428)',
+        }}
+      >
+        We already received this enquiry. Our team will use the earlier request.
+      </div>
+    );
   }
 
   // -- Success state ----------------------------------------------------------

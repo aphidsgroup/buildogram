@@ -50,11 +50,19 @@ export async function POST(req) {
       }
     });
 
-    return NextResponse.json({ success: true, id: submission.id });
+    return NextResponse.json(
+      {
+        success: true,
+        created: true,
+        duplicate: false,
+        id: submission.id,
+      },
+      { status: 201 },
+    );
   } catch (error) {
     console.error('Error saving AI tool submission:', error);
     return NextResponse.json(
-      { error: 'Failed to save submission' },
+      { success: false, created: false, error: 'Failed to save submission' },
       { status: 500 }
     );
   } finally {

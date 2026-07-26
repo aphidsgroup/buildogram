@@ -2,6 +2,12 @@ import { NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth';
 import { getLeads, addLead, updateLead, addLeadActivity } from '@/lib/storageProvider';
 import { sendNotification } from '@/lib/notifications/notificationService';
+import {
+  buildLeadDuplicateKey,
+  isValidPersistentLeadId,
+  LeadSubmissionDeduper,
+  normalizeLeadPayload,
+} from '@/lib/leads/submission-contract.mjs';
 
 // ── New source values (additive) ─────────────────────────────────────────────
 // CONTEXTUAL_INLINE_FORM · WHATSAPP_FLOATING_WIDGET · PAGE_CTA · PHONE_CTA
@@ -25,23 +31,18 @@ function checkRateLimit(ip) {
 }
 
 // ── Duplicate guard: same phone + sourcePage within 60s ───────────────────────
-const _recentSubmissions = new Map(); // key → timestamp
-const DUPE_WINDOW = 60 * 1000; // 60 seconds
-
-function isDuplicate(phone, sourcePage) {
-  const key = `${phone}|${sourcePage}`;
-  const last = _recentSubmissions.get(key);
-  if (last && Date.now() - last < DUPE_WINDOW) return true;
-  _recentSubmissions.set(key, Date.now());
-  return false;
-}
+const submissionDeduper = new LeadSubmissionDeduper();
 
 export async function POST(req) {
+  let reservation = null;
   try {
     // ── Payload size cap (8KB) ────────────────────────────────────────────────
     const contentLength = parseInt(req.headers.get('content-length') || '0', 10);
     if (contentLength > 8192) {
-      return NextResponse.json({ success: false, error: 'Payload too large' }, { status: 413 });
+      return NextResponse.json(
+        { success: false, created: false, error: 'Payload too large' },
+        { status: 413 },
+      );
     }
 
     // ── Rate limiting ─────────────────────────────────────────────────────────
@@ -49,25 +50,63 @@ export async function POST(req) {
              || req.headers.get('x-real-ip')
              || 'unknown';
     if (!checkRateLimit(ip)) {
-      return NextResponse.json({ success: false, error: 'Too many requests. Please try again later.' }, { status: 429 });
+      return NextResponse.json(
+        { success: false, created: false, error: 'Too many requests. Please try again later.' },
+        { status: 429 },
+      );
     }
 
-    const body = await req.json();
+    const body = normalizeLeadPayload(await req.json());
 
     // ── Honeypot ──────────────────────────────────────────────────────────────
     if (body.website) {
       // Bot detected — return success silently (don't reveal the check)
-      return NextResponse.json({ success: true, id: 0, leadType: 'bot' });
+      return NextResponse.json({
+        success: true,
+        created: false,
+        duplicate: false,
+        leadType: 'bot',
+      });
     }
 
     if (!body.name || (!body.phone && body.leadType !== 'ai')) {
-      return NextResponse.json({ success: false, error: 'Name and phone are required' }, { status: 400 });
+      return NextResponse.json(
+        { success: false, created: false, error: 'Name and phone are required' },
+        { status: 400 },
+      );
     }
 
     // ── Duplicate submission guard ────────────────────────────────────────────
-    if (body.phone && isDuplicate(body.phone, body.sourcePage || '')) {
-      // Return success silently — user may have double-clicked
-      return NextResponse.json({ success: true, id: 0, leadType: body.leadType || 'duplicate' });
+    const duplicateKey = buildLeadDuplicateKey(body);
+    reservation = submissionDeduper.begin(duplicateKey);
+
+    if (reservation.type === 'duplicate') {
+      return NextResponse.json({
+        success: true,
+        created: false,
+        duplicate: true,
+        leadType: body.leadType,
+      });
+    }
+
+    if (reservation.type === 'pending') {
+      const outcome = await reservation.outcome;
+      if (outcome.created) {
+        return NextResponse.json({
+          success: true,
+          created: false,
+          duplicate: true,
+          leadType: body.leadType,
+        });
+      }
+      return NextResponse.json(
+        {
+          success: false,
+          created: false,
+          error: 'The earlier submission did not complete. Please retry.',
+        },
+        { status: 503 },
+      );
     }
 
     const leadType = body.leadType || 'general';
@@ -191,13 +230,37 @@ export async function POST(req) {
       newLeadId = res.id;
     }
 
-    // Fire notification placeholder
-    await sendNotification('New Lead Created', { id: newLeadId, leadType: leadType, name: body.name });
+    if (!isValidPersistentLeadId(newLeadId)) {
+      reservation.fail();
+      throw new Error('Lead persistence did not return a valid identifier');
+    }
 
-    return NextResponse.json({ success: true, id: newLeadId, leadType: leadType });
+    // Persistence defines creation success. Notifications are best-effort and
+    // cannot turn a committed lead into a failed or duplicate retry.
+    reservation.complete(newLeadId);
+    try {
+      await sendNotification('New Lead Created', { id: newLeadId, leadType, name: body.name });
+    } catch (notificationError) {
+      console.error('[leads notification]', notificationError?.message || 'Notification failed');
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        created: true,
+        duplicate: false,
+        id: newLeadId,
+        leadType,
+      },
+      { status: 201 },
+    );
   } catch (e) {
+    reservation?.fail?.();
     console.error('[leads POST]', e.message);
-    return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+    return NextResponse.json(
+      { success: false, created: false, error: 'Unable to save enquiry' },
+      { status: 500 },
+    );
   }
 }
 

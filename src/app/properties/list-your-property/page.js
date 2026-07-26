@@ -3,6 +3,7 @@ import { useState, Suspense, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { getAttributionPayload } from '@/lib/analytics/attribution';
+import { classifyLeadSubmission, DUPLICATE_LEAD_MESSAGE } from '@/lib/leads/submission-contract.mjs';
 
 function ListYourPropertyPageInner() {
   const router = useRouter();
@@ -63,8 +64,7 @@ function ListYourPropertyPageInner() {
         }),
       });
       const d = await res.json();
-      if (d.success) setStatus('success');
-      else setStatus('error');
+      setStatus(classifyLeadSubmission(d));
     } catch (err) {
       setStatus('error');
     }
@@ -214,6 +214,12 @@ function ListYourPropertyPageInner() {
               <textarea className="input" rows={3} placeholder="Tell us more about the property..." value={form.message} onChange={set('message')} />
             </div>
           </div>
+
+          {status === 'duplicate' && (
+            <div role="status" style={{ background: '#eff6ff', color: '#1d4ed8', padding: '12px 16px', borderRadius: '8px', fontSize: '13px', fontWeight: 600 }}>
+              {DUPLICATE_LEAD_MESSAGE}
+            </div>
+          )}
 
           {status === 'error' && (
             <div style={{ background: '#fef2f2', color: '#dc2626', padding: '12px 16px', borderRadius: '8px', fontSize: '13px', fontWeight: 600 }}>

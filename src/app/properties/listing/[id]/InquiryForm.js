@@ -2,6 +2,7 @@
 import { useState, Suspense, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { getAttributionPayload } from '@/lib/analytics/attribution';
+import { classifyLeadSubmission, DUPLICATE_LEAD_MESSAGE } from '@/lib/leads/submission-contract.mjs';
 
 function InquiryFormInner({ listing }) {
   const searchParams = useSearchParams();
@@ -49,8 +50,7 @@ function InquiryFormInner({ listing }) {
         }),
       });
       const d = await res.json();
-      if (d.success) setStatus('success');
-      else setStatus('error');
+      setStatus(classifyLeadSubmission(d));
     } catch {
       setStatus('error');
     }
@@ -104,6 +104,7 @@ function InquiryFormInner({ listing }) {
         <div>{label('Preferred Visit Time')}<input className="input bg-slate-50" placeholder="e.g. Tomorrow 10 AM" value={form.preferred_visit_time} onChange={set('preferred_visit_time')} /></div>
         <div>{label('Message / Questions')}<textarea className="input bg-slate-50" rows={2} value={form.message} onChange={set('message')} /></div>
 
+        {status === 'duplicate' && <div role="status" style={{ color: '#2563eb', fontSize: '13px', fontWeight: 600 }}>{DUPLICATE_LEAD_MESSAGE}</div>}
         {status === 'error' && <div style={{ color: '#dc2626', fontSize: '13px', fontWeight: 600 }}>Error submitting inquiry. Please try again.</div>}
         
         <button type="submit" disabled={status === 'loading'} className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: '8px' }}>

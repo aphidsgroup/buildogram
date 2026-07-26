@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { getAttributionPayload } from '@/lib/analytics/attribution';
+import { isCreatedLeadResponse } from '@/lib/leads/submission-contract.mjs';
 
 export default function AIToolLeadCapture({ toolName, inputData, outputData, onCancel, onSuccess }) {
   const [formData, setFormData] = useState({ name: '', phone: '', email: '' });
@@ -40,7 +41,7 @@ export default function AIToolLeadCapture({ toolName, inputData, outputData, onC
       });
 
       const json = await res.json().catch(() => ({}));
-      if (!res.ok || !json.success || !json.id) {
+      if (!res.ok || !isCreatedLeadResponse(json)) {
         throw new Error('Failed to submit request');
       }
 

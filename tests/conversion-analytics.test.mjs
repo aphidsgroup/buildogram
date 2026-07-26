@@ -35,8 +35,8 @@ describe('analytics.js source — PII key guard', () => {
     assert.match(src, /PII_KEYS\.has\(k\)/);
   });
 
-  test('generate_lead fires after server success only (guarded by comment)', () => {
-    assert.match(src, /only after server/i);
+  test('generate_lead is documented as newly persisted only', () => {
+    assert.match(src, /newly persisted lead/i);
   });
 });
 
@@ -95,11 +95,20 @@ describe('ContextualEnquiryForm — generate_lead only on server success', () =>
     src = await readFile(path.join(root, 'src/components/conversion/ContextualEnquiryForm.jsx'), 'utf8');
   });
 
-  test('trackGenerateLead is called inside res.ok check', () => {
-    // Find the res.ok block and verify trackGenerateLead is inside it
-    const resOkBlock = src.match(/if\s*\(res\.ok[^{]*\{([\s\S]*?)(?=\}\s*else\s*\{)/);
-    assert.ok(resOkBlock, 'Could not find res.ok block in ContextualEnquiryForm.jsx');
-    assert.match(resOkBlock[1], /trackGenerateLead/);
+  test('trackGenerateLead is guarded by the persisted-creation response contract', () => {
+    const createdBlock = src.match(
+      /if\s*\(res\.ok\s*&&\s*isCreatedLeadResponse\(json\)\)\s*\{([\s\S]*?)(?=\}\s*else if)/,
+    );
+    assert.ok(createdBlock, 'Could not find persisted-creation guard');
+    assert.match(createdBlock[1], /trackGenerateLead/);
+  });
+
+  test('duplicate response does not emit generate_lead', () => {
+    const duplicateBlock = src.match(
+      /else if\s*\(res\.ok\s*&&\s*isDuplicateLeadResponse\(json\)\)\s*\{([\s\S]*?)(?=\}\s*else)/,
+    );
+    assert.ok(duplicateBlock, 'Could not find duplicate-response branch');
+    assert.doesNotMatch(duplicateBlock[1], /trackGenerateLead/);
   });
 
   test('trackGenerateLead is NOT called in catch block', () => {
