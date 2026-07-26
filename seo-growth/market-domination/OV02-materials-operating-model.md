@@ -1,7 +1,14 @@
-# OV02 — Materials Operating Model: **OWNER DECISION CONFIRMED**
+# OV02 — Materials Operating Model: **SUPERSEDED IN PART — REVISION OPEN**
+
+> ⚠ **2026-07-26: row 1 (direct seller) was REVERSED by the owner.** Buildogram now states it does sell materials.
+> The reversal is recorded in **`OV02-R1-materials-model-revision.md`** and is **not yet operable** — eight
+> questions (R1.1–R1.8: which lines, who invoices, GST, delivery, warranty, dealer status, price publishing,
+> inventory) are unanswered. Until R1 closes, the keyword split below (213 / 71 / 136), the schema
+> prohibitions and the commercial-structure paragraph must be treated as **under revision, not current**.
+> No materials commercial page, `Product`/`Offer` schema or new seller copy may be produced in the meantime.
 
 **RESEARCH-ONLY — NO PUBLICATION OR IMPLEMENTATION AUTHORISED**
-**Decision date:** 2026-07-25 · **Status: RESOLVED** (15 operational sub-confirmations remain open)
+**Decision date:** 2026-07-25 · **Status: PARTIALLY SUPERSEDED 2026-07-26** (15 operational sub-confirmations remain open)
 
 ## Confirmed model
 
