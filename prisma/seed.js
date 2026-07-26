@@ -45,43 +45,41 @@ async function main() {
   // Seed Leads
   const l1 = await prisma.leads.create({
     data: {
-      leadType: 'construction',
+      lead_type: 'construction',
       name: 'Rajesh Kumar',
       phone: '9876543210',
-      location: 'OMR, Chennai',
-      pipelineStage: 'New',
-      formData: JSON.stringify({ plotSize: '2400', budget: '1.2 Cr', constructionType: 'Villa' }),
-      activityLog: {
-        create: [{ action: 'Lead Created', note: 'Contact Form Submission', user: 'System' }]
+      city: 'Chennai',
+      priority: 'Medium',
+      metadata: { plotSize: '2400', budget: '1.2 Cr', constructionType: 'Villa' },
+      lead_activities: {
+        create: [{ activity_type: 'note', title: 'Lead Created', description: 'Contact Form Submission' }]
       }
     }
   });
 
   const l2 = await prisma.leads.create({
     data: {
-      leadType: 'boq_audit',
+      lead_type: 'boq_audit',
       name: 'Sneha',
       phone: '9988776655',
-      location: 'Anna Nagar',
-      pipelineStage: 'Qualified',
+      city: 'Chennai',
       priority: 'High',
-      formData: JSON.stringify({ hasDrawings: true }),
-      activityLog: {
-        create: [{ action: 'Lead Created', note: 'Contact Form Submission', user: 'System' }]
+      metadata: { hasDrawings: true },
+      lead_activities: {
+        create: [{ activity_type: 'note', title: 'Lead Created', description: 'Contact Form Submission' }]
       }
     }
   });
 
   const l3 = await prisma.leads.create({
     data: {
-      leadType: 'material_quote',
+      lead_type: 'material_quote',
       name: 'Ramesh Builders',
       phone: '8877665544',
-      location: 'Porur',
-      pipelineStage: 'Contacted',
-      formData: JSON.stringify({ materialType: 'Cement', quantity: '500 bags' }),
-      activityLog: {
-        create: [{ action: 'Lead Created', note: 'Contact Form Submission', user: 'System' }]
+      city: 'Chennai',
+      metadata: { materialType: 'Cement', quantity: '500 bags' },
+      lead_activities: {
+        create: [{ activity_type: 'note', title: 'Lead Created', description: 'Contact Form Submission' }]
       }
     }
   });
