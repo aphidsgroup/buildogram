@@ -55,7 +55,7 @@ export default function PartnerRegisterPage() {
           <div style={{ width: '72px', height: '72px', background: 'rgba(34,197,94,0.1)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', fontSize: '32px' }}>✅</div>
           <h2 style={{ fontSize: '24px', marginBottom: '12px', color: 'var(--secondary)' }}>Application Submitted!</h2>
           <p style={{ color: 'var(--text-muted)', marginBottom: '32px', lineHeight: 1.7 }}>
-            Thank you for applying to join the Buildogram verified construction ecosystem. Our team will review your application and reach out within 2–3 business days.
+            Thank you for applying to join the Buildogram construction ecosystem. Our team will review your application and reach out within 2–3 business days.
           </p>
           <Link href="/" className="btn btn-primary" style={{ padding: '14px 32px' }}>Return to Buildogram</Link>
         </div>

@@ -29,7 +29,7 @@ const DELIVERABLES = [
 ];
 
 const FAQS = [
-  { question: 'Why use RMC instead of mixing concrete on-site (Site Mix)?', answer: 'Manual site mixing is inconsistent. Laborers often guess the sand/cement ratio and add too much water to make it easier to shovel, destroying the strength. RMC is mixed in a computerized batching plant, ensuring molecular-level accuracy and guaranteed strength.' },
+  { question: 'Why use RMC instead of mixing concrete on-site (Site Mix)?', answer: 'Manual site mixing is inconsistent. Laborers often guess the sand/cement ratio and add too much water to make it easier to shovel, destroying the strength. RMC is mixed in a computerized batching plant, ensuring molecular-level accuracy and consistent strength.' },
   { question: 'Is RMC more expensive than site mixing?', answer: 'RMC is slightly more expensive per cubic meter, but it eliminates cement wastage, sand theft, and saves massive amounts of labor time. For large slabs, RMC is actually cheaper and infinitely safer.' },
   { question: 'What is a Boom Pumper?', answer: 'If your site is in a narrow street where the massive RMC truck cannot reach the pouring area, we use a Boom Pump—a separate truck with a long robotic arm (pipe) that pumps the concrete over walls and directly onto your roof slab.' },
   { question: 'Why do contractors add water to the RMC truck?', answer: 'Thick, high-strength concrete is difficult to spread and level. Lazy contractors often ask the truck driver to add water to make it flow like soup. This is disastrous. Adding water dilutes the cement paste and severely reduces the final strength. Our engineers strictly forbid unauthorized water addition.' },
@@ -45,7 +45,7 @@ export default function Page() {
         
         <h1 style={{ fontSize: '36px', fontWeight: 800, color: '#0F172A', marginBottom: '24px' }}>Ready Mix Concrete (RMC) in Chennai</h1>
         <p style={{ fontSize: '18px', color: '#374151', lineHeight: 1.6, marginBottom: '32px' }}>
-          Guaranteed strength, delivered to your door. For large roof slabs and deep pile foundations, manual mixing is too slow and risky. We supply verified, computerized RMC from top-tier batching plants in Chennai, backed by rigorous on-site testing.
+          Consistent strength, delivered to your site. For large roof slabs and deep pile foundations, manual mixing is too slow and risky. We supply computerized RMC from established batching plants in Chennai, backed by rigorous on-site testing.
         </p>
 
         <AnswerBlock

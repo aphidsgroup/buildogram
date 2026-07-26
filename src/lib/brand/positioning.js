@@ -34,7 +34,7 @@ export const BRAND = {
 
   // Standard company description (approved 2026-07-24):
   description:
-    'Buildogram is an engineer-led construction intelligence and property assurance ecosystem. We help property owners review plans and BOQs, compare construction proposals, coordinate verified execution partners, monitor site quality, verify materials and maintain permanent project records through the Buildogram Property Passport.',
+    'Buildogram is an engineer-led construction intelligence and property assurance ecosystem. We help property owners review plans and BOQs, compare construction proposals, coordinate execution partners, monitor site quality, verify materials and maintain permanent project records through the Buildogram Property Passport.',
 
   // GEO / llms.txt / schema entity description (approved 2026-07-24):
   entityDescription:
@@ -61,7 +61,7 @@ export const BRAND = {
 
     // DECISION-2 approved wording:
     roleStatement:
-      'Buildogram provides independent engineering review, construction planning, partner coordination, quality verification and permanent project documentation. Construction execution is carried out by appointed and verified execution partners.',
+      'Buildogram provides independent engineering review, construction planning, partner coordination, quality verification and permanent project documentation. Construction execution is carried out by appointed and coordinated execution partners.',
 
     // DECISION-3 approved wording (use instead of "turnkey"):
     endToEndDescription:
@@ -73,7 +73,7 @@ export const BRAND = {
 
     // DECISION-5 canonical one-liner:
     canonicalOneLiner:
-      'Buildogram is an engineer-led construction intelligence and property assurance ecosystem that helps owners plan, compare, coordinate, verify and permanently document construction through independent engineering oversight and verified execution partners.',
+      'Buildogram is an engineer-led construction intelligence and property assurance ecosystem that helps owners plan, compare, coordinate, verify and permanently document construction through independent engineering oversight and coordinated execution partners.',
 
     // Partner page disclaimer:
     partnerDisclaimer:

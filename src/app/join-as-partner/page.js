@@ -17,7 +17,7 @@ const STEPS = [
   { title: '1. Apply Online', desc: 'Submit the application form with your business details, portfolio, and service areas.' }, 
   { title: '2. Verification', desc: 'Our Ops team verifies your identity, credentials, portfolio, and past project quality.' }, 
   { title: '3. Profile Creation', desc: 'Once approved, an SEO-optimized public profile is auto-drafted for you.' }, 
-  { title: '4. Join Partner OS', desc: 'Access the Partner OS to receive verified leads, manage projects, and showcase proof assets.' }, 
+  { title: '4. Join Partner OS', desc: 'Access the Partner OS to receive qualified leads, manage projects, and showcase proof assets.' }, 
   { title: '5. Grow Your Business', desc: 'Benefit from Buildogram’s marketing engine and lead marketplace.' }
 ];
 
@@ -45,7 +45,7 @@ export default function JoinAsPartnerPage() {
             </h1>
             <p style={{ fontSize: '18px', color: '#475569', lineHeight: 1.6 }}>
               Scale your business, access high-intent leads, and manage projects effortlessly through our Partner OS. 
-              We are looking for top-tier construction professionals, material suppliers, and vendors to join our trusted network.
+              We are looking for experienced construction professionals, material suppliers, and vendors to join our trusted network.
             </p>
           </div>
 

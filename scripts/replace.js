@@ -13,7 +13,7 @@ const replacements = [
   { regex: /10-year warranty/gi, replacement: '10-Year Partner-Backed Structural Warranty' },
   { regex: /zero cost overrun/gi, replacement: 'Itemized Variation Tracking & Cost Protection' },
   { regex: /guaranteed cost/gi, replacement: 'Transparent Cost Estimation' },
-  { regex: /Buildogram contractor/gi, replacement: 'Verified Execution Partner' },
+
   { regex: /one contract/gi, replacement: 'Coordinated Execution Contracts' },
   { regex: /turnkey execution/gi, replacement: 'End-to-End Coordination' },
   { regex: /complete responsibility/gi, replacement: 'End-to-End Coordination' },

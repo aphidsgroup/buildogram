@@ -133,7 +133,7 @@ export default async function PropertyListingDetailPage({ params }) {
               
               <div className="card mt-6" style={{ padding: '24px', background: 'white', border: '1px solid #e2e8f0' }}>
                 <h4 style={{ fontSize: '14px', marginBottom: '8px', color: '#0f172a' }}>Have a property of your own?</h4>
-                <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '16px' }}>List it with Buildogram for free and get verified leads.</p>
+                <p style={{ fontSize: '13px', color: '#64748b', marginBottom: '16px' }}>List it with Buildogram for free and get qualified leads.</p>
                 <Link href="/properties/list-your-property" className="btn btn-ghost" style={{ width: '100%', justifyContent: 'center', border: '1px solid #cbd5e1' }}>
                   List Your Property
                 </Link>

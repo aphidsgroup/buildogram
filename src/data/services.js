@@ -153,7 +153,7 @@ export const SERVICES = [
     faqs: [
       { question: "What exactly is included in an end-to-end construction package?", answer: "Our end-to-end coordination covers soil SBC testing, architectural and structural design, BOQ preparation, partner selection, material sourcing, stage-wise site supervision, quality testing, and formal handover \u2014 including execution partner warranty documentation and all lab test certificates. Construction execution is performed by the appointed partner contractor." },
       { question: "Are the per-sqft rates inclusive of all materials?", answer: "The per-sqft rates cover the structural work, brickwork, plastering, waterproofing, basic flooring, electrical wiring (excluding fixtures), and plumbing roughing. Premium items like designer tiles, modular kitchens, wardrobes, and false ceilings are additional and quoted separately." },
-      { question: "What is the difference between Buildogram\u2019s end-to-end coordination and a self-managed contractor build?", answer: "In a self-managed contractor build, you hire the contractor, source materials yourself, and have no independent verification of work quality. With Buildogram, an independent engineering team reviews your BOQ, coordinates verified execution partners, verifies materials and supervises each construction stage \u2014 all under a transparent, documented process." },
+      { question: "What is the difference between Buildogram\u2019s end-to-end coordination and a self-managed contractor build?", answer: "In a self-managed contractor build, you hire the contractor, source materials yourself, and have no independent verification of work quality. With Buildogram, an independent engineering team reviews your BOQ, coordinates execution partners, verifies materials and supervises each construction stage \u2014 all under a transparent, documented process." },
       { question: "Can I customise materials in a turnkey package?", answer: "Yes. The packages are a starting baseline. You can upgrade specific elements (e.g., use premium tiles but standard fittings) or downgrade others. All customisations are reflected in the final BOQ before contract signing." },
       { question: "How long does a turnkey G+1 construction take?", answer: "A standard G+1 turnkey project (2,000 sqft) takes 14\u201318 months from soil test to handover \u2014 including design (2 months), approval (1\u20132 months), and construction (10\u201312 months)." },
       { question: "Do you manage CMDA approval in a turnkey package?", answer: "Yes. Our empanelled architects handle the full CMDA/DTCP drawing submission and approval process. The approval timeline depends on the authority's processing speed \u2014 typically 3\u20136 months." },
@@ -339,7 +339,7 @@ export const SERVICES = [
   {
     slug: "contractor-quote-review-chennai",
     title: "Contractor Quote Review in Chennai | Engineer-Led Quote Analysis | Buildogram",
-    metaDescription: "Verified Execution Partner Quote Review in Chennai - engineer-led, AI-driven construction support in Chennai.",
+    metaDescription: "Contractor Quote Review in Chennai — engineer-led, AI-driven construction support in Chennai.",
     h1: "Contractor Quote Review in Chennai",
     heroSubtitle: '',
     heroTag: "",
