@@ -60,7 +60,7 @@ export default function JoinAsPartnerPage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '32px' }}>
               <div>
                 <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#FC6E20', marginBottom: '12px' }}>Lead Marketplace</h3>
-                <p style={{ color: '#475569' }}>Access verified, high-intent leads matched to your service areas and expertise.</p>
+                <p style={{ color: '#475569' }}>Receive relevant enquiries matched to your stated service areas and expertise.</p>
               </div>
               <div>
                 <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#FC6E20', marginBottom: '12px' }}>Project Proof & SEO</h3>

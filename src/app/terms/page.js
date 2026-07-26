@@ -103,7 +103,7 @@ The exact relationship in a specific project is governed strictly by the signed 
   {
     id: 'partner-verification',
     title: '8. Partner Verification',
-    content: 'Partner verification means that Buildogram reviewed selected credentials, documents, or project information according to its published verification methodology as of the stated verification date. Verification is not a guarantee of future performance, financial capacity, regulatory compliance, workmanship, availability, or project outcome.',
+    content: 'Partner directory profiles may include credentials, documents or project information supplied by the listed party. Property owners must independently confirm this information and the applicable contract terms before appointment. A directory listing is not a guarantee of future performance, financial capacity, regulatory compliance, workmanship, availability or project outcome.',
   },
   {
     id: 'client-responsibilities',

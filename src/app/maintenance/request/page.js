@@ -100,7 +100,7 @@ function MaintenanceRequestFormInner() {
           Request Maintenance
         </h1>
         <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '500px', margin: '0 auto' }}>
-          Get professional, verified vendors to fix issues at your property. Records will be saved to your Property Passport.
+          Request maintenance-provider options for your property. Service records can be added to your Property Passport.
         </p>
       </div>
 

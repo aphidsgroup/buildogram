@@ -2,7 +2,7 @@ import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export const metadata = generateSEOMetadata({
   title: "Network | Buildogram",
-  description: "Source verified network materials directly through Buildogram, the AI-driven, engineer-led construction and property ecosystem. Ensure quality and transparent pricing.",
+  description: "Explore construction material options and request current specifications and quotations through Buildogram.",
   path: "/materials/network"
 });
 

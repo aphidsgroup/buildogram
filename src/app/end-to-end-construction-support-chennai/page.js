@@ -11,7 +11,7 @@ export const metadata = generateSEOMetadata({
 });
 
 const faqSchema = generateFAQSchema([
-  { question: 'What exactly is included in end-to-end construction support?', answer: 'Everything from the first soil test through to the final key handover: pre-construction planning, BOQ review, contractor selection and vetting, site supervision throughout construction, material quality checks, and permanent project documentation (Property Passport). You deal with one point of contact — Buildogram coordinates everything else.' },
+  { question: 'What exactly is included in end-to-end construction support?', answer: 'The agreed scope may include pre-construction planning, BOQ review, contractor comparison, site supervision, material documentation checks and permanent project documentation. The signed proposal defines the included services and responsibilities.' },
   { question: 'How is Buildogram different from a construction contractor?', answer: 'Buildogram is an engineering review and coordination service — not the executing contractor. We provide technical oversight, independent quality checks, and owner-side representation. The actual construction is done by partner contractors. This means you get independent accountability that a contractor cannot provide for their own work.' },
   { question: 'Do you take responsibility for construction delays?', answer: 'Buildogram manages the milestone schedule and flags delays with documented evidence. Our contracts with partner contractors include milestone-linked payment clauses. While we cannot guarantee dates beyond our control (monsoon, material supply), our supervision model ensures delays are caught early and documented.' },
   { question: 'What happens if there is a cost overrun?', answer: 'Our itemised, capped BOQ model means variations must be documented and approved by you before extra work proceeds. We track actual vs. budgeted costs at every milestone and give you a running cost report. Unilateral contractor overruns without documented change orders are not accepted.' },
@@ -22,7 +22,7 @@ const faqSchema = generateFAQSchema([
 
 const serviceSchema = generateServiceSchema({
   name: 'End-to-End Construction Support Chennai',
-  description: 'Complete construction support from soil test to handover — BOQ review, contractor vetting, site supervision, material sourcing and Property Passport documentation.',
+  description: 'Construction support from planning to handover, including BOQ review, contractor comparison, site supervision, material sourcing support and Property Passport documentation.',
   url: '/end-to-end-construction-support-chennai',
   category: 'Construction Management',
 });
@@ -30,15 +30,15 @@ const serviceSchema = generateServiceSchema({
 const phases = [
   { num: '01', title: 'Pre-Construction', desc: 'Soil SBC test coordination, CMDA/DTCP approval guidance, architectural design brief, site measurement.' },
   { num: '02', title: 'BOQ & Budgeting', desc: 'Itemised Bill of Quantities with per-unit rates benchmarked against current Chennai market prices.' },
-  { num: '03', title: 'Contractor Vetting', desc: 'Background checks, past project site visits, financial capacity assessment, reference calls.' },
-  { num: '04', title: 'Construction Execution', desc: 'Milestone-based payment schedule tied to verified progress. No advance payments without sign-off.' },
+  { num: '03', title: 'Contractor Comparison', desc: 'Compare supplied credentials, relevant project history, references, capacity and proposed contract terms.' },
+  { num: '04', title: 'Construction Execution', desc: 'Use a milestone-based payment schedule tied to documented progress and project sign-off.' },
   { num: '05', title: 'Site Supervision', desc: 'Daily photo reports, material delivery checks, concrete cube tests, rebar inspection before casting.' },
   { num: '06', title: 'Material Sourcing', desc: 'Cement, TMT steel, M-sand and RMC procured directly from suppliers at benchmarked rates.' },
   { num: '07', title: 'Handover & Property Passport', desc: 'Snag list inspection, as-built drawings, test certificates, warranties — bound as your permanent Property Passport.' },
 ];
 
 const faqs = [
-  { q: 'What exactly is included in end-to-end construction support?', a: 'Everything from the first soil test through to the final key handover: pre-construction planning, BOQ review, contractor selection and vetting, site supervision throughout construction, material quality checks, and permanent project documentation (Property Passport). You deal with one point of contact — Buildogram coordinates everything else.' },
+  { q: 'What exactly is included in end-to-end construction support?', a: 'The agreed scope may include pre-construction planning, BOQ review, contractor comparison, site supervision, material documentation checks and permanent project documentation. The signed proposal defines the included services and responsibilities.' },
   { q: 'How is Buildogram different from a construction contractor?', a: 'Buildogram is an engineering review and coordination service — not the executing contractor. We provide technical oversight, independent quality checks, and owner-side representation. The actual construction is done by partner contractors. This means you get independent accountability that a contractor cannot provide for their own work.' },
   { q: 'Do you take responsibility for construction delays?', a: 'Buildogram manages the milestone schedule and flags delays with documented evidence. Our contracts with partner contractors include milestone-linked payment clauses. While we cannot guarantee dates beyond our control (monsoon, material supply), our supervision model ensures delays are caught early and documented.' },
   { q: 'What happens if there is a cost overrun?', a: 'Our itemised, capped BOQ model means variations must be documented and approved by you before extra work proceeds. We track actual vs. budgeted costs at every milestone and give you a running cost report. Unilateral contractor overruns without documented change orders are not accepted.' },
@@ -155,7 +155,7 @@ export default function EndToEndConstructionPage() {
             <li><strong>OMR/ECR soil conditions</strong> — filled land near the coast may need pile foundations instead of isolated footings.</li>
             <li><strong>Coastal corrosion protection</strong> — within 5 km of the coast, structural steel needs hot-dip galvanising or epoxy coating; RCC needs minimum 40mm cover with corrosion-inhibiting admixtures.</li>
             <li><strong>Monsoon planning</strong> — Chennai&apos;s northeast monsoon (Oct–Dec) impacts concrete curing. Our schedule accounts for weather windows.</li>
-            <li><strong>Material sourcing</strong> — verified cement depots, TMT steel stockists, and M-sand quarries with test certificates in Chennai and surrounding districts.</li>
+            <li><strong>Material sourcing</strong> — supplier options for cement, TMT steel and M-sand, with applicable documentation requested before ordering.</li>
           </ul>
         </section>
 

@@ -58,7 +58,7 @@ export default function PropertiesHubPage() {
                 <span style={{ color: '#2563eb', fontWeight: 800, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '12px', display: 'block' }}>Buy / Sell</span>
                 <h3 style={{ fontSize: '32px', color: '#0F172A', marginBottom: '16px', fontFamily: '"Space Grotesk", sans-serif' }}>RealPropRealty</h3>
                 <p style={{ color: '#475569', fontSize: '16px', lineHeight: 1.7, marginBottom: '40px', flexGrow: 1 }}>
-                  The premium real estate buying and selling platform. Explore verified plots, luxury villas, and commercial spaces with immersive 360° digital walkthroughs before your first site visit.
+                  Explore plots, villas and commercial-space listings with available 360° digital walkthroughs before your first site visit.
                 </p>
                 <a href="https://www.realproprealty.com" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ width: '100%', padding: '16px', fontSize: '16px', background: '#2563eb', display: 'flex', justifyContent: 'center', gap: '8px' }}>
                   Visit RealPropRealty <span>↗</span>
@@ -76,7 +76,7 @@ export default function PropertiesHubPage() {
                 <span style={{ color: '#ea580c', fontWeight: 800, fontSize: '13px', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '12px', display: 'block' }}>Rent / Lease</span>
                 <h3 style={{ fontSize: '32px', color: '#0F172A', marginBottom: '16px', fontFamily: '"Space Grotesk", sans-serif' }}>ToLetBoard Chennai</h3>
                 <p style={{ color: '#475569', fontSize: '16px', lineHeight: 1.7, marginBottom: '40px', flexGrow: 1 }}>
-                  Verified rental and lease discovery across Chennai — residential homes, commercial spaces, and temporary accommodation with direct owner connections and 360° property viewing.
+                  Rental and lease discovery across Chennai, including residential homes and commercial spaces with direct-owner connections and available 360° viewing.
                 </p>
                 <a href="https://toletboardchennai.in" target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ width: '100%', padding: '16px', fontSize: '16px', background: '#ea580c', display: 'flex', justifyContent: 'center', gap: '8px' }}>
                   Visit ToLetBoardChennai <span>↗</span>

@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
   title: 'RMC (Ready Mix Concrete) in Chennai | Concrete Suppliers',
-  description: 'RMC (Ready Mix Concrete) suppliers in Chennai. High-grade M20 to M50 concrete delivered via transit mixers with verified slump and compressive strength.',
+  description: 'Explore RMC supplier options in Chennai for M20 to M50 concrete. Define slump and compressive-strength testing requirements before ordering.',
   path: '/materials/rmc',
 });
 

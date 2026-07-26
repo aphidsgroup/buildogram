@@ -18,7 +18,7 @@ export default function WarrantyAndMaintenance() {
   const loanSteps = [
     { num: '01', title: 'Plan & BOQ Sign-Off', desc: 'Our team generates a capped Bill of Quantities (BOQ) conforming to GCC/CMDA building norms, which is preferred by banks for technical clearance.' },
     { num: '02', title: 'Liaison Submission', desc: 'We compile all Patta, Chitta, structural engineering blueprints, and plan permission files. We coordinate directly with the bank’s legal and technical inspectors.' },
-    { num: '03', title: 'Milestone Disbursal', desc: 'Rather than lump-sum advances, funds are directly disbursed to the secure escrow account in alignment with our verified structural casting milestones.' }
+    { num: '03', title: 'Milestone Disbursal', desc: 'Rather than lump-sum advances, payments can be aligned with documented structural casting milestones under the signed project agreement.' }
   ];
 
   const amcPackages = {
@@ -205,43 +205,43 @@ export default function WarrantyAndMaintenance() {
           </div>
         </section>
 
-        {/* SECTION 2: THE 10-YEAR STRUCTURAL GUARANTEE */}
+        {/* SECTION 2: PROJECT-SPECIFIC WARRANTY DOCUMENTATION */}
         <section className="section">
           <div className="grid-2" style={{ alignItems: 'center', gap: '48px' }}>
             <div className="card" style={{ padding: '0', overflow: 'hidden', border: 'none', boxShadow: 'var(--shadow-premium)' }}>
-              {/* Mock Structural Warranty Certificate */}
+              {/* Illustrative warranty-document checklist */}
               <div style={{ background: 'var(--gradient-dark)', color: 'white', padding: '40px', display: 'flex', flexDirection: 'column', gap: '20px', minHeight: '380px', position: 'relative' }}>
                 <div style={{ position: 'absolute', right: '30px', top: '30px', border: '2px solid rgba(255,255,255,0.2)', width: '70px', height: '70px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '32px', opacity: 0.3 }}>
                   🛡️
                 </div>
                 <div style={{ borderBottom: '1px solid rgba(255,255,255,0.15)', paddingBottom: '16px' }}>
-                  <span className="badge badge-orange" style={{ marginBottom: '10px' }}>OFFICIAL CERTIFICATE</span>
-                  <h3 style={{ fontSize: '22px', color: 'white', fontFamily: 'Outfit' }}>Buildogram Legal Structural Shield</h3>
-                  <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)', marginTop: '4px' }}>Registered IS-Code Compliant Guarantee</p>
+                  <span className="badge badge-orange" style={{ marginBottom: '10px' }}>DOCUMENT CHECKLIST</span>
+                  <h3 style={{ fontSize: '22px', color: 'white', fontFamily: 'Outfit' }}>Project Warranty Documentation</h3>
+                  <p style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)', marginTop: '4px' }}>Terms depend on the signed execution agreement</p>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '13px', color: 'rgba(255,255,255,0.8)' }}>
-                  <p>✓ **RCC Frame Integration**: Concrete casting load limits conforming strictly to IS 456 standards.</p>
-                  <p>✓ **Rebar Steel Guarantee**: TMT structural reinforcement sizing conforming strictly to IS 1786 specifications.</p>
-                  <p>✓ **Foundation Settlement Defenses**: Capped pile footings/rafts verified via Soil SBC laboratory testing.</p>
+                  <p>✓ **Covered elements**: Identify the structural or workmanship items covered by the appointed execution partner.</p>
+                  <p>✓ **Duration and exclusions**: Record the applicable period, maintenance duties and excluded conditions.</p>
+                  <p>✓ **Claim process**: Record notice requirements, inspection steps, responsible party and remedy terms.</p>
                 </div>
                 <div style={{ borderTop: '1px dashed rgba(255,255,255,0.2)', paddingTop: '20px', marginTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div>
-                    <span style={{ fontSize: '10px', display: 'block', color: 'rgba(255,255,255,0.5)' }}>DESIGNED & STAMPED BY</span>
-                    <strong style={{ fontSize: '12px', color: 'white' }}>Dr. S. K. Vignesh, PhD (IIT-M)</strong>
+                    <span style={{ fontSize: '10px', display: 'block', color: 'rgba(255,255,255,0.5)' }}>ISSUED BY</span>
+                    <strong style={{ fontSize: '12px', color: 'white' }}>The party named in the signed warranty</strong>
                   </div>
-                  <span className="badge badge-green" style={{ fontSize: '11px' }}>10-Yr Legally Capped</span>
+                  <span className="badge badge-green" style={{ fontSize: '11px' }}>Project Specific</span>
                 </div>
               </div>
             </div>
 
             <div>
-              <div className="tag mb-4">Certified Quality</div>
-              <h2 style={{ fontSize: '32px', color: 'var(--primary-dark)', marginBottom: '16px' }}>Why We Issue a Stamp-Bound 10-Year Structural Guarantee</h2>
+              <div className="tag mb-4">Warranty Records</div>
+              <h2 style={{ fontSize: '32px', color: 'var(--primary-dark)', marginBottom: '16px' }}>Record Warranty Terms Before Work Begins</h2>
               <p className="text-muted mb-4" style={{ fontSize: '14px', lineHeight: '1.7' }}>
-                Unorganized contractors rarely take structural accountability. If columns buckle or slabs crack, they vanish. Buildogram provides a legally binding, stamp-bound warranty card signed by our PhD structural head.
+                Structural and workmanship obligations must be stated in the signed agreement or warranty issued by the responsible execution partner. The document should identify covered elements, exclusions, duration and the claim process.
               </p>
               <p className="text-muted mb-6" style={{ fontSize: '14px', lineHeight: '1.7' }}>
-                Because we mandate concrete compression cube checks in third-party labs, check steel tie spacing, and ensure 50mm salt cover-blocks for coastal zones (ECR/OMR), we have absolute confidence in our structural integrity.
+                Buildogram can coordinate and store project warranty records but does not independently underwrite a contractor or manufacturer warranty unless a separate signed agreement expressly says so.
               </p>
               <div className="flex gap-4">
                 <Link href="/projects" className="btn btn-primary">See Completed Projects</Link>

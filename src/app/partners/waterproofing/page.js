@@ -4,7 +4,7 @@ import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
   title: 'Waterproofing Contractors in Chennai | Terrace & Bathroom Waterproofing | Buildogram',
-  description: 'Find verified waterproofing contractors in Chennai. Brand-authorized applicators for Dr. Fixit, Fosroc, Sika — terrace, bathroom, basement waterproofing with 5-10 year guarantees.',
+  description: 'Explore waterproofing contractor options in Chennai for terraces, bathrooms and basements. Request system specifications, applicator credentials and written warranty terms.',
   path: '/partners/waterproofing',
 });
 
@@ -18,7 +18,7 @@ const SYSTEMS = [
 const CRITERIA = [
   { icon: '🏅', title: 'Brand Authorized', desc: 'Must hold current authorization certificate from the waterproofing brand (Dr. Fixit, Fosroc, Sika, etc.). Unauthorized applicators void product warranty.' },
   { icon: '🛡️', title: 'Applicator Certification', desc: 'Field applicators trained and certified by the product manufacturer. Proper product mixing ratios, substrate preparation, and curing protocols followed.' },
-  { icon: '📋', title: '5-Year Site Guarantee', desc: 'Provides a written site workmanship guarantee (separate from product warranty). Waterproofing failures within 5 years repaired at no cost.' },
+  { icon: '📋', title: 'Written Warranty Terms', desc: 'Request project-specific workmanship and product warranty terms before appointment.' },
   { icon: '📸', title: 'Photo Documentation', desc: 'Before, during, and after photos submitted for every project. Substrate condition, coat application, and coverage thickness documented.' },
 ];
 
@@ -40,8 +40,8 @@ export default function WaterproofingPage() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255,163,100,0.18), rgba(252,110,32,0.14))', border: '1px solid rgba(252,110,32,0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Waterproofing Partners</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Verified Waterproofing Contractors in Chennai</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>Brand-authorized applicators for Dr. Fixit, Fosroc, and Sika — with written site guarantees, flood testing, and proper substrate preparation.</p>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Waterproofing Contractor Options in Chennai</h1>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>Compare applicator experience, proposed systems, flood-testing scope and written project-specific warranty terms.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/contact?type=waterproofing-quote" className="btn btn-primary btn-lg">Get Waterproofing Quote</Link>
             <Link href="/join-as-partner" className="btn btn-lg" style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>Join as Partner</Link>
@@ -105,13 +105,13 @@ export default function WaterproofingPage() {
           <div className="card" style={{ textAlign: 'center', padding: '36px' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>💧</div>
             <h3 style={{ fontSize: '20px', color: 'var(--secondary)', marginBottom: '8px' }}>Get Waterproofing Quote</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>Terrace, bathroom, basement — get a site visit and quote from a brand-authorized applicator.</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>Terrace, bathroom or basement — request a site visit and project-specific quotation.</p>
             <Link href="/contact?type=waterproofing-quote" className="btn btn-primary">Get Quote</Link>
           </div>
           <div className="card" style={{ background: 'var(--secondary)', textAlign: 'center', padding: '36px' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>🏅</div>
             <h3 style={{ fontSize: '20px', color: 'white', marginBottom: '8px' }}>Waterproofing Contractor?</h3>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>Join our verified network and get leads from clients with real waterproofing needs.</p>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>Apply to join the directory and receive enquiries from clients with waterproofing needs.</p>
             <Link href="/join-as-partner" className="btn btn-primary">Apply to Join</Link>
           </div>
         </div>

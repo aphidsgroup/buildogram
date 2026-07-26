@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
   title: 'PEB Building Contractors in Chennai | Pre-Engineered Buildings | Buildogram',
-  description: 'Source and supervise Pre-Engineered Building (PEB) contractors in Chennai. Factories, warehouses, cold storage — BOQ, contractor vetting and quality control.',
+  description: 'Compare and supervise Pre-Engineered Building (PEB) contractor options in Chennai for factories, warehouses and cold storage projects.',
   path: '/peb-building-contractors-chennai',
 });
 
@@ -71,7 +71,7 @@ export default function PEBBuildingPage() {
       <section style={{ background: 'var(--primary)', padding: '20px 0' }}>
         <div className="container">
           <div style={{ display: 'flex', gap: '48px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            {[['90m', 'Max Clear Span'], ['50–70%', 'Faster Than RCC'], ['₹1,800+', 'Per Sqft Starting Cost'], ['8–12 Weeks', 'Design to Structure Complete']].map(([val, label]) => (
+            {[['Project-led', 'Clear Span'], ['Compared', 'Structural Options'], ['Indicative', 'Cost Planning'], ['Scheduled', 'Design to Structure']].map(([val, label]) => (
               <div key={label} style={{ textAlign: 'center' }}>
                 <div style={{ color: 'white', fontSize: '22px', fontWeight: 700 }}>{val}</div>
                 <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: '13px' }}>{label}</div>

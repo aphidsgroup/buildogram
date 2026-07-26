@@ -69,7 +69,7 @@ export default function PartnerDirectory({ partners }) {
                 {p.verification_status === 'verified' && (
                   <div style={{ background: '#E8F5E9', color: '#2E7D32', padding: '4px 8px', borderRadius: '6px', fontSize: '12px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    Verified
+                    Profile reviewed
                   </div>
                 )}
               </div>

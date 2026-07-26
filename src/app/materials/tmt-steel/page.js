@@ -4,7 +4,7 @@ import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export const metadata = generateSEOMetadata({
   title: 'TMT Steel Bars for Construction in Chennai | Fe500D & Fe550D',
-  description: 'Source primary TMT steel brands like Tata Tiscon, JSW, and VSP in Chennai. Engineer-verified Fe500D and Fe550D grades with MTC (Material Test Certificates).',
+  description: 'Explore primary TMT steel brand options in Chennai. Request Fe500D or Fe550D specifications and applicable Material Test Certificates before ordering.',
   path: '/materials/tmt-steel',
 });
 
@@ -13,7 +13,7 @@ export default function TmtSteelPage() {
     <PublicServicePage
       heroEyebrow="Material Sourcing Hub"
       heroTitle="TMT Steel Supply in Chennai"
-      heroSub="Secure primary-brand Fe500D and Fe550D TMT steel bars directly from authorized distributors. Every delivery includes an MTC (Material Test Certificate) and physical bendability checks by our engineers."
+      heroSub="Explore primary-brand Fe500D and Fe550D TMT steel options. Request supplier documentation, an MTC where applicable, and project-specific inspection requirements before ordering."
       heroPrimaryCta={{ label: 'Get a Steel Quote', href: '/contact?type=materials' }}
       heroSecondaryCta={{ label: 'View All Materials', href: '/materials' }}
       
@@ -53,7 +53,7 @@ export default function TmtSteelPage() {
       faqs={[
         { q: "What is the difference between Primary and Secondary steel?", a: "Primary steel (like Tata or JSW) is made directly from iron ore, ensuring perfect chemical composition and strength. Secondary steel is melted down from scrap, leading to impurities and lower ductility." },
         { q: "What does Fe500D mean?", a: "Fe stands for Iron. 500 is the yield strength in N/mm². 'D' stands for ductility, meaning it can bend under extreme stress (like an earthquake) without snapping." },
-        { q: "How do you prevent under-weighing?", a: "We insist on computerized weighbridge slips from verified third-party scales and randomly sample bundle weights on-site to ensure the sectional weight matches ISI standards." },
+        { q: "How can under-weighing be checked?", a: "Request computerized weighbridge slips and define project-specific bundle-weight sampling before acceptance." },
         { q: "Is surface rust on TMT bars bad?", a: "A light yellowish/brown surface rust is normal and actually helps bond with concrete. However, if the rust is scaling off or pitting the metal, the bar has degraded and should be rejected." }
       ]}
     />

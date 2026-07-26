@@ -65,7 +65,7 @@ export const BRAND = {
 
     // DECISION-3 approved wording (use instead of "turnkey"):
     endToEndDescription:
-      'End-to-end construction coordinated by Buildogram and executed by verified construction partners.',
+      'End-to-end construction coordinated by Buildogram and executed by appointed construction partners under project-specific agreements.',
 
     // DECISION-4 approved wording:
     costDisclaimer:
@@ -77,7 +77,7 @@ export const BRAND = {
 
     // Partner page disclaimer:
     partnerDisclaimer:
-      'Partner verification confirms that selected credentials and project information were reviewed using Buildogram\u2019s verification process. It is not a guarantee of future performance. The execution agreement, warranty obligations, pricing and construction responsibilities remain governed by the signed contract between the property owner and the appointed execution partner.',
+      'Directory profiles contain information supplied for review. Property owners must independently confirm credentials, scope, pricing, warranty obligations and contract terms before appointing a partner.',
 
     // BOQ / cost disclaimer:
     boqDisclaimer:

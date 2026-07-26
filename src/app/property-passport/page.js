@@ -82,7 +82,7 @@ export default function Page() {
           },
           {
             title: "Checklists & Handover",
-            desc: "Every construction stage checklist is tracked and verified before final handover."
+            desc: "Construction-stage checklists and available close-out records are tracked before final handover."
           }
         ]}
         proofData={{

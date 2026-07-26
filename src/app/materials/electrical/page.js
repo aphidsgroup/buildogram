@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 export const metadata = generateSEOMetadata({
   title: 'Electrical Materials & Wires in Chennai | FRLS Cables',
-  description: 'Branded electrical wires, conduits, and switches in Chennai. Ensure fire safety with verified FRLS (Flame Retardant Low Smoke) cables and branded switchgear.',
+  description: 'Explore branded electrical wires, conduits and switches in Chennai. Request FRLS cable specifications and product documentation before ordering.',
   path: '/materials/electrical',
 });
 
@@ -50,7 +50,7 @@ export default function Page() {
 
         <AnswerBlock
           question="The Fake Wire Market in Chennai"
-          answer="The electrical market is flooded with counterfeit wires. They look identical to famous brands on the outside, but inside, they use cheap, impure copper mixed with aluminum. These wires heat up quickly, wasting electricity and eventually causing fires. Buildogram sources materials only directly from authorized brand distributors to guarantee 100% pure electrolytic copper."
+          answer="Counterfeit or incorrectly specified wires can create safety and efficiency risks. Request current supplier documentation, product specifications and test certificates before ordering, and have the selected cable checked against the project design."
         />
         
         <ProcessSteps title="Electrical Procurement Strategy" steps={STEPS} />

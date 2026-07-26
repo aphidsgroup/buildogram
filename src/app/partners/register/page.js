@@ -9,7 +9,7 @@ const CATEGORIES = [
 ];
 
 const BENEFITS = [
-  { icon: '🛡️', title: 'Verified Profile', desc: 'Build trust with property owners through a reviewed, credible platform presence.' },
+  { icon: '🛡️', title: 'Reviewed Profile', desc: 'Present supplied credentials and project information for property-owner review.' },
   { icon: '🏗️', title: 'Project Showcase', desc: 'Showcase completed work, site photos, project proofs, and client testimonials.' },
   { icon: '📲', title: 'Reel Collaboration', desc: 'Collaborate on social media reels and project showcase content through Buildogram channels.' },
   { icon: '🎯', title: 'Relevant Project Opportunities', desc: 'Receive enquiries matched to your specialisation — not generic cold leads.' },
@@ -73,7 +73,7 @@ export default function PartnerRegisterPage() {
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>For Construction Professionals</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>
-            Join Buildogram&apos;s Verified Construction Ecosystem
+            Apply to the Buildogram Construction Partner Directory
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7 }}>
             Create a trusted presence, showcase your projects, collaborate on construction opportunities, and become part of an engineer-led platform built for owners, professionals, and material networks.
@@ -87,7 +87,7 @@ export default function PartnerRegisterPage() {
           {/* Form */}
           <div className="card" style={{ padding: '40px' }}>
             <h2 style={{ fontSize: '22px', marginBottom: '8px', color: 'var(--secondary)' }}>Register as a Partner</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '28px' }}>Our team reviews all applications before creating your verified profile.</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '28px' }}>Our team reviews applications before publishing a directory profile. Applicants must keep supplied information current.</p>
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
               {error && (
@@ -172,7 +172,7 @@ export default function PartnerRegisterPage() {
               <div style={{ fontSize: '22px', marginBottom: '8px' }}>🎓</div>
               <h4 style={{ color: 'white', fontSize: '18px', marginBottom: '8px' }}>Engineer-led platform</h4>
               <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', lineHeight: 1.65 }}>
-                Buildogram helps serious construction professionals build visibility, trust, and project opportunities — not just generate leads. Verified profiles, project showcases, and ecosystem collaboration make a lasting difference.
+                Buildogram helps construction professionals present their services, project information and availability to property owners through a reviewed directory profile.
               </p>
             </div>
           </div>

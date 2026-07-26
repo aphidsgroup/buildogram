@@ -4,7 +4,7 @@ import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
   title: 'Solar Panel Installers in Chennai | MNRE Approved Solar Partners | Buildogram',
-  description: 'Find verified solar panel installers in Chennai. MNRE-approved, CET-certified, with on-grid and off-grid installation expertise for residential and commercial projects.',
+  description: 'Explore solar panel installer options in Chennai. Request current credentials and on-grid or off-grid installation experience before appointment.',
   path: '/partners/solar',
 });
 
@@ -37,7 +37,7 @@ export default function SolarPage() {
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Solar Partners</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Solar Panel Installers in Chennai</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>MNRE-empanelled solar installers with TANGEDCO grid connection experience — maximize PM Surya Ghar subsidies with verified experts.</p>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>Explore installers with relevant grid-connection experience and independently confirm current MNRE, TANGEDCO and subsidy eligibility requirements.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/contact?type=solar-quote" className="btn btn-primary btn-lg">Get Solar Quote</Link>
             <Link href="/join-as-partner" className="btn btn-lg" style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>Join as Solar Partner</Link>

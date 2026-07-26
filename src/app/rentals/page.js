@@ -7,8 +7,8 @@ import sql from '@/lib/db';
 export const dynamic = 'force-dynamic';
 
 export const metadata = generateSEOMetadata({
-title: 'Verified Rentals in Chennai | Buildogram Property Passport™',
-  description: 'Rent premium, verified homes in Chennai. Zero broker fees. Every property comes with a verified Property Passport™ covering structural quality, plumbing, and electrical specs.',
+title: 'Property Passport Rentals in Chennai | Buildogram',
+  description: 'Explore rental homes in Chennai with available Property Passport records, direct-owner connections and property information for independent review.',
   path: '/rentals',
 });
 
@@ -34,10 +34,10 @@ export default async function RentalsPage() {
         <div style={{ position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 80% -20%, rgba(252, 110, 32, 0.15) 0%, transparent 60%)' }} />
         <div className="container" style={{ position: 'relative', textAlign: 'center', maxWidth: '720px' }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '24px' }}>
-            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Zero Brokerage · 100% Verified</span>
+            <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' }}>Direct Listings · Property Records</span>
           </div>
           <h1 style={{ fontSize: 'clamp(32px, 5vw, 48px)', lineHeight: 1.1, marginBottom: '20px' }}>
-            Rent a Home that comes with a <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>Verified Passport.</span>
+            Rent a Home with an available <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>Property Passport.</span>
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '18px', lineHeight: 1.6, marginBottom: '0' }}>
             No hidden plumbing issues. No electrical surprises. Every rental listed here was either built or audited by Buildogram engineers.
@@ -50,7 +50,7 @@ export default async function RentalsPage() {
         <div className="container" style={{ display: 'flex', justifyContent: 'center', gap: '48px', flexWrap: 'wrap' }}>
           {[
             { icon: '📸', text: '360° Virtual Tours' },
-            { icon: '🛂', text: 'Verified Property Passport' },
+            { icon: '🛂', text: 'Property Passport Records' },
             { icon: '🚫', text: 'Zero Brokerage Fees' },
             { icon: '🔧', text: 'Buildogram Maintenance' },
           ].map(f => (
@@ -69,7 +69,7 @@ export default async function RentalsPage() {
             <div style={{ textAlign: 'center', padding: '60px', background: 'white', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
               <div style={{ fontSize: '48px', marginBottom: '16px' }}>🏘️</div>
               <h2 style={{ fontSize: '20px', marginBottom: '8px' }}>No Rentals Available Right Now</h2>
-              <p style={{ color: '#64748b' }}>All our verified properties are currently occupied. Check back soon!</p>
+              <p style={{ color: '#64748b' }}>No rental listings are currently available. Check back soon.</p>
             </div>
           ) : (
             <div className="grid-3" style={{ gap: '24px' }}>
@@ -94,7 +94,7 @@ export default async function RentalsPage() {
                         <div style={{ color: 'white', fontSize: '24px', fontWeight: 800, fontFamily: 'Space Grotesk, sans-serif' }}>{fmt(p.listing_rent_monthly)}</div>
                       </div>
                       <div style={{ background: 'var(--gradient-orange)', color: '#292929', padding: '4px 10px', borderRadius: '6px', fontSize: '11px', fontWeight: 800 }}>
-                        {p.passport_completeness}% VERIFIED
+                        {p.passport_completeness}% DOCUMENTED
                       </div>
                     </div>
                   </div>
@@ -127,7 +127,7 @@ export default async function RentalsPage() {
         </div>
       </section>
     </>
-    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Verified Rentals in Chennai","path":"/rentals"}]} />
+    <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Property Passport Rentals in Chennai","path":"/rentals"}]} />
     </>
   );
 }

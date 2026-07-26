@@ -3,20 +3,20 @@ import Link from 'next/link';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
-  title: 'Material Suppliers in Chennai | Verified Construction Suppliers | Buildogram',
-  description: 'Connect with verified cement, TMT steel, M-sand, AAC block and RMC suppliers in Chennai. All suppliers MTC-verified, weighbridge-checked with transparent pricing.',
+  title: 'Material Suppliers in Chennai | Supplier Directory | Buildogram',
+  description: 'Explore cement, TMT steel, M-sand, AAC block and RMC supplier options in Chennai. Request current quotations and supporting documentation.',
   path: '/partners/suppliers',
 });
 
 const VERIFICATION = [
-  { icon: '📄', title: 'GST & Trade License', desc: 'Valid GST registration and trade license verified for all listed suppliers. Invoicing compliance mandatory.' },
+  { icon: '📄', title: 'GST & Trade Licence', desc: 'Request current GST registration, trade-licence and invoicing details for independent review.' },
   { icon: '🏭', title: 'Manufacturer Authorization', desc: 'For brand-specific products (e.g., UltraTech cement, Tata Tiscon steel), supplier must hold a valid dealer authorization letter from the manufacturer.' },
   { icon: '⚖️', title: 'Weighbridge Slip History', desc: 'Delivery weight verification using NABL-certified weighbridges. We audit past weighbridge slips and cross-check against invoiced quantities.' },
   { icon: '📋', title: 'MTC Documentation Practice', desc: 'Suppliers must consistently provide Manufacturer Test Certificates with every structural material batch. No MTC = no delivery accepted.' },
 ];
 
 const CATEGORIES = [
-  { icon: '🏗️', name: 'Cement Suppliers', brands: 'UltraTech · Dalmia · Ramco · India Cements', note: 'OPC 53, PPC, PSC grades. Batch date verified — no cement >90 days old.' },
+  { icon: '🏗️', name: 'Cement Suppliers', brands: 'UltraTech · Dalmia · Ramco · India Cements', note: 'OPC 53, PPC and PSC grade options. Check batch date and bag condition before acceptance.' },
   { icon: '⚙️', name: 'TMT Steel Dealers', brands: 'Tata Tiscon · JSW · SAIL · RINL', note: 'Fe500D and CRS grades for coastal projects. With mill test certificates.' },
   { icon: '🏖️', name: 'M-Sand & P-Sand', brands: 'IS 383 Grade II & III', note: 'Quarry-approved, particle size tested. No silt-laden natural river sand.' },
   { icon: '🧱', name: 'AAC Block Suppliers', brands: 'Nuvoco · SIPOREX · Premium AAC', note: 'IS 2185 Part 3 grade blocks. Density, strength, and moisture certificates.' },
@@ -32,8 +32,8 @@ export default function SuppliersPage() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255,163,100,0.18), rgba(252,110,32,0.14))', border: '1px solid rgba(252,110,32,0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Partner Directory</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Verified Material Suppliers in Chennai</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>MTC-verified, weighbridge-checked material suppliers with manufacturer authorization — sourced at Broadway wholesale pricing.</p>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Material Supplier Options in Chennai</h1>
+          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>Request current quotations, MTC or weighbridge documentation where applicable, and supplier details for independent review.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/contact?type=material-quote" className="btn btn-primary btn-lg">Get Material Quote</Link>
             <Link href="/materials" className="btn btn-lg" style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>Browse Materials</Link>
@@ -84,7 +84,7 @@ export default function SuppliersPage() {
           <div className="card" style={{ background: 'var(--secondary)', textAlign: 'center', padding: '36px' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>🏭</div>
             <h3 style={{ fontSize: '20px', color: 'white', marginBottom: '8px' }}>Supplier? Join Our Network</h3>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>Become a verified Buildogram material supplier and access consistent B2B project procurement.</p>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>Apply to join the Buildogram material supplier directory and receive relevant project enquiries.</p>
             <Link href="/join-as-partner" className="btn btn-primary">Join as Supplier</Link>
           </div>
         </div>

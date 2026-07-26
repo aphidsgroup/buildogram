@@ -7,7 +7,7 @@ import BOQCheckerClient from './BOQCheckerClient';
 export const metadata = generateSEOMetadata({
   title: 'AI BOQ Checker | Detect Missing Items & Inflated Rates | Buildogram Chennai',
   description:
-    'Upload your contractor BOQ and let Buildogram AI detect missing items, inflated rates, and vague specs. Trained on 10,000+ Chennai projects. Updated July 2026.',
+    'Upload a contractor BOQ to review missing items, rate outliers and vague specifications against configured checks. Updated July 2026.',
   path: '/ai-boq-checker',
 });
 
@@ -64,7 +64,7 @@ const HOW_IT_WORKS = [
   {
     step: '03',
     title: 'Cross-Reference Database',
-    desc: 'Each line item is cross-referenced against our database of 10,000+ Chennai projects, flagging rates above market benchmarks.',
+    desc: 'Each line item is checked against configured completeness rules and indicative benchmark ranges.',
   },
   {
     step: '04',
@@ -204,7 +204,7 @@ export default function AIBOQCheckerPage() {
 
           <p style={{ fontSize: 'clamp(15px, 2vw, 18px)', color: 'rgba(255,255,255,0.72)', lineHeight: 1.75, maxWidth: '680px', marginBottom: '44px' }}>
             Your contractor gave you a Bill of Quantities. Our AI — trained on{' '}
-            <strong style={{ color: '#FFFFFF' }}>10,000+ Chennai construction quotes</strong> —
+            <strong style={{ color: '#FFFFFF' }}>Configured BOQ checks</strong> —
             reviews it line-by-line for missing items, inflated rates, and vague specifications
             that contractors use to quietly overcharge you mid-project.
           </p>
@@ -212,7 +212,7 @@ export default function AIBOQCheckerPage() {
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             {[
               { value: '₹4.2 Cr', label: 'Recovered for clients' },
-              { value: '10,000+', label: 'BOQs analyzed' },
+              { value: 'Itemised', label: 'BOQ checks' },
               { value: '< 2 min', label: 'Preliminary AI analysis' },
               { value: '24 hrs', label: 'Full reviewed report' },
             ].map(({ value, label }) => (

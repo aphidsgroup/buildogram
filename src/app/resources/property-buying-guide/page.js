@@ -38,7 +38,7 @@ export default function PropertyBuyingGuidePage() {
             <p style={{ color: 'var(--text-muted)', marginBottom: '32px' }}>Demand a Property Passport for a 360-degree digital overview, floor plans, and maintenance history of the property before making a final decision.</p>
 
             <div style={{ padding: '24px', background: 'rgba(252, 110, 32, 0.05)', borderRadius: '12px', border: '1px solid rgba(252, 110, 32, 0.1)' }}>
-              <h3 style={{ fontSize: '20px', marginBottom: '12px' }}>Want to explore verified properties?</h3>
+              <h3 style={{ fontSize: '20px', marginBottom: '12px' }}>Want to explore documented property listings?</h3>
               <p style={{ color: 'var(--text-muted)', marginBottom: '16px' }}>View real estate listings safely through our partner networks.</p>
               <Link href="/properties/buy" className="btn btn-primary">Browse Properties</Link>
             </div>

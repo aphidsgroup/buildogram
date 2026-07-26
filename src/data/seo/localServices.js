@@ -20,7 +20,7 @@ export const localServices = [
       { step: '05', title: 'Property Passport Handover', desc: 'You receive a digital Property Passport with all construction records, warranty documents, and material details.' },
     ],
     faqs: [
-      { q: 'How do I find a reliable home construction contractor in {area}?', a: 'the Buildogram Partner Network includes builders with validated project histories in {area} and across Chennai. All contractors undergo background and quality screening before listing on our platform.' },
+      { q: 'How do I compare home construction contractors in {area}?', a: 'Review relevant project history, registration details, references, scope, pricing and contract terms. Directory information should be independently confirmed before appointment.' },
       { q: 'What is the approximate cost of home construction in {area}?', a: 'Construction cost in {area} depends on specification level, structural design, number of floors, site conditions and finish choices. Buildogram does not publish a fixed locality rate — contact our engineers for a project-specific estimate with a written scope.' },
       { q: 'Do I need CMDA or GCC approval for home construction in {area}?', a: 'Yes. {approvalNote}. Building without approval is illegal and can result in demolition orders. Buildogram helps you verify approval requirements for your specific plot.' },
       { q: 'What is a BOQ review and why does it matter for my home construction?', a: 'A Bill of Quantities (BOQ) lists every material, labour item, and its quantity and rate. Buildogram\'s engineers audit your contractor\'s BOQ against market rates and engineering norms to identify scope gaps, pricing inconsistencies and avoidable cost risks. Actual outcomes vary by quotation, project scope, specifications and omissions.' },
@@ -42,7 +42,7 @@ export const localServices = [
     verb: 'finding builders in our network',
     h1Template: 'Builders in {area}, Chennai',
     introTemplate:
-      'Looking for trusted builders in {area}? the Buildogram Partner Network includes local builders who have completed residential, commercial, and renovation projects in {area} and nearby localities. We screen every contractor for experience, quality, and reliability.',
+      'Looking for builders in {area}? Compare local project experience, proposed scope, pricing and contract terms, and independently confirm supplied credentials before appointment.',
     processSummary: 'Verify → Match → Quote Review → Supervised Execution',
     processSteps: [
       { step: '01', title: 'Contractor Matching', desc: 'We share listings from the Buildogram Partner Network covering project history, technical capability and references you can confirm directly.' },
@@ -103,7 +103,7 @@ export const localServices = [
     verb: 'estimating your construction cost',
     h1Template: 'Home Construction Cost in {area}, Chennai — 2025 Guide',
     introTemplate:
-      'Wondering how much it costs to build a house in {area}? Buildogram provides transparent, engineer-verified construction cost breakdowns for residential projects in {area}, covering foundation, structure, brickwork, roofing, and all finishes.',
+      'Wondering how much it costs to build a house in {area}? Buildogram provides indicative construction cost breakdowns for residential planning in {area}, covering foundation, structure, brickwork, roofing, and finishes.',
     processSummary: 'Plot Details → Cost Estimate → BOQ Breakdown → Market Rate Verification',
     processSteps: [
       { step: '01', title: 'Enter Plot & Project Details', desc: 'Provide your plot size, location in {area}, floor count, and specification level (basic, standard, or premium).' },
@@ -412,12 +412,12 @@ export const localServices = [
     verb: 'steel construction and fabrication coordination',
     h1Template: 'Steel Construction in {area}, Chennai — Structural Steel & PEB Support',
     introTemplate:
-      'Planning a warehouse, factory shed, commercial steel roof, or PEB building in {area}? Buildogram helps property owners and businesses compare, coordinate, and supervise steel construction companies — covering structural steel design coordination, fabrication contractor vetting, erection supervision, and QA documentation for your {area} project.',
+      'Planning a warehouse, factory shed, commercial steel roof, or PEB building in {area}? Buildogram helps property owners compare, coordinate and supervise steel construction companies, including design coordination, contractor comparison, erection supervision and QA documentation.',
     processSummary: 'Requirement Assessment → Design Coordination → Contractor Comparison → Fabrication QA → Erection Supervision → Handover',
     processSteps: [
       { step: '01', title: 'Steel Construction Requirement Mapping', desc: 'Define your use case — warehouse, factory, commercial shed, mezzanine, steel staircase, or PEB structure — and map loads, dimensions, and regulatory requirements for {area}.' },
       { step: '02', title: 'Design and Detailing Coordination', desc: 'Coordinate with structural steel designers and detailers to ensure your drawings are complete and construction-ready before fabrication begins.' },
-      { step: '03', title: 'Fabrication Contractor Vetting', desc: 'Compare steel fabrication contractors on quality history, material source, welding standards, surface treatment, and delivery track record.' },
+      { step: '03', title: 'Fabrication Contractor Comparison', desc: 'Compare steel fabrication contractors using project history, material source, welding, surface treatment and delivery-plan criteria.' },
       { step: '04', title: 'Material Certificate Verification', desc: 'Verify Mill Test Certificates (MTC) for structural steel sections and plates. Check chemical composition, yield strength, and elongation against IS 2062 requirements.' },
       { step: '05', title: 'Erection Supervision and QA', desc: 'On-site supervision during steel erection — checking anchor bolt alignment, bolt torque, weld quality, plumb, and level of structural frames.' },
     ],
@@ -537,7 +537,7 @@ export const localServices = [
     h1Template: 'Construction Material Sourcing in {area}, Chennai — Transparent Rates',
     introTemplate:
       'Getting market-rate pricing on cement, TMT steel, M-sand, and other construction materials in {area}? Buildogram connects you directly with suppliers in our network and provides transparent material pricing — no middlemen, no markup opacity.',
-    processSummary: 'Material Requirement → Supplier Match → Rate Comparison → MTC Verification → Verified Delivery',
+    processSummary: 'Material Requirement → Supplier Options → Quotation Comparison → Document Review → Delivery Coordination',
     processSteps: [
       { step: '01', title: 'Share Material Needs', desc: 'Input your project BOQ material requirements for your {area} project.' },
       { step: '02', title: 'Supplier Matching', desc: 'We match you with suppliers in our network who service {area} with proven delivery reliability.' },
@@ -549,7 +549,7 @@ export const localServices = [
       { q: 'What is the current price of cement in {area} (2025)?', a: 'Cement prices in Chennai and {area} vary by brand, grade, quantity and delivery location, and change over time. Buildogram does not publish a standing rate — request a dated quotation showing brand, grade, unit, GST status and delivery terms.' },
       { q: 'What is the current TMT steel price in {area}?', a: 'TMT steel (Fe500D, 8mm–25mm) pricing in Chennai varies by brand, quantity, delivery location and market movement. Request a dated quotation showing brand, grade, unit, GST status and delivery terms.' },
       { q: 'Should I use M-sand or river sand for construction in {area}?', a: 'M-sand (manufactured sand) is the legally preferred and more sustainable option in Tamil Nadu given restrictions on river sand quarrying. Quality M-sand from certified manufacturers provides equivalent or better construction results.' },
-      { q: 'How can I avoid adulterated or substandard materials in {area}?', a: 'Ask for material test certificates (IS compliance, lab test reports). Buildogram\'s supplier network is verified for material quality compliance. We recommend third-party material testing for any large-volume purchase.' },
+      { q: 'How can I avoid adulterated or substandard materials in {area}?', a: 'Request applicable material test certificates, IS documentation and lab reports. Independently review supplier documentation and consider third-party material testing for large-volume purchases.' },
       { q: 'Does Buildogram help with bulk material procurement for large projects in {area}?', a: 'Yes. For multi-unit residential or commercial projects in {area}, we can negotiate direct-from-factory rates for cement and steel, bypassing retail margins entirely.' },
     ],
     internalLinks: [
@@ -568,7 +568,7 @@ export const localServices = [
     h1Template: 'Construction Material Sourcing in {area}, Chennai — Transparent Rates',
     introTemplate:
       'Getting market-rate pricing on cement, TMT steel, M-sand, and other construction materials in {area}? Buildogram connects you directly with suppliers in our network and provides transparent material pricing — no middlemen, no markup opacity.',
-    processSummary: 'Material Requirement → Supplier Match → Rate Comparison → Verified Delivery',
+    processSummary: 'Material Requirement → Supplier Options → Quotation Comparison → Document Review → Delivery Coordination',
     processSteps: [
       { step: '01', title: 'Share Material Needs', desc: 'Input your project BOQ material requirements for your {area} project.' },
       { step: '02', title: 'Supplier Matching', desc: 'We match you with suppliers in our network who service {area} with proven delivery reliability.' },
@@ -579,7 +579,7 @@ export const localServices = [
       { q: 'What is the current price of cement in {area} (2025)?', a: 'Cement prices in Chennai and {area} vary by brand, grade, quantity and delivery location, and change over time. Buildogram does not publish a standing rate — request a dated quotation showing brand, grade, unit, GST status and delivery terms.' },
       { q: 'What is the current TMT steel price in {area}?', a: 'TMT steel (Fe500D, 8mm–25mm) pricing in Chennai varies by brand, quantity, delivery location and market movement. Request a dated quotation showing brand, grade, unit, GST status and delivery terms.' },
       { q: 'Should I use M-sand or river sand for construction in {area}?', a: 'M-sand is the legally preferred and more sustainable option in Tamil Nadu. Quality M-sand from certified manufacturers provides equivalent or better construction results.' },
-      { q: 'How can I avoid adulterated or substandard materials in {area}?', a: 'Ask for material test certificates (IS compliance, lab test reports). Buildogram\'s supplier network is verified for material quality compliance.' },
+      { q: 'How can I avoid adulterated or substandard materials in {area}?', a: 'Request applicable material test certificates, IS documentation and lab reports, and independently review supplier documentation before ordering.' },
       { q: 'Does Buildogram help with bulk material procurement for large projects in {area}?', a: 'Yes. For large projects in {area}, we can negotiate direct-from-factory rates for cement and steel. Contact our procurement team with your BOQ.' },
     ],
     internalLinks: [

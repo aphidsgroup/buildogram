@@ -3,8 +3,8 @@ import Link from 'next/link';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
-  title: 'Interior Designers in Chennai | Verified Interior Partners | Buildogram',
-  description: 'Find verified interior designers and turnkey interior contractors in Chennai. Modular kitchen, furniture, false ceiling, painting — transparent pricing with material specs.',
+  title: 'Interior Designers in Chennai | Partner Directory | Buildogram',
+  description: 'Explore interior designer and turnkey interior contractor options in Chennai for modular kitchens, furniture, false ceilings and painting.',
   path: '/partners/interiors',
 });
 
@@ -21,7 +21,7 @@ const CATEGORIES = [
   { icon: '💡', name: 'False Ceiling & Lighting', desc: 'Gypsum board on GI frame. LED coves, spotlights, downlights. Acoustic panels for media rooms.' },
   { icon: '🎨', name: 'Wall Treatment & Painting', desc: 'Premium emulsion, texture, wallpaper, decorative panels. Putty and primer preparation included.' },
   { icon: '🪵', name: 'Flooring', desc: 'Tiles, vitrified, hardwood, laminate, epoxy — installation with proper levelling and grout specification.' },
-  { icon: '🛁', name: 'Bathroom Fitting', desc: 'Sanitary ware, CP fittings, mirrors, vanity units. Brand-authorized installation for Jaquar, Grohe, Kohler.' },
+  { icon: '🛁', name: 'Bathroom Fitting', desc: 'Sanitary ware, CP fittings, mirrors and vanity-unit installation options.' },
 ];
 
 const PROCESS = [
@@ -40,7 +40,7 @@ export default function InteriorsPage() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255,163,100,0.18), rgba(252,110,32,0.14))', border: '1px solid rgba(252,110,32,0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Interior Partners</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Verified Interior Designers in Chennai</h1>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Interior Designer Options in Chennai</h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>Interior partners who are structurally aware, material-transparent, and contractually accountable — not just visually creative.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/contact?type=interior-quote" className="btn btn-primary btn-lg">Get Interior Quote</Link>
@@ -98,13 +98,13 @@ export default function InteriorsPage() {
           <div className="card" style={{ textAlign: 'center', padding: '36px' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>🏠</div>
             <h3 style={{ fontSize: '20px', color: 'var(--secondary)', marginBottom: '8px' }}>Get Interior Quote</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>Get matched with a verified interior partner based on your project type and budget.</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>Request interior-partner options based on your project type and budget.</p>
             <Link href="/contact?type=interior-quote" className="btn btn-primary">Get Quote</Link>
           </div>
           <div className="card" style={{ background: 'var(--secondary)', textAlign: 'center', padding: '36px' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>🎨</div>
             <h3 style={{ fontSize: '20px', color: 'white', marginBottom: '8px' }}>Interior Professional?</h3>
-            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>Join our verified network and get structurally-cleared, quality-conscious interior project leads.</p>
+            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px', marginBottom: '20px' }}>Apply to join the directory and receive relevant interior-project enquiries.</p>
             <Link href="/join-as-partner" className="btn btn-primary">Apply to Join</Link>
           </div>
         </div>

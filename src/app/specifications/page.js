@@ -36,7 +36,7 @@ export default function Specifications() {
       price: '₹2,200',
       badge: 'Most Popular',
       badgeClass: 'badge-blue',
-      desc: 'Our flagship package engineered for modern families. Standardizes premium national brands and features an robust 10-year structural guarantee.',
+      desc: 'A project specification option for modern families, with named material selections and project-specific warranty terms documented in the signed agreement.',
       features: [
         { cat: 'structural', label: 'Steel (TMT)', value: 'Tata Tiscon / JSW Neo Fe550D' },
         { cat: 'structural', label: 'Cement', value: 'UltraTech / Ramco Supergrade' },

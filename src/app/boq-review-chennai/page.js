@@ -16,7 +16,7 @@ const faqSchema = generateFAQSchema([
   { question: 'What format should I send my BOQ in?', answer: 'We accept any format — Excel, PDF, Word, or even a handwritten contractor estimate scanned as a photo. Drawings can be sent as PDF, DWG, or photos of physical prints.' },
   { question: 'Can you review a contractor quote if I don\'t have structural drawings?', answer: 'Yes. For projects where drawings are not yet finalised, we perform a quantity estimate review — checking whether the quantities in the BOQ are realistic for your project type and floor area.' },
   { question: 'What if my contractor disagrees with the review findings?', answer: 'Our review is an independent engineering opinion backed by current market data and quantity take-offs from drawings. We provide the calculation basis and market data reference for any disputed item. We can also join a three-way call with your contractor to explain findings.' },
-  { question: 'How much money can I realistically save from a BOQ review?', answer: 'In our experience across Chennai residential projects, average overquoting above verified market rates is 18–25%. On a ₹1Cr project, that is ₹18–25 lakhs in potential savings. Our observed average saving is ₹3.2 lakhs per project.' },
+  { question: 'How much money can I realistically save from a BOQ review?', answer: 'Savings cannot be predicted before the review. The service checks quantities, rates, specifications, omissions and scope differences so you can discuss any identified discrepancies before signing.' },
   { question: 'Do you also review construction contracts and agreements?', answer: 'Yes, as an add-on to BOQ review. We check whether the contract has milestone-linked payment terms, defect liability period, arbitration clause, and whether materials are specified with brand/grade rather than generic terms.' },
 ]);
 
@@ -33,7 +33,7 @@ const faqs = [
   { q: 'What format should I send my BOQ in?', a: 'We accept any format — Excel, PDF, Word, or even a handwritten contractor estimate scanned as a photo. If your contractor provided a lump-sum quote with no breakdown, we can help you request an itemised version and review that. Drawings can be sent as PDF, DWG, or photos of physical prints.' },
   { q: 'Can you review a contractor quote if I don\'t have structural drawings?', a: 'Yes. For projects where drawings are not yet finalised, we perform a quantity estimate review — checking whether the quantities in the BOQ are realistic for your project type and floor area. For a full rate + quantity check, drawings are ideal, but we can work with floor plan sketches and site measurements.' },
   { q: 'What if my contractor disagrees with the review findings?', a: 'Our review is an independent engineering opinion backed by current market data and quantity take-offs from drawings. If a contractor disputes a finding, we provide the calculation basis and market data reference. Most rate disputes are resolved through negotiation using our benchmark data. We can also join a three-way call with your contractor to explain findings.' },
-  { q: 'How much money can I realistically save from a BOQ review?', a: 'In our experience across Chennai residential projects, the average overquoting above verified market rates is 18–25%. On a ₹1Cr project, that is ₹18–25 lakhs in potential savings. Our service fee is a fraction of this. The ₹3.2 lakh average saving figure we cite is our observed average across completed reviews.' },
+  { q: 'How much money can I realistically save from a BOQ review?', a: 'Savings depend on the submitted quote, drawings, scope and negotiation outcome. A review may identify quantity, rate, specification or omission issues, but no fixed saving is promised.' },
   { q: 'Do you also review construction contracts and agreements?', a: 'Yes, as an add-on to BOQ review. We check whether the contract has milestone-linked payment terms, defect liability period, arbitration clause, and whether materials are specified with brand/grade rather than generic terms. Contract review is priced separately from BOQ review.' },
 ];
 
@@ -75,7 +75,7 @@ export default function BOQReviewPage() {
       <section style={{ background: 'var(--primary)', padding: '20px 0' }}>
         <div className="container">
           <div style={{ display: 'flex', gap: '48px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            {[['₹3.2L', 'Avg Saving Per Project'], ['18–25%', 'Typical Overquote Rate'], ['3 Days', 'Standard Turnaround'], ['94%', 'Clients Who Renegotiate After Review']].map(([val, label]) => (
+            {[['Itemised', 'Line-by-Line Review'], ['Indicative', 'Rate Comparison'], ['Scope-led', 'Turnaround'], ['Documented', 'Review Findings']].map(([val, label]) => (
               <div key={label} style={{ textAlign: 'center' }}>
                 <div style={{ color: 'white', fontSize: '24px', fontWeight: 700 }}>{val}</div>
                 <div style={{ color: 'rgba(255,255,255,0.85)', fontSize: '13px' }}>{label}</div>
@@ -96,7 +96,7 @@ export default function BOQReviewPage() {
             73% of Chennai homeowners accept a contractor&apos;s Bill of Quantities without any independent verification. Most don&apos;t know what quantities their project should require, don&apos;t know current material market rates, and can&apos;t identify when a specification is deliberately vague enough to allow material substitution.
           </p>
           <p style={{ color: 'var(--text)', lineHeight: 1.8, fontSize: '16px', marginBottom: '16px' }}>
-            The result: overquoting of 18–25% above verified market rates is standard practice, not exceptional. On a ₹80 lakh project, that is ₹14–20 lakhs left on the table at signing.
+            The review compares quantities, specifications, rates and omissions against the information supplied. Any discrepancy must be evaluated in the context of the project scope before negotiation.
           </p>
           <div style={{ background: '#fff3cd', border: '1px solid #ffc107', borderRadius: '10px', padding: '20px 24px' }}>
             <p style={{ margin: 0, fontWeight: 600, color: '#856404' }}>⚠ A contractor cannot review their own quote independently. Only an engineer with no stake in the project can give you an honest audit.</p>

@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';
 import path from 'node:path';
+import { claimEvidenceRegistry } from '../src/lib/claims/evidenceRegistry.mjs';
 
 /**
  * Buildogram claim guard — three tiers, per owner policy (2026-07-26).
@@ -25,8 +26,9 @@ import path from 'node:path';
  */
 
 const HARD_FAIL = [
-  /\bauthoris?zed\s+distributor\b/,
-  /\bauthoris?zed\s+dealer\b/,
+  /\bauthori[sz]ed\s+distributor\b/,
+  /\bauthori[sz]ed\s+dealer\b/,
+  /\bbrand-authori[sz]ed\b/,
   /\bofficial\s+distributor\b/,
   /\bofficial\s+dealer\b/,
   /\bguaranteed\s+lowest\s+price\b/,
@@ -34,12 +36,23 @@ const HARD_FAIL = [
   /\bguaranteed\s+delivery\b/,
   /\bofficial\s+market\s+price\b/,
   /\bofficial\s+chennai\s+price\b/,
-  /\bverified\s+(supplier|contractor|partner|builder|architect|professional)s?\b/,
+  /\bverified\s+(supplier|contractor|partner|builder|architect|professional|material|delivery|rate|outcome|property|rental|profile|lead)s?\b/,
+  /\b(engineer[ -]verified|100%[ -]verified)\b/,
+  /\b(source|find|compare|connect with|work with|join)\s+verified\b/,
   /\bbuildogram\s+verified\b/,
   /\bverified,\s*stress-free\b/,
-  /\b(vetted|hand-?picked)\b/,
+  /\b(vetted|vetting|hand-?picked)\b/,
+  /\bscreen(ed|ing)\s+(contractor|partner|supplier)s?\b/,
   /\bthe\s+best\s+(architect|builder|contractor)/,
+  /\bbest\s+rates?\b/,
   /\blive\s+(price|rate)s?\b/,
+  /\bmtc-verified\b/,
+  /\bofficial\s+certificate\b/,
+  /\bregistered\s+is-code\s+compliant\s+guarantee\b/,
+  /₹\s*\d+(?:\.\d+)?\s*cr\+/,
+  /\b\d{1,3}(?:,\d{3})+\+\s+(project|boq|quote|build)s?\b/,
+  /\b\d+\+\s+projects?\s+(monitored|analysed|analyzed)\b/,
+  /\b\d+(?:\.\d+)?%\s+(typical|average|avg|clients?|savings?)/,
 ];
 
 const WARN = [
@@ -52,11 +65,11 @@ const WARN = [
   /\bbulk\s+supply\b/,
 ];
 
-const ALLOWLIST = /cannot be guaranteed|not guaranteed|are market estimates|disputes are guaranteed/gi;
+const ALLOWLIST = /cannot be guaranteed|not guaranteed|are market estimates|disputes are guaranteed|an EC is an official certificate/gi;
 // partnerStore.js holds demo-* fixtures only. P0 blocks demo-* from the directory,
 // both partner APIs, profile pages and the sitemap, so nothing in it is publishable.
 // TODO: delete the fixture once partnerApi.js no longer falls back to it.
-const INTERNAL = /^src[\\/](app[\\/](ops|admin|client|partner|supplier|project|api)[\\/]|lib[\\/](services|content)[\\/]|lib[\\/]partnerStore\.js)/;
+const INTERNAL = /^src[\\/](app[\\/](ops|admin|client|partner|supplier|project|api)[\\/]|lib[\\/](services|content|claims)[\\/]|lib[\\/]partnerStore\.js)/;
 
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -104,5 +117,41 @@ test('WARN - fulfilment claims pending OV02-R1 workflow documentation', () => {
         '\n  Permitted by the owner; confirm delivery responsibility in OV02-R1 (R1.4).\n'
     );
   }
-  assert.ok(true);
+  assert.strictEqual(
+    hits.length,
+    claimEvidenceRegistry.length,
+    'Only the four registry-backed PENDING_R1 fulfilment warnings may remain',
+  );
+});
+
+test('claim evidence registry is narrow, complete and review-dated', () => {
+  assert.strictEqual(
+    claimEvidenceRegistry.length,
+    4,
+    'Only the four owner-approved PENDING_R1 fulfilment warnings may remain',
+  );
+
+  const requiredKeys = [
+    'claimKey',
+    'approvedWording',
+    'status',
+    'evidenceType',
+    'sourceReference',
+    'owner',
+    'lastReviewed',
+    'expiresAt',
+    'allowedRoutes',
+  ];
+
+  for (const entry of claimEvidenceRegistry) {
+    for (const key of requiredKeys) {
+      assert.ok(entry[key], `${entry.claimKey || 'claim entry'} is missing ${key}`);
+    }
+    assert.strictEqual(entry.status, 'PENDING_R1');
+    assert.match(entry.sourceReference, /^seo-growth\//);
+    assert.ok(Array.isArray(entry.allowedRoutes));
+    assert.ok(entry.allowedRoutes.length > 0);
+    assert.ok(Number.isFinite(Date.parse(entry.lastReviewed)));
+    assert.ok(Number.isFinite(Date.parse(entry.expiresAt)));
+  }
 });

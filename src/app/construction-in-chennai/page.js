@@ -35,7 +35,7 @@ const SERVICES = [
   { icon: '🏗️', name: 'Home Construction', desc: 'Engineer-supervised residential builds from soil test to handover', link: '/home-construction-chennai' },
   { icon: '🔍', name: 'Structural Audit', desc: 'NDT testing, crack assessment, load capacity evaluation', link: '/structural-audit-chennai' },
   { icon: '📋', name: 'BOQ Review', desc: 'Itemized contractor quote analysis to prevent overquoting', link: '/boq-calculator' },
-  { icon: '🧱', name: 'Material Sourcing', desc: 'Wholesale-rate, MTC-verified materials sourced to your site', link: '/materials' },
+  { icon: '🧱', name: 'Material Sourcing', desc: 'Material options, quotation comparison and sourcing support', link: '/materials' },
   { icon: '👷', name: 'Site Supervision', desc: 'Daily engineering monitoring with client portal updates', link: '/site-supervision-chennai' },
   { icon: '🌱', name: 'Soil Testing', desc: 'SBC determination and geotechnical investigation', link: '/soil-testing-chennai' },
 ];

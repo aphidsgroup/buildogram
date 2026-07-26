@@ -70,7 +70,7 @@ export function generateAreaPage(areaSlug) {
   };
 
   const title = `Home Construction in ${area.name}, Chennai | Partner Network | Buildogram`;
-  const description = `Planning home construction in ${area.name}, Chennai? Buildogram provides BOQ reviews, verified local builders, site supervision, and material sourcing with engineer-led transparency.`;
+  const description = `Planning home construction in ${area.name}, Chennai? Buildogram provides BOQ reviews, builder comparison, site supervision, and material sourcing support.`;
   const h1 = `Home Construction in ${area.name}, Chennai`;
 
   const services = localServices.map(s => ({
@@ -166,7 +166,7 @@ export function generateServiceAreaPage(areaSlug, serviceSlug) {
   };
 
   const title = `${service.name} in ${area.name}, Chennai | Buildogram`;
-  const description = `Looking for ${service.name.toLowerCase()} in ${area.name}, Chennai? Buildogram provides engineer-verified ${service.name.toLowerCase()} with transparent pricing and local construction expertise.`;
+  const description = `Looking for ${service.name.toLowerCase()} in ${area.name}, Chennai? Explore engineer-led ${service.name.toLowerCase()} support with project-specific pricing and local construction context.`;
   const h1 = substitute(service.h1Template, vars);
   const intro = substitute(service.introTemplate, vars);
 

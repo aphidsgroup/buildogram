@@ -98,7 +98,7 @@ export default function RequestQuotePage() {
     <main style={{ padding: '80px 24px', backgroundColor: '#F8FAFC', minHeight: '100vh', fontFamily: 'Inter, sans-serif' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <h1 style={{ fontSize: '32px', fontWeight: 800, color: '#0F172A', marginBottom: '16px', textAlign: 'center' }}>Request Material Quotes</h1>
-        <p style={{ fontSize: '16px', color: '#64748B', textAlign: 'center', marginBottom: '40px' }}>Our marketplace connects you with verified local suppliers for the best landed cost, including transport and GST.</p>
+        <p style={{ fontSize: '16px', color: '#64748B', textAlign: 'center', marginBottom: '40px' }}>Request current quotations from local supplier options, including stated transport and GST components.</p>
         
         <Suspense fallback={<div style={{ textAlign: 'center', padding: '40px' }}>Loading form...</div>}>
           <RequestQuoteForm />

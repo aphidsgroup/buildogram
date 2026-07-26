@@ -37,7 +37,7 @@ const sections = [
   {
     id: 'partner-verification',
     title: '5. Partner Verification',
-    content: 'Partner verification means that Buildogram reviewed selected credentials, documents, or project information according to its published verification methodology as of the stated verification date. Verification is not a guarantee of future performance, financial capacity, regulatory compliance, workmanship, availability, or project outcome. Property owners are strongly advised to independently verify credentials and obtain written agreements with performance guarantees before engaging any partner.',
+    content: 'Partner directory profiles may include credentials, documents or project information supplied by the listed party. Property owners must independently confirm this information and obtain written project-specific agreements before appointment. A directory listing is not a guarantee of future performance, financial capacity, regulatory compliance, workmanship, availability or project outcome.',
   },
   {
     id: 'site-safety',

@@ -87,7 +87,7 @@ export default function Page() {
                   Engineers arrive at the site equipped with stage-specific checklists (e.g., Foundation, Masonry, MEP, Waterproofing). They document observations using photos, videos, and precise measurements. If an issue is flagged, a formal <strong>rework ticket</strong> is generated, requiring proof of correction before the stage is closed.
                 </p>
                 <p>
-                  Ultimately, all verified checkpoint summaries are attached to your{' '}
+                  Ultimately, all completed checkpoint summaries are attached to your{' '}
                   <Link href="/property-passport" style={{ color: 'var(--primary)', fontWeight: 600, textDecoration: 'none' }}>
                     Property Passport
                   </Link>
@@ -109,7 +109,7 @@ export default function Page() {
                 Legal &amp; Privacy Scope
               </h2>
               <p style={{ color: 'var(--text-muted)', lineHeight: '1.7' }}>
-                Buildogram provides an engineer-led, evidence-based quality tracking system. We document observations and facilitate rework closure. The BQS does not constitute an absolute guarantee of structural safety or zero defects, but rather a best-in-class risk mitigation framework. Project-specific checklist scopes vary based on the scale, design, and agreed requirements.
+                Buildogram provides an engineer-led, evidence-based quality tracking system. We document observations and facilitate rework closure. The BQS does not constitute a guarantee of structural safety or zero defects; it is a structured risk-tracking framework. Project-specific checklist scopes vary based on the scale, design, and agreed requirements.
               </p>
             </div>
 

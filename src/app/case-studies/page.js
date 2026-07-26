@@ -101,10 +101,10 @@ export default async function CaseStudiesPage() {
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Case Studies</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>
-            Real Projects. Measurable Outcomes. Zero Spin.
+            Selected Project Notes and Technical Findings
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>
-            These are accounts of actual Buildogram engagements — with real savings figures, technical findings, and verified outcomes. No stock photography, no fake testimonials.
+            These summaries describe selected project records and technical observations available for publication. Scope and outcomes vary by project.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/contact" className="btn btn-primary btn-lg">Start Your Project</Link>
@@ -118,10 +118,10 @@ export default async function CaseStudiesPage() {
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0, textAlign: 'center' }}>
             {[
-              { label: 'Projects Monitored', value: '50+' },
-              { label: 'Avg Project Size', value: '₹2.8Cr' },
-              { label: 'Client Savings', value: '₹1.8Cr+' },
-              { label: 'Structural Warranty', value: '100%' },
+              { label: 'Project Records', value: 'Documented' },
+              { label: 'Scope', value: 'Project-specific' },
+              { label: 'Cost Review', value: 'Itemised' },
+              { label: 'Outcomes', value: 'Not guaranteed' },
             ].map((stat, i) => (
               <div key={stat.label} style={{ padding: '8px 16px', borderRight: i < 3 ? '1px solid rgba(255,255,255,0.2)' : 'none' }}>
                 <div style={{ fontSize: '22px', fontWeight: 800, color: 'white' }}>{stat.value}</div>

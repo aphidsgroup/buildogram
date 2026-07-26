@@ -2,7 +2,7 @@ import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export const metadata = generateSEOMetadata({
   title: "Electrical Plumbing | Buildogram",
-  description: "Source verified electrical plumbing materials directly through Buildogram, the AI-driven, engineer-led construction and property ecosystem. Ensure quality and transparent pricing.",
+  description: "Explore electrical and plumbing material options and request current specifications and quotations through Buildogram.",
   path: "/materials/electrical-plumbing"
 });
 

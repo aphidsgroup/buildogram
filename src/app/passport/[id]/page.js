@@ -57,7 +57,7 @@ export default async function PublicPassportPage({ params }) {
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent' }}>⬡</span> Buildogram
           </Link>
           <div style={{ background: 'rgba(255,255,255,0.1)', padding: '6px 12px', borderRadius: '999px', fontSize: '13px', color: 'rgba(255,255,255,0.9)', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <span>🛂</span> Verified Property Passport™
+            <span>🛂</span> Property Passport™
           </div>
         </div>
       </header>
@@ -103,7 +103,7 @@ export default async function PublicPassportPage({ params }) {
             </div>
             
             <div>
-              <h3 style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>Verified Vault</h3>
+              <h3 style={{ fontSize: '12px', fontWeight: 700, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '16px' }}>Document Vault</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {RECORD_SECTIONS.map(s => {
                   const active = property[s.key];
@@ -114,7 +114,7 @@ export default async function PublicPassportPage({ params }) {
                         <span style={{ color: '#0f172a', fontWeight: active ? 600 : 400, fontSize: '14px' }}>{s.label}</span>
                       </div>
                       {active ? (
-                        <span style={{ color: '#059669', fontSize: '11px', fontWeight: 700 }}>VERIFIED</span>
+                        <span style={{ color: '#059669', fontSize: '11px', fontWeight: 700 }}>RECORDED</span>
                       ) : (
                         <span style={{ color: '#94a3b8', fontSize: '11px' }}>PENDING</span>
                       )}
@@ -157,7 +157,7 @@ export default async function PublicPassportPage({ params }) {
           <div>
             <h4 style={{ color: '#065f46', fontSize: '16px', fontWeight: 700, marginBottom: '6px' }}>What is a Property Passport™?</h4>
             <p style={{ color: '#047857', fontSize: '14px', lineHeight: 1.6, margin: 0 }}>
-              This property&apos;s construction quality, specifications, and legal status have been verified and documented by Buildogram.
+              This passport contains available construction, specification and property records. It does not replace independent technical or legal due diligence.
               The completeness score reflects the percentage of critical documentation available in the owner&apos;s private vault.
             </p>
           </div>

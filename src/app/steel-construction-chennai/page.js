@@ -118,10 +118,10 @@ export default function SteelConstructionPage() {
             Our Role — Engineering Oversight, Not Fabrication
           </h2>
           <p style={{ color: 'var(--text)', lineHeight: 1.8, fontSize: '16px', marginBottom: '20px' }}>
-            Buildogram is not a steel fabricator or erection contractor. We are the engineering oversight layer — reviewing the design, preparing the BOQ, vetting fabricators, and supervising quality during fabrication and erection. This gives you independent accountability.
+            Buildogram is not a steel fabricator or erection contractor. We provide engineering oversight through design review, BOQ preparation, fabricator comparison, and agreed fabrication or erection inspections.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
-            {[['Structural Design Review', 'IS 800 compliance, deflection check, connection design'], ['BOQ Preparation', 'Steel tonnage, fabrication, erection, coating'], ['Fabricator Vetting', '3+ competitive tenders, capacity assessment'], ['Fabrication Inspection', 'Section dimensions, weld quality, coating'], ['Erection Supervision', 'Bolt torquing, plumb/level, connection checks'], ['Anti-Corrosion Spec', 'Galvanising or coating specification and inspection']].map(([title, desc]) => (
+            {[['Structural Design Review', 'IS 800 compliance, deflection check, connection design'], ['BOQ Preparation', 'Steel tonnage, fabrication, erection, coating'], ['Fabricator Comparison', 'Tender and capacity comparison'], ['Fabrication Inspection', 'Section dimensions, weld quality, coating'], ['Erection Supervision', 'Bolt torquing, plumb/level, connection checks'], ['Anti-Corrosion Spec', 'Galvanising or coating specification and inspection']].map(([title, desc]) => (
               <div key={title} style={{ background: '#f8f9fa', borderRadius: '10px', padding: '16px', border: '1px solid #eee' }}>
                 <div style={{ fontWeight: 700, color: 'var(--primary)', fontSize: '13px', marginBottom: '6px' }}>{title}</div>
                 <div style={{ color: '#555', fontSize: '13px', lineHeight: 1.5 }}>{desc}</div>

@@ -109,7 +109,7 @@ export default async function ProofDetailPage({ params }) {
             {proof.materials_used && (
               <div>
                 <h2 style={{ fontSize: '18px', fontWeight: 700, color: '#0F172A', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  🧱 Materials Verified
+                  🧱 Material Records
                 </h2>
                 <div style={{ padding: '16px', background: '#F1F5F9', borderRadius: '8px', color: '#475569', lineHeight: 1.6 }}>
                   {proof.materials_used}

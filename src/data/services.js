@@ -172,7 +172,7 @@ export const SERVICES = [
   {
     slug: "renovation-contractors-chennai",
     title: "Renovation Contractors in Chennai | Structural-Safe Home Renovation | Buildogram",
-    metaDescription: "Planning a home renovation in Chennai? Get engineer-verified renovation support \u2014 load-bearing wall checks, waterproofing, transparent BOQ, and contractors in our network.",
+    metaDescription: "Planning a home renovation in Chennai? Explore load-bearing wall review, waterproofing, transparent BOQ support, and contractor options.",
     h1: "Structurally Safe Home Renovation in Chennai",
     heroSubtitle: '',
     heroTag: "Renovation",
@@ -272,7 +272,7 @@ export const SERVICES = [
   },
   {
     slug: "builders-in-chennai",
-    title: "Builders in Chennai | Compare Verified Construction Partners | Buildogram",
+    title: "Builders in Chennai | Compare Construction Partner Options | Buildogram",
     metaDescription: "Find and compare builders in Chennai with Buildogram. Review contractor quotes, check BOQs, compare materials, and plan construction with engineer-led support.",
     h1: "Builders in Chennai",
     heroSubtitle: '',
@@ -864,13 +864,13 @@ export const SERVICES = [
     processStepsTitle: "Our Process",
     steps: [
       { step: "01", title: "Requirement Assessment", desc: "Review your project scope, site conditions, and required deliverable format before mobilisation." },
-      { step: "02", title: "Equipment Mobilisation", desc: "Verified survey team mobilised to site with appropriate instruments \u2014 total station, DGPS, or UAV." },
+      { step: "02", title: "Equipment Mobilisation", desc: "A survey team mobilises to site with the instruments required for the agreed scope \u2014 total station, DGPS, or UAV." },
       { step: "03", title: "Field Data Collection", desc: "Field measurements are taken systematically following the survey scope agreed with the client." },
       { step: "04", title: "Data Processing & CAD", desc: "Field data is processed using CAD/GIS software to produce the required drawings and calculations." },
       { step: "05", title: "Report & Handover", desc: "Formal survey report issued with CAD drawings, data files, and recommendations as applicable." },
     ],
     faqs: [
-      { question: "How do I request this service?", answer: "Contact Buildogram with your plot details, survey type required, and location. We will connect you with a verified surveyor and provide a project-specific quote." },
+      { question: "How do I request this service?", answer: "Contact Buildogram with your plot details, survey type required, and location. We will share provider options and a project-specific quotation for review." },
       { question: "How long does the survey take?", answer: "Typical field work takes 1\u20132 days. Report preparation and CAD output delivery takes 2\u20133 working days after field completion." },
       { question: "Are the surveyors licensed?", answer: "Buildogram connects you with survey professionals. All surveyors in our network are assessed for equipment, experience, and past project quality." },
       { question: "What format are the deliverables in?", answer: "Deliverables are provided as CAD DWG files, PDF drawings, and a formal written report. GIS or other formats can be requested at the time of enquiry." },
@@ -888,7 +888,7 @@ export const SERVICES = [
   {
     slug: "pile-foundation-contractors-chennai",
     title: "Pile Foundation Contractors in Chennai | Bored, DMC & Micro Piling",
-    metaDescription: "Verified pile foundation contractors in Chennai. We execute Bored Cast-in-Situ, DMC piling, and Micro-piling with strict engineer supervision and load testing.",
+    metaDescription: "Explore pile foundation contractor options in Chennai for bored cast-in-situ, DMC piling and micro-piling with project-specific supervision and testing scopes.",
     h1: "Engineer-Supervised Pile Foundation in Chennai",
     heroSubtitle: '',
     heroTag: "",
@@ -964,7 +964,7 @@ export const SERVICES = [
     faqs: [
       { question: "Why is Pile Integrity Testing mandatory in Chennai?", answer: "Unlike columns, piles are cast underground where you cannot see them. If the soil collapses during pouring, or if the concrete mixes with groundwater, the pile will have a massive gap (necking) in the middle. PIT is the only way to \"see\" if the underground concrete column is solid before you build a heavy apartment on it." },
       { question: "Can PIT measure the load capacity of the pile?", answer: "No. Pile Integrity Testing (PIT) only checks the physical continuous shape and quality of the concrete. It does not tell you how much weight the pile can hold. For weight capacity, you must perform a Static Pile Load Test." },
-      { question: "How many piles should be tested?", answer: "According to IS codes, for critical structures, 100% of the piles should undergo PIT. Because the test is fast and inexpensive, testing every pile is the industry standard to guarantee zero foundation failures." },
+      { question: "How many piles should be tested?", answer: "The project structural engineer should specify the test type and sampling plan for the design, applicable code and site conditions. Testing reduces uncertainty but cannot guarantee zero foundation failures." },
       { question: "What happens if a pile fails the Integrity Test?", answer: "If a major defect (like a severe neck or complete break) is found, the pile is rejected. The structural engineer will usually require you to drill a new replacement pile adjacent to the failed one, and redesign the pile cap to accommodate the shift." },
     ],
     stats: [],
@@ -1080,7 +1080,7 @@ export const SERVICES = [
   {
     slug: "dmc-piling-contractors-chennai",
     title: "DMC Piling Contractors in Chennai | Tripod Piling for Small Plots",
-    metaDescription: "Verified DMC (Direct Mud Circulation) piling contractors in Chennai. Ideal for narrow streets and independent residential houses. Safe, engineer-supervised execution.",
+    metaDescription: "Explore DMC (Direct Mud Circulation) piling contractor options in Chennai for narrow-access and residential project conditions.",
     h1: "DMC Piling Contractors in Chennai",
     heroSubtitle: '',
     heroTag: "",

@@ -5,7 +5,7 @@ import FAQBlock from '@/components/seo/FAQBlock';
 
 export const metadata = generateSEOMetadata({
   title: 'Construction Materials in Chennai | Wholesale Cement, Steel, Sand | Buildogram',
-  description: 'Source authentic construction materials at wholesale rates in Chennai. MTC-verified cement, Fe500D TMT steel, M-sand, AAC blocks, RMC and more from authenticated suppliers.',
+  description: 'Explore construction material options in Chennai, including cement, Fe500D TMT steel, M-sand, AAC blocks and RMC. Request current quotations and supplier documentation.',
   path: '/materials',
 });
 
@@ -15,7 +15,7 @@ const CATEGORIES = [
   { icon: '🏖️', name: 'M-Sand & P-Sand', desc: 'Manufactured sand from approved quarries. Conforms to IS 383 particle size limits.', link: '/materials/msand-psand', brands: 'IS 383 Grade II & III' },
   { icon: '🧱', name: 'Bricks & AAC Blocks', desc: 'Wire-cut clay bricks and lightweight AAC autoclaved aerated concrete blocks.', link: '/materials/bricks-aac-blocks', brands: 'Nuvoco · SIPOREX · Local MTC' },
   { icon: '🪨', name: 'Ready Mix Concrete (RMC)', desc: 'M20, M25, M30 RMC from batching plants within 90-minute haul distance.', link: '/materials/rmc', brands: 'Ultratech RMC · ACC · Prism' },
-  { icon: '💧', name: 'Waterproofing', desc: 'Crystalline, elastomeric membrane, polyurea coating systems. Brand-authorized.', link: '/materials/waterproofing', brands: 'Dr. Fixit · Fosroc · Sika' },
+  { icon: '💧', name: 'Waterproofing', desc: 'Crystalline, elastomeric membrane and polyurea coating system options.', link: '/materials/waterproofing', brands: 'Dr. Fixit · Fosroc · Sika' },
   { icon: '⚡', name: 'Electrical Materials', desc: 'Wires, conduits, MCBs, switches, panels. ISI-marked and BIS-certified.', link: '/materials/electrical', brands: 'Havells · Finolex · Legrand' },
   { icon: '🔧', name: 'Plumbing Materials', desc: 'CPVC, uPVC, PPR pipes and fittings. ISI-marked sanitary ware and faucets.', link: '/materials/plumbing', brands: 'Ashirvad · Supreme · Jaquar' },
   { icon: '🏭', name: 'Fabrication & Structural Steel', desc: 'MS sections, hollow sections, angles, channels for columns and frames.', link: '/materials/fabrication-steel', brands: 'SAIL · JSPL · Vizag Steel' },
@@ -26,14 +26,14 @@ const CATEGORIES = [
 const HOW_IT_WORKS = [
   { step: '1', icon: '📋', title: 'BOQ Extraction', desc: 'We extract your material quantities from your approved BOQ. Every line item — bags, bars, loads — is identified.' },
   { step: '2', icon: '📞', title: 'Live Supplier Quotes', desc: 'We obtain same-day quotes from our supplier network at Broadway and Mannady wholesale pricing.' },
-  { step: '3', icon: '🚛', title: 'Authenticated Delivery', desc: 'Delivery trucks weighed at certified weighbridges. MTC documents verified before unloading on your site.' },
+  { step: '3', icon: '🚛', title: 'Delivery Documentation', desc: 'Request weighbridge slips and applicable MTC documents before accepting delivery.' },
 ];
 
 const TRUST_ITEMS = [
   { icon: '📄', title: 'Manufacturer Test Certificates (MTC)', desc: 'Every structural material — cement, steel, concrete — must come with an MTC from the manufacturer batch.' },
-  { icon: '⚖️', title: 'Weighbridge Slip Verification', desc: 'Truck weights verified at a NABL-certified weighbridge. You pay for what is actually delivered, not what\'s billed.' },
+  { icon: '⚖️', title: 'Weighbridge Slip Review', desc: 'Compare delivered quantities with an applicable weighbridge slip before acceptance.' },
   { icon: '📅', title: 'Batch Date Freshness', desc: 'Cement older than 90 days (per IS 455) is rejected. Batch date on bags checked against MTC before unloading.' },
-  { icon: '✅', title: 'Brand Authenticity Marks', desc: 'Hologram, batch QR codes, and manufacturer embossing verified. No counterfeit or downgraded materials accepted.' },
+  { icon: '✅', title: 'Brand Identification Marks', desc: 'Review holograms, batch QR codes, manufacturer embossing and accompanying supplier documentation.' },
 ];
 
 const FAQS = [
@@ -146,7 +146,7 @@ export default function MaterialsPage() {
 
         <div className="card" style={{ marginTop: '48px', background: 'var(--gradient-dark)', border: 'none', textAlign: 'center', padding: '48px' }}>
           <h3 style={{ color: 'white', fontSize: '24px', marginBottom: '12px' }}>Ready to Source Materials at Wholesale Rates?</h3>
-          <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '28px', maxWidth: '480px', margin: '0 auto 28px' }}>Share your BOQ and we&apos;ll get you same-day quotes from verified Chennai suppliers.</p>
+          <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '28px', maxWidth: '480px', margin: '0 auto 28px' }}>Share your BOQ to request current quotations from Chennai supplier options.</p>
           <Link href="/contact?type=material-quote" className="btn btn-primary btn-lg">Request Material Quote</Link>
         </div>
       </div>

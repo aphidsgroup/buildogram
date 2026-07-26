@@ -4,7 +4,7 @@ import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export const metadata = generateSEOMetadata({
   title: "Cement | Buildogram",
-  description: "Source verified cement materials directly through Buildogram, the AI-driven, engineer-led construction and property ecosystem. Ensure quality and transparent pricing.",
+  description: "Explore cement material options and request current quotations, specifications and supplier documentation through Buildogram.",
   path: "/materials/cement"
 });
 
@@ -16,7 +16,7 @@ export default function CementPage() {
     <PublicServicePage
       heroEyebrow="Material Sourcing Hub"
       heroTitle="Cement Supply in Chennai"
-      heroSub="Get transparent, bulk-rate quotes for fresh OPC 53 and PPC cement. Every batch is verified by Buildogram engineers for age, grade, and lump-free quality before it hits your site."
+      heroSub="Request current quotations for OPC 53 and PPC cement. Check batch age, grade, bag condition and supplier documentation before acceptance."
       heroPrimaryCta={{ label: 'Get a Cement Quote', href: '/contact?type=materials' }}
       heroSecondaryCta={{ label: 'View All Materials', href: '/materials' }}
       
@@ -28,7 +28,7 @@ export default function CementPage() {
       
       processSteps={[
         { step: "01", title: "Requirement Analysis", desc: "We calculate your exact bag requirement based on your floor plan or BOQ to prevent over-ordering." },
-        { step: "02", title: "Supplier Matching", desc: "We source rates from verified dealers in your specific Chennai zone (e.g., OMR, Anna Nagar) to minimize transport costs." },
+        { step: "02", title: "Supplier Options", desc: "Compare current quotations from supplier options serving your Chennai zone, including stated transport costs." },
         { step: "03", title: "Brand & Grade Selection", desc: "Our engineers recommend the right mix—OPC 53 for structural members and PPC for plastering/brickwork." },
         { step: "04", title: "Delivery & Verification", desc: "We physically or digitally verify the 'Week of Manufacturing' printed on the bags upon delivery." }
       ]}
@@ -57,7 +57,7 @@ export default function CementPage() {
         { q: "What is the current price of cement in Chennai?", a: "Prices fluctuate daily based on brand and grade (usually between ₹350 to ₹420 per bag). Contact us for today's indicative rate." },
         { q: "Why should I use OPC 53 for roof slabs?", a: "OPC 53 achieves higher strength faster than PPC. It's crucial for load-bearing structures where you need to remove formwork (shuttering) within the standard timeline." },
         { q: "How do you check the manufacturing date?", a: "Every cement bag has a printed code indicating the Week, Month, and Year of packing. Our engineers train your site supervisor to read this, or we verify it for you." },
-        { q: "Can I return cement if it has lumps?", a: "Yes. If cement is sourced through our verified network and arrives with moisture-induced lumps, it will be replaced. Lumpy cement indicates pre-hydration and is useless." }
+        { q: "What should I do if cement arrives with lumps?", a: "Do not use moisture-affected or lumpy cement. Photograph the delivery, isolate the bags and raise the issue under the supplier's written replacement terms." }
       ]}
     />
     <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Materials","path":"/materials"},{"name":"Buy Cement in Chennai","path":"/materials/cement"}]} />

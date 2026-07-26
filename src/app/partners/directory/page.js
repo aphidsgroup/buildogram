@@ -11,7 +11,7 @@ export const dynamic = 'force-dynamic';
 
 export const metadata = generateSEOMetadata({
 title: 'Builders, Contractors, Architects & Suppliers | Buildogram',
-  description: 'Explore verified construction partners connected through Buildogram\'s engineer-led ecosystem, including builders, contractors, architects, consultants, and material suppliers.',
+  description: 'Explore builders, contractors, architects, consultants and material suppliers listed in Buildogram\'s construction partner directory.',
   path: '/partners/directory',
 });
 
@@ -91,9 +91,9 @@ export default async function PartnerDirectoryPage() {
         <div className={styles.heroGlow} aria-hidden="true" />
         <div className="sectionInnerWide" style={{ position: 'relative', zIndex: 1 }}>
           <AnimatedSection>
-            <span className={styles.eyebrow}>Verified Construction Partner Network</span>
+            <span className={styles.eyebrow}>Construction Partner Directory</span>
             <h1 className={styles.heroH1}>
-              Work With Verified Construction Partners
+              Explore Construction Partner Options
             </h1>
             <p className={styles.heroSub}>
               Explore builders, contractors, architects, consultants, suppliers, and service providers connected through Buildogram’s engineer-led construction ecosystem. All enquiries are routed through Buildogram for transparency.
@@ -211,7 +211,7 @@ export default async function PartnerDirectoryPage() {
         <div className={`sectionInnerWide ${styles.joinWrap}`}>
           <AnimatedSection>
             <h2 className={styles.joinH2}>Are you a construction professional?</h2>
-            <p className={styles.joinP}>Builders, architects, interior designers, suppliers, solar installers, waterproofing specialists and contractors can apply to join Buildogram’s verified construction ecosystem.</p>
+            <p className={styles.joinP}>Builders, architects, interior designers, suppliers, solar installers, waterproofing specialists and contractors can apply to join the Buildogram directory.</p>
           </AnimatedSection>
           
           <AnimatedSection delay={0.2} style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>

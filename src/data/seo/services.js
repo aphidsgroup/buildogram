@@ -191,7 +191,7 @@ export const services = [
       { step: '05', title: 'Final Inspection & Snag List', desc: 'Complete snag list at project completion with resolution tracking.' },
     ],
     deliverables: ['Milestone Verification Reports', 'Site Visit Photo Logs', 'Lab Test Records', 'BOQ Audit Report', 'Snag List', 'Client Portal Access', 'Final Handover Report'],
-    disclaimer: 'PMC service does not replace structural engineering certification. Buildogram verifies visible construction quality but cannot guarantee compliance with drawings if contractor deviations occur after our site visits. Clients should ensure contractors sign a compliance agreement.',
+    disclaimer: 'PMC service does not replace structural engineering certification. Reviews cover only visible work and the agreed inspection scope; later contractor deviations may not be observed. Clients should use a written compliance agreement.',
     faqs: [
       { q: 'Does Buildogram take over my contractor when I use PMC?', a: 'No. PMC is an advisory and supervision service. Your existing contractor relationship and contract remain unchanged. We act independently as your engineer.' },
       { q: 'How often does the engineer visit?', a: 'Visit frequency depends on your PMC package. Typically, engineers visit at critical stages: foundation, slab casting, plinth, each floor, and final inspection.' },

@@ -45,7 +45,7 @@ export default function Page() {
         
         <h1 style={{ fontSize: '36px', fontWeight: 800, color: '#0F172A', marginBottom: '24px' }}>Fabrication & Structural Steel in Chennai</h1>
         <p style={{ fontSize: '18px', color: '#374151', lineHeight: 1.6, marginBottom: '32px' }}>
-          The backbone of industrial and fast-track construction. Whether you are building a massive warehouse in Sriperumbudur or a lightweight roof structure in Adyar, we supply certified, full-weight structural steel beams and plates that guarantee safety and longevity.
+          Structural steel selection must follow the project design and specified grade. Request mill documentation, section weights and inspection requirements for beams and plates before ordering.
         </p>
 
         <AnswerBlock

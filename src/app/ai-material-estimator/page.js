@@ -101,7 +101,7 @@ const FAQS = [
   },
   {
     q: 'Can I use this to plan material purchases from vendors?',
-    a: 'Yes. After getting your estimate, you can use Buildogram\'s material procurement service to source cement (Ultratech, ACC, Ramco), steel (Kamdhenu, JSPL, SAIL), and other items at negotiated wholesale rates with MTC-verified delivery.',
+    a: 'Yes. After getting your estimate, you can request sourcing support for cement, steel, and other items. Current quotations and supplier documentation can be requested where applicable.',
   },
   {
     q: 'Does it account for different IS grades of concrete and steel?',
@@ -476,10 +476,10 @@ export default function Page() {
         />
         <div className="container" style={{ position: 'relative' }}>
           <h2 style={{ fontSize: 'clamp(22px, 3vw, 34px)', fontWeight: 800, color: 'white', marginBottom: '12px' }}>
-            Need Bulk Materials at Best Rates?
+            Need a Current Material Quotation?
           </h2>
           <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: '16px', maxWidth: '480px', margin: '0 auto 28px', lineHeight: 1.7 }}>
-            Use Buildogram&apos;s material procurement service to source verified cement, steel, sand, and bricks at wholesale rates with MTC documentation.
+            Request material options and current quotations for cement, steel, sand, and bricks. Supplier documentation can be requested where applicable.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap' }}>
             <Link

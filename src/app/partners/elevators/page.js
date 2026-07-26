@@ -4,7 +4,7 @@ import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
   title: 'Elevator & Lift Contractors in Chennai | Home Lift Installation | Buildogram',
-  description: 'Find verified elevator and home lift installation contractors in Chennai. CMRS-compliant shaft design, PESO certification, and annual maintenance contracts.',
+  description: 'Explore elevator and home-lift contractor options in Chennai. Request applicable shaft-design, certification and maintenance documentation before appointment.',
   path: '/partners/elevators',
 });
 
@@ -39,7 +39,7 @@ export default function ElevatorsPage() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255,163,100,0.18), rgba(252,110,32,0.14))', border: '1px solid rgba(252,110,32,0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Elevator Partners</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Verified Elevator & Lift Installers in Chennai</h1>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 48px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>Elevator & Lift Installer Options in Chennai</h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>CMRS-compliant, manufacturer-authorized elevator installers in Chennai — for home lifts, passenger elevators, and goods lifts with AMC coverage.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/contact?type=elevator-quote" className="btn btn-primary btn-lg">Get Elevator Quote</Link>
@@ -102,7 +102,7 @@ export default function ElevatorsPage() {
           <div className="card" style={{ textAlign: 'center', padding: '36px' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>🛗</div>
             <h3 style={{ fontSize: '20px', color: 'var(--secondary)', marginBottom: '8px' }}>Get Elevator Quote</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>Share your shaft dimensions and building type — we get you 2–3 verified quotes from authorized installers.</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>Share your shaft dimensions and building type to request project-specific installer quotations and credentials.</p>
             <Link href="/contact?type=elevator-quote" className="btn btn-primary">Get Quote</Link>
           </div>
           <div className="card" style={{ background: 'var(--secondary)', textAlign: 'center', padding: '36px' }}>

@@ -112,9 +112,9 @@ const AI_TOOLS = [
 ];
 
 const STATS = [
-  { value: '₹200Cr+', label: 'Construction Data' },
-  { value: '10,000+', label: 'BOQs Analyzed' },
-  { value: '1,200+', label: 'Chennai Projects' },
+  { value: 'Editable', label: 'Project Inputs' },
+  { value: 'Indicative', label: 'Planning Outputs' },
+  { value: 'Chennai', label: 'Local Context' },
   { value: 'July 2026', label: 'Rates Updated' },
 ];
 

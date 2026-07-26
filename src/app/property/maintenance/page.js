@@ -15,7 +15,7 @@ export default function Page() {
       processSteps={[{"step":"01","title":"Asset Audit","desc":"Logging your ACs, lifts, pumps, and RO systems."},{"step":"02","title":"Preventative Schedule","desc":"Setting up automated reminders for servicing."}]}
       serviceDetails={[{"title":"Plumbing & Electrical Health Checks","desc":"Annual thermal scanning of DB boards and pressure testing."}]}
       proofData={{"title":"Maintenance Regimen","desc":"Keeping it running.","dashboardTitle":"AMC Checklist","items":["Lift Servicing","Sump/Tank Cleaning","AC Gas/Filter Check","Pest Control"]}}
-      faqs={[{"q":"Do you provide the technicians?","a":"We coordinate with verified local AMC partners to execute the work."}]}
+      faqs={[{"q":"Do you provide the technicians?","a":"We can coordinate local AMC provider options; confirm credentials, scope and warranty terms before appointment."}]}
     />
     <BreadcrumbSchema items={[{"name":"Home","path":"/"},{"name":"Property","path":"/property"},{"name":"Maintenance","path":"/property/maintenance"}]} />
     </>

@@ -95,8 +95,8 @@ export default function HowItWorksClient() {
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'linear-gradient(135deg, rgba(255, 163, 100, 0.18), rgba(252, 110, 32, 0.14))', border: '1px solid rgba(252, 110, 32, 0.28)', borderRadius: '999px', padding: '6px 18px', marginBottom: '20px' }}>
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>How It Works</span>
           </div>
-          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>Radical Engineering Transparency — 9 Verified Stages</h1>
-          <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>We replace traditional contractor guesswork with PhD-reviewed structural designs, milestone-linked payments, and 500+ certified quality checks across 3 construction phases.</p>
+          <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>Engineering Transparency Across 9 Project Stages</h1>
+            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>The workflow combines project-specific design review, milestone-linked payments, agreed construction checks and permanent documentation.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/contact" className="btn btn-primary btn-lg">Start Your Project</Link>
             <Link href="/specifications" className="btn btn-lg btn-outline-light">View Specifications</Link>
@@ -201,7 +201,7 @@ export default function HowItWorksClient() {
                     <p className="text-muted text-xs">{pay.desc}</p>
                   </div>
                 </div>
-                <span className="badge badge-blue">Verified Stage</span>
+                <span className="badge badge-blue">Documented Stage</span>
               </div>
             ))}
           </div>

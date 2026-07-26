@@ -7,7 +7,7 @@ import CostEstimatorClient from './CostEstimatorClient';
 export const metadata = generateSEOMetadata({
   title: 'AI Construction Cost Estimator Chennai | Preliminary Cost Planning | Buildogram',
   description:
-    'Get a free AI-powered preliminary construction cost estimate for your Chennai home or commercial project. Based on ₹200Cr+ of completed Chennai builds. Updated July 2026.',
+    'Get a preliminary construction cost estimate for a Chennai home or commercial project using editable project inputs and indicative planning assumptions. Updated July 2026.',
   path: '/ai-construction-cost-estimator',
 });
 
@@ -70,9 +70,9 @@ const HOW_IT_WORKS = [
   },
   {
     step: '02',
-    title: 'AI Cross-References 1,200+ Builds',
+    title: 'Cross-Check Project Inputs',
     description:
-      'Our AI workflow instantly cross-references your inputs against a database of 1,200+ completed Chennai residential and commercial construction projects.',
+      'The workflow checks your inputs against configured construction rules and indicative Chennai planning assumptions.',
   },
   {
     step: '03',
@@ -268,8 +268,8 @@ export default function AiConstructionCostEstimatorPage() {
             style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '16px' }}
           >
             {[
-              { label: '₹200Cr+ Projects Analyzed', icon: 'CHART' },
-              { label: '1,200+ Chennai Builds', icon: 'BUILD' },
+              { label: 'Editable Project Inputs', icon: 'CHART' },
+              { label: 'Indicative Chennai Range', icon: 'BUILD' },
             ].map(({ label, icon }) => (
               <div
                 key={label}

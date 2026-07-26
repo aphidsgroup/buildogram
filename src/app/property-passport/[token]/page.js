@@ -51,7 +51,7 @@ export default async function PropertyPassportOwnerView({ params }) {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-black text-slate-900 tracking-tight">Property Passport</h1>
-            <p className="text-slate-500 font-medium">Verified by Buildogram</p>
+            <p className="text-slate-500 font-medium">Recorded in Buildogram</p>
           </div>
           <div className="bg-white px-4 py-2 rounded-lg border border-slate-200 shadow-sm text-center">
             <div className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Passport Number</div>
@@ -134,12 +134,12 @@ export default async function PropertyPassportOwnerView({ params }) {
           </div>
         </div>
 
-        {/* Verified Records */}
+        {/* Documented Records */}
         <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-          <h2 className="text-xl font-bold text-slate-900 mb-4">Verified Digital Records</h2>
+          <h2 className="text-xl font-bold text-slate-900 mb-4">Documented Digital Records</h2>
           <div className="space-y-3">
             {passport.records.length === 0 ? (
-              <div className="text-slate-500 text-sm italic">No verified records available yet.</div>
+              <div className="text-slate-500 text-sm italic">No documented records available yet.</div>
             ) : passport.records.map(r => (
               <div key={r.id} className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border border-slate-200 rounded-xl hover:border-orange-200 transition-colors bg-slate-50/50">
                 <div className="mb-3 sm:mb-0">
@@ -158,7 +158,7 @@ export default async function PropertyPassportOwnerView({ params }) {
                     View Record
                   </a>
                 ) : (
-                  <span className="text-xs font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded-lg">Verified Offline</span>
+                  <span className="text-xs font-bold text-slate-400 bg-slate-100 px-3 py-1.5 rounded-lg">Offline Record</span>
                 )}
               </div>
             ))}
@@ -174,7 +174,7 @@ export default async function PropertyPassportOwnerView({ params }) {
                 <p className="text-sm text-slate-500 mt-1">Stage-wise quality and structural integrity inspections.</p>
               </div>
               <div className="px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-full border border-blue-100">
-                {passport.bqs_inspections.length} Stages Verified
+                {passport.bqs_inspections.length} Stages Recorded
               </div>
             </div>
             
@@ -202,7 +202,7 @@ export default async function PropertyPassportOwnerView({ params }) {
                         <div className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-slate-300"></span> {totalChecks - passedChecks} N/A or Reworked</div>
                       </div>
                       <p className="text-sm text-slate-500 italic">
-                        {ins.status === 'completed' || ins.status === 'closed' ? "All checkpoints cleared and necessary reworks verified by engineers." : "Inspection ongoing."}
+                        {ins.status === 'completed' || ins.status === 'closed' ? "Recorded checkpoints are closed; review the underlying inspection notes for scope and limitations." : "Inspection ongoing."}
                       </p>
                     </div>
                   </div>

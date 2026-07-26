@@ -4,7 +4,7 @@ import HowItWorksClient from './HowItWorksClient';
 
 export const metadata = generateSEOMetadata({
   title: 'How Buildogram Works | 9-Stage Construction Process',
-  description: 'Learn how Buildogram delivers engineer-led home construction in Chennai through 9 verified stages, milestone payments, and 500+ quality checks.',
+  description: 'Learn how Buildogram coordinates engineer-led home construction stages, milestone payments, project checks and documentation in Chennai.',
   path: '/how-it-works',
 });
 

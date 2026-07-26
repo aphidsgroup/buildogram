@@ -66,7 +66,7 @@ function PartnerCard({ partner }) {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
             <span style={{ background: `${catColor}15`, color: catColor, padding: '3px 10px', borderRadius: '99px', fontSize: '11px', fontWeight: 700 }}>{partner.category}</span>
-            <span style={{ background: '#DCFCE7', color: '#166534', padding: '3px 10px', borderRadius: '99px', fontSize: '11px', fontWeight: 700 }}>✅ Verified</span>
+            <span style={{ background: '#DCFCE7', color: '#166534', padding: '3px 10px', borderRadius: '99px', fontSize: '11px', fontWeight: 700 }}>Profile reviewed</span>
           </div>
           <h3 style={{ fontSize: '16px', fontWeight: 800, margin: '0 0 4px', color: '#1E293B', lineHeight: 1.3 }}>{partner.companyName}</h3>
           <div style={{ fontSize: '13px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px' }}>

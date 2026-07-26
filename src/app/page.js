@@ -29,12 +29,12 @@ const SERVICES = [
   { icon: '🏗️', title: 'End-to-End Construction Support', desc: 'From concept to key handover — engineer-led support at every stage.', href: '/end-to-end-construction-support-chennai', color: 'orange', bentoClass: 'bentoWide1' },
   { icon: '🔎', title: 'Structural Audit', desc: 'Crack inspection, corrosion check, settlement analysis, NDT coordination, written safety report.', href: '/structural-audit-chennai', color: 'blue', bentoClass: 'bentoStandard' },
   { icon: '📋', title: 'BOQ & Contractor Quote Audit', desc: 'Line-by-line review of contractor quotes — rates, quantities, and missing items.', href: '/boq-review-chennai', color: 'teal', bentoClass: 'bentoStandard' },
-  { icon: '🏭', title: 'Steel Construction & PEB', desc: 'Industrial sheds, warehouses, PEB buildings, steel fabrication vetting and erection supervision.', href: '/steel-construction-chennai', color: 'purple', bentoClass: 'bentoStandard' },
+  { icon: '🏭', title: 'Steel Construction & PEB', desc: 'Industrial sheds, warehouses, PEB buildings, fabricator comparison and erection supervision.', href: '/steel-construction-chennai', color: 'purple', bentoClass: 'bentoStandard' },
   { icon: '📐', title: 'Plan & Drawing Review', desc: 'Independent review of architectural and structural drawings before construction begins.', href: '/structural-plan-review-chennai', color: 'green', bentoClass: 'bentoStandard' },
   { icon: '🔍', title: 'Site Supervision', desc: 'Milestone inspections, quality checklists, and photographic progress reports.', href: '/site-supervision-chennai', color: 'slate', bentoClass: 'bentoStandard' },
   { icon: '🏠', title: 'Property Passport', desc: 'Permanent digital records of drawings, invoices, warranties, and material grades.', href: '/property-passport', color: 'blue', bentoClass: 'bentoWide1' },
   { icon: '🤖', title: 'AI Floor Plan Creator', desc: 'Generate conceptual layouts based on your plot size and requirements.', href: '/ai-floor-plan-creator', color: 'purple', bentoClass: 'bentoStandard' },
-  { icon: '🧱', title: 'Material Sourcing Support', desc: 'Transparent rates and MTC-verified supply for cement, TMT steel, M-sand, and more.', href: '/materials', color: 'orange', bentoClass: 'bentoStandard' },
+  { icon: '🧱', title: 'Material Sourcing Support', desc: 'Material options and quotation support for cement, TMT steel, M-sand, and more.', href: '/materials', color: 'orange', bentoClass: 'bentoStandard' },
 ];
 
 const PARTNER_CATEGORIES = [
@@ -250,7 +250,7 @@ export default function Home() {
               { icon: '📋', title: 'Structural Plan Review', desc: 'Independent review of architectural and structural drawings to catch under-design and compliance gaps.', href: '/structural-plan-review-chennai' },
               { icon: '🏗️', title: 'Pile Foundation Support', desc: 'Bored piles, DMC piles, micro piles — contractor matching, BOQ review, and execution oversight.', href: '/pile-foundation-contractors-chennai' },
               { icon: '🔍', title: 'Structural Audit', desc: 'NDT testing, crack inspection, and evidence-backed structural assessment for existing buildings.', href: '/structural-audit-chennai' },
-              { icon: '🧱', title: 'Material Planning', desc: 'Transparent rates and MTC-verified supply for cement, TMT steel, sand, and all construction materials.', href: '/materials' },
+              { icon: '🧱', title: 'Material Planning', desc: 'Material options and quotation support for cement, TMT steel, sand, and other construction materials.', href: '/materials' },
             ].map((card, i) => (
               <PremiumCard key={i} animated={true} delay={i * 0.07} hoverEffect={true} className={styles.problemCard}>
                 <div style={{ fontSize: '32px', marginBottom: '14px' }}>{card.icon}</div>
@@ -454,7 +454,7 @@ export default function Home() {
                 <div className={styles.passportMockTags}>
                   <span>2024 Built</span>
                   <span>4 BHK</span>
-                  <span>Verified</span>
+                  <span>Documented</span>
                 </div>
                 <div className={styles.passportMockStats}>
                   <div><strong>12</strong> Drawings</div>

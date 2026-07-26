@@ -179,15 +179,16 @@ done < "$OUT/sitemap-urls.txt"
 echo "[3] sitemap -> $OUT/03-sitemap-*.tsv  (PASS = every url 200, 0 duplicates, 0 non-www, 0 preview-domain, 0 demo-*)"
 
 # ── 4. Rendered claim / domain / encoding scan (item 9) ─────────────────────
-PAT='500\+ Project|₹12\.8Cr|₹2\.1Cr|₹50Cr\+|18% *(Average|Avg)|10-Year (Partner )?Warranty|8–15%|8-15%|starts around ₹10,000|certified pilots|Verified Partner Network|vetted|screened|certified structural engineer|licensed structural engineer|qualified structural engineer|2500\+|2,500\+|up to 2,?500|500\+ QC|[Pp]ile foundations are mandatory|prone to flooding|high water table|Live Rates|current Chennai market|\+91-XXXXXXXXXX|600000|info@buildogram\.in|app\.buildogram\.com|buildogram\.com|â‚¹|â€“|â€”|Â·'
+PAT='source verified materials|verified (construction )?(supplier|contractor|partner|builder|architect|professional|material|delivery|property|rental|profile|lead)s?|engineer[- ]verified|100%[- ]verified|(source|find|compare|connect with|work with|join|access|browse|explore|rent|buy|list) verified|MTC-verified|brand-authori[sz]ed|authori[sz]ed (dealer|distributor)|official (dealer|distributor)|guaranteed (delivery|lowest)|best rates?|live (price|rate)s?|vetted|vetting|screen(ed|ing) (contractor|partner|supplier)s?|professional verified estimate|registered IS-Code Compliant Guarantee|₹[0-9]+(\.[0-9]+)?Cr\+|[0-9]{1,3}(,[0-9]{3})+\+ (project|BOQ|quote|build)s?|[0-9]+\+ projects? (monitored|analysed|analyzed)|[0-9]+(\.[0-9]+)?% (typical|average|avg|clients?|savings?)|500\+ Project|₹12\.8Cr|₹2\.1Cr|₹50Cr\+|18% *(Average|Avg)|10-Year (Partner )?Warranty|8–15%|8-15%|starts around ₹10,000|certified pilots|2500\+|2,500\+|up to 2,?500|500\+ QC|[Pp]ile foundations are mandatory|prone to flooding|high water table|\+91-XXXXXXXXXX|600000|app\.buildogram\.com|buildogram\.com|â‚¹|â€“|â€”|Â·'
 printf 'url\tmatch\tcontext\n' > "$OUT/04-claim-scan.tsv"
-SCAN=( / /about /construction-in-chennai /locations/chennai /locations/chennai/velachery /locations/chennai/adyar /locations/chennai/pallikaranai /structural-audit-chennai /boq-review-chennai /quality-system /materials /partners/builders /land-survey-chennai /drone-survey-chennai )
-for u in "${SCAN[@]}"; do
+while read -r canonical_url; do
+  u="${canonical_url#https://www.buildogram.in}"
+  [ -n "$u" ] || u="/"
   scan_html=$(fetch "$u")
   grep -ohiE "$PAT" <<<"$scan_html" | sort -u | while read -r m; do
     printf '%s\t%s\tsee rendered HTML\n' "$u" "$m" >> "$OUT/04-claim-scan.tsv"
   done
-done
+done < "$OUT/sitemap-urls.txt"
 hits=$(($(wc -l < "$OUT/04-claim-scan.tsv")-1))
 echo "[4] claim scan -> $OUT/04-claim-scan.tsv  (PASS = 0 rows; found: $hits)"
 

@@ -4,12 +4,12 @@ import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 
 export const metadata = generateSEOMetadata({
   title: 'Contractors in Chennai | Civil & MEP Contractors | Buildogram',
-  description: 'Find verified civil, MEP, and finishing contractors in Chennai. Buildogram checks labour licenses, ESI/PF compliance, safety records and contract practices before listing.',
+  description: 'Explore civil, MEP and finishing contractor options in Chennai. Independently review licences, ESI/PF compliance, safety records and contract practices before appointment.',
   path: '/partners/contractors',
 });
 
 const CRITERIA = [
-  { icon: '📜', title: 'Labour License & ESI/PF', desc: 'Valid Contract Labour Regulation & Abolition Act (CLRA) licence. ESI and PF registration for all deployed workers — verified through EPFO records.' },
+  { icon: '📜', title: 'Labour Licence & ESI/PF', desc: 'Request applicable CLRA licence and ESI/PF registration details for independent review.' },
   { icon: '🏗️', title: 'Minimum Project Experience', desc: 'At least 3 completed projects of similar scope reviewed by our team. We contact past clients, inspect completed work where possible.' },
   { icon: '⛑️', title: 'Site Safety Record', desc: 'No major OSHA violations on record. Proper PPE (hard hats, harness, safety shoes) enforced on site. Scaffolding erected per IS 3696 standards.' },
   { icon: '📋', title: 'Milestone Contract Practice', desc: 'Willing to sign milestone-based payment contracts with an itemized BOQ. No lump-sum-only contractors listed — transparency is mandatory.' },
@@ -19,15 +19,15 @@ const TYPES = [
   { name: 'Civil Structural Contractors', desc: 'Foundation, columns, slabs, beams — structural RCC work per IS 456 and IS 13920', icon: '🏗️' },
   { name: 'Brick & Masonry Contractors', desc: 'Wire-cut brick, AAC block, stone masonry. Mortar mixing ratios and line levels per spec.', icon: '🧱' },
   { name: 'MEP Contractors', desc: 'Mechanical (HVAC), Electrical (panels, wiring), Plumbing (CPVC, PPR, sanitary).', icon: '⚡' },
-  { name: 'Waterproofing Contractors', desc: 'Terrace, bathroom, basement waterproofing. Brand-authorized applicators only.', icon: '💧' },
-  { name: 'Painting & Finishing Contractors', desc: 'Primer, putty, emulsion, texture paint. Surface prep and mil thickness verified.', icon: '🎨' },
-  { name: 'Formwork Contractors', desc: 'Conventional timber, modular steel, table forms. Safety loading calculations verified.', icon: '🪵' },
+  { name: 'Waterproofing Contractors', desc: 'Terrace, bathroom and basement waterproofing system options.', icon: '💧' },
+  { name: 'Painting & Finishing Contractors', desc: 'Primer, putty, emulsion and texture paint, with agreed surface-preparation and thickness inspection scope.', icon: '🎨' },
+  { name: 'Formwork Contractors', desc: 'Conventional timber, modular steel and table-form options, with project-specific safety calculations.', icon: '🪵' },
 ];
 
 const STEPS = [
   { step: '1', title: 'Get Your BOQ First', desc: 'Before approaching any contractor, have an itemized BOQ prepared. This lets you compare apples-to-apples instead of lump-sum guesses.' },
   { step: '2', title: 'Compare Contractor Quotes', desc: 'Get 3 quotes from contractors. Compare by item — not total. Look for who provides the most detailed scope breakdown.' },
-  { step: '3', title: 'Sign a Milestone Contract', desc: 'Never pay more than 20% upfront. Structure payments around milestones: foundation, slab, roof, finishing. Each milestone verified by our engineer.' },
+  { step: '3', title: 'Sign a Milestone Contract', desc: 'Structure payments around defined foundation, slab, roof and finishing milestones with agreed sign-off criteria.' },
 ];
 
 export default function ContractorsPage() {

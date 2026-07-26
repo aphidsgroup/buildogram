@@ -443,7 +443,7 @@ export const guides = [
       { heading: 'Privacy and Consent', content: 'Buildogram\'s property listings do not expose owner contact information publicly. Tenant/buyer inquiries go through Buildogram\'s platform. Owner consent is obtained before any 360° tour is shared publicly.' },
     ],
     faqs: [
-      { q: 'How is a 360° tour created?', a: 'Buildogram uses 360° camera equipment during the property listing shoot. The resulting tour is embedded into your listing and accessible to verified inquirers.' },
+      { q: 'How is a 360° tour created?', a: 'Buildogram uses 360° camera equipment during the property listing shoot. The resulting tour can be embedded into the listing for prospective inquirers.' },
       { q: 'Is my personal contact information visible in the 360° tour?', a: 'No. Property tours on Buildogram are accessed through the platform only. Owner contact details are not embedded in the tour or visible to public browsers.' },
     ],
     relatedServices: ['/properties', 'https://toletboardchennai.in'],

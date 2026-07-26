@@ -86,7 +86,7 @@ function ListYourPropertyPageInner() {
           <div style={{ fontSize: '64px', marginBottom: '20px' }}>🎉</div>
           <h2 style={{ fontSize: '28px', color: 'var(--secondary)', marginBottom: '12px' }}>Listing Submitted!</h2>
           <p style={{ color: 'var(--text-muted)', fontSize: '16px', lineHeight: 1.7, marginBottom: '32px' }}>
-            Thank you. Our team will review your property details and contact you shortly to activate your verified listing.
+            Thank you. Our team will review the submitted property details and contact you about the listing.
           </p>
           <Link href="/" className="btn btn-primary btn-lg" style={{ width: '100%', justifyContent: 'center' }}>Return Home</Link>
         </div>
@@ -103,10 +103,10 @@ function ListYourPropertyPageInner() {
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>List Your Property</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>
-            List Your Property on Buildogram — Zero Brokerage, Verified Buyers
+            List Your Property on Buildogram
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7 }}>
-            Reach verified tenants and buyers. Add a 360° virtual tour to get 3x more enquiries.
+            Reach prospective tenants and buyers. Add available property details and an optional 360° virtual tour.
           </p>
         </div>
       </section>

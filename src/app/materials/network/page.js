@@ -8,7 +8,7 @@ export default function Page() {
     <PublicServicePage
       heroEyebrow="Materials Dashboard"
       heroTitle="Buildogram Supplier Network"
-      heroSub="Join or browse our network of verified wholesale material suppliers."
+      heroSub="Join or browse the material supplier directory and request current quotations."
       heroPrimaryCta={{ label: 'Talk to an Engineer', href: '/contact?type=material_quote' }}
       heroSecondaryCta={{ label: 'Explore Platform', href: '/' }}
       problems={[{"icon":"🏢","title":"Fragmented Market","desc":"Finding reliable suppliers for 50 different materials is exhausting."}]}

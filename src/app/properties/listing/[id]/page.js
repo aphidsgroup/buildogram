@@ -19,7 +19,7 @@ export async function generateMetadata({ params }) {
   const type = (listing.metadata?.listing_type || 'Property').charAt(0).toUpperCase() + (listing.metadata?.listing_type || 'property').slice(1);
   return {
     title: `${type} in ${listing.locality || listing.city} | Buildogram`,
-    description: `Verified ${type.toLowerCase()} in ${listing.locality || listing.city} with 360° virtual tour.`,
+    description: `${type} listing in ${listing.locality || listing.city} with available property details and 360° virtual tour.`,
   };
 }
 
@@ -87,7 +87,7 @@ export default async function PropertyListingDetailPage({ params }) {
                   For {m.listing_type}
                 </span>
                 <span style={{ padding: '4px 12px', background: '#dcfce7', color: '#166534', borderRadius: '999px', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase' }}>
-                  Verified ✓
+                  Listed
                 </span>
               </div>
 

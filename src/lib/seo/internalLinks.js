@@ -54,8 +54,8 @@ export const CLUSTERS = {
     { label: 'Join as Partner', href: '/join-as-partner', description: 'Apply to join Buildogram\'s trusted network.' },
     { label: 'Partner OS', href: '/partner-os', description: 'The operating system for modern builders.' },
     { label: 'Architects', href: '/partners/architects', description: 'Design experts and structural engineers.' },
-    { label: 'Builders', href: '/builders-in-chennai', description: 'Verified construction execution partners.' },
-    { label: 'Material Suppliers', href: '/partners/suppliers', description: 'Verified distributors and manufacturers.' },
+    { label: 'Builders', href: '/builders-in-chennai', description: 'Construction partner options.' },
+    { label: 'Material Suppliers', href: '/partners/suppliers', description: 'Supplier and manufacturer options.' },
     { label: 'Piling Contractors', href: '/pile-foundation-contractors-chennai', description: 'Deep foundation specialists.' }
   ]
 };

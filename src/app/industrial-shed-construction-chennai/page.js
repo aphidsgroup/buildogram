@@ -126,7 +126,7 @@ export default function IndustrialShedPage() {
             <li><strong>Foundation on SIDCO plots:</strong> Soft ground and poor SBC is common. Pile foundation design and load test coordination.</li>
             <li><strong>Fire NOC requirements:</strong> Tamil Nadu Fire and Rescue Services documentation support for sprinkler specification and escape route design.</li>
             <li><strong>Power room and DG room integration:</strong> Structural opening and room sizing coordinated with electrical consultant.</li>
-            <li><strong>Floor hardener and epoxy coating:</strong> Specification, contractor vetting, and application supervision for dust-free, durable industrial floors.</li>
+            <li><strong>Floor hardener and epoxy coating:</strong> Specification, contractor comparison, and application supervision for industrial floors.</li>
           </ul>
         </section>
 

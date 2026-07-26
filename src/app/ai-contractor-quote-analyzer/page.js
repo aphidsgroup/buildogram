@@ -6,7 +6,7 @@ import QuoteAnalyzerClient from './QuoteAnalyzerClient';
 export const metadata = generateSEOMetadata({
   title: 'AI Contractor Quote Analyzer | Detect Hidden Costs Before You Sign | Buildogram',
   description:
-    'Upload your contractor quote. AI flags payment risks, missing scope, and hidden costs. Trained on 2,400+ Chennai construction contracts. Updated July 2026.',
+    'Upload your contractor quote to flag payment risks, missing scope and unclear cost items using configured review checks. Updated July 2026.',
   path: '/ai-contractor-quote-analyzer',
 });
 
@@ -92,7 +92,7 @@ const RED_FLAGS = [
     icon: '📅',
     title: 'Vague Payment Milestone Triggers',
     detail:
-      '"On completion of first floor slab" — what does completion mean? Without measurable milestones, payment disputes are guaranteed.',
+      '"On completion of first floor slab" — what does completion mean? Ambiguous milestones increase the risk of payment disputes.',
   },
 ];
 
@@ -294,7 +294,7 @@ export default function Page() {
           {/* stat badges */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px' }}>
             {[
-              { value: '2,400+', label: 'Quotes Analyzed' },
+              { value: 'Itemised', label: 'Quote Checks' },
               { value: 'Avg ₹3.8L', label: 'Saved per Client' },
               { value: '94%', label: 'Flag Accuracy Rate' },
             ].map((stat) => (

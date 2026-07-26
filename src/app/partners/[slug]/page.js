@@ -130,7 +130,7 @@ export default async function PartnerProfilePage({ params }) {
     "image": partner.logo_url || partner.cover_url || "https://www.buildogram.in/og-default.png",
     "@id": `https://www.buildogram.in/partners/${partner.slug}`,
     "url": `https://www.buildogram.in/partners/${partner.slug}`,
-    "description": partner.short_description || `Verified ${partner.partner_type}`,
+    "description": partner.short_description || `${partner.partner_type} directory profile`,
     "address": {
       "@type": "PostalAddress",
       "addressLocality": partner.location,
@@ -308,14 +308,14 @@ export default async function PartnerProfilePage({ params }) {
 
             {/* Proof Assets */}
             {proofAssets.length > 0 && (
-              <Section title="📄 Verified Proof Assets">
+              <Section title="📄 Reviewed Profile Documents">
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '12px' }}>
                   {proofAssets.map((doc, i) => (
                     <a href={doc.file_url} target="_blank" rel="noreferrer" key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '16px', background: '#F1F5F9', borderRadius: '12px', textDecoration: 'none', border: '1px solid #E2E8F0' }}>
                       <div style={{ fontSize: '24px' }}>📑</div>
                       <div>
                         <div style={{ fontSize: '14px', fontWeight: 700, color: '#1E293B' }}>{doc.document_name}</div>
-                        <div style={{ fontSize: '12px', color: '#166534', fontWeight: 600 }}>✅ Verified</div>
+                        <div style={{ fontSize: '12px', color: '#166534', fontWeight: 600 }}>Reviewed record</div>
                       </div>
                     </a>
                   ))}
