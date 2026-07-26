@@ -14,6 +14,7 @@ import { useRef } from 'react';
 import { BRAND } from '@/lib/brand/positioning';
 import { getWhatsAppLink } from '@/lib/whatsapp';
 import { trackWhatsAppClick } from '@/lib/conversion/analytics';
+import { CONVERSION_COMPLETE_EVENT } from '@/lib/conversion/tooltip-lifecycle.mjs';
 
 export default function ContextualWhatsAppWidget({ context }) {
   const btnRef = useRef(null);
@@ -47,6 +48,7 @@ export default function ContextualWhatsAppWidget({ context }) {
     try {
       sessionStorage.setItem('bg_wa_clicked', '1');
     } catch (_) {}
+    window.dispatchEvent(new Event(CONVERSION_COMPLETE_EVENT));
   };
 
   return (

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 /**
  * EngineerCredibility — E-E-A-T Trust Block
  *
@@ -70,7 +71,7 @@ export default function EngineerCredibility({ service = '', compact = false }) {
           <strong style={{ color: 'var(--secondary)' }}>About Buildogram{service ? ` — ${service}` : ''}:</strong>{' '}
           An engineer-led construction intelligence platform in Chennai. All technical reviews are performed by
           structural engineering professionals with IS code expertise — not AI tools or junior analysts.{' '}
-          <a href="/quality-system" style={{ color: 'var(--primary)', fontWeight: 600 }}>Our methodology →</a>
+          <Link href="/quality-system" style={{ color: 'var(--primary)', fontWeight: 600 }}>Our methodology →</Link>
         </p>
       </aside>
     );
@@ -122,12 +123,12 @@ export default function EngineerCredibility({ service = '', compact = false }) {
           ))}
         </ul>
         <div style={{ marginTop: '20px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-          <a href="/quality-system" style={{ color: 'var(--primary)', fontSize: '14px', fontWeight: 600, textDecoration: 'none' }}>
+          <Link href="/quality-system" style={{ color: 'var(--primary)', fontSize: '14px', fontWeight: 600, textDecoration: 'none' }}>
             Our Quality System →
-          </a>
-          <a href="/about" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>
+          </Link>
+          <Link href="/about" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px', fontWeight: 500, textDecoration: 'none' }}>
             About the Team →
-          </a>
+          </Link>
         </div>
       </div>
     </section>

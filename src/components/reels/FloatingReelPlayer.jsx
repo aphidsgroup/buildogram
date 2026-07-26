@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useSyncExternalStore } from 'react';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import ReactPlayer from 'react-player';
 import Player from '@vimeo/player';
 import styles from './FloatingReelPlayer.module.css';
@@ -16,15 +17,22 @@ const XIcon = ({ size = 24, strokeWidth = 2, ...props }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
 );
 
+// Session-storage read, safe on the server. Used as a lazy initialiser so the
+// closed state never has to be set from inside an effect.
+function closedThisSession() {
+  if (typeof window === 'undefined') return false;
+  try { return sessionStorage.getItem('buildogram_reel_closed') === 'true'; }
+  catch { return false; }
+}
+
 export default function FloatingReelPlayer() {
   const pathname = usePathname();
   const [reel, setReel] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [isClosed, setIsClosed] = useState(false);
+  const [loading, setLoading] = useState(() => !closedThisSession());
+  const [isClosed, setIsClosed] = useState(closedThisSession);
   const [isMuted, setIsMuted] = useState(true);
   const [showControls, setShowControls] = useState(true);
   const [playerReady, setPlayerReady] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
   const controlTimeoutRef = useRef(null);
   const iframeRef = useRef(null);
   const vimeoPlayerRef = useRef(null);
@@ -37,41 +45,46 @@ export default function FloatingReelPlayer() {
                         pathname.startsWith('/dashboard') || 
                         pathname.startsWith('/login');
 
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  // Viewport width is an external system. useSyncExternalStore subscribes without
+  // a synchronous setState in an effect, and its server snapshot (false) keeps
+  // hydration consistent.
+  const isMobile = useSyncExternalStore(
+    (onChange) => {
+      window.addEventListener('resize', onChange);
+      return () => window.removeEventListener('resize', onChange);
+    },
+    () => window.innerWidth < 768,
+    () => false
+  );
 
   useEffect(() => {
-    // Check session storage first
-    if (typeof window !== 'undefined' && sessionStorage.getItem('buildogram_reel_closed') === 'true') {
-      setIsClosed(true);
-      setLoading(false);
-      return;
-    }
+    if (closedThisSession() || isHiddenRoute) return;
 
-    if (isHiddenRoute) {
-      setLoading(false);
-      return;
-    }
+    const controller = new AbortController();
+    let active = true;
 
     const fetchReel = async () => {
       try {
-        const res = await fetch('/api/reels/active');
+        const res = await fetch('/api/reels/active', { signal: controller.signal });
         const json = await res.json();
-        if (json.success && json.data) {
+        if (active && json.success && json.data) {
           setReel(json.data);
           setIsMuted(json.data.start_muted ?? true);
         }
       } catch (error) {
-        console.error('Failed to fetch active reel', error);
+        if (error.name !== 'AbortError') {
+          console.error('Failed to fetch active reel', error);
+        }
       } finally {
-        setLoading(false);
+        if (active) setLoading(false);
       }
     };
     fetchReel();
+
+    return () => {
+      active = false;
+      controller.abort();
+    };
   }, [isHiddenRoute]);
 
   useEffect(() => {
@@ -87,23 +100,36 @@ export default function FloatingReelPlayer() {
   }, [showControls, isClosed]);
 
   useEffect(() => {
-    if (iframeRef.current && !vimeoPlayerRef.current) {
-      vimeoPlayerRef.current = new Player(iframeRef.current);
-      
-      vimeoPlayerRef.current.getMuted().then((muted) => {
-        setIsMuted(muted);
-      }).catch(err => console.error("Vimeo API getMuted Error:", err));
-      
-      vimeoPlayerRef.current.on('volumechange', (data) => {
-        setIsMuted(data.volume === 0);
-      });
+    if (isHiddenRoute || isClosed || !iframeRef.current || vimeoPlayerRef.current) return;
 
-      // Mark ready only once the video actually starts playing
-      vimeoPlayerRef.current.on('playing', () => {
-        setPlayerReady(true);
-      });
-    }
-  }, [loading, reel]);
+    let active = true;
+    const player = new Player(iframeRef.current);
+    const handleVolumeChange = (data) => {
+      if (active) {
+        setIsMuted(data.volume === 0);
+      }
+    };
+    const handlePlaying = () => {
+      if (active) setPlayerReady(true);
+    };
+
+    vimeoPlayerRef.current = player;
+    player.getMuted()
+      .then((muted) => {
+        if (active) setIsMuted(muted);
+      })
+      .catch(err => console.error("Vimeo API getMuted Error:", err));
+    player.on('volumechange', handleVolumeChange);
+    player.on('playing', handlePlaying);
+
+    return () => {
+      active = false;
+      player.off('volumechange', handleVolumeChange);
+      player.off('playing', handlePlaying);
+      player.destroy().catch(() => {});
+      if (vimeoPlayerRef.current === player) vimeoPlayerRef.current = null;
+    };
+  }, [loading, reel, isClosed, isHiddenRoute]);
 
   if (isHiddenRoute || isClosed || (!loading && !reel)) return null;
 
@@ -206,9 +232,15 @@ export default function FloatingReelPlayer() {
             </button>
             
             {reel.cta_label && reel.cta_url && (
-              <a href={reel.cta_url} className={styles.ctaBtn} onClick={(e) => e.stopPropagation()}>
-                {reel.cta_label}
-              </a>
+              reel.cta_url.startsWith('/') && !reel.cta_url.startsWith('//') ? (
+                <Link href={reel.cta_url} className={styles.ctaBtn} onClick={(e) => e.stopPropagation()}>
+                  {reel.cta_label}
+                </Link>
+              ) : (
+                <a href={reel.cta_url} className={styles.ctaBtn} onClick={(e) => e.stopPropagation()}>
+                  {reel.cta_label}
+                </a>
+              )
             )}
           </div>
         </div>

@@ -9,7 +9,7 @@
  *          + 60px offset when .bottom-nav-mobile is present.
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import BackToTopButton from '@/components/BackToTop';
 import ContextualWhatsAppWidget from '@/components/conversion/ContextualWhatsAppWidget';
@@ -19,7 +19,7 @@ import { getConversionContext } from '@/lib/conversion/context';
 export default function FloatingActionStack() {
   const pathname = usePathname();
   const [hasBottomNav, setHasBottomNav] = useState(false);
-  const context = getConversionContext(pathname);
+  const context = useMemo(() => getConversionContext(pathname), [pathname]);
 
   // Detect bottom nav presence (mobile client portals)
   useEffect(() => {
@@ -64,7 +64,9 @@ export default function FloatingActionStack() {
       </div>
 
       {/* Tooltip renders as fixed overlay -- zero CLS */}
-      <ConversionTooltip context={context} />
+      {/* key={pathname}: a route change remounts the tooltip, which resets its
+          visibility, mounted flag and timers without a setState-in-effect. */}
+      <ConversionTooltip key={pathname} context={context} />
     </>
   );
 }

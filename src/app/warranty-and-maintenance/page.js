@@ -89,8 +89,8 @@ export default function WarrantyAndMaintenance() {
           <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '760px' }}>Warranty Documentation, Home Loan Support & Lifetime Maintenance</h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>Structural warranty is provided by your execution partner and documented in your Property Passport. We add bank loan coordination and premium AMC care plans to protect your investment long after handover.</p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
-            <a href="/contact" className="btn btn-primary btn-lg">Book Free Consultation</a>
-            <a href="/cost-estimator" className="btn btn-lg btn-outline-light">Estimate Build Cost</a>
+            <Link href="/contact" className="btn btn-primary btn-lg">Book Free Consultation</Link>
+            <Link href="/cost-estimator" className="btn btn-lg btn-outline-light">Estimate Build Cost</Link>
           </div>
         </div>
       </section>
@@ -121,7 +121,7 @@ export default function WarrantyAndMaintenance() {
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>🏡</div>
             <h3 style={{ fontSize: '20px', color: 'var(--primary-dark)', marginBottom: '8px' }}>Property Management CaaS</h3>
             <p className="text-muted text-xs mb-4" style={{ lineHeight: '1.6' }}>
-              Taking inspiration from Brixline's asset care model, our Annual Maintenance Contracts keep your home in mint engineering condition. We execute plumbing pressure flushes and thermal leakage scans.
+              Taking inspiration from Brixline&rsquo;s asset care model, our Annual Maintenance Contracts keep your home in mint engineering condition. We execute plumbing pressure flushes and thermal leakage scans.
             </p>
             <span className="badge badge-green">Preventative Health Scans</span>
           </div>
@@ -134,7 +134,7 @@ export default function WarrantyAndMaintenance() {
               <div className="tag mb-4">Mortgage & Financing</div>
               <h2 style={{ fontSize: '32px', color: 'var(--primary-dark)', marginBottom: '16px' }}>Capped Home Loan Liaison Support</h2>
               <p className="text-muted mb-4" style={{ fontSize: '14px', lineHeight: '1.7' }}>
-                We partner with India's top retail mortgage banks. Because we provide capped, itemized **BOQ (Bill of Quantities)** and strictly code-compliant CMDA blueprints, our files are cleared quickly through bank legal and technical evaluation pipelines.
+                We partner with India&rsquo;s top retail mortgage banks. Because we provide capped, itemized **BOQ (Bill of Quantities)** and strictly code-compliant CMDA blueprints, our files are cleared quickly through bank legal and technical evaluation pipelines.
               </p>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginTop: '24px' }}>

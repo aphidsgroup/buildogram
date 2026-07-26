@@ -122,3 +122,19 @@ Correct branch to build: `feat/contextual-lead-conversion-system`. Full sequence
 | `seo-growth/preview-verification.sh` | **New section 6 — stale-cache detection.** Runs on production only. For 10 critical routes it fetches the bare canonical path and the same path with a random cache-bust query, then compares byte length and `og:url`. Status codes never revealed the two previous stale-HTML incidents; only a content comparison does. Emits `06-cache.tsv` and prints a purge instruction on any STALE row. |
 
 Script is now 188 lines, sections 0-6, `bash -n` clean.
+
+---
+
+## 2026-07-26 — Release engineering pass 2
+
+**VERDICT: NO-GO — INSUFFICIENT EVIDENCE.** Lint diagnostics not supplied; preview verification void and re-run pending.
+
+| Commit | Contents |
+| --- | --- |
+| `eaebced` | Metadata across 7 families, tiered claim guard, BOQ calculator label, verifier sections 5-6 |
+| `debab83` | Verifier auth-wall abort, xmllint/grep-P made optional, cross-platform test glob |
+| `56b1522` | `next.config.mjs` dead `eslint` key removed; `COCENA Src` -> `Reference rate`; PDF header and disclaimer reworded |
+
+Deleted `seo-growth/preview-results/*` — that run measured vercel.com's login page. Directory is gitignored.
+
+Latest review: 94 tests pass, 0 fail, 8 suites; build passes with 1,082/1,082 static pages; repository lint remains blocked at 233 errors and 16 warnings. Claim guard: 0 hard failures, 4 PENDING_R1.

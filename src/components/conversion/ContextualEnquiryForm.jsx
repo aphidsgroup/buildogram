@@ -8,7 +8,9 @@
  */
 
 import { useState, useRef, useId, useEffect } from 'react';
+import Link from 'next/link';
 import { getAttributionPayload } from '@/lib/analytics/attribution';
+import { CONVERSION_COMPLETE_EVENT } from '@/lib/conversion/tooltip-lifecycle.mjs';
 import {
   trackLeadFormView,
   trackLeadFormStart,
@@ -121,8 +123,7 @@ export default function ContextualEnquiryForm({
     // Minimum completion time (2s)
     const elapsed = Date.now() - (startRef.current || Date.now());
     if (elapsed < 2000) {
-      // Silently suppress (bot likely)
-      setSubmitted(true);
+      setServerError('Please review your details and try again in a moment.');
       return;
     }
 
@@ -159,6 +160,7 @@ export default function ContextualEnquiryForm({
         trackGenerateLead(context, { placement, leadId: json.id });
         // Suppress tooltip for this session
         try { sessionStorage.setItem(SESSION_KEY_FORM, '1'); } catch (_) {}
+        window.dispatchEvent(new Event(CONVERSION_COMPLETE_EVENT));
         onSuccess?.();
       } else {
         setServerError('Something went wrong. Please try again or contact us on WhatsApp.');
@@ -413,9 +415,9 @@ export default function ContextualEnquiryForm({
         {/* Privacy line */}
         <p style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '12px', marginBottom: 0, lineHeight: 1.5 }}>
           By submitting, you agree that Buildogram may contact you about this enquiry.{' '}
-          <a href="/privacy-policy" style={{ color: 'var(--primary, #FC6E20)', textDecoration: 'underline' }}>
+          <Link href="/privacy-policy" style={{ color: 'var(--primary, #FC6E20)', textDecoration: 'underline' }}>
             See our Privacy Policy.
-          </a>
+          </Link>
         </p>
       </form>
     </div>

@@ -55,6 +55,7 @@ google-credentials.json
 build-output.txt
 build_errors.txt
 build_phase4.txt
+lint-output.txt
 
 # local scratch
 scratch/

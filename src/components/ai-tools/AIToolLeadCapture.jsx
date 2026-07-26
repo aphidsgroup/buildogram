@@ -1,17 +1,16 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { getAttributionPayload } from '@/lib/analytics/attribution';
 
 export default function AIToolLeadCapture({ toolName, inputData, outputData, onCancel, onSuccess }) {
   const [formData, setFormData] = useState({ name: '', phone: '', email: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const [sourcePage, setSourcePage] = useState('');
-
-  useEffect(() => {
-    setSourcePage(window.location.pathname);
-  }, []);
+  // Read at submit time rather than syncing into state via an effect: the value
+  // is never rendered, so storing it caused an extra render for no benefit.
+  const getSourcePage = () =>
+    (typeof window !== 'undefined' ? window.location.pathname : '');
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,7 +29,7 @@ export default function AIToolLeadCapture({ toolName, inputData, outputData, onC
         ...formData,
         inputData,
         outputData,
-        sourcePage,
+        sourcePage: getSourcePage(),
         attribution
       };
 
@@ -40,7 +39,8 @@ export default function AIToolLeadCapture({ toolName, inputData, outputData, onC
         body: JSON.stringify(payload)
       });
 
-      if (!res.ok) {
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || !json.success || !json.id) {
         throw new Error('Failed to submit request');
       }
 

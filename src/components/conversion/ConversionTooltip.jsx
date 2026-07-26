@@ -8,88 +8,60 @@
  * Respects prefers-reduced-motion.
  */
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef, useCallback, useSyncExternalStore } from 'react';
 import { usePathname } from 'next/navigation';
 import { trackTooltipShown, trackTooltipClosed } from '@/lib/conversion/analytics';
-
-const SESSION_KEY_TOTAL  = 'bg_tooltip_total';
-const SESSION_KEY_ROUTE  = 'bg_tooltip_route_'; // + encoded pathname
-const SESSION_KEY_WA     = 'bg_wa_clicked';
-const SESSION_KEY_FORM   = 'bg_form_submitted';
-const MAX_TOTAL          = 3;
-const APPEAR_DELAY_MS    = 5000;
-const AUTO_DISMISS_MS    = 7000; // 6-8s range; 7s centre
+import {
+  CONVERSION_COMPLETE_EVENT,
+  createTooltipLifecycle,
+  getReducedMotionSnapshot,
+  getServerReducedMotionSnapshot,
+  subscribeReducedMotion,
+} from '@/lib/conversion/tooltip-lifecycle.mjs';
 
 export default function ConversionTooltip({ context }) {
   const pathname = usePathname();
   const [visible, setVisible] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [reducedMotion, setReducedMotion] = useState(false);
-  const appearTimer = useRef(null);
-  const dismissTimer = useRef(null);
-  const shownRef = useRef(false);
+  const lifecycleRef = useRef(null);
 
-  // Detect prefers-reduced-motion on client
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setReducedMotion(mq.matches);
-  }, []);
+  const reducedMotion = useSyncExternalStore(
+    subscribeReducedMotion,
+    getReducedMotionSnapshot,
+    getServerReducedMotionSnapshot
+  );
 
   const dismiss = useCallback((reason = 'manual') => {
-    setVisible(false);
-    trackTooltipClosed(context, { autoOrManual: reason });
-    if (dismissTimer.current) clearTimeout(dismissTimer.current);
-  }, [context]);
+    lifecycleRef.current?.dismiss(reason);
+  }, []);
 
   useEffect(() => {
-    // Reset on route change
-    setVisible(false);
-    shownRef.current = false;
-    setMounted(false);
-    if (appearTimer.current) clearTimeout(appearTimer.current);
-    if (dismissTimer.current) clearTimeout(dismissTimer.current);
-
     if (!context?.showWhatsApp) return;
 
-    // Check session suppression
-    try {
-      if (sessionStorage.getItem(SESSION_KEY_WA)) return;
-      if (sessionStorage.getItem(SESSION_KEY_FORM)) return;
-      const total = parseInt(sessionStorage.getItem(SESSION_KEY_TOTAL) || '0', 10);
-      if (total >= MAX_TOTAL) return;
-      const routeKey = SESSION_KEY_ROUTE + encodeURIComponent(pathname);
-      if (sessionStorage.getItem(routeKey)) return;
-    } catch (_) {
-      return; // SessionStorage unavailable (private mode etc)
-    }
+    const lifecycle = createTooltipLifecycle({
+      storage: window.sessionStorage,
+      pathname,
+      onShow: () => {
+        setMounted(true);
+        setVisible(true);
+        trackTooltipShown(context);
+      },
+      onDismiss: (reason) => {
+        setVisible(false);
+        trackTooltipClosed(context, { autoOrManual: reason });
+      },
+    });
+    const suppress = () => lifecycle.suppress();
 
-    // Schedule appearance
-    appearTimer.current = setTimeout(() => {
-      if (shownRef.current) return;
-      shownRef.current = true;
-      setMounted(true);
-      setVisible(true);
-
-      // Record in session
-      try {
-        const total = parseInt(sessionStorage.getItem(SESSION_KEY_TOTAL) || '0', 10);
-        sessionStorage.setItem(SESSION_KEY_TOTAL, String(total + 1));
-        sessionStorage.setItem(SESSION_KEY_ROUTE + encodeURIComponent(pathname), '1');
-      } catch (_) {}
-
-      trackTooltipShown(context);
-
-      // Auto dismiss
-      dismissTimer.current = setTimeout(() => {
-        dismiss('auto');
-      }, AUTO_DISMISS_MS);
-    }, APPEAR_DELAY_MS);
-
+    lifecycleRef.current = lifecycle;
+    lifecycle.start();
+    window.addEventListener(CONVERSION_COMPLETE_EVENT, suppress);
     return () => {
-      if (appearTimer.current) clearTimeout(appearTimer.current);
-      if (dismissTimer.current) clearTimeout(dismissTimer.current);
+      window.removeEventListener(CONVERSION_COMPLETE_EVENT, suppress);
+      lifecycle.cleanup();
+      if (lifecycleRef.current === lifecycle) lifecycleRef.current = null;
     };
-  }, [pathname, context, dismiss]);
+  }, [pathname, context]);
 
   if (!mounted) return null;
   if (!context?.showWhatsApp) return null;
@@ -149,7 +121,7 @@ export default function ConversionTooltip({ context }) {
           borderRadius : '4px',
         }}
       >
-        
+        &times;
       </button>
 
       {/* Message */}

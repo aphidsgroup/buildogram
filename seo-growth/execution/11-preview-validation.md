@@ -136,3 +136,55 @@ Down from 4 — the two `direct delivery` hits were on `finishing-materials` and
 ## 9. Working-tree hygiene
 
 `git diff -w --numstat` showed `src/app/materials/finishing-materials/page.js` and `src/app/materials/piling-foundation-materials/page.js` as 12/12 changed lines with **zero non-whitespace change** — pure CRLF rewrite from the PowerShell `Set-Content` fix. Reverted. This is the third occurrence; consider adding a `.gitattributes` with `*.js text eol=lf` to stop it recurring.
+
+---
+
+## 10 — Owner-machine release review, 2026-07-26 (starting commit `56b1522`)
+
+| Command | Result |
+| --- | --- |
+| `git push` | PASS |
+| `npm ci` | PASS — 594 packages |
+| `npm run lint` | **FAIL** — baseline 239 errors / 16 warnings in 114 files; after focused dirty-file repairs, 233 errors / 16 warnings in 110 files. Reviewed dirty source files have zero diagnostics. |
+| `npm test` | Baseline FAIL because Node 20 on Windows did not expand `"tests/**/*.test.mjs"`; repaired to `node --test tests`, then PASS — 94 tests, 8 suites, 0 fail |
+| `npm run build` | Baseline FAIL on two dirty-file parser errors; repaired build PASS on Next 16.2.6 — compiled in 39.9s, generated 1,082/1,082 static pages in 100s, no prerender failure |
+| `npx vercel` | PASS — `https://buildogram-pkm4g9ysl-aphidsgroup-3300s-projects.vercel.app` |
+
+### Preview verification: VOID
+
+The run produced 18 metadata rows describing **vercel.com's login page**, not Buildogram:
+
+```
+/glossary/rcc   200   https://vercel.com/login   Overview - Vercel   Log in to Vercel   FAIL:og_url
+```
+
+Root cause was a defect in this script, not in the application. Vercel SSO Deployment Protection answers with a **302 to vercel.com/login**, not the 401/403 that section 0 tested for. Section 0 therefore recorded a pass and sections 1-5 silently profiled the wrong website. `xmllint` and `grep -P` are also absent from Git Bash for Windows, so the sitemap section parsed 0 URLs.
+
+**All files from that run were deleted.** They must never be cited as release evidence.
+
+### Script fixes (commit `debab83`)
+
+| Fix | Detail |
+| --- | --- |
+| Auth-wall abort | If an authenticated fetch still returns Vercel's login page, the script exits 2 with setup instructions and writes nothing |
+| Protection classification | 401/403 **and** 3xx to vercel.com both count as PROTECTED; an explicit `protection_verdict` row is written |
+| `xmllint` optional | Falls back to a urlset open/close structural check |
+| `grep -P` optional | `<loc>` extraction falls back to `sed` |
+| Test discovery correction | The earlier quoted recursive glob was not Windows-safe under Node 20. `package.json` now uses `node --test tests`, verified to discover all 94 tests in 8 suites. |
+
+### Lint — release blocker confirmed
+
+Fresh owner-machine lint evidence is now available. The initial dirty tree produced **239 errors and 16 warnings across 114 files**. After repairing every diagnostic in the reviewed dirty source files, the repository-wide result is **233 errors and 16 warnings across 110 files**. The remaining categories are:
+
+| Rule/category | Remaining |
+| --- | ---: |
+| `react/no-unescaped-entities` | 111 |
+| `@next/next/no-html-link-for-pages` | 62 |
+| React compiler / parser diagnostics | 60 |
+| `react-hooks/exhaustive-deps` warnings | 16 |
+
+The release remains **NO-GO**. These failures must be fixed without global rule suppression before commit, preview deployment or production approval. `lint-output.txt` was reduced to counts/rules/important diagnostics, deleted, and added to `.gitignore`.
+
+### `next.config.mjs`
+
+The dead `eslint` key was removed in commit `56b1522`. It was not being read by Next 16 and falsely implied lint suppression. The production build no longer claims to ignore lint errors.
