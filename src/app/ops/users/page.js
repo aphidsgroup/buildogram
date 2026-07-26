@@ -37,7 +37,8 @@ export default function OpsUsersPage() {
   };
 
   useEffect(() => {
-    fetchUsers();
+    const timer = window.setTimeout(() => { void fetchUsers(); }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const openCreateModal = () => {

@@ -51,7 +51,10 @@ export default function PipelineDashboard() {
       .then(d => { setLeads(d.leads || []); setLoading(false); });
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    const timer = window.setTimeout(load, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const showToast = (msg) => {
     setToast(msg);

@@ -18,10 +18,6 @@ export default function BqsDashboard() {
     assigned_engineer: '',
   });
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -40,6 +36,11 @@ export default function BqsDashboard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void fetchData(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const handleCreate = async (e) => {
     e.preventDefault();

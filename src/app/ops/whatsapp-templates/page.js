@@ -12,13 +12,6 @@ export default function WhatsAppTemplatesPage() {
   const [formData, setFormData] = useState({});
   const [saving, setSaving] = useState(false);
 
-  useEffect(() => {
-    fetch('/api/auth/me').then(r => r.json()).then(d => {
-      if (d.user) setUser(d.user);
-      loadTemplates();
-    });
-  }, []);
-
   const loadTemplates = () => {
     setLoading(true);
     fetch('/api/ops/whatsapp/templates?all=true')
@@ -29,6 +22,13 @@ export default function WhatsAppTemplatesPage() {
       })
       .catch(() => setLoading(false));
   };
+
+  useEffect(() => {
+    fetch('/api/auth/me').then(r => r.json()).then(d => {
+      if (d.user) setUser(d.user);
+      loadTemplates();
+    });
+  }, []);
 
   const handleEdit = (t) => {
     setEditing(t);

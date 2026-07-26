@@ -76,7 +76,10 @@ function DocumentManager({ propertyId, onDocUploaded }) {
       .then(d => { if (d.success) setDocs(d.documents); setLoading(false); });
   }, [propertyId]);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    const timer = window.setTimeout(load, 0);
+    return () => window.clearTimeout(timer);
+  }, [load]);
 
   const handleUpload = async (e) => {
     e.preventDefault();
@@ -356,7 +359,10 @@ export default function OpsProperties() {
       .then(d => { setProperties(d.properties || []); setLoading(false); });
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => {
+    const timer = window.setTimeout(load, 0);
+    return () => window.clearTimeout(timer);
+  }, [load]);
 
   const update = async (id, data) => {
     setSaving(true);

@@ -8,10 +8,6 @@ export default function OpsCaseStudies() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    fetchCaseStudies();
-  }, []);
-
   const fetchCaseStudies = async () => {
     try {
       const res = await fetch('/api/case-studies');
@@ -25,6 +21,11 @@ export default function OpsCaseStudies() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void fetchCaseStudies(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const toggleStatus = async (id, currentStatus) => {
     const newStatus = currentStatus === 'draft' ? 'published' : 'draft';

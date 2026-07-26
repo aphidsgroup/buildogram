@@ -117,7 +117,10 @@ export default function OpsPartnersV2() {
     }
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    const timer = window.setTimeout(load, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const toggle = async (id, slug, field) => {
     const partner = partners.find(p => p.id === id || p.slug === slug);
@@ -199,7 +202,7 @@ export default function OpsPartnersV2() {
     active: partners.filter(p => p.isActive).length,
   };
 
-  const PartnerForm = () => (
+  const renderPartnerForm = () => (
     <div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 16px' }}>
         <Field label="Company Name *">
@@ -548,13 +551,13 @@ export default function OpsPartnersV2() {
       {/* Add Modal */}
       <Modal open={addModal} onClose={() => setAddModal(false)} title="Add New Partner"
         footer={<><button onClick={() => setAddModal(false)} style={{ padding: '9px 18px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: 'white', cursor: 'pointer', fontWeight: 700, fontSize: '14px' }}>Cancel</button><button onClick={handleAdd} style={{ padding: '9px 20px', borderRadius: '10px', background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '14px' }}>Create Partner</button></>}>
-        <PartnerForm />
+        {renderPartnerForm()}
       </Modal>
 
       {/* Edit Modal */}
       <Modal open={editModal} onClose={() => setEditModal(false)} title="Edit Partner"
         footer={<><button onClick={() => setEditModal(false)} style={{ padding: '9px 18px', borderRadius: '10px', border: '1.5px solid #E2E8F0', background: 'white', cursor: 'pointer', fontWeight: 700, fontSize: '14px' }}>Cancel</button><button onClick={handleEdit} style={{ padding: '9px 20px', borderRadius: '10px', background: 'linear-gradient(135deg,#FFB347,#FC6E20)', color: 'white', border: 'none', cursor: 'pointer', fontWeight: 700, fontSize: '14px' }}>Save Changes</button></>}>
-        <PartnerForm />
+        {renderPartnerForm()}
       </Modal>
     </div>
   );

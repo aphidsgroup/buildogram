@@ -37,10 +37,6 @@ export default function ReelsAdmin() {
     cta_url: ''
   });
 
-  useEffect(() => {
-    fetchReels();
-  }, []);
-
   const fetchReels = async () => {
     try {
       const res = await fetch('/api/ops/reels', { credentials: 'include' });
@@ -56,6 +52,11 @@ export default function ReelsAdmin() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void fetchReels(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const handleCreate = async (e) => {
     e.preventDefault();

@@ -55,9 +55,12 @@ export default function DocumentLocker() {
   };
 
   useEffect(() => {
-    fetchDocs();
-    const storedP = typeof window !== 'undefined' && localStorage.getItem('bos_projects');
-    if (storedP) setProjects(JSON.parse(storedP));
+    const timer = window.setTimeout(() => {
+      void fetchDocs();
+      const storedP = localStorage.getItem('bos_projects');
+      if (storedP) setProjects(JSON.parse(storedP));
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const save = (arr) => { setDocs(arr); localStorage.setItem('bos_documents', JSON.stringify(arr)); };

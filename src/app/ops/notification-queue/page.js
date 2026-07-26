@@ -34,7 +34,10 @@ export default function NotificationQueuePage() {
     }
   };
 
-  useEffect(() => { loadData(); }, [statusFilter]);
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void loadData(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, [statusFilter]);
 
   const showToast = (msg, type = 'success') => {
     setToast({ message: msg, type });

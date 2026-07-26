@@ -52,9 +52,12 @@ export default function SiteLogbook() {
   };
 
   useEffect(() => {
-    fetchLogs();
-    const storedP = typeof window !== 'undefined' && localStorage.getItem('bos_projects');
-    if (storedP) setProjects(JSON.parse(storedP));
+    const timer = window.setTimeout(() => {
+      void fetchLogs();
+      const storedP = localStorage.getItem('bos_projects');
+      if (storedP) setProjects(JSON.parse(storedP));
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const save = (arr) => { setLogs(arr); localStorage.setItem('bos_logbook', JSON.stringify(arr)); };

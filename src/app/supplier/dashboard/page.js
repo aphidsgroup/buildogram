@@ -21,12 +21,11 @@ const STATUS_COLORS  = { New: '#3B82F6', Quoted: '#8B5CF6', 'Under Review': '#F5
 
 export default function SupplierDashboard() {
   const [user, setUser] = useState(null);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [unreadCount, setUnreadCount] = useState(() => getUnreadCount('supplier'));
   const newRFQs = DEMO_RFQS.filter(r => r.status === 'New').length;
 
   useEffect(() => {
     fetch('/api/auth/me').then(r => r.json()).then(d => { if (d.user) setUser(d.user); });
-    setUnreadCount(getUnreadCount('supplier'));
     const t = setInterval(() => setUnreadCount(getUnreadCount('supplier')), 30000);
     return () => clearInterval(t);
   }, []);

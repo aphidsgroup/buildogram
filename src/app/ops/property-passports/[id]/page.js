@@ -11,10 +11,6 @@ export default function PassportDetail({ params }) {
   const [recordForm, setRecordForm] = useState({ category: 'legal_document', title: '', description: '', file_url: '', visibility: 'private' });
   const [checklistForm, setChecklistForm] = useState({ stage: 'planning', checklist_item: '', remarks: '' });
 
-  useEffect(() => {
-    fetchPassport();
-  }, []);
-
   const fetchPassport = async () => {
     setLoading(true);
     try {
@@ -29,6 +25,11 @@ export default function PassportDetail({ params }) {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void fetchPassport(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, [id]);
 
   const updateStatus = async (status) => {
     try {

@@ -23,8 +23,6 @@ export default function BOQProjectListPage() {
   const [form, setForm]         = useState({ title: '', client_name: '', client_phone: '', client_email: '', plot_address: '', floor_config: 'G', margin_pct: '12' });
   const [err, setErr]           = useState('');
 
-  useEffect(() => { loadProjects(); }, []);
-
   async function loadProjects() {
     setLoading(true);
     try {
@@ -32,6 +30,11 @@ export default function BOQProjectListPage() {
       if (r.ok) { const d = await r.json(); setProjects(d.projects || []); }
     } finally { setLoading(false); }
   }
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void loadProjects(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   async function handleCreate(e) {
     e.preventDefault();

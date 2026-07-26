@@ -2,6 +2,18 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 
+function StatusPill({ val }) {
+  let color = '#94a3b8';
+  if (val === 'connected' || val === 'configured') color = '#10b981';
+  if (val === 'error' || val === 'missing_keys') color = '#ef4444';
+
+  return (
+    <span style={{ background: color + '22', color, padding: '4px 12px', borderRadius: '999px', fontSize: '13px', fontWeight: 600, textTransform: 'capitalize' }}>
+      {val || 'Unknown'}
+    </span>
+  );
+}
+
 export default function SystemStatusPage() {
   const [health, setHealth] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,18 +27,6 @@ export default function SystemStatusPage() {
       })
       .catch(() => setLoading(false));
   }, []);
-
-  const StatusPill = ({ val }) => {
-    let color = '#94a3b8'; // grey
-    if (val === 'connected' || val === 'configured') color = '#10b981'; // green
-    if (val === 'error' || val === 'missing_keys') color = '#ef4444'; // red
-
-    return (
-      <span style={{ background: color + '22', color: color, padding: '4px 12px', borderRadius: '999px', fontSize: '13px', fontWeight: 600, textTransform: 'capitalize' }}>
-        {val || 'Unknown'}
-      </span>
-    );
-  };
 
   return (
     <div style={{ padding: '24px', maxWidth: '800px', margin: '0 auto' }}>

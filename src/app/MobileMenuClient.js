@@ -11,8 +11,11 @@ export default function MobileMenuClient({ menus }) {
   const pathname = usePathname();
 
   useEffect(() => { 
-    setMenuOpen(false); 
-    setOpenAccordion(null);
+    const timer = window.setTimeout(() => {
+      setMenuOpen(false);
+      setOpenAccordion(null);
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [pathname]);
 
   const close = () => {

@@ -23,7 +23,8 @@ export default function PropertyMarketplaceClient({ initialListingType }) {
   };
 
   useEffect(() => {
-    fetchProperties();
+    const timer = window.setTimeout(fetchProperties, 0);
+    return () => window.clearTimeout(timer);
   }, [filterType, filterBudget, initialListingType]);
 
   const fmt = n => n ? '₹' + Number(n).toLocaleString('en-IN') : '—';

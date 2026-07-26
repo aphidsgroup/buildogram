@@ -70,13 +70,13 @@ export async function generateMetadata({ params }) {
 
 // ── Main Page ─────────────────────────────────────────────────────────
 export default async function PartnerProfilePage({ params }) {
-  params = await params; // Next 16: params is a Promise
-  if (params.slug?.startsWith('demo-')) notFound(); // SEO P0: never expose seeded demo partners
+  const resolvedParams = await params; // Next 16: params is a Promise
+  if (resolvedParams.slug?.startsWith('demo-')) notFound(); // SEO P0: never expose seeded demo partners
   let partner = null;
   let related = [];
   try {
     partner = await safeDbCall(() => prisma.partners.findUnique({
-      where: { slug: params.slug },
+      where: { slug: resolvedParams.slug },
       include: {
         partner_gallery: { orderBy: { sort_order: 'asc' } },
         partner_videos: true,
@@ -91,7 +91,7 @@ export default async function PartnerProfilePage({ params }) {
           partner_type: partner.partner_type, 
           verification_status: 'verified', 
           public_profile_enabled: true,
-          slug: { not: params.slug }
+          slug: { not: resolvedParams.slug }
         },
         take: 3,
         orderBy: { featured: 'desc' }

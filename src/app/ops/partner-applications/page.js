@@ -47,7 +47,10 @@ export default function OpsPartnerApplications() {
     }
   };
 
-  useEffect(() => { fetchApps(); }, []);
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void fetchApps(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const updateStatus = async (id, newStatus) => {
     try {

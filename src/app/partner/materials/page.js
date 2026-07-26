@@ -68,9 +68,12 @@ export default function MaterialFlow() {
   };
 
   useEffect(() => {
-    fetchItems();
-    const storedP = typeof window !== 'undefined' && localStorage.getItem('bos_projects');
-    if (storedP) setProjects(JSON.parse(storedP));
+    const timer = window.setTimeout(() => {
+      void fetchItems();
+      const storedP = localStorage.getItem('bos_projects');
+      if (storedP) setProjects(JSON.parse(storedP));
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const save = (arr) => { setItems(arr); localStorage.setItem('bos_materials', JSON.stringify(arr)); };

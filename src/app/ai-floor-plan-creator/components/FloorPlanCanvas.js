@@ -69,14 +69,10 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom, 
     walls: true, openings: true, stairs: true, labels: true, dimensions: true, blocks: false
   });
 
-  // Automatically enable/disable blocks based on View Mode
-  useEffect(() => {
-    if (viewMode === 'CAD') {
-      setLayers(l => ({ ...l, blocks: false }));
-    } else {
-      setLayers(l => ({ ...l, blocks: true }));
-    }
-  }, [viewMode]);
+  const changeViewMode = (nextMode) => {
+    setViewMode(nextMode);
+    setLayers(current => ({ ...current, blocks: nextMode !== 'CAD' }));
+  };
 
   useEffect(() => { loadKonva().then(() => setReady(true)); }, []);
 
@@ -667,7 +663,7 @@ export default function FloorPlanCanvas({ planData, selectedRoom, onSelectRoom, 
         <span style={{ color: '#777', fontSize: 10, letterSpacing: 1 }}>VIEW</span>
         <div style={{ display: 'flex', background: '#2d2d2d', borderRadius: 3, padding: 2 }}>
           {VIEW_MODES.map(v => (
-            <button key={v.k} onClick={() => setViewMode(v.k)} style={{
+            <button key={v.k} onClick={() => changeViewMode(v.k)} style={{
               ...btnBase, background: viewMode === v.k ? '#007aff' : 'transparent',
               color: viewMode === v.k ? '#fff' : '#aaa'
             }}>

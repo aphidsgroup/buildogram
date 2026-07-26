@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useMemo } from 'react';
 
 const TEMPLATES = {
   construction: "Project Update from {area}: Our engineering team just completed a major milestone for this home construction project. {description} We utilized {methods_used} to ensure structural integrity and quality standards. Buildogram protects property owners with transparent BOQ-driven execution and strict site supervision. Building in Chennai? Let our engineers manage it.",
@@ -13,10 +13,8 @@ const TEMPLATES = {
 };
 
 export default function GbpGenerator({ assetData }) {
-  const [postText, setPostText] = useState('');
-  
-  useEffect(() => {
-    if (!assetData.category || !assetData.area) return;
+  const postText = useMemo(() => {
+    if (!assetData.category || !assetData.area) return '';
     
     let text = TEMPLATES[assetData.category] || TEMPLATES.construction;
     
@@ -28,7 +26,7 @@ export default function GbpGenerator({ assetData }) {
     // Clean up empty spaces and limit to ~700 chars if necessary, though template keeps it short
     text = text.replace(/\s+/g, ' ').trim();
     
-    setPostText(text.substring(0, 1500)); // GBP allows 1500, but 700 is sweet spot
+    return text.substring(0, 1500);
   }, [assetData]);
 
   const copyToClipboard = () => {

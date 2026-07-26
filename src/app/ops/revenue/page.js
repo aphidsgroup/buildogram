@@ -23,7 +23,10 @@ export default function OpsRevenuePage() {
     setLoading(false);
   };
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void fetchData(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const handleCreate = async (e) => {
     e.preventDefault();

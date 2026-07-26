@@ -45,11 +45,11 @@ const breadcrumbSchema = (svc) => ({
 });
 
 export default async function ServicePage({ params }) {
-  params = await params; // Next 16: params is a Promise
-  const currentPath = `/services${params.slug}`.replace('//', '/');
+  const resolvedParams = await params; // Next 16: params is a Promise
+  const currentPath = `/services${resolvedParams.slug}`.replace('//', '/');
   const relatedLinks = getContextualLinks('service', currentPath);
 
-  const svc = services.find((s) => s.slug === params.slug);
+  const svc = services.find((s) => s.slug === resolvedParams.slug);
   if (!svc) notFound();
 
   return (

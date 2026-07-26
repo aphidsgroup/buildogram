@@ -30,8 +30,8 @@ const breadcrumbSchema = (cat) => ({
 });
 
 export default async function FaqCategoryPage({ params }) {
-  params = await params; // Next 16: params is a Promise
-  const cat = faqMap[params.category];
+  const resolvedParams = await params; // Next 16: params is a Promise
+  const cat = faqMap[resolvedParams.category];
   if (!cat) notFound();
 
   const faqSchema = {
@@ -91,7 +91,7 @@ export default async function FaqCategoryPage({ params }) {
         <div style={{ marginTop: '60px', paddingTop: '40px', borderTop: '1px solid var(--border)' }}>
           <h2 style={{ fontSize: '18px', color: 'var(--secondary)', marginBottom: '20px' }}>Other FAQ Categories</h2>
           <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
-            {faqCategories.filter((c) => c.slug !== params.category).map((c) => (
+            {faqCategories.filter((c) => c.slug !== resolvedParams.category).map((c) => (
               <Link key={c.slug} href={`/faqs/${c.slug}`} className="btn btn-outline btn-sm">{c.title}</Link>
             ))}
           </div>

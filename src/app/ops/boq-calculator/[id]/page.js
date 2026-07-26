@@ -627,8 +627,6 @@ export default function BOQWorkstationPage({ params }) {
   // Project header edits
   const [header, setHeader] = useState({ title:'', client_name:'', client_phone:'', client_email:'', plot_address:'', floor_config:'G', margin_pct:'12', status:'draft', notes:'' });
 
-  useEffect(() => { loadProject(); }, [id]);
-
   async function loadProject() {
     setLoading(true);
     try {
@@ -668,6 +666,11 @@ export default function BOQWorkstationPage({ params }) {
     } catch (err) { console.error(err); }
     setLoading(false);
   }
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void loadProject(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, [id]);
 
   async function handleSaveAndCalculate() {
     setSaving(true); setSaveMsg('');

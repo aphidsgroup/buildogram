@@ -11,11 +11,6 @@ export default function BqsInspectionDetail({ params }) {
   const [showReworkModal, setShowReworkModal] = useState(false);
   const [reworkData, setReworkData] = useState({ result_id: null, issue_title: '', issue_description: '' });
 
-  useEffect(() => {
-    fetchInspection();
-    fetchPassports();
-  }, [params.id]);
-
   const fetchInspection = async () => {
     try {
       const res = await fetch(`/api/ops/bqs/inspections/${params.id}`);
@@ -41,6 +36,14 @@ export default function BqsInspectionDetail({ params }) {
       console.error(e);
     }
   };
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      void fetchInspection();
+      void fetchPassports();
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [params.id]);
 
   const updateResult = async (resultId, updatePayload) => {
     try {

@@ -68,7 +68,8 @@ export default function ProjectsPage() {
   };
 
   useEffect(() => {
-    fetchProjects();
+    const timer = window.setTimeout(() => { void fetchProjects(); }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const save = (arr) => { setProjects(arr); localStorage.setItem('bos_projects', JSON.stringify(arr)); };

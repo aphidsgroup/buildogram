@@ -80,26 +80,29 @@ export default function PublicBOQCalculator() {
 
   // ── load/save draft ──────────────────────────────────────────────────────
   useEffect(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) {
-        const d = JSON.parse(saved);
-        if (d.info) setInfo(d.info);
-        if (d.floorsData) setFloorsData(d.floorsData);
-        if (d.foundation) setFoundation(d.foundation);
-        if (d.plinthBeam) setPlinthBeam(d.plinthBeam);
-        if (d.basement) setBasement(d.basement);
-        if (d.sillLintel) setSillLintel(d.sillLintel);
-        if (d.slabConcrete) setSlabConcrete(d.slabConcrete);
-        if (d.brickwork9) setBrickwork9(d.brickwork9);
-        if (d.brickwork4) setBrickwork4(d.brickwork4);
-        if (d.tileWork) setTileWork(d.tileWork);
-        if (d.doorsWindows) setDoorsWindows(d.doorsWindows);
-        if (d.plastering) setPlastering(d.plastering);
-        if (d.addlWorks) setAddlWorks(d.addlWorks);
-        if (d.staircase) setStaircase(d.staircase);
-      }
-    } catch {}
+    const timer = window.setTimeout(() => {
+      try {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+          const d = JSON.parse(saved);
+          if (d.info) setInfo(d.info);
+          if (d.floorsData) setFloorsData(d.floorsData);
+          if (d.foundation) setFoundation(d.foundation);
+          if (d.plinthBeam) setPlinthBeam(d.plinthBeam);
+          if (d.basement) setBasement(d.basement);
+          if (d.sillLintel) setSillLintel(d.sillLintel);
+          if (d.slabConcrete) setSlabConcrete(d.slabConcrete);
+          if (d.brickwork9) setBrickwork9(d.brickwork9);
+          if (d.brickwork4) setBrickwork4(d.brickwork4);
+          if (d.tileWork) setTileWork(d.tileWork);
+          if (d.doorsWindows) setDoorsWindows(d.doorsWindows);
+          if (d.plastering) setPlastering(d.plastering);
+          if (d.addlWorks) setAddlWorks(d.addlWorks);
+          if (d.staircase) setStaircase(d.staircase);
+        }
+      } catch {}
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   function saveDraft() {
@@ -134,10 +137,11 @@ export default function PublicBOQCalculator() {
   }
 
   // ── floor sync ────────────────────────────────────────────────────────────
-  useEffect(() => {
-    const labels = FLOOR_LABELS[info.floorConfig] || ['Ground'];
+  function changeFloorConfig(floorConfig) {
+    const labels = FLOOR_LABELS[floorConfig] || ['Ground'];
+    setInfo(prev => ({ ...prev, floorConfig }));
     setFloorsData(prev => labels.map((l, i) => prev[i] ? { ...prev[i], floorLabel: l } : { floorLabel: l, length: '', breadth: '', area: '' }));
-  }, [info.floorConfig]);
+  }
 
   // Area is computed inline on length/breadth change — no stale-closure bug
 
@@ -490,7 +494,7 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
                 ))}
                 <label style={lbl_s}>
                   Floor Configuration
-                  <Sel value={info.floorConfig} onChange={v => setInfo(p => ({ ...p, floorConfig: v }))}>
+                  <Sel value={info.floorConfig} onChange={changeFloorConfig}>
                     {['G','G+1','G+2','G+3'].map(o => <option key={o} value={o}>{o === 'G' ? 'Ground Floor only' : o}</option>)}
                   </Sel>
                 </label>

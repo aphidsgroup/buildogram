@@ -20,22 +20,23 @@ export default function FinancePage() {
   const BLANK_EXP = { projectId: '', category: 'Labour', amount: '', date: new Date().toISOString().slice(0, 10), paidTo: '', notes: '' };
 
   useEffect(() => {
-    const sp = localStorage.getItem('bos_projects');
-    const allProjects = sp ? JSON.parse(sp) : DEMO_PROJECTS;
-    setProjects(allProjects);
-
-    // Aggregate payments and expenses across all projects
-    let allPay = [], allExp = [];
-    allProjects.forEach(p => {
-      const pp = localStorage.getItem('bos_payments_' + p.id);
-      const ep = localStorage.getItem('bos_expenses_' + p.id);
-      allPay = allPay.concat(pp ? JSON.parse(pp) : DEMO_PAYMENTS.filter(x => x.projectId === p.id));
-      allExp = allExp.concat(ep ? JSON.parse(ep) : DEMO_EXPENSES.filter(x => x.projectId === p.id));
-    });
-    if (allPay.length === 0) allPay = DEMO_PAYMENTS;
-    if (allExp.length === 0) allExp = DEMO_EXPENSES;
-    setPayments(allPay);
-    setExpenses(allExp);
+    const timer = window.setTimeout(() => {
+      const sp = localStorage.getItem('bos_projects');
+      const allProjects = sp ? JSON.parse(sp) : DEMO_PROJECTS;
+      setProjects(allProjects);
+      let allPay = [], allExp = [];
+      allProjects.forEach(p => {
+        const pp = localStorage.getItem('bos_payments_' + p.id);
+        const ep = localStorage.getItem('bos_expenses_' + p.id);
+        allPay = allPay.concat(pp ? JSON.parse(pp) : DEMO_PAYMENTS.filter(x => x.projectId === p.id));
+        allExp = allExp.concat(ep ? JSON.parse(ep) : DEMO_EXPENSES.filter(x => x.projectId === p.id));
+      });
+      if (allPay.length === 0) allPay = DEMO_PAYMENTS;
+      if (allExp.length === 0) allExp = DEMO_EXPENSES;
+      setPayments(allPay);
+      setExpenses(allExp);
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const saveAll = (type, arr) => {
@@ -199,4 +200,3 @@ export default function FinancePage() {
     </div>
   );
 }
-

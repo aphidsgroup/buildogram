@@ -17,10 +17,6 @@ export default function PropertyPassportsDashboard() {
     property_type: 'Residential',
   });
 
-  useEffect(() => {
-    fetchPassports();
-  }, []);
-
   const fetchPassports = async (searchQuery = '') => {
     setLoading(true);
     try {
@@ -36,6 +32,11 @@ export default function PropertyPassportsDashboard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void fetchPassports(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();

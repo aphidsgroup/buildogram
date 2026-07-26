@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import { submitEnquiry } from '@/lib/enquiryApi';
 import { BUDGET_RANGES } from '@/lib/leadStore';
 
@@ -10,13 +10,12 @@ function LeadForm({ partner }) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
-  const [mountTime, setMountTime] = useState(0);
+  const mountTime = useRef(null);
 
-  useEffect(() => {
-    setMountTime(Date.now());
-  }, []);
-
-  const f = k => e => setForm(p => ({ ...p, [k]: e.target.value }));
+  const f = k => e => {
+    if (mountTime.current === null) mountTime.current = Date.now();
+    setForm(p => ({ ...p, [k]: e.target.value }));
+  };
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -27,7 +26,7 @@ function LeadForm({ partner }) {
 
     let spamStatus = 'clean';
     if (form.companyWebsite) spamStatus = 'spam'; // honeypot caught
-    else if (Date.now() - mountTime < 2000) spamStatus = 'suspicious'; // too fast
+    else if (!mountTime.current || Date.now() - mountTime.current < 2000) spamStatus = 'suspicious'; // too fast
 
     const result = await submitEnquiry({
       ...form,

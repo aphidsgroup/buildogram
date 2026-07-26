@@ -91,7 +91,7 @@ export default function PartnerLayout({ children }) {
   const [category, setCategory] = useState('builder');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [comingSoonModule, setComingSoonModule] = useState(null);
-  const [unreadCount, setUnreadCount] = useState(0);
+  const [unreadCount, setUnreadCount] = useState(() => getUnreadCount('partner'));
   const [notifOpen, setNotifOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const notifRef = useRef(null);
@@ -122,7 +122,6 @@ export default function PartnerLayout({ children }) {
       }
     });
     
-    setUnreadCount(getUnreadCount('partner'));
     const interval = setInterval(() => setUnreadCount(getUnreadCount('partner')), 30000);
     
     const handleClick = (e) => { 

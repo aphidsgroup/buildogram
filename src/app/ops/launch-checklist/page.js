@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 
 const CHECKLIST_ITEMS = [
@@ -13,17 +13,18 @@ const CHECKLIST_ITEMS = [
   { id: 'ops_accounts', title: 'Core Ops Accounts Provisioned', category: 'Access' },
 ];
 
-export default function LaunchChecklist() {
-  const [checkedItems, setCheckedItems] = useState({});
-  const [mounted, setMounted] = useState(false);
+const subscribeHydration = () => () => {};
 
-  useEffect(() => {
-    setMounted(true);
+export default function LaunchChecklist() {
+  const [checkedItems, setCheckedItems] = useState(() => {
     try {
       const saved = localStorage.getItem('buildogram_launch_qa');
-      if (saved) setCheckedItems(JSON.parse(saved));
-    } catch (e) {}
-  }, []);
+      return saved ? JSON.parse(saved) : {};
+    } catch {
+      return {};
+    }
+  });
+  const mounted = useSyncExternalStore(subscribeHydration, () => true, () => false);
 
   const toggle = (id) => {
     const next = { ...checkedItems, [id]: !checkedItems[id] };

@@ -35,25 +35,23 @@ function ContactForm() {
   const [tracking, setTracking] = useState({});
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(window.location.search);
-    const typeParam = searchParams.get('type');
-    
-    if (typeParam) {
-      setForm(prev => ({ ...prev, leadType: typeParam }));
-    }
-    
-    // Capture tracking info
-    setTracking({
-      sourcePage: window.location.pathname,
-      sourceCta: searchParams.get('source') || 'Direct',
-      utmSource: searchParams.get('utm_source'),
-      utmMedium: searchParams.get('utm_medium'),
-      utmCampaign: searchParams.get('utm_campaign'),
-      utmContent: searchParams.get('utm_content'),
-      referrer: document.referrer,
-      deviceType: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
-      attribution: getAttributionPayload()
-    });
+    const timer = window.setTimeout(() => {
+      const searchParams = new URLSearchParams(window.location.search);
+      const typeParam = searchParams.get('type');
+      if (typeParam) setForm(prev => ({ ...prev, leadType: typeParam }));
+      setTracking({
+        sourcePage: window.location.pathname,
+        sourceCta: searchParams.get('source') || 'Direct',
+        utmSource: searchParams.get('utm_source'),
+        utmMedium: searchParams.get('utm_medium'),
+        utmCampaign: searchParams.get('utm_campaign'),
+        utmContent: searchParams.get('utm_content'),
+        referrer: document.referrer,
+        deviceType: /Mobi|Android/i.test(navigator.userAgent) ? 'Mobile' : 'Desktop',
+        attribution: getAttributionPayload()
+      });
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const handleExtraFieldChange = (key, value) => {

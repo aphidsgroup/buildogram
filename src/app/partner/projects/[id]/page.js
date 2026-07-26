@@ -126,8 +126,11 @@ function MilestonesTab({ projectId }) {
   const [form, setForm] = useState(BLANK);
 
   useEffect(() => {
-    const stored = localStorage.getItem('bos_milestones_' + projectId);
-    setMilestones(stored ? JSON.parse(stored) : DEMO_MILESTONES.filter(m => m.projectId === projectId));
+    const timer = window.setTimeout(() => {
+      const stored = localStorage.getItem('bos_milestones_' + projectId);
+      setMilestones(stored ? JSON.parse(stored) : DEMO_MILESTONES.filter(m => m.projectId === projectId));
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [projectId]);
 
   const save = (arr) => { setMilestones(arr); localStorage.setItem('bos_milestones_' + projectId, JSON.stringify(arr)); };
@@ -211,8 +214,11 @@ function UpdatesTab({ projectId, projectName }) {
   const [form, setForm] = useState(BLANK);
 
   useEffect(() => {
-    const stored = localStorage.getItem('bos_logs_' + projectId);
-    setLogs(stored ? JSON.parse(stored) : DEMO_LOGBOOK.filter(l => l.project === projectId));
+    const timer = window.setTimeout(() => {
+      const stored = localStorage.getItem('bos_logs_' + projectId);
+      setLogs(stored ? JSON.parse(stored) : DEMO_LOGBOOK.filter(l => l.project === projectId));
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [projectId]);
 
   const save = (arr) => { setLogs(arr); localStorage.setItem('bos_logs_' + projectId, JSON.stringify(arr)); };
@@ -288,8 +294,11 @@ function MaterialsTab({ projectId }) {
   const CATEGORIES = ['Cement', 'Steel', 'Sand', 'Aggregate', 'Bricks', 'Tiles', 'Paint', 'Electrical', 'Plumbing', 'Wood', 'Hardware', 'Other'];
 
   useEffect(() => {
-    const stored = localStorage.getItem('bos_materials_' + projectId);
-    setItems(stored ? JSON.parse(stored) : DEMO_MATERIALS.filter(m => m.project === projectId));
+    const timer = window.setTimeout(() => {
+      const stored = localStorage.getItem('bos_materials_' + projectId);
+      setItems(stored ? JSON.parse(stored) : DEMO_MATERIALS.filter(m => m.project === projectId));
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [projectId]);
 
   const save = (arr) => { setItems(arr); localStorage.setItem('bos_materials_' + projectId, JSON.stringify(arr)); };
@@ -362,8 +371,11 @@ function DocumentsTab({ projectId }) {
   const [form, setForm] = useState(BLANK);
 
   useEffect(() => {
-    const stored = localStorage.getItem('bos_docs_' + projectId);
-    setDocs(stored ? JSON.parse(stored) : DEMO_DOCUMENTS.filter(d => d.project === projectId));
+    const timer = window.setTimeout(() => {
+      const stored = localStorage.getItem('bos_docs_' + projectId);
+      setDocs(stored ? JSON.parse(stored) : DEMO_DOCUMENTS.filter(d => d.project === projectId));
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [projectId]);
 
   const save = (arr) => { setDocs(arr); localStorage.setItem('bos_docs_' + projectId, JSON.stringify(arr)); };
@@ -433,10 +445,13 @@ function FinanceTab({ projectId, project }) {
   const [form, setForm] = useState(BLANK_PAY);
 
   useEffect(() => {
-    const sp = localStorage.getItem('bos_payments_' + projectId);
-    const se = localStorage.getItem('bos_expenses_' + projectId);
-    setPayments(sp ? JSON.parse(sp) : DEMO_PAYMENTS.filter(p => p.projectId === projectId));
-    setExpenses(se ? JSON.parse(se) : DEMO_EXPENSES.filter(e => e.projectId === projectId));
+    const timer = window.setTimeout(() => {
+      const sp = localStorage.getItem('bos_payments_' + projectId);
+      const se = localStorage.getItem('bos_expenses_' + projectId);
+      setPayments(sp ? JSON.parse(sp) : DEMO_PAYMENTS.filter(p => p.projectId === projectId));
+      setExpenses(se ? JSON.parse(se) : DEMO_EXPENSES.filter(e => e.projectId === projectId));
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [projectId]);
 
   const savePay = (arr) => { setPayments(arr); localStorage.setItem('bos_payments_' + projectId, JSON.stringify(arr)); };
@@ -555,8 +570,11 @@ function IssuesTab({ projectId }) {
   const [form, setForm] = useState(BLANK);
 
   useEffect(() => {
-    const stored = localStorage.getItem('bos_issues_' + projectId);
-    setIssues(stored ? JSON.parse(stored) : DEMO_ISSUES.filter(i => i.projectId === projectId));
+    const timer = window.setTimeout(() => {
+      const stored = localStorage.getItem('bos_issues_' + projectId);
+      setIssues(stored ? JSON.parse(stored) : DEMO_ISSUES.filter(i => i.projectId === projectId));
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [projectId]);
 
   const save = (arr) => { setIssues(arr); localStorage.setItem('bos_issues_' + projectId, JSON.stringify(arr)); };
@@ -639,15 +657,18 @@ export default function ProjectDetailPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const stored = localStorage.getItem('bos_projects');
-    const projects = stored ? JSON.parse(stored) : DEMO_PROJECTS;
-    const found = projects.find(p => p.id === id);
-    if (found) setProject(found);
-    else {
-      const demo = DEMO_PROJECTS.find(p => p.id === id);
-      if (demo) setProject(demo);
-    }
-    setLoading(false);
+    const timer = window.setTimeout(() => {
+      const stored = localStorage.getItem('bos_projects');
+      const projects = stored ? JSON.parse(stored) : DEMO_PROJECTS;
+      const found = projects.find(p => p.id === id);
+      if (found) setProject(found);
+      else {
+        const demo = DEMO_PROJECTS.find(p => p.id === id);
+        if (demo) setProject(demo);
+      }
+      setLoading(false);
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [id]);
 
   if (loading) return <div style={{ padding: '60px', textAlign: 'center', color: '#64748B' }}>Loading project...</div>;

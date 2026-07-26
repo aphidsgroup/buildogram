@@ -16,10 +16,6 @@ export default function MaterialsDashboard() {
   const [loading, setLoading] = useState(true);
   const [selectedQuote, setSelectedQuote] = useState(null);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = async () => {
     setLoading(true);
     try {
@@ -38,6 +34,11 @@ export default function MaterialsDashboard() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void fetchData(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const convertLead = async (id) => {
     if (!confirm('Convert this lead into a Quote Request?')) return;

@@ -35,8 +35,11 @@ export default function BOQStudio() {
   const [area, setArea] = useState(1200);
 
   useEffect(() => {
-    const stored = typeof window !== 'undefined' && localStorage.getItem('bos_boq');
-    setItems(stored ? JSON.parse(stored) : DEMO_BOQ_ITEMS);
+    const timer = window.setTimeout(() => {
+      const stored = localStorage.getItem('bos_boq');
+      setItems(stored ? JSON.parse(stored) : DEMO_BOQ_ITEMS);
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, []);
 
   const save = (arr) => { setItems(arr); localStorage.setItem('bos_boq', JSON.stringify(arr)); };

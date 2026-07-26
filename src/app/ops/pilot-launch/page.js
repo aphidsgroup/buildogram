@@ -12,25 +12,22 @@ export default function PilotLaunchPage() {
   const [pwaStatus, setPwaStatus] = useState(null);
 
   useEffect(() => {
-    // Check PWA status client-side
-    const status = {
-      swRegistered: false,
-      isStandalone: false,
-      pwaEnabledEnv: process.env.NEXT_PUBLIC_ENABLE_PWA !== 'false'
-    };
-    if (typeof window !== 'undefined') {
-      status.isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+    let active = true;
+    const checkPwaStatus = async () => {
+      await Promise.resolve();
+      const status = {
+        swRegistered: false,
+        isStandalone: window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone,
+        pwaEnabledEnv: process.env.NEXT_PUBLIC_ENABLE_PWA !== 'false'
+      };
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.getRegistration().then(reg => {
-          if (reg) {
-            status.swRegistered = true;
-          }
-          setPwaStatus(status);
-        });
-      } else {
-        setPwaStatus(status);
+        const registration = await navigator.serviceWorker.getRegistration();
+        status.swRegistered = Boolean(registration);
       }
-    }
+      if (active) setPwaStatus(status);
+    };
+    void checkPwaStatus();
+    return () => { active = false; };
   }, []);
 
   const fetchStatus = () => {
@@ -56,7 +53,8 @@ export default function PilotLaunchPage() {
 
   useEffect(() => {
     if (user?.role?.startsWith('ops_')) {
-      fetchStatus();
+      const timer = window.setTimeout(fetchStatus, 0);
+      return () => window.clearTimeout(timer);
     }
   }, [user]);
 

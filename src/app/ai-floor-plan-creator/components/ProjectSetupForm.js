@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useMemo, useState } from 'react';
 import styles from '../studio/studio.module.css';
 
 const ROOM_PRESETS = [
@@ -47,9 +47,7 @@ export default function ProjectSetupForm({ onSubmit, isGenerating }) {
     prompt: ''
   });
 
-  const [totalEstimatedSpaces, setTotalEstimatedSpaces] = useState(0);
-
-  useEffect(() => {
+  const totalEstimatedSpaces = useMemo(() => {
     let count = 0;
     const req = formData.roomRequirements;
     Object.keys(req).forEach(k => {
@@ -59,7 +57,7 @@ export default function ProjectSetupForm({ onSubmit, isGenerating }) {
       }
     });
     count += formData.commonToilets;
-    setTotalEstimatedSpaces(count);
+    return count;
   }, [formData.roomRequirements, formData.commonToilets]);
 
   const handleChange = (e) => {
@@ -217,4 +215,3 @@ export default function ProjectSetupForm({ onSubmit, isGenerating }) {
     </form>
   );
 }
-

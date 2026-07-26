@@ -50,7 +50,8 @@ export function useAuditHistory() {
 
   // Load domains on mount
   useEffect(() => {
-    loadDomains();
+    const timer = window.setTimeout(() => { void loadDomains(); }, 0);
+    return () => window.clearTimeout(timer);
   }, [loadDomains]);
 
   return {

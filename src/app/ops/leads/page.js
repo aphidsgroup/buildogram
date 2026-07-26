@@ -113,7 +113,10 @@ export default function OpsLeads() {
       .then(d => { if (d.success) setPartners(d.partners || []); });
   };
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    const timer = window.setTimeout(load, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const update = async (id, data) => {
     setSaving(true);
@@ -146,18 +149,21 @@ export default function OpsLeads() {
 
   // Fetch activities when selected lead changes
   useEffect(() => {
-    if (selected) {
-      setActLoading(true);
-      fetch(`/api/leads/${selected.id}/activities`)
-        .then(r => r.json())
-        .then(d => {
-          if (d.success) setActivities(d.activities || []);
-          setActLoading(false);
-        })
-        .catch(() => setActLoading(false));
-    } else {
-      setActivities([]);
-    }
+    const timer = window.setTimeout(() => {
+      if (selected) {
+        setActLoading(true);
+        fetch(`/api/leads/${selected.id}/activities`)
+          .then(r => r.json())
+          .then(d => {
+            if (d.success) setActivities(d.activities || []);
+            setActLoading(false);
+          })
+          .catch(() => setActLoading(false));
+      } else {
+        setActivities([]);
+      }
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [selected?.id]);
 
   // Handle adding a manual activity

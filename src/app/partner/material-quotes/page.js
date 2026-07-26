@@ -9,11 +9,6 @@ export default function SupplierMaterialQuotes() {
   // Quick hack for demo/testing if not logged in. In production, remove this and rely on auth.
   const [supplierId, setSupplierId] = useState('');
 
-  useEffect(() => {
-    // Attempt to load from API (will use session if available)
-    fetchData();
-  }, []);
-
   const fetchData = async (overrideId = null) => {
     setLoading(true);
     try {
@@ -32,6 +27,11 @@ export default function SupplierMaterialQuotes() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => { void fetchData(); }, 0);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   const submitQuote = async (e) => {
     e.preventDefault();

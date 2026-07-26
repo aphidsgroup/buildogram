@@ -11,6 +11,7 @@ const SOURCES = ['Buildogram', 'WhatsApp', 'Referral', 'Google', 'Facebook', 'Di
 const BLANK = { customerName: '', phone: '', email: '', requirement: '', location: '', budgetRange: '', projectType: 'Residential', source: 'Buildogram', status: 'New', followUpDate: '', notes: '' };
 
 function generateId() { return 'L' + Date.now().toString().slice(-6); }
+function generateProjectId() { return 'P' + Date.now().toString().slice(-6); }
 
 export default function LeadsCRM() {
   const [leads, setLeads] = useState([]);
@@ -80,7 +81,7 @@ export default function LeadsCRM() {
     }
     const stored = localStorage.getItem('bos_projects');
     const projects = stored ? JSON.parse(stored) : [];
-    const newP = { id: 'P' + Date.now().toString().slice(-6), name: `${l.requirement || l.lead_type} – ${l.name || l.customerName}`, client: l.name || l.customerName, location: l.locality || l.city || l.location, type: l.lead_type || l.projectType, startDate: new Date().toISOString().slice(0, 10), targetDate: '', stage: 'Agreement', progress: 0, budget: 0, status: 'Planning' };
+    const newP = { id: generateProjectId(), name: `${l.requirement || l.lead_type} – ${l.name || l.customerName}`, client: l.name || l.customerName, location: l.locality || l.city || l.location, type: l.lead_type || l.projectType, startDate: new Date().toISOString().slice(0, 10), targetDate: '', stage: 'Agreement', progress: 0, budget: 0, status: 'Planning' };
     localStorage.setItem('bos_projects', JSON.stringify([...projects, newP]));
     showToast(`✅ Lead converted locally! Project "${newP.name}" created.`);
   };

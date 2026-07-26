@@ -35,23 +35,23 @@ export default function OpsInvoicesPage() {
   };
 
   useEffect(() => { 
-    loadData(); 
-    
-    // Check for prefill query params from Revenue page
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('action') === 'create') {
-      setForm(prev => ({
-        ...prev,
-        revenue_record_id: params.get('rev_id') || null,
-        customer_name: params.get('name') || '',
-        invoice_category: params.get('cat') || 'other',
-        subtotal: params.get('sub') || 0,
-        amount_paid: params.get('paid') || 0,
-      }));
-      setShowModal(true);
-      // Clean up URL to avoid re-triggering on refresh
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
+    const timer = window.setTimeout(() => {
+      void loadData();
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('action') === 'create') {
+        setForm(prev => ({
+          ...prev,
+          revenue_record_id: params.get('rev_id') || null,
+          customer_name: params.get('name') || '',
+          invoice_category: params.get('cat') || 'other',
+          subtotal: params.get('sub') || 0,
+          amount_paid: params.get('paid') || 0,
+        }));
+        setShowModal(true);
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [statusFilter]);
 
   const openForm = (inv = null) => {
