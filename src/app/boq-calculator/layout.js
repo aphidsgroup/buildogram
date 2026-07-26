@@ -1,10 +1,10 @@
 export const metadata = {
   title: 'Free BOQ Calculator for House Construction Chennai | Buildogram',
-  description: 'Generate a detailed Bill of Quantities (BOQ) for your home construction project. 44 line items, COCENA Dec 2025 rates, per-floor breakdowns, and margin sensitivity analysis. Free. No login required.',
-  keywords: 'BOQ calculator, bill of quantities, construction cost estimator, Chennai house construction cost, COCENA rates, building estimate',
+  description: 'Create an indicative Bill of Quantities for your house construction project using your own dimensions, quantities and editable rate assumptions. 44 line items, per-floor breakdown and margin sensitivity. Free, no login required.',
+  keywords: 'BOQ calculator, bill of quantities, construction cost estimator, Chennai house construction cost, building estimate',
   openGraph: {
     title: 'Free BOQ Calculator | Buildogram',
-    description: 'Generate a detailed Bill of Quantities for your house construction project — 44 items, COCENA 2025 rates, margin analysis.',
+    description: 'Estimate construction quantities and indicative costs using configurable project assumptions — 44 line items, per-floor breakdown, margin analysis.',
     url: 'https://www.buildogram.in/boq-calculator',
     siteName: 'Buildogram',
     type: 'website',
@@ -12,7 +12,7 @@ export const metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Free BOQ Calculator | Buildogram',
-    description: 'Instant Bill of Quantities for residential construction — COCENA 2025 rates, 44 items, margin sensitivity.',
+    description: 'Indicative Bill of Quantities for residential construction — 44 line items, editable rate assumptions, margin sensitivity.',
   },
   alternates: {
     canonical: 'https://www.buildogram.in/boq-calculator',

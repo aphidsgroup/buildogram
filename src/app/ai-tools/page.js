@@ -102,7 +102,7 @@ const AI_TOOLS = [
   {
     icon: '🧮',
     title: 'AI BOQ Calculator',
-    desc: 'Generate a full engineer-checked Bill of Quantities for your residential project — 44 line items, COCENA Dec 2025 rates, per-floor breakdown, and margin analysis.',
+    desc: 'Build an indicative Bill of Quantities for your residential project — 44 line items, editable rate assumptions, per-floor breakdown and margin analysis.',
     href: '/boq-calculator',
     badge: 'Beta',
     badgeColor: '#7C3AED',

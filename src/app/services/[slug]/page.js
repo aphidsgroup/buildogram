@@ -6,6 +6,7 @@ import ContextualCTA from '@/components/seo/ContextualCTA';
 import { getContextualLinks } from '@/lib/seo/internalLinks';
 import { getConversionContext } from '@/lib/conversion/context';
 import ContextualEnquiryForm from '@/components/conversion/ContextualEnquiryForm';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export async function generateStaticParams() {
   return services.map((s) => ({ slug: s.slug }));
@@ -15,12 +16,11 @@ export async function generateMetadata({ params }) {
   params = await params; // Next 16: params is a Promise
   const svc = services.find((s) => s.slug === params.slug);
   if (!svc) return {};
-  return {
+  return generateSEOMetadata({
     title: svc.metaTitle,
     description: svc.metaDescription,
-    openGraph: { title: svc.metaTitle, description: svc.metaDescription, url: `https://www.buildogram.in/services/${svc.slug}` },
-      alternates: { canonical: `https://www.buildogram.in/services/${svc.slug}` },
-  };
+    path: `/services/${svc.slug}`,
+  });
 }
 
 const faqSchema = (faqs, pageUrl) => ({

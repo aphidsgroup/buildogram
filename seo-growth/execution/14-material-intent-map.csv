@@ -1,0 +1,28 @@
+url,route_source,intent_group,hypothesised_intent,route_collision,redirect_status,gsc_impressions,gsc_clicks,gsc_avg_position,decision,notes
+/materials/aggregates,DYNAMIC_[slug],sand,Aggregate category,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/blocks,DYNAMIC_[slug],bricks-blocks,Concrete/AAC block category,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/bricks,STATIC_PAGE,bricks-blocks,Red brick category,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/bricks-aac-blocks,STATIC_PAGE,bricks-blocks,Combined or comparison intent,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/cement,BOTH,,Cement category — buyer intent,YES — static segment wins in App Router; the dynamic entry never renders,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,"Resolve route collision first — it is a rendering defect, not a keyword decision"
+/materials/construction-chemicals,DYNAMIC_[slug],,Construction chemicals,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/doors-windows,DYNAMIC_[slug],,Doors & windows,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/electrical,BOTH,electrical-plumbing,Electrical materials,YES — static segment wins in App Router; the dynamic entry never renders,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,"Resolve route collision first — it is a rendering defect, not a keyword decision"
+/materials/electrical-plumbing,STATIC_PAGE,electrical-plumbing,Combined MEP category,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/fabrication-steel,STATIC_PAGE,steel,Structural/fabrication steel — distinct material,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/finishing-materials,STATIC_PAGE,,Finishing bundle,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/m-sand,DYNAMIC_[slug],sand,M-sand category,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/msand-psand,STATIC_PAGE,sand,M-sand vs P-sand comparison,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/network,STATIC_PAGE,,Supplier network — informational,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/paint,DYNAMIC_[slug],,Paint category,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/piling-foundation-materials,STATIC_PAGE,,Piling/foundation bundle,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/plumbing,BOTH,electrical-plumbing,Plumbing materials,YES — static segment wins in App Router; the dynamic entry never renders,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,"Resolve route collision first — it is a rendering defect, not a keyword decision"
+/materials/ready-mix-concrete,DYNAMIC_[slug],rmc,Long-form synonym of RMC,,YES -> redirected,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/request-quote,STATIC_PAGE,,Quotation request — conversion page,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/rmc,STATIC_PAGE,rmc,RMC commercial category,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/roofing,DYNAMIC_[slug],,Roofing,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/sand,BOTH,sand,Sand overview,YES — static segment wins in App Router; the dynamic entry never renders,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,"Resolve route collision first — it is a rendering defect, not a keyword decision"
+/materials/steel,BOTH,steel,General steel category,YES — static segment wins in App Router; the dynamic entry never renders,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,"Resolve route collision first — it is a rendering defect, not a keyword decision"
+/materials/tiles,BOTH,,Tiles category,YES — static segment wins in App Router; the dynamic entry never renders,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,"Resolve route collision first — it is a rendering defect, not a keyword decision"
+/materials/tmt-steel,STATIC_PAGE,steel,Reinforcement TMT — buyer intent,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,
+/materials/waterproofing,BOTH,,Waterproofing materials,YES — static segment wins in App Router; the dynamic entry never renders,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,"Resolve route collision first — it is a rendering defect, not a keyword decision"
+/materials/wood,DYNAMIC_[slug],,Wood,,,PENDING_GSC,PENDING_GSC,PENDING_GSC,NO_ACTION_WITHOUT_EVIDENCE,

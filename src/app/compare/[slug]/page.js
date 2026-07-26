@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { comparisons, comparisonMap } from '@/data/seo/comparisons';
 import { notFound } from 'next/navigation';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export async function generateStaticParams() {
   return comparisons.map((c) => ({ slug: c.slug }));
@@ -10,9 +11,11 @@ export async function generateMetadata({ params }) {
   params = await params; // Next 16: params is a Promise
   const comp = comparisonMap[params.slug];
   if (!comp) return {};
-  return { title: comp.metaTitle, description: comp.metaDescription,
-    alternates: { canonical: `https://www.buildogram.in/compare/${comp.slug}` },
-  };
+  return generateSEOMetadata({
+    title: comp.metaTitle,
+    description: comp.metaDescription,
+    path: `/compare/${comp.slug}`,
+  });
 }
 
 

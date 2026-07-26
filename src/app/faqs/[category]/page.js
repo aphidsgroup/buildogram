@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { faqCategories, faqMap } from '@/data/seo/faqs';
 import { notFound } from 'next/navigation';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export async function generateStaticParams() {
   return faqCategories.map((c) => ({ category: c.slug }));
@@ -10,9 +11,11 @@ export async function generateMetadata({ params }) {
   params = await params; // Next 16: params is a Promise
   const cat = faqMap[params.category];
   if (!cat) return {};
-  return { title: cat.metaTitle, description: cat.metaDescription,
-    alternates: { canonical: `https://www.buildogram.in/faqs/${cat.slug}` },
-  };
+  return generateSEOMetadata({
+    title: cat.metaTitle,
+    description: cat.metaDescription,
+    path: `/faqs/${cat.slug}`,
+  });
 }
 
 

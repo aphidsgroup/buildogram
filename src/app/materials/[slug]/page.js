@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import RelatedLinksBlock from '@/components/seo/RelatedLinksBlock';
 import ContextualCTA from '@/components/seo/ContextualCTA';
 import { getContextualLinks } from '@/lib/seo/internalLinks';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 const materialMap = Object.fromEntries(materials.map((m) => [m.slug, m]));
 
@@ -15,9 +16,11 @@ export async function generateMetadata({ params }) {
   params = await params; // Next 16: params is a Promise
   const mat = materialMap[params.slug];
   if (!mat) return {};
-  return { title: mat.metaTitle, description: mat.metaDescription,
-    alternates: { canonical: `https://www.buildogram.in/materials/${mat.slug}` },
-  };
+  return generateSEOMetadata({
+    title: mat.metaTitle,
+    description: mat.metaDescription,
+    path: `/materials/${mat.slug}`,
+  });
 }
 
 const faqSchema = (faqs) => ({

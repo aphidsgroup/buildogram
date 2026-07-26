@@ -4,6 +4,7 @@ import Link from 'next/link';
 import RelatedLinksBlock from '@/components/seo/RelatedLinksBlock';
 import ContextualCTA from '@/components/seo/ContextualCTA';
 import { getContextualLinks } from '@/lib/seo/internalLinks';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export const dynamic = 'force-dynamic';
 
@@ -20,13 +21,11 @@ export async function generateMetadata({ params }) {
     return { title: 'Not Found' };
   }
 
-  return {
+  return generateSEOMetadata({
     title: `${proof.title} in ${proof.area || 'Chennai'} | Buildogram Proof`,
     description: proof.description.substring(0, 160),
-    alternates: {
-      canonical: `/proof/${proof.slug}`
-    }
-  };
+    path: `/proof/${proof.slug}`,
+  });
 }
 
 export default async function ProofDetailPage({ params }) {

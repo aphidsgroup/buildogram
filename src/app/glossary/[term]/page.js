@@ -6,6 +6,7 @@ import ContextualCTA from '@/components/seo/ContextualCTA';
 import { getContextualLinks } from '@/lib/seo/internalLinks';
 import { getConversionContext } from '@/lib/conversion/context';
 import ContextualEnquiryForm from '@/components/conversion/ContextualEnquiryForm';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export async function generateStaticParams() {
   return glossaryTerms.map((t) => ({ term: t.slug }));
@@ -15,11 +16,13 @@ export async function generateMetadata({ params }) {
   params = await params; // Next 16: params is a Promise
   const term = glossaryMap[params.term];
   if (!term) return {};
-  return {
-    title: `${term.term} — Buildogram Construction Glossary`,
+  const title = `${term.term} — Buildogram Construction Glossary`;
+  return generateSEOMetadata({
+    title,
     description: `${term.definition} Learn the full meaning and importance of ${term.term} in home construction and property in India.`,
-      alternates: { canonical: `https://www.buildogram.in/glossary/${term.slug}` },
-  };
+    path: `/glossary/${term.slug}`,
+    ogImageAlt: `${term.term} — Buildogram Construction Glossary`,
+  });
 }
 
 const termSchema = (term) => ({

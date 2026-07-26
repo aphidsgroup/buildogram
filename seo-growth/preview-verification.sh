@@ -2,7 +2,10 @@
 # ============================================================================
 # Buildogram — preview verification runner (items 6–9 of the owner brief)
 # Usage:  BASE="https://<preview-url>" bash seo-growth/preview-verification.sh
-# Optional (Vercel Deployment Protection): export BYPASS="<protection-bypass-token>"
+# Optional (Vercel Deployment Protection):
+#   export VERCEL_PROTECTION_BYPASS="<token>"   (preferred)  or  export BYPASS="<token>"
+# The token is sent ONLY as an x-vercel-protection-bypass request header.
+# It is never echoed, never written to any .tsv, and never placed in a URL.
 # Output:  seo-growth/preview-results/*.tsv  (paste into 20-…md)
 # Read-only: performs GET/HEAD requests only.
 # ============================================================================
@@ -10,7 +13,14 @@ set -uo pipefail
 BASE="${BASE:?set BASE to the preview URL, no trailing slash}"
 OUT="seo-growth/preview-results"; mkdir -p "$OUT"
 CURL=(curl -sS --max-time 30)
-[ -n "${BYPASS:-}" ] && CURL+=(-H "x-vercel-protection-bypass: ${BYPASS}")
+# Accept either variable name; VERCEL_PROTECTION_BYPASS wins.
+BYPASS="${VERCEL_PROTECTION_BYPASS:-${BYPASS:-}}"
+if [ -n "$BYPASS" ]; then
+  CURL+=(-H "x-vercel-protection-bypass: ${BYPASS}")
+  echo "[auth] protection bypass header enabled (token redacted, ${#BYPASS} chars)"
+fi
+# Guard: never let the token reach stdout or any output file.
+redact() { if [ -n "$BYPASS" ]; then sed "s/${BYPASS//\//\\/}/[REDACTED]/g"; else cat; fi; }
 
 fetch() { "${CURL[@]}" -L "$BASE$1"; }
 field() { grep -oiPm1 "$2" <<<"$1" | head -1; }
@@ -104,4 +114,75 @@ done
 hits=$(($(wc -l < "$OUT/04-claim-scan.tsv")-1))
 echo "[4] claim scan -> $OUT/04-claim-scan.tsv  (PASS = 0 rows; found: $hits)"
 echo
-echo "DONE. Paste results into seo-growth/20-post-deployment-verification.md §§5–8."
+echo "DONE. Paste results into seo-growth/20-post-deployment-verification.md §§5–8 and seo-growth/execution/11-preview-validation.md."
+
+# ── 5. Route-specific metadata (Sprint 2) ───────────────────────────────────
+# Verifies the shared-metadata-helper rewiring: every URL must emit its OWN
+# canonical / og:url / og:title, never the homepage defaults.
+META=( /glossary/rcc /glossary/rmc /glossary/boq
+       /faqs/boq /faqs/materials /faqs/plan-review
+       /guides/what-is-boq-in-construction /guides/boq-checklist-for-homeowners /guides/how-to-compare-contractor-quotes
+       /materials/cement /materials/tmt-steel /materials/rmc
+       /services/boq-review /services/house-construction /services/quality-inspection
+       /compare/boq-review-vs-contractor-estimate
+       /proof /boq-calculator )
+printf 'url\tstatus\tcanonical\tog_url\tog_title\ttwitter_title\trobots\ttitle\th1\tverdict\n' > "$OUT/05-metadata.tsv"
+metafail=0
+for u in "${META[@]}"; do
+  body=$("${CURL[@]}" -L "$BASE$u" 2>/dev/null)
+  st=$("${CURL[@]}" -o /dev/null -w '%{http_code}' -L "$BASE$u" 2>/dev/null)
+  can=$(printf '%s' "$body" | grep -o '<link rel="canonical" href="[^"]*"' | head -1 | sed 's/.*href="//;s/"//')
+  ogu=$(printf '%s' "$body" | grep -o '<meta property="og:url" content="[^"]*"' | head -1 | sed 's/.*content="//;s/"//')
+  ogt=$(printf '%s' "$body" | grep -o '<meta property="og:title" content="[^"]*"' | head -1 | sed 's/.*content="//;s/"//')
+  twt=$(printf '%s' "$body" | grep -o '<meta name="twitter:title" content="[^"]*"' | head -1 | sed 's/.*content="//;s/"//')
+  rob=$(printf '%s' "$body" | grep -o '<meta name="robots" content="[^"]*"' | head -1 | sed 's/.*content="//;s/"//')
+  ttl=$(printf '%s' "$body" | grep -o '<title>[^<]*' | head -1 | sed 's/<title>//')
+  h1=$(printf '%s' "$body" | grep -o '<h1[^>]*>[^<]*' | head -1 | sed 's/<h1[^>]*>//')
+  v="PASS"
+  # canonical must be absolute, www, and end with this exact path
+  case "$can" in "https://www.buildogram.in$u") ;; *) v="FAIL:canonical";; esac
+  # og:url must equal canonical — never the bare homepage
+  [ "$ogu" != "$can" ] && v="FAIL:og_url"
+  # og:title must not be the homepage default
+  case "$ogt" in *"Engineer-Led Construction Intelligence"*) v="FAIL:og_title_is_homepage";; esac
+  # nothing may leak a preview host
+  case "$can$ogu" in *vercel.app*) v="FAIL:preview_host_leak";; esac
+  [ "$st" != "200" ] && v="FAIL:status_$st"
+  [ "$v" != "PASS" ] && metafail=$((metafail+1))
+  printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$u" "$st" "$can" "$ogu" "$ogt" "$twt" "$rob" "$ttl" "$h1" "$v" | redact >> "$OUT/05-metadata.tsv"
+done
+echo "[5] metadata -> $OUT/05-metadata.tsv  (PASS = 0 failures; found: $metafail)"
+
+# ── 6. Stale-cache detection (production only) ──────────────────────────────
+# Production has twice served pre-release HTML on bare canonical paths while the
+# same path with a query string served current content. Status codes do not
+# reveal this — only a content comparison does.
+# Skipped automatically on preview (nothing is cached there yet).
+case "$BASE" in
+  *www.buildogram.in*)
+    CACHE=( / /glossary/rcc /glossary/rmc /faqs/boq /guides/what-is-boq-in-construction
+            /materials/cement /materials/tmt-steel /services/boq-review
+            /compare/boq-review-vs-contractor-estimate /boq-calculator )
+    printf 'url\tbare_status\tbare_bytes\tbusted_bytes\tbare_ogurl\tbusted_ogurl\tverdict\n' > "$OUT/06-cache.tsv"
+    stale=0
+    for u in "${CACHE[@]}"; do
+      b=$("${CURL[@]}" -L "$BASE$u" 2>/dev/null)
+      q=$("${CURL[@]}" -L "$BASE$u?cachebust=$RANDOM$$" 2>/dev/null)
+      bs=$("${CURL[@]}" -o /dev/null -w '%{http_code}' -L "$BASE$u" 2>/dev/null)
+      bl=$(printf '%s' "$b" | wc -c); ql=$(printf '%s' "$q" | wc -c)
+      bo=$(printf '%s' "$b" | grep -o '<meta property="og:url" content="[^"]*"' | head -1 | sed 's/.*content="//;s/"//')
+      qo=$(printf '%s' "$q" | grep -o '<meta property="og:url" content="[^"]*"' | head -1 | sed 's/.*content="//;s/"//')
+      # allow a small delta for the cachebust param echoed into the page
+      diff=$(( bl > ql ? bl - ql : ql - bl ))
+      v="FRESH"
+      [ "$bs" != "200" ] && v="FAIL:bare_status_$bs"
+      [ "$diff" -gt 200 ] && v="STALE:content_differs_${diff}b"
+      [ -n "$bo" ] && [ "$bo" != "$qo" ] && v="STALE:og_url_differs"
+      [ "$v" != "FRESH" ] && stale=$((stale+1))
+      printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$u" "$bs" "$bl" "$ql" "$bo" "$qo" "$v" >> "$OUT/06-cache.tsv"
+    done
+    echo "[6] cache -> $OUT/06-cache.tsv  (PASS = 0 stale; found: $stale)"
+    [ "$stale" -gt 0 ] && echo "    ACTION: purge the CDN, then re-run. Do NOT mark production verified."
+    ;;
+  *) echo "[6] cache check skipped (preview)";;
+esac

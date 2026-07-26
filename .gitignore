@@ -58,3 +58,6 @@ build_phase4.txt
 
 # local scratch
 scratch/
+
+# verification outputs — may contain preview hostnames
+seo-growth/preview-results/

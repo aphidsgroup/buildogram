@@ -54,7 +54,7 @@ export default function CementPage() {
       }}
       
       faqs={[
-        { q: "What is the current price of cement in Chennai?", a: "Prices fluctuate daily based on brand and grade (usually between ₹350 to ₹420 per bag). Contact us for today's live rate." },
+        { q: "What is the current price of cement in Chennai?", a: "Prices fluctuate daily based on brand and grade (usually between ₹350 to ₹420 per bag). Contact us for today's indicative rate." },
         { q: "Why should I use OPC 53 for roof slabs?", a: "OPC 53 achieves higher strength faster than PPC. It's crucial for load-bearing structures where you need to remove formwork (shuttering) within the standard timeline." },
         { q: "How do you check the manufacturing date?", a: "Every cement bag has a printed code indicating the Week, Month, and Year of packing. Our engineers train your site supervisor to read this, or we verify it for you." },
         { q: "Can I return cement if it has lumps?", a: "Yes. If cement is sourced through our verified network and arrives with moisture-induced lumps, it will be replaced. Lumpy cement indicates pre-hydration and is useless." }

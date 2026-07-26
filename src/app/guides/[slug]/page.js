@@ -6,6 +6,7 @@ import ContextualCTA from '@/components/seo/ContextualCTA';
 import { getContextualLinks } from '@/lib/seo/internalLinks';
 import { getConversionContext } from '@/lib/conversion/context';
 import ContextualEnquiryForm from '@/components/conversion/ContextualEnquiryForm';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 
 export async function generateStaticParams() {
   return guides.map((g) => ({ slug: g.slug }));
@@ -15,12 +16,11 @@ export async function generateMetadata({ params }) {
   params = await params; // Next 16: params is a Promise
   const guide = guideMap[params.slug];
   if (!guide) return {};
-  return {
+  return generateSEOMetadata({
     title: guide.metaTitle,
     description: guide.metaDescription,
-    openGraph: { title: guide.metaTitle, description: guide.metaDescription },
-      alternates: { canonical: `https://www.buildogram.in/guides/${guide.slug}` },
-  };
+    path: `/guides/${guide.slug}`,
+  });
 }
 
 const articleSchema = (guide) => ({
