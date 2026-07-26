@@ -102,10 +102,10 @@ export default function SteelConstructionPage() {
             Why Steel Construction in Chennai
           </h2>
           <p style={{ color: 'var(--text)', lineHeight: 1.8, fontSize: '16px', marginBottom: '16px' }}>
-            Structural steel offers specific advantages in Chennai's construction environment: faster erection than full RCC (weeks vs months for the structural frame), better spanning capability for large industrial spaces (clear spans up to 30m+ without intermediate columns), and lighter dead loads — particularly relevant when adding structures to existing buildings whose foundations may have limited remaining capacity.
+            Structural steel offers specific advantages in Chennai&apos;s construction environment: faster erection than full RCC (weeks vs months for the structural frame), better spanning capability for large industrial spaces (clear spans up to 30m+ without intermediate columns), and lighter dead loads — particularly relevant when adding structures to existing buildings whose foundations may have limited remaining capacity.
           </p>
           <div style={{ background: '#fff3cd', border: '1px solid #ffc107', borderRadius: '10px', padding: '20px 24px', marginBottom: '16px' }}>
-            <p style={{ margin: 0, fontWeight: 600, color: '#856404' }}>⚠ Chennai Coastal Consideration: Structural steel within 5 km of the coast requires hot-dip galvanising or epoxy coating. Bare mild steel will show significant surface corrosion within 12–18 months in Chennai's salt-laden coastal air.</p>
+            <p style={{ margin: 0, fontWeight: 600, color: '#856404' }}>⚠ Chennai Coastal Consideration: Structural steel within 5 km of the coast requires hot-dip galvanising or epoxy coating. Bare mild steel will show significant surface corrosion within 12–18 months in Chennai&apos;s salt-laden coastal air.</p>
           </div>
           <p style={{ color: 'var(--text)', lineHeight: 1.8, fontSize: '16px' }}>
             IS codes governing steel construction: <strong>IS 800:2007</strong> (design), <strong>IS 2062</strong> (material — E250 grade for general structural steel), <strong>IS 816</strong> (welding).
@@ -169,7 +169,7 @@ export default function SteelConstructionPage() {
         {/* CTA */}
         <section style={{ background: 'var(--secondary)', borderRadius: '16px', padding: '48px 40px', textAlign: 'center' }}>
           <h2 style={{ color: 'white', fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>Get a Steel Construction Estimate</h2>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '480px', margin: '0 auto 28px' }}>Share your span, height, and usage — we'll give you a ballpark BOQ within 48 hours.</p>
+          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '480px', margin: '0 auto 28px' }}>Share your span, height, and usage — we&apos;ll give you a ballpark BOQ within 48 hours.</p>
           <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>Request Estimate →</Link>
         </section>
       </div>

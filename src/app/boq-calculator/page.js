@@ -918,7 +918,7 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
                 <div style={{ background: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: 14, padding: '20px', textAlign: 'center' }}>
                   <div style={{ fontSize: 36, marginBottom: 8 }}>🙏</div>
                   <h4 style={{ color: '#166534', fontWeight: 800, margin: '0 0 4px' }}>Thank you for your feedback!</h4>
-                  <p style={{ color: '#16A34A', fontSize: 14, margin: 0 }}>We'll use it to make this tool even better. Our team may reach out to you shortly.</p>
+                  <p style={{ color: '#16A34A', fontSize: 14, margin: 0 }}>We&apos;ll use it to make this tool even better. Our team may reach out to you shortly.</p>
                 </div>
               )}
             </div>

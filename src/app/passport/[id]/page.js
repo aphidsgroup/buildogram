@@ -157,8 +157,8 @@ export default async function PublicPassportPage({ params }) {
           <div>
             <h4 style={{ color: '#065f46', fontSize: '16px', fontWeight: 700, marginBottom: '6px' }}>What is a Property Passport™?</h4>
             <p style={{ color: '#047857', fontSize: '14px', lineHeight: 1.6, margin: 0 }}>
-              This property's construction quality, specifications, and legal status have been verified and documented by Buildogram. 
-              The completeness score reflects the percentage of critical documentation available in the owner's private vault.
+              This property&apos;s construction quality, specifications, and legal status have been verified and documented by Buildogram.
+              The completeness score reflects the percentage of critical documentation available in the owner&apos;s private vault.
             </p>
           </div>
         </div>

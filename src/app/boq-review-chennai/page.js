@@ -62,7 +62,7 @@ export default function BOQReviewPage() {
             BOQ Review & Audit in Chennai
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', lineHeight: 1.7, maxWidth: '600px', marginBottom: '32px' }}>
-            Don't sign a contractor quote without an independent review. Our structural engineers check every line — quantities against drawings, rates against current market prices.
+            Don&apos;t sign a contractor quote without an independent review. Our structural engineers check every line — quantities against drawings, rates against current market prices.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 600, textDecoration: 'none' }}>Upload Your BOQ for Review</Link>
@@ -93,7 +93,7 @@ export default function BOQReviewPage() {
             The BOQ Problem in Chennai
           </h2>
           <p style={{ color: 'var(--text)', lineHeight: 1.8, fontSize: '16px', marginBottom: '16px' }}>
-            73% of Chennai homeowners accept a contractor's Bill of Quantities without any independent verification. Most don't know what quantities their project should require, don't know current material market rates, and can't identify when a specification is deliberately vague enough to allow material substitution.
+            73% of Chennai homeowners accept a contractor&apos;s Bill of Quantities without any independent verification. Most don&apos;t know what quantities their project should require, don&apos;t know current material market rates, and can&apos;t identify when a specification is deliberately vague enough to allow material substitution.
           </p>
           <p style={{ color: 'var(--text)', lineHeight: 1.8, fontSize: '16px', marginBottom: '16px' }}>
             The result: overquoting of 18–25% above verified market rates is standard practice, not exceptional. On a ₹80 lakh project, that is ₹14–20 lakhs left on the table at signing.
@@ -209,8 +209,8 @@ export default function BOQReviewPage() {
 
         {/* CTA */}
         <section style={{ background: 'var(--secondary)', borderRadius: '16px', padding: '48px 40px', textAlign: 'center' }}>
-          <h2 style={{ color: 'white', fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>Don't Sign Without a Review</h2>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '500px', margin: '0 auto 28px' }}>Upload your contractor's BOQ and we'll tell you within 3 days exactly what it should cost.</p>
+          <h2 style={{ color: 'white', fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>Don&apos;t Sign Without a Review</h2>
+          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '500px', margin: '0 auto 28px' }}>Upload your contractor&apos;s BOQ and we&apos;ll tell you within 3 days exactly what it should cost.</p>
           <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>Submit Your BOQ →</Link>
         </section>
       </div>

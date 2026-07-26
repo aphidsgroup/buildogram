@@ -22,7 +22,7 @@ export default function PropertiesRentPage() {
             Rent Verified Homes in Chennai — 360° Tours, Zero Hidden Surprises
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>
-            Browse verified rental properties with 360° virtual tours. Know exactly what you're renting before you step inside.
+            Browse verified rental properties with 360° virtual tours. Know exactly what you&apos;re renting before you step inside.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/properties/list-your-property" className="btn btn-primary btn-lg">List Your Property</Link>

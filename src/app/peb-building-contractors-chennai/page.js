@@ -89,7 +89,7 @@ export default function PEBBuildingPage() {
             What is a Pre-Engineered Building?
           </h2>
           <p style={{ color: 'var(--text)', lineHeight: 1.8, fontSize: '16px', marginBottom: '16px' }}>
-            A Pre-Engineered Building (PEB) is a structural steel system where every component is optimally designed as an integrated system and factory-fabricated to exact dimensions — then shipped to site and assembled. Unlike conventional construction where each element is designed and fabricated independently, a PEB system is engineered holistically for the specific building's loads, spans, and usage.
+            A Pre-Engineered Building (PEB) is a structural steel system where every component is optimally designed as an integrated system and factory-fabricated to exact dimensions — then shipped to site and assembled. Unlike conventional construction where each element is designed and fabricated independently, a PEB system is engineered holistically for the specific building&apos;s loads, spans, and usage.
           </p>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', marginTop: '24px' }}>
             {[['Primary Frame', 'Tapered columns and rafters — the main load-bearing structure. Factory welded to exact design.'], ['Secondary Structure', 'Purlins, girts, and eave struts — support the cladding and transfer loads to primary frame.'], ['Roof & Wall Cladding', 'Pre-painted Zincalume or GI sheets, typically 0.5mm. Available with insulation options.'], ['Accessories', 'Ridge ventilators, skylights, gutter systems, louvers, and access doors.']].map(([title, desc]) => (
@@ -190,7 +190,7 @@ export default function PEBBuildingPage() {
 
         <section style={{ background: 'var(--secondary)', borderRadius: '16px', padding: '48px 40px', textAlign: 'center' }}>
           <h2 style={{ color: 'white', fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>Get PEB Project Support</h2>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '480px', margin: '0 auto 28px' }}>Share your span, height, and usage — we'll prepare a specification and get you 3 competitive quotes.</p>
+          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '480px', margin: '0 auto 28px' }}>Share your span, height, and usage — we&apos;ll prepare a specification and get you 3 competitive quotes.</p>
           <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>Start Your PEB Project →</Link>
         </section>
       </div>

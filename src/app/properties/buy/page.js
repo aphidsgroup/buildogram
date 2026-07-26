@@ -22,7 +22,7 @@ export default function PropertiesBuyPage() {
             Buy Verified Properties in Chennai — Full Transparency, Zero Surprises
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7, marginBottom: '32px' }}>
-            Every listing comes with a verified history, 360° virtual tours, and Buildogram's Property Passport — so you buy with complete confidence.
+            Every listing comes with a verified history, 360° virtual tours, and Buildogram&apos;s Property Passport — so you buy with complete confidence.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/property-passport" className="btn btn-primary btn-lg">What is Property Passport?</Link>

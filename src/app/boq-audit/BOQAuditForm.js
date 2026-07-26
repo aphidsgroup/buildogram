@@ -63,7 +63,7 @@ export default function BOQAuditForm() {
       <div style={{ fontSize: '56px', marginBottom: '16px' }}>✅</div>
       <h3 style={{ color: 'white', fontSize: '22px', marginBottom: '12px' }}>BOQ Audit Request Received!</h3>
       <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '16px', lineHeight: 1.6 }}>
-        Our engineering team will review your quote and highlight any discrepancies. We'll contact you within 24 hours.
+        Our engineering team will review your quote and highlight any discrepancies. We&apos;ll contact you within 24 hours.
       </p>
     </div>
   );

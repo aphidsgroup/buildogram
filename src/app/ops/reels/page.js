@@ -161,7 +161,7 @@ export default function ReelsAdmin() {
               {reels.length === 0 ? (
                 <tr>
                   <td colSpan="5" style={{ padding: '48px', textAlign: 'center', color: 'var(--text-muted)' }}>
-                    No reels created yet. Click "Add Reel" to get started.
+                    No reels created yet. Click &quot;Add Reel&quot; to get started.
                   </td>
                 </tr>
               ) : reels.map(r => (

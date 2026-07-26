@@ -183,7 +183,7 @@ export default function AIToolsAdmin() {
                         <button onClick={() => copyText(s.suggested_call_script)} className="text-xs text-orange-600 hover:text-orange-700 font-medium">Copy</button>
                       </div>
                       <div className="text-sm text-slate-700 bg-slate-50 p-3 rounded-lg border border-slate-200">
-                        "{s.suggested_call_script}"
+                        &quot;{s.suggested_call_script}&quot;
                       </div>
                     </div>
                   )}

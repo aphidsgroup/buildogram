@@ -39,7 +39,7 @@ export default function SupplierDashboard() {
             <h1 style={{ fontSize: '28px', fontWeight: 800, marginBottom: '6px' }}>
               Welcome back, {user?.name?.split(' ')[0] || 'Supplier'} 👋
             </h1>
-            <p style={{ color: '#94A3B8', fontSize: '15px' }}>Here's your Buildogram Supplier Portal overview.</p>
+            <p style={{ color: '#94A3B8', fontSize: '15px' }}>Here&apos;s your Buildogram Supplier Portal overview.</p>
           </div>
           {/* Notification bell */}
           <button

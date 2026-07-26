@@ -97,7 +97,7 @@ export default function EndToEndConstructionPage() {
             Most Chennai construction projects fail not because of bad materials or incompetent contractors — they fail because of coordination gaps. The architect draws one thing, the structural engineer designs another, the contractor builds a third, and the owner has no engineering-qualified person checking whether these three are aligned.
           </p>
           <p style={{ color: 'var(--text)', lineHeight: 1.8, fontSize: '16px', marginBottom: '16px' }}>
-            Buildogram's end-to-end support eliminates that gap. We become your technical representative at every stage — from the day you test the soil to the day you receive your Property Passport with every certificate, drawing, and warranty permanently bound together.
+            Buildogram&apos;s end-to-end support eliminates that gap. We become your technical representative at every stage — from the day you test the soil to the day you receive your Property Passport with every certificate, drawing, and warranty permanently bound together.
           </p>
           <p style={{ color: 'var(--text)', lineHeight: 1.8, fontSize: '16px' }}>
             Buildogram is not the contractor. We are the engineering oversight layer between you and the contractor — giving you independent accountability that a contractor cannot provide for their own work.
@@ -154,7 +154,7 @@ export default function EndToEndConstructionPage() {
             <li><strong>Corporation vs Panchayat limits</strong> — different tax structures, completion certificate requirements, and connection procedures.</li>
             <li><strong>OMR/ECR soil conditions</strong> — filled land near the coast may need pile foundations instead of isolated footings.</li>
             <li><strong>Coastal corrosion protection</strong> — within 5 km of the coast, structural steel needs hot-dip galvanising or epoxy coating; RCC needs minimum 40mm cover with corrosion-inhibiting admixtures.</li>
-            <li><strong>Monsoon planning</strong> — Chennai's northeast monsoon (Oct–Dec) impacts concrete curing. Our schedule accounts for weather windows.</li>
+            <li><strong>Monsoon planning</strong> — Chennai&apos;s northeast monsoon (Oct–Dec) impacts concrete curing. Our schedule accounts for weather windows.</li>
             <li><strong>Material sourcing</strong> — verified cement depots, TMT steel stockists, and M-sand quarries with test certificates in Chennai and surrounding districts.</li>
           </ul>
         </section>
@@ -194,7 +194,7 @@ export default function EndToEndConstructionPage() {
         <section style={{ background: 'var(--secondary)', borderRadius: '16px', padding: '48px 40px', textAlign: 'center' }}>
           <h2 style={{ color: 'white', fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>Start Your Construction Journey</h2>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', marginBottom: '28px', maxWidth: '500px', margin: '0 auto 28px' }}>
-            Book a free 30-minute consultation. We'll review your plot, scope, and budget and tell you exactly what's realistic.
+            Book a free 30-minute consultation. We&apos;ll review your plot, scope, and budget and tell you exactly what&apos;s realistic.
           </p>
           <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>
             Book Free Consultation →

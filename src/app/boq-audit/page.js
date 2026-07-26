@@ -67,7 +67,7 @@ export default function BOQAuditPage() {
               <span>Quote Audited.</span>
             </h1>
             <p className={styles.heroSub}>
-              Before you sign anything — let Buildogram engineers check every line item, rate and spec in your contractor's quote. We expose what's inflated, what's missing, and what's non-negotiable.
+              Before you sign anything — let Buildogram engineers check every line item, rate and spec in your contractor&apos;s quote. We expose what&apos;s inflated, what&apos;s missing, and what&apos;s non-negotiable.
             </p>
             <div className={styles.heroCtas}>
               <Link href="#audit-form" className="btn btn-primary btn-lg">Get Free BOQ Audit</Link>
@@ -127,7 +127,7 @@ export default function BOQAuditPage() {
           </AnimatedSection>
           
           <AnimatedSection delay={0.3}>
-            <p className={styles.tableNote}>* Based on Buildogram's analysis of 100+ contractor quotes in Chennai & Tamil Nadu</p>
+            <p className={styles.tableNote}>* Based on Buildogram&apos;s analysis of 100+ contractor quotes in Chennai & Tamil Nadu</p>
           </AnimatedSection>
         </div>
       </section>

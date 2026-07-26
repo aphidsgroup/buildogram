@@ -118,7 +118,7 @@ export default function BuildersPage() {
           <div className="card" style={{ background: 'rgba(252,110,32,0.04)', border: '1px solid rgba(252,110,32,0.15)', textAlign: 'center', padding: '36px' }}>
             <div style={{ fontSize: '36px', marginBottom: '16px' }}>🔍</div>
             <h3 style={{ fontSize: '20px', color: 'var(--secondary)', marginBottom: '8px' }}>Find a Builder</h3>
-            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>Tell us your project requirements and we'll match you with 2–3 builders from our partner network.</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '14px', marginBottom: '20px' }}>Tell us your project requirements and we&apos;ll match you with 2–3 builders from our partner network.</p>
             <Link href="/contact?type=partner-match" className="btn btn-primary">Find My Builder</Link>
           </div>
           <div className="card" style={{ background: 'var(--secondary)', border: 'none', textAlign: 'center', padding: '36px' }}>

@@ -73,7 +73,7 @@ export default function PartnerRegisterPage() {
             <span style={{ background: 'var(--gradient-orange-strong)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', color: 'transparent', fontSize: '12px', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>For Construction Professionals</span>
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 52px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '700px' }}>
-            Join Buildogram's Verified Construction Ecosystem
+            Join Buildogram&apos;s Verified Construction Ecosystem
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '620px', lineHeight: 1.7 }}>
             Create a trusted presence, showcase your projects, collaborate on construction opportunities, and become part of an engineer-led platform built for owners, professionals, and material networks.

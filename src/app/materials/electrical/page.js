@@ -45,7 +45,7 @@ export default function Page() {
         
         <h1 style={{ fontSize: '36px', fontWeight: 800, color: '#0F172A', marginBottom: '24px' }}>Electrical Wires & Materials in Chennai</h1>
         <p style={{ fontSize: '18px', color: '#374151', lineHeight: 1.6, marginBottom: '32px' }}>
-          Don't compromise on fire safety. Electrical short circuits are the leading cause of house fires. We provide 100% genuine, branded FRLS wires, heavy-duty conduits, and life-saving RCCB switchgear to ensure your home's nervous system is flawless.
+          Don&apos;t compromise on fire safety. Electrical short circuits are the leading cause of house fires. We provide 100% genuine, branded FRLS wires, heavy-duty conduits, and life-saving RCCB switchgear to ensure your home&apos;s nervous system is flawless.
         </p>
 
         <AnswerBlock
@@ -69,7 +69,7 @@ export default function Page() {
         <div style={{ margin: '40px 0', padding: '32px', background: 'rgba(252, 110, 32, 0.05)', borderRadius: '16px', border: '1px solid rgba(252, 110, 32, 0.1)' }}>
           <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#0F172A', marginBottom: '16px' }}>Future-Proofing for EVs</h3>
           <p style={{ color: '#374151', lineHeight: 1.6 }}>
-            Electric Vehicles are becoming standard in Chennai. A fast EV charger draws a massive amount of power. If you don't lay a dedicated thick heavy-core cable from your main meter to your parking spot during construction, you will have to break your beautiful driveway tiles later to install it.
+            Electric Vehicles are becoming standard in Chennai. A fast EV charger draws a massive amount of power. If you don&apos;t lay a dedicated thick heavy-core cable from your main meter to your parking spot during construction, you will have to break your beautiful driveway tiles later to install it.
           </p>
         </div>
 

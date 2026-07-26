@@ -61,7 +61,7 @@ export default function ConstructionInChennai() {
             Building in Chennai? Start Right with Engineer-Led Support
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '640px', lineHeight: 1.7, marginBottom: '32px' }}>
-            Chennai's coastal soil, CMDA regulations, and monsoon conditions make construction uniquely challenging. Buildogram provides engineering support tailored to every Chennai zone — from Velachery clay to ECR sand.
+            Chennai&apos;s coastal soil, CMDA regulations, and monsoon conditions make construction uniquely challenging. Buildogram provides engineering support tailored to every Chennai zone — from Velachery clay to ECR sand.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/contact?type=construction" className="btn btn-primary btn-lg">Talk to an Engineer</Link>

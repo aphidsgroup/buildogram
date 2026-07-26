@@ -544,7 +544,7 @@ export default function OpsLeads() {
                     
                     {selected.partner_notes && (
                       <div style={{ marginTop: '12px', padding: '8px', background: '#fef3c7', borderRadius: '4px', borderLeft: '3px solid #d97706' }}>
-                        <div style={{ fontSize: '10px', fontWeight: 800, color: '#92400e', textTransform: 'uppercase', marginBottom: '4px' }}>Partner's Note:</div>
+                        <div style={{ fontSize: '10px', fontWeight: 800, color: '#92400e', textTransform: 'uppercase', marginBottom: '4px' }}>Partner&apos;s Note:</div>
                         <div style={{ fontSize: '12px', color: '#78350f' }}>{selected.partner_notes}</div>
                       </div>
                     )}
@@ -832,7 +832,7 @@ export default function OpsLeads() {
                         </div>
                       ) : (
                         <p style={{ fontSize: '10px', color: '#c2410c', marginTop: '4px' }}>
-                          Linking a Property ID allows this maintenance record to appear in the client's Property Passport.
+                          Linking a Property ID allows this maintenance record to appear in the client&apos;s Property Passport.
                         </p>
                       )}
                     </div>
@@ -904,7 +904,7 @@ export default function OpsLeads() {
                 )}
 
                 <div style={{ padding: '8px', background: '#dcfce7', borderRadius: '4px', fontSize: '10px', color: '#166534', fontStyle: 'italic', marginBottom: '16px' }}>
-                  <strong>Disclaimer shown to user:</strong> "This is an approximate educational estimate... A detailed BOQ is required."
+                  <strong>Disclaimer shown to user:</strong> &quot;This is an approximate educational estimate... A detailed BOQ is required.&quot;
                 </div>
 
                 <div style={{ gridColumn: '1 / -1', borderTop: '1px solid #bbf7d0', paddingTop: '16px' }}>
@@ -969,7 +969,7 @@ export default function OpsLeads() {
                     <div style={{ gridColumn: '1 / -1', marginTop: '8px' }}>
                       <span style={{ fontSize: '11px', color: '#7c3aed', display: 'block', marginBottom: '4px' }}>Customer Concern</span>
                       <p style={{ margin: 0, fontSize: '13px', color: '#4c1d95', background: 'white', padding: '8px', borderRadius: '4px', border: '1px solid #ede9fe' }}>
-                        "{selected.metadata.customer_concern}"
+                        &quot;{selected.metadata.customer_concern}&quot;
                       </p>
                     </div>
                   )}
@@ -1331,7 +1331,7 @@ export default function OpsLeads() {
                   />
                 </div>
                 <p style={{ fontSize: '10px', color: '#94a3b8', marginTop: '6px' }}>
-                  Assigning a user ID allows the client to view the status of this request in their "My Requests" dashboard.
+                  Assigning a user ID allows the client to view the status of this request in their &quot;My Requests&quot; dashboard.
                 </p>
               </div>
             </div>

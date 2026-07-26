@@ -479,7 +479,7 @@ export default function Page() {
             Need Bulk Materials at Best Rates?
           </h2>
           <p style={{ color: 'rgba(255,255,255,0.72)', fontSize: '16px', maxWidth: '480px', margin: '0 auto 28px', lineHeight: 1.7 }}>
-            Use Buildogram's material procurement service to source verified cement, steel, sand, and bricks at wholesale rates with MTC documentation.
+            Use Buildogram&apos;s material procurement service to source verified cement, steel, sand, and bricks at wholesale rates with MTC documentation.
           </p>
           <div style={{ display: 'flex', justifyContent: 'center', gap: '14px', flexWrap: 'wrap' }}>
             <Link

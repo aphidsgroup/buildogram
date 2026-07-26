@@ -121,7 +121,7 @@ export default function BuildPage() {
         <div className="container" style={{ maxWidth: '640px' }}>
           <div style={{ textAlign: 'center', marginBottom: '40px' }}>
             <h2 style={{ color: 'white', fontSize: 'clamp(28px, 4vw, 42px)', marginBottom: '16px' }}>Get a Free Consultation</h2>
-            <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '17px' }}>Tell us about your project. We'll respond within 24 hours.</p>
+            <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: '17px' }}>Tell us about your project. We&apos;ll respond within 24 hours.</p>
           </div>
           <div style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '20px', padding: '40px' }}>
             <BuildLeadForm />

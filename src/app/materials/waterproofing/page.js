@@ -69,7 +69,7 @@ export default function Page() {
         <div style={{ margin: '40px 0', padding: '32px', background: 'rgba(252, 110, 32, 0.05)', borderRadius: '16px', border: '1px solid rgba(252, 110, 32, 0.1)' }}>
           <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#0F172A', marginBottom: '16px' }}>Sunken Bathrooms: The Silent Destroyer</h3>
           <p style={{ color: '#374151', lineHeight: 1.6 }}>
-            In apartments, bathrooms are often built 'sunken' to hide the plumbing pipes, then filled with cinder or soil. If the sunken slab isn't aggressively waterproofed with cementitious slurry, water from the shower leaks into this soil, rots the building, and drips onto your downstairs neighbor's ceiling. This is the #1 cause of neighbor disputes in Chennai.
+            In apartments, bathrooms are often built &apos;sunken&apos; to hide the plumbing pipes, then filled with cinder or soil. If the sunken slab isn&apos;t aggressively waterproofed with cementitious slurry, water from the shower leaks into this soil, rots the building, and drips onto your downstairs neighbor&apos;s ceiling. This is the #1 cause of neighbor disputes in Chennai.
           </p>
         </div>
 

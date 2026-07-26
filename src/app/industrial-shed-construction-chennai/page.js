@@ -61,7 +61,7 @@ export default function IndustrialShedPage() {
             Industrial Shed Construction in Chennai
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '17px', lineHeight: 1.7, maxWidth: '600px', marginBottom: '32px' }}>
-            Engineer-supervised factory shed and industrial building construction across Chennai's industrial zones — SIDCO, SIPCOT, Oragadam, Sriperumbudur and beyond.
+            Engineer-supervised factory shed and industrial building construction across Chennai&apos;s industrial zones — SIDCO, SIPCOT, Oragadam, Sriperumbudur and beyond.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '14px 28px', borderRadius: '8px', fontWeight: 600, textDecoration: 'none' }}>Discuss Your Industrial Project</Link>
@@ -154,7 +154,7 @@ export default function IndustrialShedPage() {
 
         <section style={{ background: 'var(--secondary)', borderRadius: '16px', padding: '48px 40px', textAlign: 'center' }}>
           <h2 style={{ color: 'white', fontSize: '28px', fontWeight: 700, marginBottom: '12px' }}>Discuss Your Industrial Project</h2>
-          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '480px', margin: '0 auto 28px' }}>Tell us your plot, span, usage, and timeline. We'll recommend the right structure type and get the process started.</p>
+          <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '16px', maxWidth: '480px', margin: '0 auto 28px' }}>Tell us your plot, span, usage, and timeline. We&apos;ll recommend the right structure type and get the process started.</p>
           <Link href="/contact" style={{ display: 'inline-block', background: 'var(--primary)', color: 'white', padding: '16px 36px', borderRadius: '8px', fontWeight: 700, textDecoration: 'none', fontSize: '16px' }}>Start Your Project →</Link>
         </section>
       </div>

@@ -69,7 +69,7 @@ export default function Page() {
         <div style={{ margin: '40px 0', padding: '32px', background: 'rgba(252, 110, 32, 0.05)', borderRadius: '16px', border: '1px solid rgba(252, 110, 32, 0.1)' }}>
           <h3 style={{ fontSize: '20px', fontWeight: 700, color: '#0F172A', marginBottom: '16px' }}>Continuous Pouring & Cold Joints</h3>
           <p style={{ color: '#374151', lineHeight: 1.6 }}>
-            A roof slab must be poured monolithically (as a single solid piece). If RMC trucks are delayed and the first half of the slab dries before the second half is poured, a dangerous 'cold joint' forms—a perfect pathway for rainwater leaks. We manage the supply chain to ensure trucks arrive back-to-back for a flawless, continuous pour.
+            A roof slab must be poured monolithically (as a single solid piece). If RMC trucks are delayed and the first half of the slab dries before the second half is poured, a dangerous &apos;cold joint&apos; forms—a perfect pathway for rainwater leaks. We manage the supply chain to ensure trucks arrive back-to-back for a flawless, continuous pour.
           </p>
         </div>
 

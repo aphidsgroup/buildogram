@@ -94,7 +94,7 @@ export default function ClientDashboard() {
           <AnimatedSection className={styles.emptyState} delay={0.1}>
             <div className={styles.emptyIcon}>🏗️</div>
             <h3 className={styles.emptyTitle}>No Active Construction</h3>
-            <p className={styles.emptyDesc}>You don't have any live construction or renovation projects at the moment. Our engineers are ready when you are.</p>
+            <p className={styles.emptyDesc}>You don&apos;t have any live construction or renovation projects at the moment. Our engineers are ready when you are.</p>
             <button onClick={(e) => { e.preventDefault(); alert('Cost Estimator is being upgraded. Coming soon!'); }} className="btn btn-primary">
               Get a Free Estimate
             </button>

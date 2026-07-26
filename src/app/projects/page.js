@@ -108,7 +108,7 @@ export default function Projects() {
           </div>
           <h1 style={{ color: 'white', fontSize: 'clamp(32px, 5vw, 56px)', lineHeight: 1.15, marginBottom: '16px', maxWidth: '800px', fontFamily: '"Space Grotesk", sans-serif' }}>Engineer-Verified Homes — Built with Proof</h1>
           <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '18px', maxWidth: '600px', lineHeight: 1.7, marginBottom: '32px' }}>
-            We don't just hand over keys — we hand over concrete compression test records, lab-certified material reports, and 10-year structural warranties.
+            We don&apos;t just hand over keys — we hand over concrete compression test records, lab-certified material reports, and 10-year structural warranties.
           </p>
           <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
             <Link href="/contact" className="btn btn-primary" style={{ padding: '16px 32px', fontSize: '16px' }}>Request Site Audit Visit</Link>
@@ -264,7 +264,7 @@ export default function Projects() {
                     </div>
                     <div style={{ borderTop: '1px solid var(--border)', paddingTop: '24px' }}>
                       <p style={{ fontStyle: 'italic', fontSize: '16px', lineHeight: '1.7', color: 'var(--text-muted)', marginBottom: '16px' }}>
-                        "{p.quote}"
+                        &quot;{p.quote}&quot;
                       </p>
                       <h4 style={{ fontSize: '15px', color: 'var(--secondary)', fontWeight: 600 }}>— {p.clientName}</h4>
                     </div>

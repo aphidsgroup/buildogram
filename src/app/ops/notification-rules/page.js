@@ -92,7 +92,7 @@ export default function NotificationRulesPage() {
           <div>
             <div style={{ fontWeight: 700, color: '#92400e', marginBottom: '4px' }}>AUTOMATION DISABLED</div>
             <div style={{ fontSize: '14px', color: '#b45309', lineHeight: 1.5 }}>
-              The automation engine is currently turned OFF platform-wide. Enabling a rule here simply means it is <strong>"eligible for future automation"</strong>. No automatic messages will be sent to any user. Use the Dry Run tool to simulate what <em>would</em> happen.
+              The automation engine is currently turned OFF platform-wide. Enabling a rule here simply means it is <strong>&quot;eligible for future automation&quot;</strong>. No automatic messages will be sent to any user. Use the Dry Run tool to simulate what <em>would</em> happen.
             </div>
           </div>
         </div>

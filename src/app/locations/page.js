@@ -141,7 +141,7 @@ export default function LocationsHub() {
               Why Chennai Location Matters for Construction
             </h2>
             <p style={{ fontSize: '17px', color: 'var(--text-muted)', maxWidth: '640px', margin: '0 auto', lineHeight: 1.6 }}>
-              A house designed for OMR will fail if built on Velachery clay without modifications. Chennai's diverse microzones demand site-specific engineering — not copy-paste designs.
+              A house designed for OMR will fail if built on Velachery clay without modifications. Chennai&apos;s diverse microzones demand site-specific engineering — not copy-paste designs.
             </p>
           </div>
 

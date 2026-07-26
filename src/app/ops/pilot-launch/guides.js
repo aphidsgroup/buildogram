@@ -24,7 +24,7 @@ export default function PilotGuides() {
         {active === 'partner' && (
           <div>
             <h3 style={{ marginTop: 0, color: '#0F172A' }}>Partner Quick-Start</h3>
-            <p><strong>1. Project Updates:</strong> Go to <em>Projects &rarr; Select Project &rarr; Site Updates</em>. Add photos and notes. Toggle "Customer Visible" to control if the client sees it.</p>
+            <p><strong>1. Project Updates:</strong> Go to <em>Projects &rarr; Select Project &rarr; Site Updates</em>. Add photos and notes. Toggle &quot;Customer Visible&quot; to control if the client sees it.</p>
             <p><strong>2. Requesting Materials:</strong> Go to <em>Materials &rarr; Add Request</em>. Fill in the item, quantity, and required date. This alerts Ops to find suppliers.</p>
             <p><strong>3. Milestones:</strong> Mark stages as complete to trigger automated updates to the customer.</p>
           </div>
@@ -50,7 +50,7 @@ export default function PilotGuides() {
             <h3 style={{ marginTop: 0, color: '#0F172A' }}>Customer View Guide</h3>
             <p><strong>1. Tracking Progress:</strong> The Customer sees a safe, sanitized view of their project. Internal notes are hidden.</p>
             <p><strong>2. Timeline & Updates:</strong> Customers can see completed milestones and photos published by the Partner.</p>
-            <p><strong>3. Trust & Transparency:</strong> The goal is to reduce "What is happening on site?" phone calls by providing a 24/7 digital logbook.</p>
+            <p><strong>3. Trust & Transparency:</strong> The goal is to reduce &quot;What is happening on site?&quot; phone calls by providing a 24/7 digital logbook.</p>
           </div>
         )}
       </div>

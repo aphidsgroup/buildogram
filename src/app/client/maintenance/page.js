@@ -53,7 +53,7 @@ export default function ClientMaintenancePage() {
           <div className="card text-center py-20">
             <div style={{ fontSize: '48px', marginBottom: '16px' }}>🛠️</div>
             <h2 style={{ fontSize: '20px', fontWeight: 700, color: '#0f172a', marginBottom: '8px' }}>No Maintenance Records</h2>
-            <p style={{ color: '#64748b', marginBottom: '24px' }}>You haven't raised any maintenance requests for your properties yet.</p>
+            <p style={{ color: '#64748b', marginBottom: '24px' }}>You haven&apos;t raised any maintenance requests for your properties yet.</p>
           </div>
         ) : (
           <div className="grid-1 gap-6">

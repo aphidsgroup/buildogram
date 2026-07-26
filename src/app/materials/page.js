@@ -146,7 +146,7 @@ export default function MaterialsPage() {
 
         <div className="card" style={{ marginTop: '48px', background: 'var(--gradient-dark)', border: 'none', textAlign: 'center', padding: '48px' }}>
           <h3 style={{ color: 'white', fontSize: '24px', marginBottom: '12px' }}>Ready to Source Materials at Wholesale Rates?</h3>
-          <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '28px', maxWidth: '480px', margin: '0 auto 28px' }}>Share your BOQ and we'll get you same-day quotes from verified Chennai suppliers.</p>
+          <p style={{ color: 'rgba(255,255,255,0.7)', marginBottom: '28px', maxWidth: '480px', margin: '0 auto 28px' }}>Share your BOQ and we&apos;ll get you same-day quotes from verified Chennai suppliers.</p>
           <Link href="/contact?type=material-quote" className="btn btn-primary btn-lg">Request Material Quote</Link>
         </div>
       </div>

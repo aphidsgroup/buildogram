@@ -189,7 +189,7 @@ export default function SiteLogbook() {
 
                   {log.tomorrowPlan && (
                     <div>
-                      <div style={{ fontSize: '11px', fontWeight: 700, color: '#6366F1', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>📋 Tomorrow's Plan</div>
+                      <div style={{ fontSize: '11px', fontWeight: 700, color: '#6366F1', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '6px' }}>📋 Tomorrow&apos;s Plan</div>
                       <div style={{ fontSize: '14px', lineHeight: 1.6 }}>{log.tomorrowPlan}</div>
                     </div>
                   )}

@@ -61,10 +61,10 @@ export default function GbpGenerator({ assetData }) {
         <h3 style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px' }}>GBP Publishing Checklist</h3>
         <ul style={{ fontSize: '13px', color: '#475569', paddingLeft: '20px', display: 'flex', flexDirection: 'column', gap: '8px', margin: 0 }}>
           <li>Log into Google Business Profile</li>
-          <li>Click "Add Update"</li>
+          <li>Click &quot;Add Update&quot;</li>
           <li>Paste the copied text</li>
           <li>Upload 1-3 unblurred, safe photos</li>
-          <li>Select "Learn More" button</li>
+          <li>Select &quot;Learn More&quot; button</li>
           <li>Link to: <strong>https://buildogram.in{assetData.linked_service_url || `/proof/${assetData.slug}`}</strong></li>
         </ul>
       </div>

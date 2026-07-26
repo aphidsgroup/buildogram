@@ -352,9 +352,9 @@ export default function Page() {
                   <div style={{ padding: '20px' }}>
                     {/* Concern */}
                     <div style={{ marginBottom: '16px' }}>
-                      <p style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '6px' }}>Owner's Concern</p>
+                      <p style={{ fontSize: '11px', fontWeight: 700, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '6px' }}>Owner&apos;s Concern</p>
                       <p style={{ fontSize: '14px', color: '#374151', lineHeight: 1.6, margin: 0, fontStyle: 'italic' }}>
-                        "{ex.concern}"
+                        &quot;{ex.concern}&quot;
                       </p>
                     </div>
 

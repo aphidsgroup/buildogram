@@ -15,7 +15,7 @@ export default function VendorHubPage() {
         <div style={{ fontSize: '48px', marginBottom: '20px' }}>🤝</div>
         <h2 style={{ fontSize: '22px', marginBottom: '12px', color: 'var(--primary-dark)' }}>No data available yet</h2>
         <p style={{ color: 'var(--text-muted)', maxWidth: '500px', margin: '0 auto 24px', lineHeight: 1.6 }}>
-          You haven't added any records to the Vendor Hub module yet. Start by creating your first entry to populate this dashboard.
+          You haven&apos;t added any records to the Vendor Hub module yet. Start by creating your first entry to populate this dashboard.
         </p>
         <button className="btn btn-primary" style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
           <span style={{ fontSize: '18px' }}>+</span> Add New Record

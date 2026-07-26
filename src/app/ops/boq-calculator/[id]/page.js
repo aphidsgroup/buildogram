@@ -209,7 +209,7 @@ function SectionPlastering({ data, setData }) {
   const setInner = fn => setData(d => ({ ...d, innerRows: typeof fn === 'function' ? fn(d.innerRows || []) : fn }));
   return (
     <div>
-      <p style={{ color: '#64748B', fontSize: 13, marginBottom: 10 }}>Outer plastering is auto-derived from 9" brickwork. Enter inner wall rows and ceiling area separately.</p>
+      <p style={{ color: '#64748B', fontSize: 13, marginBottom: 10 }}>Outer plastering is auto-derived from 9&quot; brickwork. Enter inner wall rows and ceiling area separately.</p>
       <h4 style={{ fontSize: 14, fontWeight: 700, marginBottom: 10 }}>Inner Wall Plastering Rows</h4>
       {innerRows.map((r, i) => (
         <div key={r._id || i} style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 10, padding: 12, marginBottom: 10 }}>
@@ -459,7 +459,7 @@ function SectionRateSheet({ localRates, setLocalRates }) {
   return (
     <div>
       <div style={{ background: '#FFF7ED', border: '1px solid #FED7AA', borderRadius: 10, padding: '10px 14px', marginBottom: 14, fontSize: 13, color: '#C2410C' }}>
-        ⚠️ Editing rates here changes them for <strong>this project only</strong>. Changes are saved when you click "Save &amp; Calculate".
+        ⚠️ Editing rates here changes them for <strong>this project only</strong>. Changes are saved when you click &quot;Save &amp; Calculate&quot;.
       </div>
       <div style={{ overflowX: 'auto' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: 700 }}>

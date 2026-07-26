@@ -283,7 +283,7 @@ export default function Home() {
               <div className={styles.proofItem}><span className={styles.proofCheck}>✓</span> Electrical point undercount</div>
               <div className={styles.proofItem}><span className={styles.proofCheck}>✓</span> Compound wall omission</div>
               <div className={styles.proofItem}><span className={styles.proofCheck}>✓</span> Septic tank / STP omission</div>
-              <div className={styles.proofItem}><span className={styles.proofCheck}>✓</span> Finishing material ambiguity (e.g. "Basic tiles")</div>
+              <div className={styles.proofItem}><span className={styles.proofCheck}>✓</span> Finishing material ambiguity (e.g. &quot;Basic tiles&quot;)</div>
               <div className={styles.proofItem}><span className={styles.proofCheck}>✓</span> Door/Window wood quality specifications</div>
             </div>
             <div className="text-center" style={{ marginTop: '32px' }}>
@@ -384,7 +384,7 @@ export default function Home() {
                 Ditch the chaotic WhatsApp groups. Our dashboard provides a centralized timeline of your project’s execution.
               </p>
               <ul className={styles.featureList}>
-                <li><strong>Milestone Timeline:</strong> See what's happening when.</li>
+                <li><strong>Milestone Timeline:</strong> See what&apos;s happening when.</li>
                 <li><strong>Site Photos:</strong> Verifiable photographic proof of work.</li>
                 <li><strong>Quality Checklists:</strong> Engineer-backed quality sign-offs.</li>
                 <li><strong>Material Delivery:</strong> Records of what arrived on site.</li>

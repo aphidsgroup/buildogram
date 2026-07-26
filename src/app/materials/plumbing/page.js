@@ -45,7 +45,7 @@ export default function Page() {
         
         <h1 style={{ fontSize: '36px', fontWeight: 800, color: '#0F172A', marginBottom: '24px' }}>Plumbing Pipes & Materials in Chennai</h1>
         <p style={{ fontSize: '18px', color: '#374151', lineHeight: 1.6, marginBottom: '32px' }}>
-          A leak behind a tiled wall is a homeowner's worst nightmare. We supply 100% genuine, pressure-rated CPVC and UPVC pipes that are rated to withstand high-pressure booster pumps and scorching hot water without bursting or leaking.
+          A leak behind a tiled wall is a homeowner&apos;s worst nightmare. We supply 100% genuine, pressure-rated CPVC and UPVC pipes that are rated to withstand high-pressure booster pumps and scorching hot water without bursting or leaking.
         </p>
 
         <AnswerBlock

@@ -21,9 +21,9 @@ export default function OpsHelpPage() {
             <span>📞</span> Lead Management
           </h2>
           <ul style={{ listStyle: 'disc', paddingLeft: '20px', color: '#475569', fontSize: '14px', lineHeight: 1.6, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <li><strong>Response SLA:</strong> All new leads must be moved from "New" to "Contacted" within 2 hours.</li>
+            <li><strong>Response SLA:</strong> All new leads must be moved from &quot;New&quot; to &quot;Contacted&quot; within 2 hours.</li>
             <li><strong>Material Quotes:</strong> Verify requested brands. If a brand is unavailable, quote the nearest Tier-1 equivalent and note it.</li>
-            <li><strong>BOQ Audits:</strong> AI-generated reports are preliminary. An engineer MUST manually review and add comments before marking "Review Complete".</li>
+            <li><strong>BOQ Audits:</strong> AI-generated reports are preliminary. An engineer MUST manually review and add comments before marking &quot;Review Complete&quot;.</li>
           </ul>
         </div>
 
@@ -34,7 +34,7 @@ export default function OpsHelpPage() {
           </h2>
           <ul style={{ listStyle: 'disc', paddingLeft: '20px', color: '#475569', fontSize: '14px', lineHeight: 1.6, display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <li><strong>Daily Logs:</strong> Site engineers must submit progress photos by 6:00 PM daily.</li>
-            <li><strong>Cube Tests:</strong> Upload 7-day and 28-day compressive strength reports to the specific project's document vault.</li>
+            <li><strong>Cube Tests:</strong> Upload 7-day and 28-day compressive strength reports to the specific project&apos;s document vault.</li>
             <li><strong>Milestone Triggers:</strong> Do not request escrow release until the BQS checklist for that phase is 100% verified.</li>
           </ul>
         </div>
@@ -45,9 +45,9 @@ export default function OpsHelpPage() {
             <span>🤝</span> Partner Verifications
           </h2>
           <ul style={{ listStyle: 'disc', paddingLeft: '20px', color: '#475569', fontSize: '14px', lineHeight: 1.6, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <li><strong>Contractors:</strong> Request past 2 project handover letters before switching status to "Active".</li>
+            <li><strong>Contractors:</strong> Request past 2 project handover letters before switching status to &quot;Active&quot;.</li>
             <li><strong>Suppliers:</strong> Verify GST number and primary dealership certificates.</li>
-            <li><strong>Public Profiles:</strong> Only check "Show Public Profile" if the partner has completed at least 1 successful Buildogram transaction.</li>
+            <li><strong>Public Profiles:</strong> Only check &quot;Show Public Profile&quot; if the partner has completed at least 1 successful Buildogram transaction.</li>
           </ul>
         </div>
 
