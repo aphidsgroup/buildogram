@@ -4,7 +4,14 @@ import AnimatedSection from '@/components/ui/AnimatedSection';
 import SectionHeader from '@/components/ui/SectionHeader';
 import PremiumCard from '@/components/ui/PremiumCard';
 import { getMoneyPageLinks } from '@/lib/seo/internalLinks';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import styles from './page.module.css';
+
+export const metadata = generateSEOMetadata({
+  title: 'Buildogram | Engineer-Led Construction Intelligence — Chennai',
+  description: 'Engineer-led construction intelligence, quality review and permanent property documentation for Chennai homeowners. Independent BOQ review, structural audits, site supervision and partner coordination.',
+  path: '/',
+});
 
 /* ─── Data ────────────────────────────────────────────────── */
 const PAIN_POINTS = [

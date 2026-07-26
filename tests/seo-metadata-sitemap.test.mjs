@@ -27,10 +27,30 @@ test('metadata helper preserves the homepage canonical and noindex behavior', ()
     noIndex: true,
   });
 
-  assert.equal(metadata.alternates.canonical, SITE_URL);
+  assert.equal(metadata.alternates.canonical, `${SITE_URL}/`);
+  assert.equal(metadata.openGraph.url, `${SITE_URL}/`);
   assert.equal(metadata.robots.index, false);
   assert.equal(metadata.robots.follow, false);
   assert.equal(metadata.robots.googleBot.index, false);
+});
+
+test('homepage and partner registration declare page-specific metadata', () => {
+  const homepageSource = fs.readFileSync('src/app/page.js', 'utf8');
+  const partnerSource = fs.readFileSync('src/app/partners/register/layout.js', 'utf8');
+
+  assert.match(homepageSource, /generateSEOMetadata\(\{[\s\S]*?path:\s*['"]\/['"]/);
+  assert.match(
+    partnerSource,
+    /generateSEOMetadata\(\{[\s\S]*?path:\s*['"]\/partners\/register['"]/,
+  );
+
+  const partnerMetadata = generateSEOMetadata({
+    title: 'Register for the Construction Partner Directory | Buildogram',
+    description: 'Partner registration.',
+    path: '/partners/register',
+  });
+  assert.equal(partnerMetadata.alternates.canonical, `${SITE_URL}/partners/register`);
+  assert.equal(partnerMetadata.openGraph.url, `${SITE_URL}/partners/register`);
 });
 
 test('robots points to the production sitemap and blocks private route families', () => {

@@ -29,7 +29,7 @@ export function generateSEOMetadata({
 }) {
   // Support both noIndex and noindex spellings
   const shouldNoindex = noIndex || noindex;
-  const url = `${SITE_URL}${path === '/' ? '' : path}`;
+  const url = path === '/' ? `${SITE_URL}/` : `${SITE_URL}${path}`;
 
   // Resolve ogImage to absolute URL — relative paths don't work in all Open Graph parsers
   const ogImageUrl = ogImage.startsWith('http')
@@ -81,4 +81,3 @@ export function generateSEOMetadata({
     },
   };
 }
-
