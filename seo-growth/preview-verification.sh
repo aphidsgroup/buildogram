@@ -30,7 +30,45 @@ echo -e "check\tresult" > "$OUT/00-protection.tsv"
 code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$BASE/")
 echo -e "unauthenticated_status\t$code" >> "$OUT/00-protection.tsv"
 echo -e "x_robots_tag\t$(curl -sSI --max-time 20 "$BASE/" | grep -i '^x-robots-tag' | tr -d '\r')" >> "$OUT/00-protection.tsv"
-echo "[0] protection: HTTP $code (401/403 = protected)"
+# Vercel SSO protection answers with a 302 to vercel.com/login, not 401/403.
+loc=$(curl -sSI --max-time 20 "$BASE/" | grep -i '^location:' | tr -d '\r' | cut -d' ' -f2-)
+case "$code:$loc" in
+  401:*|403:*)            prot="PROTECTED (HTTP $code)";;
+  30[0-9]:*vercel.com/*)  prot="PROTECTED (HTTP $code -> Vercel SSO login)";;
+  200:*)                  prot="UNPROTECTED (HTTP 200) - preview is publicly reachable";;
+  *)                      prot="UNKNOWN (HTTP $code)";;
+esac
+echo -e "protection_verdict\t$prot" >> "$OUT/00-protection.tsv"
+echo "[0] protection: $prot"
+
+# ABORT GUARD — if the authenticated fetch still lands on Vercel's login page,
+# every downstream section would silently measure vercel.com instead of the app.
+probe=$(fetch / 2>/dev/null | head -c 4000)
+case "$probe" in
+  *"Log in to Vercel"*|*"vercel.com/login"*|*"Authentication Required"*)
+    cat >&2 <<'ABORT'
+
+=============================================================================
+ABORTED — the preview is behind Vercel Deployment Protection and no working
+bypass token was supplied. Requests are being answered by vercel.com/login.
+
+Any results written now would describe Vercel's login page, not Buildogram.
+That is worse than no evidence, so nothing further will be written.
+
+Fix, then re-run:
+  Vercel -> Project -> Settings -> Deployment Protection -> Protection Bypass
+  for Automation -> copy the secret, then:
+
+  VERCEL_PROTECTION_BYPASS="<secret>" BASE="<preview-url>" \
+    bash seo-growth/preview-verification.sh
+
+Alternatively disable protection for this one preview and re-run without a
+token. Do not disable it for production.
+=============================================================================
+
+ABORT
+    exit 2;;
+esac
 
 # ── 1. Route families (item 6) ──────────────────────────────────────────────
 URLS=(
@@ -85,11 +123,24 @@ echo "[2] redirects -> $OUT/02-redirects.tsv  (PASS = 301/308, hops=1, dest 200,
 
 # ── 3. Sitemap (item 8) — status-check EVERY url ────────────────────────────
 fetch /sitemap.xml > "$OUT/sitemap.xml"
-grep -oP '<loc>\K[^<]+' "$OUT/sitemap.xml" | sort > "$OUT/sitemap-urls.txt"
+if grep -oP '<loc>\K[^<]+' "$OUT/sitemap.xml" > "$OUT/sitemap-urls.txt" 2>/dev/null && [ -s "$OUT/sitemap-urls.txt" ]; then :; else
+  # Git Bash for Windows often ships grep without PCRE. sed works everywhere.
+  sed -n 's|.*<loc>\([^<]*\)</loc>.*|\1|p' "$OUT/sitemap.xml" > "$OUT/sitemap-urls.txt"
+fi
+sort -o "$OUT/sitemap-urls.txt" "$OUT/sitemap-urls.txt"
 total=$(wc -l < "$OUT/sitemap-urls.txt"); uniq=$(sort -u "$OUT/sitemap-urls.txt" | wc -l)
 { echo -e "metric\tvalue"
   echo -e "sitemap_http\t$(curl -sS -o /dev/null -w '%{http_code}' "$BASE/sitemap.xml")"
-  echo -e "xml_wellformed\t$(xmllint --noout "$OUT/sitemap.xml" 2>&1 && echo yes || echo NO)"
+  if command -v xmllint >/dev/null 2>&1; then
+    echo -e "xml_wellformed\t$(xmllint --noout "$OUT/sitemap.xml" 2>&1 && echo yes || echo NO)"
+  else
+    # No xmllint (common on Git Bash for Windows). Fall back to a structural check.
+    if head -c 200 "$OUT/sitemap.xml" | grep -q '<urlset' && grep -q '</urlset>' "$OUT/sitemap.xml"; then
+      echo -e "xml_wellformed\tprobably (xmllint unavailable; urlset open+close found)"
+    else
+      echo -e "xml_wellformed\tNO (xmllint unavailable; urlset tags missing)"
+    fi
+  fi
   echo -e "total_urls\t$total"; echo -e "unique_urls\t$uniq"; echo -e "duplicates\t$((total-uniq))"
   echo -e "non_www_hosts\t$(grep -vc '^https://www\.buildogram\.in' "$OUT/sitemap-urls.txt")"
   echo -e "preview_domain_urls\t$(grep -c 'vercel\.app' "$OUT/sitemap-urls.txt")"
