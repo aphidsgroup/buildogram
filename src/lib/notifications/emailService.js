@@ -5,8 +5,7 @@ export async function sendEmail({ to, subject, body, html }) {
   const apiKey = process.env.RESEND_API_KEY;
 
   if (!apiKey) {
-    console.log('[EMAIL SKIPPED] RESEND_API_KEY not configured.');
-    console.log(`To: ${to}\nSubject: ${subject}\nBody:\n${body || html}`);
+    console.info('EMAIL_DELIVERY_SKIPPED reason=feature_disabled template=generic_notification');
     return { sent: false, reason: 'not_configured' };
   }
 

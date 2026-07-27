@@ -6,10 +6,7 @@ export async function sendWhatsApp({ to, message }) {
   const senderId = process.env.WHATSAPP_SENDER_ID;
 
   if (!apiKey || !provider) {
-    if (process.env.NODE_ENV === 'development') {
-      console.log('[WHATSAPP SKIPPED] WhatsApp credentials not configured.');
-      console.log(`To: ${to}\nMessage:\n${message}`);
-    }
+    console.info('WHATSAPP_DELIVERY_SKIPPED reason=feature_disabled');
     return { sent: false, reason: 'not_configured' };
   }
 

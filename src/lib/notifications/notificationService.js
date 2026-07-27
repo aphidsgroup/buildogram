@@ -7,7 +7,6 @@ export async function sendNotification(event, data) {
   
   if (process.env.APP_MODE === 'demo' || !process.env.DATABASE_URL) {
     console.log(`[NotificationService] Demo mode active. Suppressing actual dispatch for ${event}.`);
-    console.log(data);
     return true;
   }
 
