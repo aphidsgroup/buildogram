@@ -1,21 +1,21 @@
-// Edge-compatible JWT auth (used by middleware)
-// For API routes, use the full 'jsonwebtoken' via verifyTokenNode
+import jwt from 'jsonwebtoken';
 
-const SECRET = process.env.JWT_SECRET || 'buildogram_super_secret_jwt_key_2024_chennai_caas_platform';
+let missingSecretLogged = false;
 
-function base64UrlDecode(str) {
-  const base64 = str.replace(/-/g, '+').replace(/_/g, '/');
-  const padded = base64.padEnd(base64.length + (4 - base64.length % 4) % 4, '=');
-  return atob(padded);
+function getSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret && !missingSecretLogged) {
+    console.error('[auth] JWT_SECRET is not configured; authentication is disabled.');
+    missingSecretLogged = true;
+  }
+  return secret || null;
 }
 
 export function verifyToken(token) {
+  const secret = getSecret();
+  if (!secret || !token) return null;
   try {
-    const parts = token.split('.');
-    if (parts.length !== 3) return null;
-    const payload = JSON.parse(base64UrlDecode(parts[1]));
-    if (payload.exp && Date.now() / 1000 > payload.exp) return null;
-    return payload;
+    return jwt.verify(token, secret, { algorithms: ['HS256'] });
   } catch { return null; }
 }
 
@@ -32,13 +32,11 @@ export function getUserFromRequest(request) {
 
 // Full JWT ops used in API routes only (Node.js runtime)
 export async function signToken(payload) {
-  const { default: jwt } = await import('jsonwebtoken');
-  return jwt.sign(payload, SECRET, { expiresIn: '7d' });
+  const secret = getSecret();
+  if (!secret) throw new Error('Authentication is not configured');
+  return jwt.sign(payload, secret, { algorithm: 'HS256', expiresIn: '7d' });
 }
 
 export async function verifyTokenNode(token) {
-  try {
-    const { default: jwt } = await import('jsonwebtoken');
-    return jwt.verify(token, SECRET);
-  } catch { return null; }
+  return verifyToken(token);
 }

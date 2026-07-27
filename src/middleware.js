@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
-import { verifyToken } from '@/lib/auth';
+import { verifyTokenEdge } from '@/lib/auth-edge';
 
-export function middleware(request) {
+export async function middleware(request) {
   const tokenCookie = request.cookies.get('buildogram_token');
   const token = tokenCookie?.value;
   let user = null;
   if (token) {
-    user = verifyToken(token);
+    user = await verifyTokenEdge(token);
   }
 
   const { pathname } = request.nextUrl;
