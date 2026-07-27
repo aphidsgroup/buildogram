@@ -16,7 +16,7 @@ const DEMO_QUOTATIONS = [
 
 export async function getQuotationsForRequest(requestId) {
   if (!isDemoMode()) {
-    const data = await apiFetch(`/api/material-quotes?requestId=${requestId}`);
+    const data = await apiFetch(`/api/material-quotes?requestId=${encodeURIComponent(requestId)}`);
     if (data) return data.quotes || data.data || data;
   }
   return mergeWithDemo(LS_KEY, DEMO_QUOTATIONS).filter(q => q.requestId === requestId);
@@ -31,6 +31,13 @@ export async function getAllQuotations(filters = {}) {
 }
 
 export async function submitQuotation(payload) {
+  if (!isDemoMode()) {
+    const data = await apiFetch('/api/material-quotes', {
+      method: 'POST', body: JSON.stringify(payload),
+    });
+    if (!data?.success) throw new Error(data?.message || 'Unable to submit quotation');
+    return data.quote;
+  }
   const quote = {
     ...payload,
     id: genId('Q'),
@@ -38,12 +45,6 @@ export async function submitQuotation(payload) {
     selected: false,
     submittedAt: new Date().toISOString(),
   };
-  if (!isDemoMode()) {
-    const data = await apiFetch('/api/material-quotes', {
-      method: 'POST', body: JSON.stringify(payload),
-    });
-    if (data) return data.quote || data;
-  }
   const all = mergeWithDemo(LS_KEY, DEMO_QUOTATIONS);
   lsSet(LS_KEY, [...all, quote]);
   return quote;

@@ -1,79 +1,117 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-import { getUserFromRequest } from '@/lib/auth';
+import { prisma } from '@/lib/storageProvider';
+import { requireAuth } from '@/lib/apiAuth';
 
-const globalForPrisma = global;
-const prisma = globalForPrisma.prisma || new PrismaClient();
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+async function supplierPartnerId(userId) {
+  const user = await prisma.users.findUnique({
+    where: { id: userId },
+    select: {
+      partner_id: true,
+      partners: { select: { partner_type: true, active: true } },
+    },
+  });
+  if (!user?.partner_id || !user.partners?.active) return null;
+  return ['supplier', 'material_supplier'].includes(user.partners.partner_type)
+    ? user.partner_id
+    : null;
+}
 
 export async function GET(req) {
+  const { user, error } = requireAuth(req);
+  if (error) return error;
+
   try {
-    const { searchParams } = new URL(req.url);
-    let supplier_id = searchParams.get('supplier_id');
-
-    if (!supplier_id) {
-      // Attempt to resolve from user auth
-      const u = getUserFromRequest(req);
-      if (u && u.id) {
-        const partner = await prisma.partners.findFirst({ where: { user_id: u.id } });
-        if (partner) supplier_id = partner.id;
-      }
-    }
-
-    if (!supplier_id) {
-      return NextResponse.json({ success: false, error: 'Unauthorized. Missing supplier identity.' }, { status: 401 });
+    const partnerId = await supplierPartnerId(user.id);
+    if (!partnerId) {
+      return NextResponse.json({ success: false, error: 'Active supplier profile required' }, { status: 403 });
     }
 
     const quotes = await prisma.supplier_quote_responses.findMany({
-      where: { supplier_partner_id: supplier_id },
-      include: {
+      where: { supplier_partner_id: partnerId },
+      select: {
+        id: true,
+        quote_request_id: true,
+        material_category: true,
+        brand: true,
+        grade_spec: true,
+        quantity: true,
+        unit: true,
+        unit_rate: true,
+        transport_cost: true,
+        gst_included: true,
+        delivery_timeline: true,
+        payment_terms: true,
+        quote_file_url: true,
+        validity_date: true,
+        status: true,
+        created_at: true,
+        updated_at: true,
         material_quote_requests: {
           select: {
-            customer_name: true,
             project_area: true,
             delivery_location: true,
             boq_available: true,
             boq_file_url: true,
             required_date: true,
-            notes: true,
-            created_at: true
-          }
-        }
+            status: true,
+            created_at: true,
+          },
+        },
       },
-      orderBy: { created_at: 'desc' }
+      orderBy: { created_at: 'desc' },
     });
 
     return NextResponse.json({ success: true, data: quotes });
-  } catch (error) {
-    console.error('Error fetching supplier quotes:', error);
-    return NextResponse.json({ success: false, error: 'Failed to fetch' }, { status: 500 });
+  } catch {
+    console.error('[partner-material-quotes] Read failed');
+    return NextResponse.json({ success: false, error: 'Unable to load quotations' }, { status: 500 });
   }
 }
 
 export async function PATCH(req) {
-  try {
-    const body = await req.json();
-    const { response_id, ...updates } = body;
+  const { user, error } = requireAuth(req);
+  if (error) return error;
 
-    if (!response_id) return NextResponse.json({ success: false, error: 'Missing response id' }, { status: 400 });
+  try {
+    const partnerId = await supplierPartnerId(user.id);
+    if (!partnerId) {
+      return NextResponse.json({ success: false, error: 'Active supplier profile required' }, { status: 403 });
+    }
+
+    const body = await req.json();
+    if (!body.response_id) {
+      return NextResponse.json({ success: false, error: 'Response id required' }, { status: 400 });
+    }
+    const existing = await prisma.supplier_quote_responses.findFirst({
+      where: { id: body.response_id, supplier_partner_id: partnerId },
+      select: { id: true, status: true, quote_request_id: true },
+    });
+    if (!existing) {
+      return NextResponse.json({ success: false, error: 'Quotation response not found' }, { status: 404 });
+    }
+    if (['accepted', 'rejected', 'expired'].includes(String(existing.status).toLowerCase())) {
+      return NextResponse.json({ success: false, error: 'Quotation response is closed' }, { status: 409 });
+    }
 
     const updated = await prisma.supplier_quote_responses.update({
-      where: { id: response_id },
+      where: { id: existing.id },
       data: {
-        ...updates,
-        status: 'submitted'
-      }
+        brand: body.brand === undefined ? undefined : String(body.brand).trim().slice(0, 200),
+        grade_spec: body.grade_spec === undefined ? undefined : String(body.grade_spec).trim().slice(0, 200),
+        delivery_timeline: body.delivery_timeline === undefined ? undefined : String(body.delivery_timeline).trim().slice(0, 200),
+        payment_terms: body.payment_terms === undefined ? undefined : String(body.payment_terms).trim().slice(0, 1000),
+        status: existing.status === 'pending' ? 'submitted' : 'revised',
+        updated_at: new Date(),
+      },
     });
 
-    // Mark parent request as quotes_received if not already
     await prisma.material_quote_requests.update({
-      where: { id: updated.quote_request_id },
-      data: { status: 'quotes_received' }
+      where: { id: existing.quote_request_id },
+      data: { status: 'quotes_received', updated_at: new Date() },
     });
-
     return NextResponse.json({ success: true, data: updated });
-  } catch (error) {
-    console.error('Error updating supplier quote:', error);
-    return NextResponse.json({ success: false, error: 'Failed to update quote' }, { status: 500 });
+  } catch {
+    console.error('[partner-material-quotes] Update failed');
+    return NextResponse.json({ success: false, error: 'Unable to update quotation' }, { status: 500 });
   }
 }

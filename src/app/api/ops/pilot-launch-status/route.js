@@ -1,51 +1,39 @@
-import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
-import sql from '@/lib/db';
 import { requireAdmin, ok } from '@/lib/apiAuth';
+import { prisma } from '@/lib/storageProvider';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET(request) {
-  const { user, error } = requireAdmin(request);
+  const { error } = requireAdmin(request);
   if (error) return error;
 
   try {
-    const stats = {
-      users: 0,
-      projects: 0,
-      materials: 0,
-      quotes: 0,
-      updates: 0,
-      blockers: []
-    };
+    const requests = await prisma.material_quote_requests.findMany({
+      where: { notes: { startsWith: '[pilot_seed]' } },
+      select: {
+        id: true,
+        supplier_quote_responses: { select: { id: true, status: true } },
+      },
+    });
+    const responses = requests.flatMap(item => item.supplier_quote_responses);
+    const blockers = [];
+    if (requests.length < 1) blockers.push('Canonical pilot quote request is missing');
+    if (responses.length < 1) blockers.push('Canonical pilot supplier response is missing');
 
-    try {
-      const [u] = await sql`SELECT COUNT(*) as c FROM users WHERE email LIKE '%@pilot.buildogram.in'`;
-      stats.users = Number(u.c);
-      
-      const [p] = await sql`SELECT COUNT(*) as c FROM projects WHERE source_type = 'pilot_seed'`;
-      stats.projects = Number(p.c);
-      
-      const [m] = await sql`SELECT COUNT(*) as c FROM material_requests WHERE source_type = 'pilot_seed'`;
-      stats.materials = Number(m.c);
-      
-      const [q] = await sql`SELECT COUNT(*) as c FROM material_quotes WHERE source_type = 'pilot_seed'`;
-      stats.quotes = Number(q.c);
-      
-      const [up] = await sql`SELECT COUNT(*) as c FROM site_updates WHERE source_type = 'pilot_seed'`;
-      stats.updates = Number(up.c);
-
-      if (stats.users < 8) stats.blockers.push('Not enough pilot users seeded (Need 8+)');
-      if (stats.projects < 2) stats.blockers.push('Pilot projects missing (Need 2+)');
-      if (stats.materials < 5) stats.blockers.push('Material requests missing (Need 5+)');
-
-    } catch (e) {
-      stats.blockers.push('DB connection failed: ' + e.message);
-    }
-
-    return ok({ stats });
-
-  } catch (e) {
-    return NextResponse.json({ success: false, message: e.message }, { status: 500 });
+    return ok({
+      stats: {
+        materialQuoteRequests: requests.length,
+        supplierQuoteResponses: responses.length,
+        deliveryRecords: 0,
+        blockers,
+      },
+    });
+  } catch {
+    console.error('[pilot-status] Canonical workflow check failed');
+    return NextResponse.json(
+      { success: false, message: 'Unable to read pilot status' },
+      { status: 500 },
+    );
   }
 }
