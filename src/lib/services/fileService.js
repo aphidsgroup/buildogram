@@ -119,10 +119,12 @@ export async function deleteFile(fileId) {
  * Uses NEXT_PUBLIC_CLOUDINARY_* env vars.
  */
 export function getCloudinaryConfig() {
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
   return {
-    cloudName:    process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dautrievu',
-    uploadPreset: process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || 'buildogram_uploads',
-    uploadUrl:    `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || 'dautrievu'}/upload`,
+    cloudName,
+    uploadPreset,
+    uploadUrl: cloudName ? `https://api.cloudinary.com/v1_1/${cloudName}/upload` : null,
   };
 }
 

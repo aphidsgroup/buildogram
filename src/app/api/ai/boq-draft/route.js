@@ -2,12 +2,16 @@ import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
 import { generateBOQDraft } from '@/lib/ai';
+import { getFeatureConfig, unavailableFeatureResponse } from '@/lib/config/features';
 
 export async function POST(req) {
   try {
     const u = getUserFromRequest(req);
     if (!u || !['ops_admin', 'ops_pm'].includes(u.role)) {
       return NextResponse.json({ success: false, error: 'Forbidden' }, { status: 403 });
+    }
+    if (!getFeatureConfig().providerAi.available) {
+      return NextResponse.json(unavailableFeatureResponse(), { status: 503 });
     }
 
     const { lead_id, boq_text } = await req.json();

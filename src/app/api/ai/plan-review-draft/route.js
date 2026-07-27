@@ -2,12 +2,16 @@ import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
 import { generateCompletion } from '@/lib/ai';
+import { getFeatureConfig, unavailableFeatureResponse } from '@/lib/config/features';
 
 export async function POST(req) {
   try {
     const user = getUserFromRequest(req);
     if (!user || !['ops_admin', 'ops_pm'].includes(user.role)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+    }
+    if (!getFeatureConfig().providerAi.available) {
+      return NextResponse.json(unavailableFeatureResponse(), { status: 503 });
     }
 
     const { leadId, details } = await req.json();
@@ -52,12 +56,8 @@ Client Questions: ${details.message || 'None'}`;
     let providerUsed = process.env.AI_PROVIDER || 'fallback';
 
     try {
-      if (process.env.OPENAI_API_KEY || process.env.ANTHROPIC_API_KEY || process.env.GEMINI_API_KEY) {
-        const textRes = await generateCompletion(systemPrompt, userPrompt);
-        parsed = JSON.parse(textRes);
-      } else {
-        throw new Error('No AI provider configured, using fallback.');
-      }
+      const textRes = await generateCompletion(systemPrompt, userPrompt);
+      parsed = JSON.parse(textRes);
     } catch (e) {
       console.warn('AI failed or not configured, using deterministic fallback:', e.message);
       fallbackUsed = true;

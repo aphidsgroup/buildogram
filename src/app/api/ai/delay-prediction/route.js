@@ -2,10 +2,14 @@ import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
 import { generateDelayPrediction } from '@/lib/ai';
+import { getFeatureConfig, unavailableFeatureResponse } from '@/lib/config/features';
 
 export async function POST(req) {
   const u = getUserFromRequest(req);
   if (!u) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!getFeatureConfig().providerAi.available) {
+    return NextResponse.json(unavailableFeatureResponse(), { status: 503 });
+  }
 
   try {
     const input = await req.json();

@@ -252,7 +252,9 @@ export default function OpsLeads() {
       }
       logActivity(selected.id, { activity_type: 'system', title: 'BOQ AI draft generated', description: 'Human review required before sharing.' });
     } else {
-      alert('Failed to generate draft: ' + d.error);
+      alert(d.reason === 'feature_disabled'
+        ? 'This assisted feature is not currently enabled.'
+        : 'Unable to generate the assisted draft.');
     }
   };
 

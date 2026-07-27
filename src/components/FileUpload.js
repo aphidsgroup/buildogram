@@ -1,12 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function FileUpload({ onUploadComplete, label = 'Upload File', accept = 'image/*' }) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState(null);
+  const [available, setAvailable] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/config/features')
+      .then(response => response.json())
+      .then(features => { if (active) setAvailable(Boolean(features.cloudinaryUploads)); })
+      .catch(() => { if (active) setAvailable(false); });
+    return () => { active = false; };
+  }, []);
 
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
-    if (!file) return;
+    if (!file || !available) return;
 
     setUploading(true);
     setError(null);
@@ -40,7 +50,7 @@ export default function FileUpload({ onUploadComplete, label = 'Upload File', ac
           type="file"
           accept={accept}
           onChange={handleFileChange}
-          disabled={uploading}
+          disabled={uploading || !available}
           className="block w-full text-sm text-gray-400
             file:mr-4 file:py-2 file:px-4
             file:rounded-full file:border-0
@@ -56,6 +66,7 @@ export default function FileUpload({ onUploadComplete, label = 'Upload File', ac
         )}
       </div>
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+      {!available && <p className="text-gray-500 text-sm mt-1">Uploads are not available in this environment.</p>}
     </div>
   );
 }

@@ -3,8 +3,12 @@ import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
 import { roleCan } from '@/lib/permissions';
+import { getFeatureConfig, unavailableFeatureResponse } from '@/lib/config/features';
 
 export async function POST(req, { params }) {
+  if (!getFeatureConfig().whatsappAutomation.available) {
+    return NextResponse.json(unavailableFeatureResponse(), { status: 503 });
+  }
   await requirePermission('manage_notification_rules');
   const { id } = params;
   const u = getUserFromRequest(req);

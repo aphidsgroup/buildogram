@@ -27,7 +27,7 @@
  */
 
 'use client';
-import { useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { FILE_CATEGORIES, uploadFile } from '@/lib/services/fileService';
 
 export default function FileUploadButton({
@@ -43,13 +43,23 @@ export default function FileUploadButton({
 }) {
   const [state, setState] = useState('idle'); // idle | uploading | success | error
   const [fileName, setFileName] = useState(null);
+  const [featureAvailable, setFeatureAvailable] = useState(false);
   const inputRef = useRef(null);
+
+  useEffect(() => {
+    let active = true;
+    fetch('/api/config/features')
+      .then(response => response.json())
+      .then(features => { if (active) setFeatureAvailable(Boolean(features.cloudinaryUploads)); })
+      .catch(() => { if (active) setFeatureAvailable(false); });
+    return () => { active = false; };
+  }, []);
 
   const catInfo = FILE_CATEGORIES[category] || FILE_CATEGORIES.other;
   const acceptAttr = accept || catInfo.accept;
 
   const handleClick = () => {
-    if (disabled || state === 'uploading') return;
+    if (disabled || !featureAvailable || state === 'uploading') return;
     inputRef.current?.click();
   };
 
@@ -119,7 +129,7 @@ export default function FileUploadButton({
       <button
         type="button"
         onClick={handleClick}
-        disabled={disabled || state === 'uploading'}
+        disabled={disabled || !featureAvailable || state === 'uploading'}
         style={{
           display:        'inline-flex',
           alignItems:     'center',
@@ -131,14 +141,14 @@ export default function FileUploadButton({
           borderRadius:   '10px',
           fontSize:       compact ? '12px' : '14px',
           fontWeight:     600,
-          cursor:         disabled || state === 'uploading' ? 'not-allowed' : 'pointer',
+          cursor:         disabled || !featureAvailable || state === 'uploading' ? 'not-allowed' : 'pointer',
           transition:     'all 0.2s',
-          opacity:        disabled ? 0.6 : 1,
+          opacity:        disabled || !featureAvailable ? 0.6 : 1,
           whiteSpace:     'nowrap',
         }}
       >
         <span>{icons[state]}</span>
-        <span>{labels[state]}</span>
+        <span>{featureAvailable ? labels[state] : 'Uploads unavailable'}</span>
       </button>
     </>
   );

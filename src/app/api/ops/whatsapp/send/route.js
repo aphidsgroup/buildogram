@@ -2,10 +2,14 @@ import { requirePermission } from '@/lib/auth/permissions';
 import { NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth';
 import { roleCan } from '@/lib/permissions';
+import { getFeatureConfig, unavailableFeatureResponse } from '@/lib/config/features';
 import { normalizePhone } from '@/lib/whatsapp';
 import sql from '@/lib/db';
 
 export async function POST(req) {
+  if (!getFeatureConfig().whatsappAutomation.available) {
+    return NextResponse.json(unavailableFeatureResponse(), { status: 503 });
+  }
   await requirePermission('manage_whatsapp_templates');
   const u = getUserFromRequest(req);
   if (!u || !roleCan(u.role, 'send_whatsapp_message')) {

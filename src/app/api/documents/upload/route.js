@@ -3,8 +3,12 @@ import { documentAssets } from '@/lib/storageProvider';
 import { uploadFile } from '@/lib/fileStorageProvider';
 import { logAudit } from '@/lib/auditService';
 import { sendNotification } from '@/lib/notifications/notificationService';
+import { getFeatureConfig, unavailableFeatureResponse } from '@/lib/config/features';
 
 export async function POST(req) {
+  if (!getFeatureConfig().cloudinaryUploads.available) {
+    return NextResponse.json(unavailableFeatureResponse(), { status: 503 });
+  }
   try {
     const formData = await req.formData();
     const file = formData.get('file');
@@ -45,6 +49,6 @@ export async function POST(req) {
     return NextResponse.json({ success: true, data: newDoc });
   } catch (error) {
     console.error('Upload error:', error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: 'Upload failed' }, { status: 500 });
   }
 }

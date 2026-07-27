@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
+import { getFeatureConfig, unavailableFeatureResponse } from '@/lib/config/features';
 
 cloudinary.config({
   secure: true
@@ -13,6 +14,9 @@ export async function POST(request) {
   const user = getUserFromRequest(request);
   if (!user) {
     return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+  }
+  if (!getFeatureConfig().cloudinaryUploads.available) {
+    return NextResponse.json(unavailableFeatureResponse(), { status: 503 });
   }
 
   try {
@@ -70,6 +74,6 @@ export async function POST(request) {
     });
   } catch (e) {
     console.error('[Upload API]', e.message);
-    return NextResponse.json({ success: false, message: 'Upload failed: ' + e.message }, { status: 500 });
+    return NextResponse.json({ success: false, message: 'Upload failed' }, { status: 500 });
   }
 }
