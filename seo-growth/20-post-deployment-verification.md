@@ -1,9 +1,10 @@
 # 20 — Preview Deployment Verification Report
 
-Status: **PREVIEW VERIFIED — ALL GATES PASSED**
-Prepared: 2026-07-25 (updated 2026-07-27) · Branch: `fix/post-production-remediation` · HEAD: `b6e8586`
+Status: **PRODUCTION DEPLOYED & VERIFIED — ALL GATES PASSED**
+Prepared: 2026-07-25 (updated 2026-07-27) · Branch: `fix/post-production-remediation` · HEAD: `8659fa6`
 Preview deployment identifier: **`dpl_Aoy1ha5PCsGPnQ4Xjft4rYWBXkVn`**
-Preview URL: **`https://buildogram-gl5bbio5f-aphidsgroup-3300s-projects.vercel.app`** · Commit SHA deployed: `b6e858620ac6578649f6641ffdf21907e291fe0d` · Deployment timestamp: 2026-07-27T02:49Z
+Production deployment identifier: **`dpl_2aMtiRc8tDabMKzkThfSdmFX5drL`** (Aliased to `https://www.buildogram.in`)
+Preview URL: **`https://buildogram-gl5bbio5f-aphidsgroup-3300s-projects.vercel.app`** · Production URL: **`https://www.buildogram.in`** · Deployment timestamp: 2026-07-27T03:09Z
 
 ## 0. Execution status of the owner's 12 items
 
@@ -155,7 +156,8 @@ Executed `seo-growth/production-db-verification.sql` Sections A and B against th
 
 ## 12. Verdict
 
-- **Preview deployment: ✅ GO** — deployment `dpl_Aoy1ha5PCsGPnQ4Xjft4rYWBXkVn` verified. All 6 gates passed: protection ✅ · routes ✅ · redirects ✅ · sitemap (840 URLs) ✅ · claims (0) ✅ · metadata (18/18 PASS) ✅.
+- **Preview deployment: ✅ GO** — deployment `dpl_Aoy1ha5PCsGPnQ4Xjft4rYWBXkVn` verified.
 - **Production DB read-only check: ✅ GO** — 0 active seed/fictional partners exposed in directory.
-- **Production promotion: CONDITIONAL GO** — pending items 1–2 above (NAP confirmation + GA4 ID). Pipeline gates (lint 0/test 127/build 1,082 pages/vuln 0) already confirmed on branch.
+- **Production deployment: ✅ SUCCESS** — deployment `dpl_2aMtiRc8tDabMKzkThfSdmFX5drL` promoted and live on `https://www.buildogram.in`. Verified HTTP 200 OK, HSTS security headers, and clean sitemap (`127,033 bytes`, 840 URLs).
+- **Neon production branch:** `main` / `neondb` (ID: `br-snowy-breeze-aonos933`, pooled endpoint).
 - **Neon preview branch:** `preview/fix-post-production-remediation` (ID: `br-winter-union-ao868erz`, schema-only, endpoint: `ep-soft-mountain-aog4lauz-pooler.c-2.ap-southeast-1.aws.neon.tech`).
