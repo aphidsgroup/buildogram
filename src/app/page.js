@@ -7,17 +7,26 @@ import { getMoneyPageLinks } from '@/lib/seo/internalLinks';
 import { generateSEOMetadata } from '@/lib/seo/metadata';
 import styles from './page.module.css';
 
-export const metadata = generateSEOMetadata({
+const homepageMetadata = generateSEOMetadata({
   title: 'Buildogram | Engineer-Led Construction Intelligence — Chennai',
   description: 'Engineer-led construction intelligence, quality review and permanent property documentation for Chennai homeowners. Independent BOQ review, structural audits, site supervision and partner coordination.',
   path: '/',
 });
 
+// Next normalises root canonical and Open Graph URLs by removing their trailing
+// slash. Emit those homepage fields directly so they retain the required exact
+// URL, while keeping the helper's remaining metadata and Twitter data.
+export const metadata = {
+  ...homepageMetadata,
+  alternates: null,
+  openGraph: null,
+};
+
 /* ─── Data ────────────────────────────────────────────────── */
 const PAIN_POINTS = [
   { icon: '📋', title: 'Contractor quotes hide the real costs', desc: 'Vague BOQs, missing items, and non-standard scopes make it impossible to compare quotes — until it is too late.' },
   { icon: '🏗️', title: 'No independent eye on site quality', desc: 'Contractors self-report on quality. Without engineer supervision, structural shortcuts are invisible until years later.' },
-  { icon: '🔩', title: 'Structural safety goes unchecked', desc: 'Most homes in Chennai are built without an independent structural review — rebar, concrete grade, and foundation depths are assumed correct.' },
+  { icon: '🔩', title: 'Structural review can be missed', desc: 'When structural review is omitted, rebar, concrete grade, and foundation-depth assumptions may go unchecked.' },
   { icon: '🧱', title: 'Material rates and grades are opaque', desc: 'Owners pay retail prices, receive wrong grades, or get quantity shortfalls without any third-party verification.' },
   { icon: '💸', title: 'Hidden charges accumulate mid-project', desc: 'Scope changes, missing BOQ items, and contractor claims create financial stress once execution begins.' },
   { icon: '📁', title: 'Property records vanish at handover', desc: 'Drawings, warranties, material grades, and vendor details are scattered — making maintenance and resale difficult.' },
@@ -27,7 +36,7 @@ const HOW_IT_WORKS = [
   { step: '01', title: 'Concept & Feasibility', desc: 'Map your plot, budget, soil conditions, approval authority, and construction type before any commitment.' },
   { step: '02', title: 'Design & Structural Review', desc: 'Independent review of architectural and structural drawings — catching under-design, compliance gaps, and value engineering opportunities.' },
   { step: '03', title: 'BOQ & Contractor Audit', desc: 'Line-by-line audit of every contractor quote — rates, quantities, specifications, and hidden exclusions — before you sign.' },
-  { step: '04', title: 'Contractor & Material Match', desc: 'Connect with contractors and suppliers from our partner network, with transparent material pricing and MTC compliance.' },
+  { step: '04', title: 'Contractor & Material Match', desc: 'Connect with contractors and suppliers from our partner network, with material options and documentation requests where applicable.' },
   { step: '05', title: 'Site Supervision & Quality Checks', desc: 'Engineer-led milestone inspections at every structural stage — concrete grades, rebar, waterproofing — with photographic reports.' },
   { step: '06', title: 'Property Passport Handover', desc: 'All drawings, invoices, material records, warranties, and maintenance guides — compiled into your permanent digital Property Passport.' },
 ];
@@ -39,7 +48,7 @@ const SERVICES = [
   { icon: '🏭', title: 'Steel Construction & PEB', desc: 'Industrial sheds, warehouses, PEB buildings, fabricator comparison and erection supervision.', href: '/steel-construction-chennai', color: 'purple', bentoClass: 'bentoStandard' },
   { icon: '📐', title: 'Plan & Drawing Review', desc: 'Independent review of architectural and structural drawings before construction begins.', href: '/structural-plan-review-chennai', color: 'green', bentoClass: 'bentoStandard' },
   { icon: '🔍', title: 'Site Supervision', desc: 'Milestone inspections, quality checklists, and photographic progress reports.', href: '/site-supervision-chennai', color: 'slate', bentoClass: 'bentoStandard' },
-  { icon: '🏠', title: 'Property Passport', desc: 'Permanent digital records of drawings, invoices, warranties, and material grades.', href: '/property-passport', color: 'blue', bentoClass: 'bentoWide1' },
+  { icon: '🏠', title: 'Property Passport', desc: 'Centralized digital records of drawings, invoices, warranties, and material grades.', href: '/property-passport', color: 'blue', bentoClass: 'bentoWide1' },
   { icon: '🤖', title: 'AI Floor Plan Creator', desc: 'Generate conceptual layouts based on your plot size and requirements.', href: '/ai-floor-plan-creator', color: 'purple', bentoClass: 'bentoStandard' },
   { icon: '🧱', title: 'Material Sourcing Support', desc: 'Material options and quotation support for cement, TMT steel, M-sand, and more.', href: '/materials', color: 'orange', bentoClass: 'bentoStandard' },
 ];
@@ -80,7 +89,19 @@ export default function Home() {
   const topMoneyPages = getMoneyPageLinks(8);
 
   return ( <>
-    <main className={styles.page}>
+    <link rel="canonical" href="https://www.buildogram.in/" />
+    <meta property="og:title" content={homepageMetadata.openGraph.title} />
+    <meta property="og:description" content={homepageMetadata.openGraph.description} />
+    <meta property="og:url" content="https://www.buildogram.in/" />
+    <meta property="og:site_name" content={homepageMetadata.openGraph.siteName} />
+    <meta property="og:image" content={homepageMetadata.openGraph.images[0].url} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={homepageMetadata.openGraph.images[0].alt} />
+    <meta property="og:locale" content={homepageMetadata.openGraph.locale} />
+    <meta property="og:locale:alternate" content="ta_IN" />
+    <meta property="og:type" content={homepageMetadata.openGraph.type} />
+    <div className={styles.page}>
 
       {/* ── 1. HERO ──────────────────────────────────────── */}
       <section className={styles.hero}>
@@ -99,7 +120,7 @@ export default function Home() {
               <span className={styles.heroAccent}>{" "}Engineer-Led from Idea to Handover.</span>
             </h1>
             <p className={styles.heroSub}>
-              Buildogram helps homeowners, builders, contractors, architects, and suppliers plan, verify, build, source materials, track quality, and document every property journey through one proof-backed construction ecosystem.
+              Buildogram helps homeowners, builders, contractors, architects, and suppliers plan, review, build, source materials, track quality, and document every property journey through one construction support ecosystem.
             </p>
 
             <div className={styles.heroCtas}>
@@ -126,7 +147,7 @@ export default function Home() {
               <div className={`${styles.browserDot} ${styles.red}`} />
               <div className={`${styles.browserDot} ${styles.yellow}`} />
               <div className={`${styles.browserDot} ${styles.green}`} />
-              <span style={{ fontSize: '12px', color: '#64748b', marginLeft: '12px', fontWeight: 600 }}>buildogram.in / command-center</span>
+              <span style={{ fontSize: '12px', color: '#64748b', marginLeft: '12px', fontWeight: 600 }}>Illustrative interface</span>
             </div>
             <div className={styles.heroRightBody} style={{ padding: '24px', background: '#F8FAFC', display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto' }}>
               
@@ -360,7 +381,7 @@ export default function Home() {
         <div className="sectionInner">
           <AnimatedSection>
             <SectionHeader
-              eyebrow="Trusted Professionals"
+              eyebrow="Partner Directory"
               title="Partner Network."
               description="Find engineers, contractors, architects, and suppliers listed in the Buildogram construction partner network."
             />
@@ -392,8 +413,8 @@ export default function Home() {
               </p>
               <ul className={styles.featureList}>
                 <li><strong>Milestone Timeline:</strong> See what&apos;s happening when.</li>
-                <li><strong>Site Photos:</strong> Verifiable photographic proof of work.</li>
-                <li><strong>Quality Checklists:</strong> Engineer-backed quality sign-offs.</li>
+                <li><strong>Site Photos:</strong> Photographic work records.</li>
+                <li><strong>Quality Checklists:</strong> Recorded inspection checklists and observations.</li>
                 <li><strong>Material Delivery:</strong> Records of what arrived on site.</li>
                 <li><strong>Invoice Status:</strong> Track payments against progress.</li>
                 <li><strong>Issue Log:</strong> Document and resolve site blockers.</li>
@@ -401,27 +422,27 @@ export default function Home() {
             </AnimatedSection>
             <AnimatedSection className={styles.twoColVisual} delay={0.2}>
               <div className={styles.uiMockup}>
-                <div className={styles.uiMockupHeader}>Project Timeline: Villa Anna Nagar</div>
+                <div className={styles.uiMockupHeader}>Illustrative project timeline</div>
                 <div className={styles.uiMockupBody}>
                   <div className={styles.timelineMiniItem}>
                     <div className={styles.timelineMiniDot}></div>
                     <div className={styles.timelineMiniContent}>
                       <strong>Roof Slab Concrete Check</strong>
-                      <span>Passed by Er. Karthik • 2 days ago</span>
+                      <span>Inspection status recorded • Example</span>
                     </div>
                   </div>
                   <div className={styles.timelineMiniItem}>
                     <div className={styles.timelineMiniDot} style={{ background: '#3B82F6' }}></div>
                     <div className={styles.timelineMiniContent}>
-                      <strong>Invoice #4 Raised</strong>
-                      <span>₹2,50,000 for Brickwork Stage • 5 days ago</span>
+                      <strong>Sample invoice milestone</strong>
+                      <span>Example project record • 5 days ago</span>
                     </div>
                   </div>
                   <div className={styles.timelineMiniItem}>
                     <div className={styles.timelineMiniDot} style={{ background: '#10B981' }}></div>
                     <div className={styles.timelineMiniContent}>
-                      <strong>Material Delivery: Sand</strong>
-                      <span>2 Units River Sand Delivered • 1 week ago</span>
+                      <strong>Sample delivery record</strong>
+                      <span>Example project record • 1 week ago</span>
                     </div>
                   </div>
                 </div>
@@ -440,7 +461,7 @@ export default function Home() {
               <h2 className={styles.sectionH2}>The Property Passport</h2>
               <p className={styles.sectionP}>
                 A home is a lifetime investment. Stop losing critical project documents after the contractor hands over the keys. 
-                The Property Passport acts as a permanent digital record for your building.
+                The Property Passport acts as a centralized digital record for your building.
               </p>
               <ul className={styles.featureList}>
                 <li>Architectural & Structural Drawings</li>
@@ -457,7 +478,7 @@ export default function Home() {
             <AnimatedSection className={styles.twoColVisual} delay={0.2}>
               <div className={styles.passportMockup}>
                 <div className={styles.passportMockIcon}>🏠</div>
-                <h3 className={styles.passportMockTitle}>My Villa - OMR</h3>
+                <h3 className={styles.passportMockTitle}>Illustrative Property Passport</h3>
                 <div className={styles.passportMockTags}>
                   <span>2024 Built</span>
                   <span>4 BHK</span>
@@ -604,6 +625,6 @@ export default function Home() {
         </div>
       </section>
 
-    </main>
+    </div>
   </>);
 }

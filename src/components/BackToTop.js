@@ -47,13 +47,13 @@ export default function BackToTopButton({ style = {} }) {
         if (!btnRef.current) return;
         btnRef.current.style.background  = 'rgba(252,110,32,0.20)';
         btnRef.current.style.boxShadow   = '0 12px 40px rgba(252,110,32,0.30)';
-        btnRef.current.style.transform   = visible ? 'translateY(-2px) scale(1.07)' : 'translateY(16px) scale(0.85)';
+        btnRef.current.style.transform   = visible ? 'translateY(-2px) scale(1.07)' : 'translateY(8px) scale(0.85)';
       }}
       onMouseLeave={() => {
         if (!btnRef.current) return;
         btnRef.current.style.background  = 'rgba(12, 20, 40, 0.60)';
         btnRef.current.style.boxShadow   = '0 8px 32px rgba(0,0,0,0.40)';
-        btnRef.current.style.transform   = visible ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.85)';
+        btnRef.current.style.transform   = visible ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.85)';
       }}
       style={{
         /* size */
@@ -79,7 +79,7 @@ export default function BackToTopButton({ style = {} }) {
 
         /* show / hide -- visibility logic preserved exactly */
         opacity         : visible ? 1 : 0,
-        transform       : visible ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.85)',
+        transform       : visible ? 'translateY(0) scale(1)' : 'translateY(8px) scale(0.85)',
         pointerEvents   : visible ? 'auto' : 'none',
         transition      : [
           'opacity 0.35s cubic-bezier(.4,0,.2,1)',

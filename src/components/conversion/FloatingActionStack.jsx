@@ -4,7 +4,7 @@
  * Single fixed container owning the WhatsApp button, ConversionTooltip,
  * and BackToTop button. One zIndex = 9999, no competing positions.
  *
- * Desktop: right 24px, bottom 24px. WhatsApp bottom, BackToTop 12px above.
+ * Desktop: right 24px, bottom 24px. WhatsApp bottom, BackToTop 16px above.
  * Mobile:  right 14px, bottom max(16px, env(safe-area-inset-bottom)).
  *          + 60px offset when .bottom-nav-mobile is present.
  */
@@ -52,7 +52,7 @@ export default function FloatingActionStack() {
           display   : 'flex',
           flexDirection : 'column',
           alignItems: 'flex-end',
-          gap       : '12px',
+          gap       : '16px',
           pointerEvents : 'none', // children set their own pointer-events
         }}
       >

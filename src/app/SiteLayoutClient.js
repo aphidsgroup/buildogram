@@ -12,9 +12,10 @@ export default function SiteLayoutClient({ children }) {
     document.documentElement.style.scrollBehavior = 'auto';
     window.scrollTo(0, 0);
     // restore smooth scroll if needed, though it's set in CSS
-    setTimeout(() => {
+    const restoreTimer = window.setTimeout(() => {
       document.documentElement.style.scrollBehavior = '';
     }, 10);
+    return () => window.clearTimeout(restoreTimer);
   }, [pathname]);
   
   // Do not show public header/footer on internal dashboards or login page

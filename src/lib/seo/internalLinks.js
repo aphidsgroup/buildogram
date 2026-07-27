@@ -12,7 +12,7 @@ export const CLUSTERS = {
     { label: 'All Construction Services', href: '/services', description: 'View our complete range of services.' }
   ],
   materials: [
-    { label: 'Construction Materials Hub', href: '/materials', description: 'Source genuine materials direct to site.' },
+    { label: 'Construction Materials Hub', href: '/materials', description: 'Explore material options and sourcing support.' },
     { label: 'Cement Quotes', href: '/materials/cement', description: 'Get bulk rates on top cement brands.' },
     { label: 'TMT Steel Rates', href: '/materials/tmt-steel', description: 'Current market rates for primary TMT steel.' },
     { label: 'M-Sand & P-Sand', href: '/materials/msand-psand', description: 'Quality tested river sand alternatives.' },

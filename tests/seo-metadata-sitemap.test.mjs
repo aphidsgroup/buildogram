@@ -40,6 +40,18 @@ test('homepage and partner registration declare page-specific metadata', () => {
 
   assert.match(homepageSource, /generateSEOMetadata\(\{[\s\S]*?path:\s*['"]\/['"]/);
   assert.match(
+    homepageSource,
+    /<meta property="og:url" content="https:\/\/www\.buildogram\.in\/" \/>/,
+    'homepage must emit the exact slash-terminated Open Graph URL',
+  );
+  assert.match(
+    homepageSource,
+    /<link rel="canonical" href="https:\/\/www\.buildogram\.in\/" \/>/,
+    'homepage must emit the exact slash-terminated canonical URL',
+  );
+  assert.match(homepageSource, /alternates:\s*null/);
+  assert.match(homepageSource, /openGraph:\s*null/);
+  assert.match(
     partnerSource,
     /generateSEOMetadata\(\{[\s\S]*?path:\s*['"]\/partners\/register['"]/,
   );

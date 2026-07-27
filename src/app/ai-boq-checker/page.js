@@ -379,7 +379,7 @@ export default function AIBOQCheckerPage() {
             Upload It Now.
           </h2>
           <p style={{ fontSize: '17px', color: 'rgba(255,255,255,0.8)', maxWidth: '480px', margin: '0 auto 36px', lineHeight: 1.65 }}>
-            Our AI reviews your BOQ in under 2 minutes. Engineer-backed report in 24 hours.
+            Our AI reviews your BOQ inputs to highlight possible gaps. Use the result as an indicative planning aid.
             Know exactly what to negotiate before you sign.
           </p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
