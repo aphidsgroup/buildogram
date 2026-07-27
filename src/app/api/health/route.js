@@ -1,35 +1,46 @@
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
+import { getFeatureConfig } from '@/lib/config/features';
 
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const status = {
-    timestamp: new Date().toISOString(),
-    version: '0.1.0',
-    environment: process.env.NODE_ENV || 'unknown',
-    services: {
-      database: 'untested',
-      whatsapp: process.env.WHATSAPP_CLOUD_TOKEN ? 'configured' : 'missing_keys',
-      openai: process.env.OPENAI_API_KEY ? 'configured' : 'missing_keys',
-      razorpay: process.env.RAZORPAY_KEY_ID ? 'configured' : 'missing_keys'
-    }
-  };
+  const features = getFeatureConfig();
+  let database = 'critical_missing';
 
-  try {
-    // Simple DB ping
-    if (process.env.DATABASE_URL) {
-      await sql`SELECT 1 as ping`;
-      status.services.database = 'connected';
-    } else {
-      status.services.database = 'missing_keys';
+  if (process.env.DATABASE_URL) {
+    try {
+      await sql`SELECT 1`;
+      database = 'ready';
+    } catch {
+      database = 'unavailable';
+      console.error('[health] Database connectivity check failed');
     }
-  } catch (err) {
-    status.services.database = 'error';
-    status.db_error = err.message;
   }
 
-  const isHealthy = status.services.database === 'connected';
+  const core = {
+    database,
+    authentication: process.env.JWT_SECRET ? 'ready' : 'critical_missing',
+    siteUrl: process.env.NEXT_PUBLIC_SITE_URL ? 'ready' : 'critical_missing',
+  };
+  const enabledFeatures = Object.fromEntries(
+    Object.entries(features).map(([key, value]) => [key, value.status]),
+  );
+  const coreReady = Object.values(core).every(value => value === 'ready');
+  const enabledReady = Object.values(features)
+    .filter(feature => feature.enabled)
+    .every(feature => feature.status === 'ready');
 
-  return NextResponse.json(status, { status: isHealthy ? 200 : 503 });
+  return NextResponse.json({
+    success: coreReady && enabledReady,
+    ready: coreReady && enabledReady,
+    environment: process.env.VERCEL_ENV || process.env.NODE_ENV || 'unknown',
+    core,
+    enabledFeatures,
+    gates: {
+      CORE_READINESS: coreReady ? 'PASS' : 'FAIL',
+      ALL_ENABLED_FEATURES: enabledReady ? 'PASS' : 'FAIL',
+      OPTIONAL_DISABLED_FEATURES: 'DOCUMENTED',
+    },
+  }, { status: coreReady && enabledReady ? 200 : 503 });
 }

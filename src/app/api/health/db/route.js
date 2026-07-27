@@ -1,102 +1,113 @@
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
+import { getFeatureConfig } from '@/lib/config/features';
 
 export const dynamic = 'force-dynamic';
 
-// Tables to check and their friendly names
-const TABLE_CHECKS = [
-  { table: 'users',                    entity: 'Auth / Users',       critical: true },
-  { table: 'partners',                 entity: 'Partners',           critical: true },
-  { table: 'partner_projects',         entity: 'Partner Projects',   critical: true },
-  { table: 'projects',                 entity: 'Projects (main)',     critical: false },
-  { table: 'partner_material_requests',entity: 'Material Requests',  critical: true },
-  { table: 'material_quotes',          entity: 'Supplier Quotes',    critical: true },
-  { table: 'milestones',               entity: 'Milestones',         critical: true },
-  { table: 'progress_logs',            entity: 'Site Updates',       critical: true },
-  { table: 'issues',                   entity: 'Issues',             critical: true },
-  { table: 'documents',               entity: 'Documents',           critical: true },
-  { table: 'notifications',            entity: 'Notifications',      critical: false },
-  { table: 'leads',                    entity: 'Leads',              critical: true },
-  { table: 'change_orders',            entity: 'Change Orders',      critical: false },
+const CORE_TABLES = [
+  { table: 'users', key: 'authentication' },
+  { table: 'leads', key: 'leadPersistence' },
+  { table: 'material_quote_requests', key: 'materialQuoteRequests' },
+  { table: 'supplier_quote_responses', key: 'supplierQuoteResponses' },
+];
+const OPTIONAL_TABLES = [
+  { table: 'material_delivery_records', key: 'materialDeliveryRecords' },
 ];
 
-export async function GET() {
-  const start = Date.now();
-  const results = [];
-  let dbConnected = false;
-  let criticalMissing = [];
+async function inspectTables(checks) {
+  const results = {};
+  for (const check of checks) {
+    const rows = await sql`
+      SELECT EXISTS (
+        SELECT 1 FROM information_schema.tables
+        WHERE table_schema = 'public' AND table_name = ${check.table}
+      ) AS present
+    `;
+    results[check.key] = rows[0]?.present ? 'ready' : 'critical_missing';
+  }
+  return results;
+}
 
-  // 1. Basic connectivity
-  try {
-    await sql`SELECT 1 as is_alive`;
-    dbConnected = true;
-  } catch (e) {
+export async function GET() {
+  const startedAt = Date.now();
+  const features = getFeatureConfig();
+  const enabledFeatures = Object.fromEntries(
+    Object.entries(features).map(([key, value]) => [key, value.status]),
+  );
+
+  if (!process.env.DATABASE_URL) {
     return NextResponse.json({
       success: false,
-      database: 'unavailable',
-      fallback: 'localStorage/demo mode active',
-      message: e.message,
-      tables: [],
+      ready: false,
+      core: {
+        database: 'critical_missing',
+        authentication: process.env.JWT_SECRET ? 'ready' : 'critical_missing',
+        siteUrl: process.env.NEXT_PUBLIC_SITE_URL ? 'ready' : 'critical_missing',
+        leadPersistence: 'critical_missing',
+        materialQuoteRequests: 'critical_missing',
+        supplierQuoteResponses: 'critical_missing',
+      },
+      enabledFeatures,
+      optionalDatabaseFeatures: { materialDeliveryRecords: 'optional_disabled' },
       readinessScore: 0,
-      criticalMissing: TABLE_CHECKS.filter(t => t.critical).map(t => t.entity),
     }, { status: 503 });
   }
 
-  // 2. Per-table checks
-  for (const check of TABLE_CHECKS) {
-    try {
-      const rows = await sql`
-        SELECT EXISTS (
-          SELECT FROM information_schema.tables
-          WHERE table_schema = 'public'
-          AND table_name = ${check.table}
-        ) as exists
-      `;
-      const exists = rows[0]?.exists;
-      let rowCount = null;
-      if (exists) {
-        try {
-          const count = await sql`SELECT COUNT(*) as n FROM ${sql(check.table)} LIMIT 1`;
-          rowCount = parseInt(count[0]?.n ?? 0, 10);
-        } catch { rowCount = null; }
-      } else if (check.critical) {
-        criticalMissing.push(check.entity);
-      }
-      results.push({
-        table: check.table,
-        entity: check.entity,
-        exists,
-        rowCount,
-        critical: check.critical,
-        status: exists ? 'ok' : (check.critical ? 'MISSING_CRITICAL' : 'missing'),
-      });
-    } catch (e) {
-      results.push({
-        table: check.table,
-        entity: check.entity,
-        exists: false,
-        rowCount: null,
-        critical: check.critical,
-        status: 'error',
-        error: e.message,
-      });
-      if (check.critical) criticalMissing.push(check.entity);
-    }
+  try {
+    await sql`SELECT 1`;
+    const coreTables = await inspectTables(CORE_TABLES);
+    const optionalTables = await inspectTables(OPTIONAL_TABLES);
+    const core = {
+      database: 'ready',
+      authentication: process.env.JWT_SECRET && coreTables.authentication === 'ready'
+        ? 'ready'
+        : 'critical_missing',
+      siteUrl: process.env.NEXT_PUBLIC_SITE_URL ? 'ready' : 'critical_missing',
+      leadPersistence: coreTables.leadPersistence,
+      materialQuoteRequests: coreTables.materialQuoteRequests,
+      supplierQuoteResponses: coreTables.supplierQuoteResponses,
+    };
+    const coreValues = Object.values(core);
+    const readyCore = coreValues.filter(value => value === 'ready').length;
+    const allEnabledFeaturesReady = Object.values(features)
+      .filter(feature => feature.enabled)
+      .every(feature => feature.status === 'ready');
+    const ready = readyCore === coreValues.length && allEnabledFeaturesReady;
+
+    return NextResponse.json({
+      success: true,
+      ready,
+      core,
+      enabledFeatures,
+      optionalDatabaseFeatures: {
+        materialDeliveryRecords: optionalTables.materialDeliveryRecords === 'ready'
+          ? 'ready'
+          : 'optional_disabled',
+      },
+      readinessScore: Math.round((readyCore / coreValues.length) * 100),
+      gates: {
+        CORE_READINESS: readyCore === coreValues.length ? 'PASS' : 'FAIL',
+        ALL_ENABLED_FEATURES: allEnabledFeaturesReady ? 'PASS' : 'FAIL',
+        OPTIONAL_DISABLED_FEATURES: 'DOCUMENTED',
+      },
+      latencyMs: Date.now() - startedAt,
+    }, { status: ready ? 200 : 503 });
+  } catch {
+    console.error('[health-db] Database readiness check failed');
+    return NextResponse.json({
+      success: false,
+      ready: false,
+      core: {
+        database: 'unavailable',
+        authentication: process.env.JWT_SECRET ? 'ready' : 'critical_missing',
+        siteUrl: process.env.NEXT_PUBLIC_SITE_URL ? 'ready' : 'critical_missing',
+        leadPersistence: 'unknown',
+        materialQuoteRequests: 'unknown',
+        supplierQuoteResponses: 'unknown',
+      },
+      enabledFeatures,
+      optionalDatabaseFeatures: { materialDeliveryRecords: 'unknown' },
+      readinessScore: 0,
+    }, { status: 503 });
   }
-
-  const existing = results.filter(r => r.exists).length;
-  const readinessScore = Math.round((existing / TABLE_CHECKS.length) * 100);
-  const ready = criticalMissing.length === 0;
-
-  return NextResponse.json({
-    success: true,
-    database: 'connected',
-    timestamp: new Date().toISOString(),
-    latencyMs: Date.now() - start,
-    readinessScore,
-    ready,
-    criticalMissing,
-    tables: results,
-    summary: `${existing}/${TABLE_CHECKS.length} tables exist. ${criticalMissing.length} critical missing.`,
-  });
 }

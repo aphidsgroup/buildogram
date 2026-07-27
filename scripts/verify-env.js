@@ -1,49 +1,40 @@
-// scripts/verify-env.js
 const fs = require('fs');
 const path = require('path');
 
-function verifyEnv() {
-  console.log('🔍 Running V2 Production Environment Verification...');
-  
-  const requiredKeys = [
-    'DATABASE_URL',
-    'JWT_SECRET',
-    'NEXT_PUBLIC_SITE_URL',
-    'OPS_ADMIN_EMAIL',
-    'OPS_ADMIN_PHONE'
-  ];
+const REQUIRED_KEYS = [
+  'DATABASE_URL',
+  'JWT_SECRET',
+  'NEXT_PUBLIC_SITE_URL',
+  'NEXT_PUBLIC_GA_ID',
+];
 
-  let missing = [];
-
-  // Try to load from .env.local if not present in process.env
+function loadLocalEnvironment() {
   try {
     const envPath = path.join(process.cwd(), '.env.local');
-    if (fs.existsSync(envPath)) {
-      const content = fs.readFileSync(envPath, 'utf8');
-      content.split('\n').forEach(line => {
-        const match = line.match(/^([^=]+)=(.*)$/);
-        if (match) {
-          process.env[match[1].trim()] = process.env[match[1].trim()] || match[2].trim();
-        }
-      });
+    if (!fs.existsSync(envPath)) return;
+    const content = fs.readFileSync(envPath, 'utf8');
+    for (const line of content.split('\n')) {
+      const match = line.match(/^([^=]+)=(.*)$/);
+      if (!match) continue;
+      const key = match[1].trim();
+      process.env[key] ||= match[2].trim();
     }
-  } catch (e) {
-    console.warn('⚠️ Could not parse .env.local', e.message);
+  } catch {
+    console.warn('[verify-env] Unable to read local environment metadata.');
   }
+}
 
-  requiredKeys.forEach(key => {
-    if (!process.env[key]) {
-      missing.push(key);
-    }
-  });
-
-  if (missing.length > 0) {
-    console.warn('\n⚠️ WARNING: Missing Environment Variables:');
-    missing.forEach(m => console.warn(`   - ${m}`));
-    console.warn('\nSome features (AI, WhatsApp, Payments) will operate in fallback/safe mode.\n');
-  } else {
-    console.log('✅ Environment verified successfully. All modules are fully enabled.\n');
+function verifyEnv() {
+  console.log('Running release environment verification...');
+  loadLocalEnvironment();
+  const missing = REQUIRED_KEYS.filter(key => !process.env[key]);
+  if (missing.length) {
+    console.warn('Missing required environment variables:');
+    for (const key of missing) console.warn(`- ${key}`);
+    console.warn('Required core or enabled Preview functionality is not fully configured.');
+    return;
   }
+  console.log('Required core and analytics environment is configured.');
 }
 
 verifyEnv();
