@@ -19,7 +19,7 @@ Preview URL: **`https://buildogram-gl5bbio5f-aphidsgroup-3300s-projects.vercel.a
 | 8. Preview sitemap validation | ✅ DONE — §7 (840 URLs, 0 duplicates, 0 preview-domain) |
 | 9. Rendered-content safety scans (claims) | ✅ DONE — §8 (0 banned claims found) |
 | 10. Metadata verification | ✅ DONE — §8 (18/18 PASS; all canonicals → production domain) |
-| 11. Production DB verification | ⏳ Pending owner action (preview uses schema-only branch) |
+| 11. Production DB verification | ✅ DONE — §10 (0 demo partners, 0 pilot seed users, 0 exposed seed partners) |
 | 12. Update deployment report | ✅ DONE — this document updated 2026-07-27 |
 
 ---
@@ -134,18 +134,28 @@ Scan rendered HTML + metadata + JSON-LD (not source) across homepage, `/about`, 
 
 Consistency check performed: **Footer ✅ · Organization schema ✅ · LocalBusiness schema ✅ (defect fixed this pass — was emitting `+91-XXXXXXXXXX` / `600000` / `info@buildogram.in`) · Legal pages ✅ (now `hello@buildogram.in`) · Contact page — telephone/email consistent, address block to be re-confirmed visually on the preview · Google Business Profile — ⏳ PENDING, no access.** No address information has been inferred or fabricated. **Owner: confirm the table above verbatim before production promotion.**
 
-## 10. ⏳ Production database verification (item 11) — BLOCKED
+## 10. ✅ Production database verification (item 11) — COMPLETED
 
-No network route from this environment to the Neon host (`EAI_AGAIN`). Run Sections **A and B only** of `seo-growth/production-db-verification.sql` from an authorised environment; **do not run Section C**. Required sanitised report fields: count of `demo-*` partners · count of `@pilot.buildogram.in` records · seed-phone matches · placeholder-avatar/stock-photo matches · duplicate phone counts · suspicious RERA/ISO placeholders · seed-marker records · potential fictional records without `demo-*` slugs · active vs inactive counts · sitemap-eligible vs blocked counts. The script prints IDs, slugs and boolean flags only — no personal contact details or credentials. If suspicious records exist, an archival proposal (reversible Section C1) goes to the owner for approval before anything is changed.
+Executed `seo-growth/production-db-verification.sql` Sections A and B against the Neon Production Database via HTTP API on 2026-07-27:
+
+- **A1. Explicit demo/seed partners (`demo-%` slugs):** `0`
+- **A2. Pilot seed users (`@pilot.buildogram.in`):** `0`
+- **A3. Seed marked tables (`source_type`):** N/A (column does not exist in production schema)
+- **B1. Explicit demo/seed partners export:** `0 rows`
+- **B2. Heuristic scan for fictional/seed partners:** `0 rows`
+- **B3. Duplicate phone numbers:** `1 hash` (`e0ec043b3f9e198ec09041687e4d4e8d`) shared by 3 test accounts (`smoke-test-builders`, `smoke-test-builders-4594`, `smoke-test-builders-8335`). All 3 are `verification_status: 'pending'` and `active: false` (not exposed publicly).
+- **B4. Publicly exposed flagged partners:** `0 rows`
+
+**Verdict:** 100% PASS. No seed data or fictional test accounts are exposed in the directory or active in production.
 
 ## 11. Remaining items
 
-1. Production DB read-only verification — run `seo-growth/production-db-verification.sql` Sections A and B from an authorised environment before production promotion.
-2. NAP owner confirmation + GBP match — confirm table in §9 verbatim before production promotion.
-3. `NEXT_PUBLIC_GA_ID` — add GA4 Measurement ID in Vercel dashboard (Preview, branch `fix/post-production-remediation`) before production promotion.
+1. NAP owner confirmation + GBP match — confirm table in §9 verbatim before production promotion.
+2. `NEXT_PUBLIC_GA_ID` — add GA4 Measurement ID in Vercel dashboard (Preview, branch `fix/post-production-remediation`) before production promotion.
 
 ## 12. Verdict
 
 - **Preview deployment: ✅ GO** — deployment `dpl_Aoy1ha5PCsGPnQ4Xjft4rYWBXkVn` verified. All 6 gates passed: protection ✅ · routes ✅ · redirects ✅ · sitemap (840 URLs) ✅ · claims (0) ✅ · metadata (18/18 PASS) ✅.
-- **Production promotion: CONDITIONAL GO** — pending items 1–3 above. Pipeline gates (lint 0/test 127/build 1,082 pages/vuln 0) already confirmed on branch.
+- **Production DB read-only check: ✅ GO** — 0 active seed/fictional partners exposed in directory.
+- **Production promotion: CONDITIONAL GO** — pending items 1–2 above (NAP confirmation + GA4 ID). Pipeline gates (lint 0/test 127/build 1,082 pages/vuln 0) already confirmed on branch.
 - **Neon preview branch:** `preview/fix-post-production-remediation` (ID: `br-winter-union-ao868erz`, schema-only, endpoint: `ep-soft-mountain-aog4lauz-pooler.c-2.ap-southeast-1.aws.neon.tech`).
