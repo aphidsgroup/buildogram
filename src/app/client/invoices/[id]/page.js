@@ -1,89 +1,22 @@
 'use client';
 import { useState, useEffect, useCallback, use } from 'react';
-import { useRouter } from 'next/navigation';
-import Navbar from '@/app/Navbar';
 import Link from 'next/link';
 
 export default function ClientInvoiceDetail({ params }) {
   const { id } = use(params);
-  const router = useRouter();
   const [invoice, setInvoice] = useState(null);
+  const [onlinePayments, setOnlinePayments] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [payLoading, setPayLoading] = useState(false);
-  const [payError, setPayError] = useState('');
 
   const load = useCallback(() => fetch(`/api/client/invoices/${id}`).then(r => r.json()).then(d => {
-    if (d.success) setInvoice(d.invoice);
+    if (d.success) {
+      setInvoice(d.invoice);
+      setOnlinePayments(Boolean(d.features?.onlinePayments));
+    }
     setLoading(false);
   }), [id]);
 
   useEffect(() => { void load(); }, [load]);
-
-  const handlePayment = async () => {
-    setPayLoading(true);
-    setPayError('');
-    try {
-      const res = await fetch('/api/payments/create-order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ invoice_id: id })
-      });
-      const data = await res.json();
-      
-      if (data.error) {
-        setPayError(data.error);
-        setPayLoading(false);
-        return;
-      }
-
-      if (data.success && data.razorpay_order_id) {
-        // Load Razorpay Script dynamically
-        const script = document.createElement('script');
-        script.src = 'https://checkout.razorpay.com/v1/checkout.js';
-        script.onerror = () => { setPayError('Razorpay SDK failed to load'); setPayLoading(false); };
-        script.onload = () => {
-          const options = {
-            key: data.razorpay_key_id,
-            amount: Math.round(invoice.amount_due * 100),
-            currency: 'INR',
-            name: 'Buildogram',
-            description: `Payment for Invoice ${invoice.invoice_number}`,
-            order_id: data.razorpay_order_id,
-            handler: async function (response) {
-              const verifyRes = await fetch('/api/payments/verify', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(response)
-              });
-              const verifyData = await verifyRes.json();
-              if (verifyData.success) {
-                alert('Payment Successful!');
-                load();
-              } else {
-                alert('Payment verification failed. Please contact support.');
-              }
-            },
-            prefill: {
-              name: invoice.customer_name,
-              email: invoice.customer_email || '',
-              contact: invoice.customer_phone || ''
-            },
-            theme: { color: '#4f46e5' }
-          };
-          const rzp = new window.Razorpay(options);
-          rzp.on('payment.failed', function (response) {
-            alert('Payment failed: ' + response.error.description);
-          });
-          rzp.open();
-          setPayLoading(false);
-        };
-        document.body.appendChild(script);
-      }
-    } catch (e) {
-      setPayError('An unexpected error occurred.');
-      setPayLoading(false);
-    }
-  };
 
   if (loading) return <div className="p-12 text-center"><div className="spinner" /></div>;
   if (!invoice) return <div className="p-12 text-center text-red-500">Invoice not found.</div>;
@@ -118,20 +51,13 @@ export default function ClientInvoiceDetail({ params }) {
             </div>
           </div>
 
-          {payError && (
-            <div className="mb-6 p-4" style={{ background: '#fef2f2', border: '1px solid #fecaca', color: '#b91c1c', borderRadius: '8px' }}>
-              {payError === 'Online payments are currently disabled' 
-                ? 'Online payment is not enabled yet. Please contact Buildogram or pay via bank transfer.' 
-                : payError}
+          {!onlinePayments && Number(invoice.amount_due) > 0 && (
+            <div className="mb-6 p-4" style={{ background: '#f8fafc', border: '1px solid #cbd5e1', color: '#475569', borderRadius: '8px' }}>
+              Online payment is not currently enabled. Please use the payment instructions supplied with your invoice or contact Buildogram.
             </div>
           )}
 
           <div className="flex gap-4">
-            {Number(invoice.amount_due) > 0 && (
-              <button onClick={handlePayment} disabled={payLoading} className="btn btn-primary" style={{ flex: '1', padding: '14px', fontSize: '16px' }}>
-                {payLoading ? 'Processing...' : 'Pay Now Securely'}
-              </button>
-            )}
             <Link href={`/client/invoices/${invoice.id}/print`} target="_blank" className="btn btn-outline" style={{ flex: '1', padding: '14px', fontSize: '16px', textAlign: 'center' }}>
               Download PDF / Print
             </Link>

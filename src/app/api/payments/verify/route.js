@@ -2,7 +2,11 @@ import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { verifyPaymentSignature } from '@/lib/payments/signature';
 import { triggerNotificationEvent } from '@/lib/notifications';
+import { getFeatureConfig, unavailableFeatureResponse } from '@/lib/config/features';
 export async function POST(req) {
+  if (!getFeatureConfig().onlinePayments.available) {
+    return NextResponse.json(unavailableFeatureResponse(), { status: 503 });
+  }
   try {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = await req.json();
 

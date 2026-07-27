@@ -2,10 +2,14 @@ import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
 import Razorpay from 'razorpay';
+import { getFeatureConfig, unavailableFeatureResponse } from '@/lib/config/features';
 
 export async function POST(req) {
   const u = getUserFromRequest(req);
   if (!u) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!getFeatureConfig().onlinePayments.available) {
+    return NextResponse.json(unavailableFeatureResponse(), { status: 503 });
+  }
 
   try {
     const { invoice_id } = await req.json();
@@ -21,11 +25,6 @@ export async function POST(req) {
 
     const amountDue = Number(invoice.amount_due);
     if (amountDue <= 0) return NextResponse.json({ error: 'Invoice already paid' }, { status: 400 });
-
-    const provider = process.env.PAYMENT_PROVIDER || 'none';
-    if (provider !== 'razorpay' || !process.env.RAZORPAY_KEY_ID || !process.env.RAZORPAY_KEY_SECRET) {
-      return NextResponse.json({ error: 'Online payments are currently disabled' }, { status: 400 });
-    }
 
     const rzp = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID,

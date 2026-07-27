@@ -1,8 +1,12 @@
 import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { verifyWebhookSignature } from '@/lib/payments/signature';
+import { getFeatureConfig, unavailableFeatureResponse } from '@/lib/config/features';
 
 export async function POST(req) {
+  if (!getFeatureConfig().onlinePayments.available) {
+    return NextResponse.json(unavailableFeatureResponse(), { status: 503 });
+  }
   try {
     const rawBody = await req.text();
     const signature = req.headers.get('x-razorpay-signature');

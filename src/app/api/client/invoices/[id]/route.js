@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import sql from '@/lib/db';
 import { getUserFromRequest } from '@/lib/auth';
 import { roleCan } from '@/lib/permissions';
+import { getFeatureConfig } from '@/lib/config/features';
 
 export async function GET(req, { params }) {
   const { id } = params;
@@ -30,7 +31,11 @@ export async function GET(req, { params }) {
     delete safeInvoice.source_id;
     delete safeInvoice.source_type;
 
-    return NextResponse.json({ success: true, invoice: safeInvoice });
+    return NextResponse.json({
+      success: true,
+      invoice: safeInvoice,
+      features: { onlinePayments: getFeatureConfig().onlinePayments.available },
+    });
   } catch (error) {
     console.error('Client Invoice Detail GET Error:', error);
     return NextResponse.json({ success: false, error: 'Internal error' }, { status: 500 });
