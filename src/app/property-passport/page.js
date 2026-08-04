@@ -1,27 +1,14 @@
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import PublicServicePage from '@/components/ui/PublicServicePage';
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 
-export const metadata = {
+export const metadata = generateSEOMetadata({
   title: 'Property Passport OS | Digital Twin for Real Estate',
   description: 'The Property Passport is a permanent digital twin for your physical asset. Store architectural drawings, warranties, structural audits, and maintenance records securely.',
-  keywords: 'property passport, real estate digital twin, construction records, property handover, home warranties, structural audit records, house plans vault, Chennai',
-  openGraph: {
-    title: 'Property Passport OS | Digital Twin for Real Estate',
-    description: 'The permanent digital twin for your physical asset. Secure, transferable, and invaluable.',
-    url: 'https://www.buildogram.in/property-passport',
-    siteName: 'Buildogram',
-    images: [
-      {
-        url: 'https://www.buildogram.in/og/property-passport.png',
-        width: 1200,
-        height: 630,
-        alt: 'Property Passport Interface',
-      },
-    ],
-    locale: 'en_IN',
-    type: 'website',
-  },
-};
+  path: '/property-passport',
+  ogImage: '/og/property-passport.png',
+  ogImageAlt: 'Property Passport Interface',
+});
 
 export default function Page() {
   return ( 
