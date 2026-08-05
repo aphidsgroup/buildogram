@@ -1,3 +1,4 @@
+import { generateSEOMetadata } from '@/lib/seo/metadata';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import Link from 'next/link';
 import AnimatedSection from '@/components/ui/AnimatedSection';
@@ -5,6 +6,14 @@ import SectionHeader from '@/components/ui/SectionHeader';
 import PremiumCard from '@/components/ui/PremiumCard';
 import { getMoneyPageLinks } from '@/lib/seo/internalLinks';
 import styles from './page.module.css';
+
+export const metadata = generateSEOMetadata({
+  title: 'Buildogram | Engineer-Led Construction Intelligence — Chennai',
+  description: 'Engineer-led construction intelligence, quality verification and permanent property documentation for Chennai homeowners. Independent BOQ review, structural audits, site supervision and partner coordination.',
+  path: '/',
+  ogImage: '/og-image.jpg',
+  ogImageAlt: 'Buildogram — Construction intelligence for Chennai homeowners',
+});
 
 /* ─── Data ────────────────────────────────────────────────── */
 const PAIN_POINTS = [
