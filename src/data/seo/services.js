@@ -277,7 +277,7 @@ export const services = [
     relatedServices: ['construction-project-management', 'quality-inspection'],
     relatedGuides: ['questions-to-ask-before-finalizing-contractor'],
     cta: { text: 'Enquire About Site Supervision', href: '/contact' },
-    ctaSecondary: { text: 'Learn About PMC', href: '/services/construction-project-management' },
+    ctaSecondary: { text: 'Learn About PMC', href: '/construction-project-management-chennai' },
   },
 
   {

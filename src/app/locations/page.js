@@ -173,15 +173,15 @@ export default function LocationsHub() {
           </h2>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', justifyContent: 'center', maxWidth: '900px', margin: '0 auto' }}>
             {[
-              ['House Construction', '/services/house-construction'],
-              ['BOQ Review', '/services/boq-review'],
+              ['House Construction', '/home-construction-chennai'],
+              ['BOQ Review', '/boq-review-chennai'],
               ['Structural Audit', '/structural-audit-chennai'],
               ['Land Survey', '/land-survey-chennai'],
               ['Soil Testing', '/soil-testing-chennai'],
-              ['Site Supervision', '/services/site-supervision'],
+              ['Site Supervision', '/site-supervision-chennai'],
               ['Material Sourcing', '/building-materials-chennai'],
               ['Piling Works', '/piling-works-chennai'],
-              ['Construction Cost Estimation', '/services/construction-cost-consultation'],
+              ['Construction Cost Estimation', '/construction-cost-estimation-chennai'],
               ['Contractors', '/partners/contractors'],
             ].map(([label, href]) => (
               <Link
