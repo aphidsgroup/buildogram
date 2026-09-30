@@ -17,10 +17,14 @@ import { trackWhatsAppClick } from '@/lib/conversion/analytics';
 import { CONVERSION_COMPLETE_EVENT } from '@/lib/conversion/tooltip-lifecycle.mjs';
 
 export default function ContextualWhatsAppWidget({ context }) {
+  if (!context?.showWhatsApp) return null;
+  return <WhatsAppFab context={context} />;
+}
+
+// Hooks live here so they run unconditionally on every render of this component.
+function WhatsAppFab({ context }) {
   const btnRef = useRef(null);
   const [mounted, setMounted] = useState(false);
-
-  if (!context?.showWhatsApp) return null;
 
   const { serviceName, locality, pageType } = context;
 
