@@ -9,6 +9,7 @@
 import { BRAND } from '@/lib/brand/positioning';
 import { getService } from '@/data/services';
 import { areaMap } from '@/data/seo/areas';
+import { buildWhatsAppMessage, humanizeSlug } from '@/lib/conversion/whatsapp-message.mjs';
 
 // -- Excluded page types -- no widget, no form ----------------------------------
 const EXCLUDED_PAGE_TYPES = new Set([
@@ -444,6 +445,7 @@ export function getConversionContext(pathname) {
       pageType,
       showWhatsApp: false,
       showInlineForm: false,
+      whatsappMessage: buildWhatsAppMessage(null, null),
     };
   }
 
@@ -476,6 +478,7 @@ export function getConversionContext(pathname) {
     const base = { ...PAGE_FAMILY_DEFAULTS['location-service'] };
     if (area) {
       base.locality = area.name;
+      base.whatsappTopic = humanizeSlug(serviceSlug);
       base.whatsappPrompt = `Need ${serviceSlug?.replace(/-/g, ' ')} in ${area.name}?`;
       base.tooltipMessage = `Buildogram can help coordinate services in ${area.name}.`;
       base.formHeading = `Request a Callback -- ${area.name}`;
@@ -507,18 +510,26 @@ export function getConversionContext(pathname) {
     return buildContext(pathname, pageType, familyDefault);
   }
 
-  // Safe generic fallback
-  return buildContext(pathname, 'generic', GENERIC_FALLBACK);
+  // Safe generic fallback -- top-level service routes (/[serviceSlug]) still
+  // name their service in the WhatsApp message.
+  const topLevelService = pathname ? getService(pathname.slice(1)) : null;
+  return buildContext(pathname, 'generic', {
+    ...GENERIC_FALLBACK,
+    whatsappTopic: topLevelService ? (topLevelService.h1 || topLevelService.title) : null,
+  });
 }
 
 function buildContext(pathname, pageType, overrides) {
-  return {
+  const context = {
     ...GENERIC_FALLBACK,
     ...overrides,
     pageType,
     // Ensure phone is always from brand source of truth
     _phone: BRAND.phone,
   };
+  // Route-aware prefilled WhatsApp text (derived from pathname only -> SSR-safe)
+  context.whatsappMessage = buildWhatsAppMessage(context, pathname);
+  return context;
 }
 
 // Re-export for convenience

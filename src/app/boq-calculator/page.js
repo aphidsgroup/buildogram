@@ -5,6 +5,8 @@ import { DEFAULT_RATES, buildRateMap } from '@/lib/boq-calc/rates';
 import { computeBoq } from '@/lib/boq-calc/engine';
 import { computeExcelBoq } from '@/lib/boq-calc/excel-engine';
 import { numberToWords } from '@/lib/boq-calc/numberToWords';
+import { BRAND } from '@/lib/brand/positioning';
+import { getWhatsAppLink } from '@/lib/whatsapp';
 
 // ── helpers ────────────────────────────────────────────────────────────────
 const n = v => Number(v) || 0;
@@ -878,7 +880,7 @@ ${result.marginVariants ? `<div class="msec"><h3>\uD83D\uDCC8 Margin Sensitivity
                   style={{ background: '#0F172A', color: 'white', border: 'none', borderRadius: 10, padding: '11px 22px', fontSize: 14, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 2px 8px rgba(0,0,0,0.2)' }}>
                   🖨️ Save as PDF
                 </button>
-                <a href={`https://wa.me/919566111222?text=${encodeURIComponent(`Hi! I just generated a BOQ for my ${info.floorConfig} project using Buildogram's tool. Building estimate: ${fc(result.buildingEstimate)} (${result.marginPct}% margin). Can I get a professional review?`)}`}
+                <a href={getWhatsAppLink(BRAND.phone, `Hi! I just generated a BOQ for my ${info.floorConfig} project using Buildogram's tool. Building estimate: ${fc(result.buildingEstimate)} (${result.marginPct}% margin). Can I get a professional review?`)}
                   target="_blank" rel="noopener noreferrer"
                   style={{ background: '#25D366', color: 'white', border: 'none', borderRadius: 10, padding: '11px 22px', fontSize: 14, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
                   💬 WhatsApp for Expert Review

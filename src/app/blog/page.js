@@ -2,6 +2,10 @@ import { generateSEOMetadata } from '@/lib/seo/metadata';
 import Link from 'next/link';
 import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema';
 import FAQBlock from '@/components/seo/FAQBlock';
+import { BRAND } from '@/lib/brand/positioning';
+import { getWhatsAppLink } from '@/lib/whatsapp';
+
+const BLOG_WHATSAPP_MESSAGE = 'Hi Buildogram, please send me Buildogram blog updates on WhatsApp. Page: /blog';
 
 export const metadata = generateSEOMetadata({
   title: 'Construction Blog | Expert Insights & Articles | Buildogram',
@@ -122,7 +126,7 @@ export default function BlogPage() {
           <p style={{ color: 'rgba(255,255,255,0.7)', maxWidth: '440px', margin: '0 auto 28px', lineHeight: 1.6 }}>New articles on BOQ, materials, structural audits and Chennai construction trends — direct from our engineering team.</p>
           <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="/contact?type=newsletter" className="btn btn-primary">Notify Me</Link>
-            <Link href="https://wa.me/919999999999?text=Subscribe%20Buildogram%20Blog" target="_blank" rel="noopener" className="btn btn-lg" style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>📱 WhatsApp Updates</Link>
+            <Link href={getWhatsAppLink(BRAND.phone, BLOG_WHATSAPP_MESSAGE)} target="_blank" rel="noopener" className="btn btn-lg" style={{ background: 'rgba(255,255,255,0.1)', color: 'white', border: '1px solid rgba(255,255,255,0.2)' }}>📱 WhatsApp Updates</Link>
           </div>
         </div>
       </div>
