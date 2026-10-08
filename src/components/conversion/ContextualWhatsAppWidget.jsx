@@ -4,7 +4,8 @@
  * Renders the green WhatsApp button inside FloatingActionStack.
  * - Inline SVG icon (no third-party script)
  * - Accessible label includes service name
- * - Message built via src/lib/whatsapp.js
+ * - Message from context.whatsappMessage (src/lib/conversion/whatsapp-message.mjs),
+ *   link built via src/lib/whatsapp.js
  * - target="_blank" rel="noopener noreferrer"
  * - Never auto-opens WhatsApp
  * - Keyboard operable, visible focus ring, no pulse/bounce
@@ -13,35 +14,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { BRAND } from '@/lib/brand/positioning';
 import { getWhatsAppLink } from '@/lib/whatsapp';
+import { GENERIC_WHATSAPP_MESSAGE } from '@/lib/conversion/whatsapp-message.mjs';
 import { trackWhatsAppClick } from '@/lib/conversion/analytics';
 import { CONVERSION_COMPLETE_EVENT } from '@/lib/conversion/tooltip-lifecycle.mjs';
 
 export default function ContextualWhatsAppWidget({ context }) {
   const btnRef = useRef(null);
   const [mounted, setMounted] = useState(false);
-
-  if (!context?.showWhatsApp) return null;
-
-  const { serviceName, locality, pageType } = context;
-
-  // Build route-aware WhatsApp message
-  const pageUrl = typeof window !== 'undefined' ? window.location.href : '';
-  const messageParts = [];
-  if (serviceName) messageParts.push(`I'm interested in ${serviceName}`);
-  else if (locality) messageParts.push(`I have a project in ${locality}`);
-  else messageParts.push(`I have a construction project`);
-  messageParts.push(`in Chennai. Could you help me review my options?`);
-  if (pageUrl) messageParts.push(`Page: ${pageUrl}`);
-  const message = `Hi Buildogram, ${messageParts.join(' ')}`;
-
-  const href = getWhatsAppLink(BRAND.phone, message);
-
-  // Accessible label
-  const ariaLabel = serviceName
-    ? `Enquire on WhatsApp about ${serviceName}`
-    : locality
-    ? `Enquire on WhatsApp about construction in ${locality}`
-    : 'Enquire on WhatsApp';
 
   useEffect(() => {
     const enterTimer = window.setTimeout(() => setMounted(true), 120);
@@ -68,6 +47,23 @@ export default function ContextualWhatsAppWidget({ context }) {
       hideHint();
     };
   }, [mounted]);
+
+  if (!context?.showWhatsApp) return null;
+
+  const { serviceName, locality } = context;
+
+  // Route-aware WhatsApp message from the conversion context. Derived from the
+  // pathname only (not window.location) so server and client hrefs match.
+  const message = context.whatsappMessage || GENERIC_WHATSAPP_MESSAGE;
+
+  const href = getWhatsAppLink(BRAND.phone, message);
+
+  // Accessible label
+  const ariaLabel = serviceName
+    ? `Enquire on WhatsApp about ${serviceName}`
+    : locality
+    ? `Enquire on WhatsApp about construction in ${locality}`
+    : 'Enquire on WhatsApp';
 
   const handleClick = () => {
     trackWhatsAppClick(context, { placement: 'floating' });
