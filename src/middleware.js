@@ -50,14 +50,16 @@ export function middleware(request) {
   if (pathname.startsWith('/partner')) {
     if (!user) return NextResponse.redirect(new URL('/login', request.url));
     // Partners only
-    if (!['partner_admin', 'partner_user'].includes(user.role) && !user.role?.startsWith('ops_') && user.role !== 'super_admin') {
+    const isPartner = ['partner', 'partner_admin', 'partner_user', 'partner_contractor', 'partner_supplier'].includes(user.role) || user.role?.startsWith('partner_');
+    if (!isPartner && !user.role?.startsWith('ops_') && user.role !== 'super_admin') {
       return NextResponse.redirect(new URL('/login', request.url));
     }
   }
 
   if (pathname.startsWith('/client')) {
     if (!user) return NextResponse.redirect(new URL('/login', request.url));
-    if (user.role !== 'client_user' && !user.role?.startsWith('ops_') && user.role !== 'super_admin') {
+    const isClient = ['client', 'client_user'].includes(user.role) || user.role?.startsWith('client_');
+    if (!isClient && !user.role?.startsWith('ops_') && user.role !== 'super_admin') {
       return NextResponse.redirect(new URL('/login', request.url));
     }
   }

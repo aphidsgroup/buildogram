@@ -37,9 +37,30 @@ export const rolePermissions = {
     'view_projects',
     'view_leads',
   ],
+  partner: [
+    'view_projects',
+    'manage_projects',
+    'view_leads',
+  ],
+  partner_contractor: [
+    'view_projects',
+    'manage_projects',
+    'view_leads',
+  ],
+  partner_supplier: [
+    'view_projects',
+    'manage_projects',
+    'view_leads',
+  ],
   client_user: [
     'view_projects',
     'view_passports',
+    'access_client_portal',
+  ],
+  client: [
+    'view_projects',
+    'view_passports',
+    'access_client_portal',
   ],
   viewer: [
     'view_projects',
