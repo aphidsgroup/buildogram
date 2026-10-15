@@ -145,15 +145,15 @@ function determinePriority(type) {
 // Generic Proxy Generator for standard CRUD
 const createProxy = (modelName, demoCrud) => ({
   getAll: async (filters = {}) => {
-    if (isDemo) return demoCrud.getAll(filters);
+    if (isDemo || !prisma[modelName]) return demoCrud.getAll(filters);
     return await prisma[modelName].findMany({ where: filters, orderBy: { createdAt: 'desc' } });
   },
   create: async (data) => {
-    if (isDemo) return demoCrud.create(data);
+    if (isDemo || !prisma[modelName]) return demoCrud.create(data);
     return await prisma[modelName].create({ data });
   },
   update: async (id, data) => {
-    if (isDemo) return demoCrud.update(id, data);
+    if (isDemo || !prisma[modelName]) return demoCrud.update(id, data);
     return await prisma[modelName].update({ where: { id }, data });
   }
 });
