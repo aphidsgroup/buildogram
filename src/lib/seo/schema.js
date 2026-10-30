@@ -7,7 +7,7 @@
  * Schema types exported:
  *   - generateOrganizationSchema()     → Organization + WebSite (root layout)
  *   - generateLocalBusinessSchema()    → LocalBusiness (root layout + contact page)
- *   - generateWebSiteSchema()          → WebSite with SearchAction (root layout)
+ *   - generateWebSiteSchema()          → WebSite (root layout)
  *   - generateServiceSchema()          → Service (individual service pages)
  *   - generateFAQSchema()              → FAQPage (pages with FAQ sections)
  *   - generateBreadcrumbSchema()       → BreadcrumbList (all pages)
@@ -16,7 +16,7 @@
  *
  * Phase 3 additions (2026-07-24):
  *   - Wired BRAND constants from positioning.js — eliminates DRY violation
- *   - Added WebSite schema with sitelinks searchbox SearchAction
+ *   - Added WebSite schema (SearchAction later removed: no /search route exists)
  *   - Added Article schema for case study pages
  *   - Added HowTo schema for process guide pages
  *   - Fixed Organization: added foundingDate, knowsAbout, hasOfferCatalog
@@ -29,7 +29,7 @@ import { BRAND } from '@/lib/brand/positioning';
 export const SITE_URL = BRAND.url; // 'https://www.buildogram.in'
 
 // ─────────────────────────────────────────────────────────────────────────────
-// WebSite Schema — includes Sitelinks Searchbox signal
+// WebSite Schema — no SearchAction: the site has no /search route
 // ─────────────────────────────────────────────────────────────────────────────
 export const generateWebSiteSchema = () => ({
   '@context': 'https://schema.org',
@@ -39,14 +39,6 @@ export const generateWebSiteSchema = () => ({
   url: SITE_URL,
   description: BRAND.shortDescription,
   inLanguage: 'en-IN',
-  potentialAction: {
-    '@type': 'SearchAction',
-    target: {
-      '@type': 'EntryPoint',
-      urlTemplate: `${SITE_URL}/search?q={search_term_string}`,
-    },
-    'query-input': 'required name=search_term_string',
-  },
   publisher: {
     '@type': 'Organization',
     '@id': `${SITE_URL}/#organization`,
