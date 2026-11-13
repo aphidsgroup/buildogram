@@ -135,7 +135,7 @@ We do not sign construction contracts, execute construction work, or employ cons
 Every page on buildogram.in includes:
 - Organization schema (root layout — sitewide)
 - LocalBusiness schema (root layout — sitewide)
-- WebSite schema with SearchAction (root layout — sitewide)
+- WebSite schema (root layout — sitewide; site identity, language, and publisher)
 - BreadcrumbList (all interior pages)
 - FAQPage schema (pages with FAQ sections)
 - Service schema (individual service pages)

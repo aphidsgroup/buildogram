@@ -80,3 +80,9 @@ test('WebSite schema keeps canonical identity and advertises no unsupported Sear
   assert.equal('potentialAction' in schema, false, 'no /search route exists, so no SearchAction');
   assert.doesNotMatch(JSON.stringify(schema), /SearchAction|search_term_string|\/search\?/);
 });
+
+test('llms.txt does not claim an unsupported SearchAction', () => {
+  const llms = fs.readFileSync(new URL('../public/llms.txt', import.meta.url), 'utf8');
+  assert.match(llms, /^- WebSite schema \(root layout/m);
+  assert.doesNotMatch(llms, /SearchAction/);
+});
